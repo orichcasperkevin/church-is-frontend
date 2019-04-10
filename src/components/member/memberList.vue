@@ -10,13 +10,12 @@
         <div class="container">
         <div class="row">
         <div class="filters col-12 col-sm-10 col-md-8 col-lg-2" style="padding: 0px 0px 0px 0px">
-          <form>
             <div class="form-group">
                 <label for="searchInput"><h5><b>search by first name</b></h5></label>
-                <input type="text" class="form-control" id="searchInput" aria-describedby="searchHelp" placeholder="E.g John,Brian etc" autofocus>
+                <input type="text" class="form-control"  aria-describedby="searchHelp" placeholder="e.g John,Brian etc" v-model="firstnamesearch" autofocus>
+                <div style="padding: 10px 10px 10px 10px" class="text-info">{{firstnamesearch_status}}</div>
                 <small id="searchHelp" class="form-text text-muted">search members by their first names</small>
             </div>
-          </form>
           <p>
               <a class="" data-toggle="collapse" href="#collapseMoreFilters" role="button" aria-expanded="false" aria-controls="collapseMoreFilters">
                 <div class="moreButton">
@@ -77,40 +76,20 @@
           <div class="col" style="padding: 60px">
             <div>
               <p>
-              found <span class="badge badge-pill badge-info">3</span>
+              found <span class="badge badge-pill badge-info">{{foundItems}}</span>
               </p>
             </div>
               <table class="table">
                   <tbody>
-                    <tr>
+                    <tr v-for="data in members.response">
                       <th scope="row"></th>
-                      <td><img src="@/assets/avatars/icons8-user-female-skin-type-4-40.png">
+                      <td ><img style = "height: 32px "src="@/assets/avatars/icons8-contacts-96.png">
                         <router-link :to="`/memberDetail/1/`">
-                          mark masai
+                          <span v-for="member in data">{{member.first_name}},{{member.last_name}}</span>
                         </router-link>
                        </td>
                      
                    
-                    </tr>
-                    <tr>
-                      <th scope="row"></th>
-                      <td><img src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
-                        <router-link :to="`/memberDetail/1/`">
-                          Joshua Mayeki
-                        </router-link>
-                      </td>
-                 
-                 
-                    </tr>
-                    <tr>
-                      <th scope="row"></th>
-                      <td><img src="@/assets/avatars/icons8-user-male-skin-type-4-40.png"> 
-                        <router-link :to="`/memberDetail/1/`">
-                          Nickson Korir
-                        </router-link>
-                      </td>
-                      
-                  
                     </tr>
                   </tbody>
                 </table>
@@ -206,8 +185,58 @@ export default {
   name: 'memberList',
   data () {
     return {
+      members: null,
+      foundItems: null,
+      firstnamesearch: null,
+      firstnamesearch_status: null
+    }
+  },
+  watch: {
+    // whenever question changes, this function will run
+    firstnamesearch: function () {
+      if (this.firstnamesearch.length > 0){
+        this.firstnamesearch_status = 'Waiting for you to stop typing...'
+        this.debouncedGetAnswer()
+      }else{
+          console.log("reached here")
+          this.fetchData()
+      }
+    }
+  },
+  created(){
+    this.fetchData()
+    this.debouncedGetAnswer = _.debounce(this.getAnswer, 1000)
+  },
+  methods: {
+    fetchData() {
+      this.$http.get('http://127.0.0.1:8000/api/members/member-list/')
+            .then(response => {
+              this.members = {"response": response.data } 
+              var array = this.members.response
+              this.foundItems = array.length
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    },
+    getAnswer: function () {
+      var vm = this
+      if (this.firstnamesearch.length > 0){
+        this.firstnamesearch_status = 'searching...'
+        this.$http.get('http://127.0.0.1:8000/api/members/filter-by-first_name/' + this.firstnamesearch +'/')
+          .then(function (response) {
+            vm.members = {"response": response.data } 
+            vm.firstnamesearch_status = ''
+            var array = vm.members.response
+            vm.foundItems = array.length
+          })
+          .catch(function (error) {
+            console.log('Error! Could not reach the API. ' + error)
+          })
+        }
     }
   }
+
 }
 </script>
 

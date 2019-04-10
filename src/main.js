@@ -5,8 +5,13 @@ import App from './App'
 import router from './router'
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import axios from 'axios';
+import VueLodash from 'vue-lodash'
+const options = { name: 'lodash' }
+Vue.use(VueLodash, options) 
 
 Vue.config.productionTip = false
+Vue.prototype.$http = axios
 
 /* eslint-disable no-new */
 new Vue({
