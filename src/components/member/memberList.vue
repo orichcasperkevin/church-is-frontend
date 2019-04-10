@@ -117,11 +117,11 @@
           </div>
           <div class="col-12 col-sm-10 col-md-8 col-lg-3">
             <div style="padding: 0px 0px 25px 0px">
-              <a class="" data-toggle="collapse" href="#" role="button" aria-expanded="false">
+              <router-link :to="{name: 'memberAdd'}">
                   <div class="add-button">
                     + Add member
                   </div>
-                </a>
+              </router-link>
             </div>
               <div class="list-group ">
                   <button type="button" class="action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#emailModatCenter" ><img src="@/assets/icons/icons8-email-64.png">email people</button>

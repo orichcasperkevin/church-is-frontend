@@ -4,6 +4,7 @@ import Home from '@/components/Home'
 
 import memberList from '@/components/member/memberList'
 import memberDetail from '@/components/member/memberDetail'
+import memberAdd from '@/components/member/memberAdd'
 
 Vue.use(Router)
 
@@ -23,6 +24,12 @@ export default new Router({
       path: '/memberDetail/:id',
       name: 'memberDetail',
       component: memberDetail
-      }
+    },
+    {
+      path: '/memberAdd/',
+      name: 'memberAdd',
+      component: memberAdd
+    },
+
   ]
 })
