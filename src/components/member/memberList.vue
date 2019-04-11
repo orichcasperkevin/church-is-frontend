@@ -27,16 +27,16 @@
           <div class="collapse" id="collapseMoreFilters">
               <div id="container">
                   <div class="accordion">
-                    <label for="tm" class="accordionitem"><b>names</b> <span class="arrow">&raquo;</span></label>
+                    <label for="tm" class="accordionitem"><b>age</b> <span class="arrow">&raquo;</span></label>
                     <input type="checkbox" id="tm"/>
                     <form style="padding: 5px 5px">
                         <div class="form-group">
-                            <input type="text" class="form-control" id="searchInput" aria-describedby="searchHelp" placeholder="search by last name" autofocus>
+                            <input type="number" class="form-control" id="searchInput"  placeholder="min age" v-model = "min_age">
                         </div>
                       </form>
                       <form style="padding: 5px 5px">
                           <div class="form-group">
-                              <input type="text" class="form-control" id="searchInput" aria-describedby="searchHelp" placeholder="search by nick name" autofocus>
+                              <input type="number" class="form-control" id="searchInput" placeholder="max age" v-model = "max_age">
                           </div>
                         </form>
                   </div>
@@ -46,10 +46,10 @@
                     <input type="checkbox" id="tn"/>
                     <form style="padding: 5px 5px">
                         <div class="radio">
-                            <input type="radio" name="optradio" checked> male
+                            <input type="radio" name="optradio" value="M" v-model="gendersearch"> male
                           </div>
                           <div class="radio">
-                            <input type="radio" name="optradio"> female
+                            <input type="radio" name="optradio" value ="F" v-model="gendersearch"> female
                           </div>
                     </form>
                   </div>
@@ -59,13 +59,13 @@
                     <input type="checkbox" id="to"/>
                     <div>
                         <div class="radio">
-                            <input type="radio" name="optradio" checked> Option 1
+                            <input type="radio" name="optradio" > Option 1
                           </div>
                           <div class="radio">
                             <input type="radio" name="optradio"> Option 2
                           </div>
                           <div class="radio disabled">
-                            <input type="radio" name="optradio" disabled> Option 3
+                            <input type="radio" name="optradio" > Option 3
                           </div>
                     </div>
                   </div>
@@ -79,15 +79,36 @@
               found <span class="badge badge-pill badge-info">{{foundItems}}</span>
               </p>
             </div>
-              <table class="table">
+              <table class="table" v-if = "min_age == 0 || min_age == '' || max_age == 150 || max_age  == ''">
                   <tbody>
                     <tr v-for="data in members.response">
                       <th scope="row"></th>
-                      <td ><img style = "height: 32px "src="@/assets/avatars/icons8-contacts-96.png">
+                      <td ><img v-if = "data.gender == 'M'" style = "height: 32px "src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
+                           <img v-if = "data.gender == 'F'" style = "height: 32px "src="@/assets/avatars/icons8-user-female-skin-type-4-40.png">
+                           <img v-if = "data.gender == 'R'" style = "height: 32px "src="@/assets/avatars/icons8-contacts-96.png">
+                           
                         <router-link :to="`/memberDetail/1/`">
-                          <span v-for="member in data">{{member.first_name}},{{member.last_name}}</span>
+                          <span class = "text-secondary">{{data.member.first_name}} {{data.member.last_name}}</span>
                         </router-link>
                        </td>
+                     
+                   
+                    </tr>
+                  </tbody>
+                </table>
+                <table class="table" v-if = "(min_age > 0 ) && (max_age > 0 )">
+                  <tbody>
+                    <tr v-for="data in members.response">
+                     
+                      <th scope="row"></th>
+                      <td ><img v-if = "data.member.gender == 'M'" style = "height: 32px "src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
+                           <img v-if = "data.member.gender == 'F'" style = "height: 32px "src="@/assets/avatars/icons8-user-female-skin-type-4-40.png">
+                           <img v-if = "data.member.gender == 'R'" style = "height: 32px "src="@/assets/avatars/icons8-contacts-96.png">
+                        <router-link :to="`/memberDetail/1/`">
+                          <span class = "text-secondary">{{data.member.member.first_name}} {{data.member.member.last_name}}</span>
+                        </router-link>
+                       </td>
+                     
                      
                    
                     </tr>
@@ -188,7 +209,10 @@ export default {
       members: null,
       foundItems: null,
       firstnamesearch: null,
-      firstnamesearch_status: null
+      firstnamesearch_status: null,
+      gendersearch: null,
+      min_age: 0,
+      max_age:150
     }
   },
   watch: {
@@ -198,8 +222,25 @@ export default {
         this.firstnamesearch_status = 'Waiting for you to stop typing...'
         this.debouncedGetAnswer()
       }else{
-          console.log("reached here")
+          this.firstnamesearch_status = ''
           this.fetchData()
+      }
+    },
+    gendersearch: function (){
+      this.searchByGender()
+    },
+    min_age: function(){
+      if (this.min_age != ''){
+        this.searchByAge()
+      }else{
+        this.fetchData()
+      }
+    },
+    max_age:function(){
+      if (this.max_age != ''){
+        this.searchByAge()
+      }else{
+        this.fetchData()
       }
     }
   },
@@ -234,6 +275,30 @@ export default {
             console.log('Error! Could not reach the API. ' + error)
           })
         }
+    },
+    searchByGender() {
+      this.$http.get('http://127.0.0.1:8000/api/members/filter-by-gender/'+ this.gendersearch)
+            .then(response => {
+              this.members = {"response": response.data } 
+              var array = this.members.response
+              this.foundItems = array.length
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    },
+    searchByAge() {
+      if (this.min_age != '' && this.max_age != ''){
+      this.$http.get('http://127.0.0.1:8000/api/members/filter-by-age/'+ this.min_age +'/' + this.max_age + '/')
+            .then(response => {
+              this.members = {"response": response.data } 
+              var array = this.members.response
+              this.foundItems = array.length
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+      }
     }
   }
 
