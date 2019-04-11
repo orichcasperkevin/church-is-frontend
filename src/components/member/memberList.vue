@@ -31,11 +31,13 @@
                     <input type="checkbox" id="tm"/>
                     <form style="padding: 5px 5px">
                         <div class="form-group">
+                            <small><b>min age :</b></small>
                             <input type="number" class="form-control" id="searchInput"  placeholder="min age" v-model = "min_age">
                         </div>
                       </form>
                       <form style="padding: 5px 5px">
                           <div class="form-group">
+                              <small><b>max age :</b></small>
                               <input type="number" class="form-control" id="searchInput" placeholder="max age" v-model = "max_age">
                           </div>
                         </form>
@@ -96,7 +98,7 @@
                     </tr>
                   </tbody>
                 </table>
-                <table class="table" v-if = "(min_age > 0 ) && (max_age > 0 )">
+                <table class="table" v-if = "min_age > 0  || max_age != 150 ">
                   <tbody>
                     <tr v-for="data in members.response">
                      
@@ -230,7 +232,7 @@ export default {
       this.searchByGender()
     },
     min_age: function(){
-      if (this.min_age != ''){
+      if (this.min_age != '' && this.min_age > 0){
         this.searchByAge()
       }else{
         this.fetchData()
