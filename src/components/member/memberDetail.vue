@@ -114,7 +114,21 @@ export default {
   data () {
     return {
     }
-  }
+  },
+  created() {
+        this.fetchData()
+    },
+
+  watch: {
+        '$route': 'fetchData'
+    },
+  methods: {
+        fetchData() {
+            
+        }
+      
+    }
+
 }
 </script>
 

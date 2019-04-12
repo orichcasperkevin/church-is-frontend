@@ -41,10 +41,20 @@
                         <div class="form-group">
                                 <label><b>first name :</b></label>
                                 <input type="text" class="form-control"  placeholder="first name" v-model="first_name" autofocus>
+                                <p v-if="first_name_errors.length">
+                                        <ul>
+                                                <small><li v-for="error in first_name_errors"><p class="text-danger">{{ error }}</p></li></small>
+                                        </ul>
+                                </p>
                         </div>
                         <div class="form-group">
                                 <label><b>last name :</b></label>
-                                <input type="text" class="form-control"  placeholder="last name" v-model="last_name" autofocus>
+                                <input type="text" class="form-control"  placeholder="last name" v-model="last_name" >
+                                <p v-if="last_name_errors.length">
+                                        <ul>
+                                                <small><li v-for="error in last_name_errors"><p class="text-danger">{{ error }}</p></li></small>
+                                        </ul>
+                                </p>
                         </div>
                         </div>
                     </div>
@@ -54,11 +64,16 @@
                         <div class="row" style="padding: 5px 60px ">
                                 <div class="checkbox col">
                                         <div class="radio">
-                                                <label><input type="radio" :value = "M" v-model = "gender" > male</label>
-                                              </div>
-                                              <div class="radio">
-                                                <label><input type="radio" :value = "F" v-model = "gender"> female</label>
-                                              </div>
+                                                <label><input type="radio" :value = true v-model = "gender_male" > male</label>
+                                        </div>
+                                        <div class="radio">
+                                                 <label><input type="radio" :value = true v-model = "gender_female"> female</label>
+                                        </div>
+                                        <p v-if="gender_errors.length">
+                                        <ul>
+                                                <small><li v-for="error in gender_errors"><p class="text-danger">{{ error }}</p></li></small>
+                                        </ul>
+                                        </p>
                                 </div>
                         </div>
                     </div>
@@ -166,17 +181,37 @@
                     <div style="padding: 0px 0px 25px 0px">
                             <a href="#add-member" v-on:click = "addMember()"  >
                                 <div class="add-button">
-                                    + Add member
+                                    {{add_member_button_text}}
                                 </div>
                             </a>
                     </div>
               </div>
+              <div class = "col-3">
+              <div class="card border-0" style="max-width: 18rem;">
+                        <div class="card-header border-0">recents</div>
+                        <div class="card-body">
+                                <div v-if = "added_member.length">
+                                <div class="alert alert-primary" role="alert" v-for = "data in added_member">
+                                        <div >
+                                                {{data.member.first_name}} {{data.member.last_name}} -- added
+                                        </div>
+                                </div>
+                                </div>
+                                <div class="alert alert-primary" role="alert" v-if = "! added_member.length">
+                                        <div >
+                                                None added
+                                        </div>
+                                </div>
+                        </div>
+                </div>
+                </div>
             </div>
           </div>
     </div>
   </template>
 
 <script>
+import axios from 'axios'
 export default {
   name: 'memberAdd',
   data () {
@@ -187,9 +222,11 @@ export default {
         marital_field:false,
         contact_field:false,
         residence_field:false,
-        first_name: '',
-        last_name: '',
-        email: ''
+        email: '',
+        first_name: '',first_name_errors: [],
+        last_name: '',last_name_errors: [],
+        gender_male: false, gender_female: false,gender_errors: [],
+        added_member: [],add_member_button_text: "+ add member"
     }
   },
   created() {
@@ -197,10 +234,71 @@ export default {
     this.fetchData()
 
   },
+  watch: {
+        first_name: function (){
+                if (this.first_name.length > 0){
+                        this.add_member_button_text = "+ add member"
+                }
+        }
+  },
   methods: {
-    fetchData() {
-      
+    resetForm() {
+
+    },
+    addMember: function(){
+        this.first_name_errors = []
+        this.last_name_errors = []
+        this.gender_errors = []
+        var gender
+        if (this.gender_male ){
+                gender = "M"
+        }
+        if (this.gender_female){
+                gender = "F"
+        }
+        if (! this.first_name){
+                this.first_name_errors.push('you must have a first name')
+                return false;
+        }
+        if (this.first_name.split(' ').length > 1){
+                this.first_name_errors.push('first name must be one word only')
+                return false;
+        }
+        if(! this.last_name){
+                this.last_name_errors.push('you must have a last name')
+                return false;
+        }
+        if (this.last_name.split(' ').length > 1){
+                this.last_name_errors.push('last name must be one word only')
+                return false;
+        }
+        if (! this.gender_female && ! this.gender_male){
+                this.gender_errors.push('select gender')
+                return false;
+        }
+        this.$http({
+                method: 'post',
+                url: 'http://127.0.0.1:8000/api/members/add-member/',
+                data: {
+                  first_name: this.first_name,
+                  last_name: this.last_name,
+                  gender: gender,
+                  email: this.email         
+                }
+              }).then(response => {
+                this.added_member.push(response.data )  
+                this.add_member_button_text = " added successfully"  
+
+                this.gender_male = false
+                this.gender_female = false
+                this.last_name = ''
+                this.first_name = ''
+                })
+                .catch((err) => {
+                
+                })
     }
+    
 }
 }
 </script>
