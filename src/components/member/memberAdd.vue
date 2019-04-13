@@ -35,6 +35,13 @@
               </div>
               <div class="col-6">
                 <hr/>
+                <div v-if="add_member_error.length > 0 " class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <strong>add member will not work without a connection !</strong>
+                        <p>check your connection and try again.</p>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                        </button>
+                </div>
                 <div class="mx-auto">
                     <div class="row" style="padding: 5px 60px ">
                         <div class="col">
@@ -226,7 +233,8 @@ export default {
         first_name: '',first_name_errors: [],
         last_name: '',last_name_errors: [],
         gender_male: false, gender_female: false,gender_errors: [],
-        added_member: [],add_member_button_text: "+ add member"
+        added_member: [],add_member_button_text: "+ add member",
+        add_member_error: []
     }
   },
   created() {
@@ -295,7 +303,7 @@ export default {
                 this.first_name = ''
                 })
                 .catch((err) => {
-                
+                 this.add_member_error.push(err)
                 })
     }
     

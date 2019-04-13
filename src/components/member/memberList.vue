@@ -76,6 +76,11 @@
 
         </div>
           <div class="col" style="padding: 60px">
+            <div class = "center-div" v-if = "fetch_data_error.length > 0">
+              <img style = "height: 64px "src="@/assets/icons/icons8-wi-fi-off-64.png">
+              <p class="text-info">check your connection</p>
+            </div>
+            <div v-if = "fetch_data_error.length == 0">
             <div>
               <p>
               found <span class="badge badge-pill badge-info">{{foundItems}}</span>
@@ -98,6 +103,7 @@
                     </tr>
                   </tbody>
                 </table>
+                </div>
                 <table class="table" v-if = "min_age > 0  || max_age != 150 ">
                   <tbody>
                     <tr v-for="data in members.response">
@@ -208,6 +214,7 @@ export default {
   name: 'memberList',
   data () {
     return {
+      fetch_data_error: [],
       members: null,
       foundItems: null,
       firstnamesearch: null,
@@ -259,7 +266,7 @@ export default {
               this.foundItems = array.length
             })
             .catch((err) => {
-                console.log(err)
+                this.fetch_data_error.push(err)
             })
     },
     getAnswer: function () {
@@ -274,7 +281,6 @@ export default {
             vm.foundItems = array.length
           })
           .catch(function (error) {
-            console.log('Error! Could not reach the API. ' + error)
           })
         }
     },
