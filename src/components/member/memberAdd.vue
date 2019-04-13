@@ -36,11 +36,17 @@
               <div class="col-6">
                 <hr/>
                 <div v-if="add_member_error.length > 0 " class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <div class="col">
+                                <img style = "height: 64px "src="@/assets/icons/icons8-wi-fi-off-64.png">
+                                 <p class="text-info">check your connection</p>
+                        </div class="col">
+                        <div>
                         <strong>add member will not work without a connection !</strong>
                         <p>check your connection and try again.</p>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                         </button>
+                        </div>
                 </div>
                 <div class="mx-auto">
                     <div class="row" style="padding: 5px 60px ">

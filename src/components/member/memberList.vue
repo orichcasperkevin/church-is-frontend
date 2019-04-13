@@ -112,7 +112,7 @@
                       <td ><img v-if = "data.member.gender == 'M'" style = "height: 32px "src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
                            <img v-if = "data.member.gender == 'F'" style = "height: 32px "src="@/assets/avatars/icons8-user-female-skin-type-4-40.png">
                            <img v-if = "data.member.gender == 'R'" style = "height: 32px "src="@/assets/avatars/icons8-contacts-96.png">
-                        <router-link :to="`/memberDetail/1/`">
+                        <router-link :to="`/memberDetail/`+ data.member.member.id">
                           <span class = "text-secondary">{{data.member.member.first_name}} {{data.member.member.last_name}}</span>
                         </router-link>
                        </td>
