@@ -19,11 +19,11 @@
                 </div>
               </div>
               <div class="col-sm">
-                  <a href="#">
-                    <div class="home-menu-item border-0">
-                      groups
-                    </div>
-                  </a>  
+                  <router-link :to="{name: 'groupsLanding'}">
+                      <div class="home-menu-item border-0">
+                        groups
+                      </div> 
+                  </router-link>
                   <div>
                       <ul class="list-group list-group-flush">
                           <li class="list-group-item">Cras justo odio</li>

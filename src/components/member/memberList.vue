@@ -1,6 +1,6 @@
 <template>
     <div class="memberList">
-      <nav aria-label="breadcrumb">
+      <nav aria-label="breadcrumb" >
         <ol class="breadcrumb">
           <li class="breadcrumb-item"><router-link :to="{name: 'Home'}">Home</router-link> 
           <li class="breadcrumb-item active" aria-current="page">members</li>
@@ -20,7 +20,7 @@
               <a class="" data-toggle="collapse" href="#collapseMoreFilters" role="button" aria-expanded="false" aria-controls="collapseMoreFilters">
                 <div class="moreButton">
                   <img style="width: 25px ;height: auto" src="@/assets/icons/icons8-down-arrow-64.png">
-                  more filters
+                 <b> more filters</b>
                 </div>
               </a>
           </p>
@@ -29,48 +29,39 @@
                   <div class="accordion">
                     <label for="tm" class="accordionitem"><b>age</b> <span class="arrow">&raquo;</span></label>
                     <input type="checkbox" id="tm"/>
-                    <form style="padding: 5px 5px">
+                      <div class="row" style="padding : 10px">
+                        <div class="col">
                         <div class="form-group">
                             <small><b>min age :</b></small>
                             <input type="number" class="form-control" id="searchInput"  placeholder="min age" v-model = "min_age">
                         </div>
-                      </form>
-                      <form style="padding: 5px 5px">
+                        </div>
+                        <div class="col">
                           <div class="form-group">
                               <small><b>max age :</b></small>
                               <input type="number" class="form-control" id="searchInput" placeholder="max age" v-model = "max_age">
                           </div>
-                        </form>
+                        </div>
+                      </div>
                   </div>
                   
                   <div class="accordion">
                     <label for="tn" class="accordionitem"><b>gender</b> <span class="arrow">&raquo;</span></label>
                     <input type="checkbox" id="tn"/>
-                    <form style="padding: 5px 5px">
+                    <div class="row" style="padding : 10px">
+                      <div class="col">
                         <div class="radio">
                             <input type="radio" name="optradio" value="M" v-model="gendersearch"> male
                           </div>
+                        </div>
+                        <div class="col">
                           <div class="radio">
                             <input type="radio" name="optradio" value ="F" v-model="gendersearch"> female
                           </div>
-                    </form>
-                  </div>
-                  
-                  <div class="accordion">
-                    <label for="to" class="accordionitem"><b>roles</b> <span class="arrow">&raquo;</span></label>
-                    <input type="checkbox" id="to"/>
-                    <div>
-                        <div class="radio">
-                            <input type="radio" name="optradio" > Option 1
-                          </div>
-                          <div class="radio">
-                            <input type="radio" name="optradio"> Option 2
-                          </div>
-                          <div class="radio disabled">
-                            <input type="radio" name="optradio" > Option 3
-                          </div>
+                        </div>
                     </div>
                   </div>
+
                 </div>  
           </div>
 

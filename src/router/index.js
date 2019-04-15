@@ -6,6 +6,10 @@ import memberList from '@/components/member/memberList'
 import memberDetail from '@/components/member/memberDetail'
 import memberAdd from '@/components/member/memberAdd'
 
+import groupsLanding from '@/components/groups/groupsLanding'
+import groupList from "@/components/groups/groupList"
+import groupDetail from "@/components/groups/groupDetail"
+
 Vue.use(Router)
 
 export default new Router({
@@ -30,6 +34,23 @@ export default new Router({
       name: 'memberAdd',
       component: memberAdd
     },
+    {
+      path: 'groupsLanding',
+      name: 'groupsLanding',
+      component: groupsLanding,
+      children: [
+        {
+          path: '/groupList/:group_type',
+          name: 'groupList',
+          component: groupList
+        },
+        {
+          path:'/groupDetail/:id',
+          name: 'groupDetail',
+          component: groupDetail
+        }
+      ]
+    }
 
   ]
 })
