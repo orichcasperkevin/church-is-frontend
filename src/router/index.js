@@ -40,16 +40,21 @@ export default new Router({
       component: groupsLanding,
       children: [
         {
-          path: '/groupList/:group_type',
+          path: '',
           name: 'groupList',
           component: groupList
         },
         {
-          path:'/groupDetail/:id',
-          name: 'groupDetail',
-          component: groupDetail
+          path: '/groupList/:group_type',
+          name: 'groupList',
+          component: groupList
         }
       ]
+    },
+    {
+      path:'/groupDetail/:id/:group_type',
+      name: 'groupDetail',
+      component: groupDetail
     }
 
   ]

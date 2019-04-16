@@ -108,3 +108,28 @@ input#to {
 .arrow{
   color: black;
 }
+.shadowonhover {
+  border-radius: 5px;
+  background-color: #fff;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+  transition: all 0.3s ease-in-out;
+}
+
+/* Create the hidden pseudo-element */
+/* include the shadow for the end state */
+.shadowonhover::after {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+  border-radius: 5px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  transition: opacity 0.3s;
+}
+.shadowonhover:hover {
+  transform: scale(1.01, 1.01);
+}
+
+/* Fade in the pseudo-element with the bigger shadow */
+.shadowonhover:hover::after {
+  opacity: 1;
+}

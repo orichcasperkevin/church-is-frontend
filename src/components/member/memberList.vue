@@ -11,7 +11,7 @@
         <div class="row">
         <div class="filters col-12 col-sm-10 col-md-8 col-lg-2" style="padding: 0px 0px 0px 0px">
             <div class="form-group">
-                <label for="searchInput"><h5><b>search by first name</b></h5></label>
+                <label for="searchInput"><b>search by first name</b></label>
                 <input type="text" class="form-control"  aria-describedby="searchHelp" placeholder="e.g John,Brian etc" v-model="firstnamesearch" autofocus>
                 <div style="padding: 10px 10px 10px 10px" class="text-info">{{firstnamesearch_status}}</div>
                 <small id="searchHelp" class="form-text text-muted">search members by their first names</small>
@@ -66,13 +66,15 @@
           </div>
 
         </div>
-          <div class="col" style="padding: 60px">
+          <div class="col" style="padding: 5px 60px 60px 60px">
             <div class = "center-div" v-if = "fetch_data_error.length > 0">
               <img style = "height: 64px "src="@/assets/icons/icons8-wi-fi-off-64.png">
               <p class="text-info">check your connection</p>
             </div>
             <div v-if = "fetch_data_error.length == 0">
             <div>
+                <h3>Members</h3>
+                <hr/>
               <p>
               found <span class="badge badge-pill badge-info">{{foundItems}}</span>
               </p>
@@ -219,7 +221,7 @@ export default {
     // whenever question changes, this function will run
     firstnamesearch: function () {
       if (this.firstnamesearch.length > 0){
-        this.firstnamesearch_status = 'Waiting for you to stop typing...'
+        this.firstnamesearch_status = 'typing...'
         this.debouncedGetAnswer()
       }else{
           this.firstnamesearch_status = ''
@@ -250,6 +252,7 @@ export default {
   },
   methods: {
     fetchData() {
+      this.fetch_data_error = []
       this.$http.get('http://127.0.0.1:8000/api/members/member-list/')
             .then(response => {
               this.members = {"response": response.data } 
@@ -258,7 +261,7 @@ export default {
             })
             .catch((err) => {
                 this.fetch_data_error.push(err)
-            })
+            })  
     },
     getAnswer: function () {
       var vm = this
