@@ -10,10 +10,10 @@
             <div class="row">
               <div class="col-3">
                     <div class="list-group ">
-                            <router-link :to="`/groupList/`+ `fellowship`" class="action-list list-group-item list-group-item-action border-0"><img class="church-is-menu" src="@/assets/icons/icons8-user-groups-filled-50.png"> fellowships</router-link>
-                            <router-link :to="`/groupList/`+ `church-group`" class="list-group-item list-group-item-action border-0"><img class="church-is-menu" src="@/assets/icons/icons8-user-groups-filled-50.png"> church groups</router-link>
-                            <router-link :to="`/groupList/`+ `ministry`" class="list-group-item list-group-item-action border-0"><img class="church-is-menu" src="@/assets/icons/icons8-user-groups-filled-50.png"> ministries </router-link>
-                            <router-link :to="`/groupList/`+ `cell-group`"class="list-group-item list-group-item-action border-0"><img class="church-is-menu" src="@/assets/icons/icons8-user-groups-filled-50.png"> cell groups</router-link>
+                            <router-link :to="`/groupList/`+ `fellowship`" class="action-list list-group-item list-group-item-action border-0"><img  src="@/assets/icons/icons8-user-groups-40.png"> fellowships</router-link>
+                            <router-link :to="`/groupList/`+ `church-group`" class="list-group-item list-group-item-action border-0"><img  src="@/assets/icons/icons8-user-groups-40.png">  church groups</router-link>
+                            <router-link :to="`/groupList/`+ `ministry`" class="list-group-item list-group-item-action border-0"><img  src="@/assets/icons/icons8-user-groups-40.png">  ministries </router-link>
+                            <router-link :to="`/groupList/`+ `cell-group`"class="list-group-item list-group-item-action border-0"><img  src="@/assets/icons/icons8-user-groups-40.png"> cell groups</router-link>
                             
                     </div>  
                     <div class="list-group" style="padding: 20px 0px 20px 0px">

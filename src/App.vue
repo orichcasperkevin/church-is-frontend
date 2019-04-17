@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <a class="navbar-brand" href="#">Navbar</a>
+      <router_link class="navbar-brand"  href="#" :to="{name: 'groupsLanding'}" >NanoComputing ChurchSys</router_link>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
       </button>
@@ -9,11 +9,11 @@
 
           <ul class="navbar-nav mr-auto" style="padding: 10px 10px 10px 10px">
               <li class="nav-item">
-                  <a class="nav-link" href="#">members</a>
+                  <router-link class="nav-link" :to="{name: 'memberList'}">members</router-link> 
               </li>
 
               <li class="nav-item">
-                  <a class="nav-link" href="#">groups</a>
+                  <router-link class="nav-link" :to="{name: 'groupsLanding'}">groups</router-link> 
               </li>
 
                 <li class="nav-item">
