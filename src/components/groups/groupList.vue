@@ -50,23 +50,36 @@
                 <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalCenterTitle">add {{group_type}}</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" v-on:click="fetchData()">
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
+                    <div v-if="added_group.length > 0 ">
+                    <div class="alert alert-success alert-dismissible fade show" role="alert" v-for = "data in added_group">
+                            <strong>{{data.name}}</strong> added successfully.
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                    </div>
+                    </div>
                     <div class="form-group">
                             <label for="addGroup">name of {{group_type}}</label>
-                            <input type="text" class="form-control" id="addGroup" autofocus></input>
+                            <input type="text" class="form-control" id="addGroup" autofocus v-model="name"></input>
+                            <p v-if="name_errors.length">
+                                    <ul>
+                                            <small><li v-for="error in name_errors"><p class="text-danger">{{ error }}</p></li></small>
+                                    </ul>
+                            </p>
                     </div>
                     <div class="form-group">
                         <label for="addGroupDescription">description</label>
-                        <textarea class="form-control" id="addGroupDescription" rows="3"></textarea>
+                        <textarea class="form-control" id="addGroupDescription" rows="3" v-model="description"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Send email</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="fetchData()">Close</button>
+                    <button type="button" class="btn btn-primary" v-on:click="addGroup()">add group</button>
                 </div>
                 </div>
             </div>
@@ -82,7 +95,9 @@ export default {
         group_type: '',
         groups: null,
         foundItems: null,
-        fetch_data_error: []
+        fetch_data_error: [],
+        name: '',name_errors: [],description: '',
+        add_group_error: null,added_group: []
     }
   },
   created() {
@@ -143,6 +158,86 @@ export default {
                     this.fetch_data_error.push(err)
                 })
             }
+        },
+        addGroup: function(){
+            this.name_errors = [],
+            this.description_errors = []
+
+            if (! this.name){
+                this.name_errors.push('you must have a name for the group')
+            }
+            if (! this.description){
+                this.description = 'none given'
+            }
+            if (this.$route.params.group_type == 'fellowship'){
+                this.$http({
+                    method: 'post',
+                    url: 'http://127.0.0.1:8000/api/groups/fellowship-list/',
+                    data: {
+                    name: this.name,
+                    description: this.description
+                    }
+                    }).then(response => {
+                    this.added_group.push(response.data )   
+                    this.name = ''
+                    this.description = ''
+                    })
+                    .catch((err) => {
+                    this.add_group_error.push(err)
+                    })
+            }
+            if (this.$route.params.group_type == 'church-group'){
+                this.$http({
+                    method: 'post',
+                    url: 'http://127.0.0.1:8000/api/groups/church-group-list/',
+                    data: {
+                    name: this.name,
+                    description: this.description
+                    }
+                    }).then(response => {
+                    this.added_group.push(response.data )   
+                    this.name = ''
+                    this.description = ''
+                    })
+                    .catch((err) => {
+                    this.add_group_error.push(err)
+                    })
+            }
+            if (this.$route.params.group_type == 'cell-group'){
+                this.$http({
+                    method: 'post',
+                    url: 'http://127.0.0.1:8000/api/groups/cell-group-list/',
+                    data: {
+                    name: this.name,
+                    description: this.description
+                    }
+                    }).then(response => {
+                    this.added_group.push(response.data )   
+                    this.name = ''
+                    this.description = ''
+                    })
+                    .catch((err) => {
+                    this.add_group_error.push(err)
+                    })
+            }
+            if (this.$route.params.group_type == 'ministry'){
+                this.$http({
+                    method: 'post',
+                    url: 'http://127.0.0.1:8000/api/groups/ministry-list/',
+                    data: {
+                    name: this.name,
+                    description: this.description
+                    }
+                    }).then(response => {
+                    this.added_group.push(response.data )   
+                    this.name = ''
+                    this.description = ''
+                    })
+                    .catch((err) => {
+                    this.add_group_error.push(err)
+                    })
+            }
+
         }
       
     }
