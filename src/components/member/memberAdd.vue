@@ -2,14 +2,14 @@
     <div class="memberAdd">
     <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><router-link :to="{name: 'Home'}">Home</router-link> 
-                <li class="breadcrumb-item"><router-link :to="{name: 'memberList'}">members</router-link> 
+                <li class="breadcrumb-item"><span class="backButton"><router-link style="text-decoration: none" :to="{name: 'Home'}">Home</router-link></span> 
+                <li class="breadcrumb-item"><span class="backButton"><router-link style="text-decoration: none" :to="{name: 'memberList'}">members</router-link></span> 
                 <li class="breadcrumb-item active" aria-current="page">add member</li>
             </ol>
     </nav>
     <div class="container">
             <div class="row">
-              <div class="col-3">
+              <div class="col-12 col-sm-10 col-md-8 col-lg-2">
                     <div class="list-group ">
                         <h3>fields you can see</h3>
                         <hr/>
@@ -33,7 +33,7 @@
                         </div>
                     </div>  
               </div>
-              <div class="col-6">
+              <div class="col">
                 <hr/>
                 <div v-if="add_member_error.length > 0 " class="alert alert-warning alert-dismissible fade show" role="alert">
                         <div class="col">
@@ -192,7 +192,7 @@
                             </div>
                         <hr v-if = "residence_field == true">
                     <div style="padding: 0px 0px 25px 0px">
-                            <a href="#add-member" v-on:click = "addMember()"  >
+                            <a href="#add-member" v-on:click = "addMember()" style="text-decoration: none" >
                                 <div class="add-button">
                                     {{add_member_button_text}}
                                 </div>

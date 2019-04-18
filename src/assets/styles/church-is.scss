@@ -1,12 +1,13 @@
 @import '~bootstrap/scss/bootstrap';
-$blue: #3399ff;
-$orange: #f26c22;
-$darkgrey: #626266;
-
+$blue: #326ada;
+$grey: 	#d2d2d2;
+$green:#139015;
+$dark: #a19c9c;
 
 $primary: $blue;
-$secondary: $orange;
-$dark: $darkgrey;
+$secondary: $grey;
+$success: $green;
+$dark: $dark;
 
 .center-div
 {
@@ -54,6 +55,16 @@ img.church-is-menu {
   background-color: ghostwhite ;
   transition: all 0.3s ease-in-out;
 }
+.navButton{
+  color: white;
+  border-radius: 5px;
+  padding: 10px 10px 10px 10px;
+}
+.navButton:hover{
+  color: black;
+  background-color:gainsboro ;
+  transition: all 0.3s ease-in-out;
+}
 .accordionButton{
     background-color:ghostwhite;
     padding: 5px 5px 5px 5px;
@@ -62,10 +73,16 @@ img.church-is-menu {
     padding: 5px 5px 5px;
 }
 .add-button{
-
+    color: #fff;
+    font-weight: 300;
     border-radius: 3px;
-    background-color: rgb(154, 242, 145);
+    background-color: $success;
     padding: 15px 15px 15px 15px;
+}
+.add-button:hover{
+  background: linear-gradient(green, $success);
+  font-weight: 400;
+  transition: all 0.3s ease-in-out;
 }
 #container{
   width: 190px;

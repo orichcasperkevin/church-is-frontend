@@ -2,8 +2,8 @@
     <div>
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><router-link :to="{name: 'Home'}">Home</router-link> 
-                  <li class="breadcrumb-item"><a href="#" v-on:click="goBack()">groups</a>
+                <li class="breadcrumb-item"><span class="backButton"><router-link style="text-decoration: none" :to="{name: 'Home'}">Home</router-link></span> 
+                  <li class="breadcrumb-item"><span class="backButton"><a href="#" style="text-decoration: none" v-on:click="goBack()">groups</a></span>
                 <li class="breadcrumb-item active" aria-current="page" v-for="data in group.response">{{data.name}}</li>
             </ol>
         </nav>
@@ -11,7 +11,7 @@
             <div class="container">
             <div class="row">
 
-            <div class="filters col-12 col-sm-10 col-md-8 col-lg-2" style="padding: 0px 0px 0px 0px">
+            <div class="filters  col-sm-10 col-md-8 col-lg-2" style="padding: 0px 0px 0px 0px">
                 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                   <a class="action-list list-group-item list-group-item-action border-0"  data-toggle="pill" href="#member" role="tab" aria-controls="members" aria-selected="true">
                     <img  src="@/assets/icons/icons8-user-groups-40.png"> members

@@ -9,15 +9,15 @@
 
           <ul class="navbar-nav mr-auto" style="padding: 10px 10px 10px 10px">
               <li class="nav-item">
-                  <router-link class="nav-link" :to="{name: 'memberList'}">members</router-link> 
+                  <router-link class="nav-link" :to="{name: 'memberList'}"><span class="navButton">members</span></router-link> 
               </li>
 
               <li class="nav-item">
-                  <router-link class="nav-link" :to="{name: 'groupsLanding'}">groups</router-link> 
+                  <router-link class="nav-link" :to="{name: 'groupsLanding'}"><span class="navButton">groups</span></router-link> 
               </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#">events</a>
+                    <a class="nav-link" href="#"><span class="navButton">events</span></a>
                 </li>
    
               <li class="nav-item dropdown">

@@ -1,7 +1,7 @@
 <template>
-    <div >
+    <div>
         <div class="row">
-        <div class="col-8">
+        <div class="col">
         <h3 class="breadcrumb-item active">groups / {{group_type}}s</h3>
         <hr/>
         <div class="col-8 center-div" v-if = "fetch_data_error.length > 0">
@@ -34,16 +34,43 @@
         </div>
         </div>
         </div>
-        <div class="col-4">
+        <div class="col-sm-10 col-md-8 col-lg-3">
             <div style="padding: 0px 0px 25px 0px">
-                    <router-link :to="{name: 'memberAdd'}">
+                    <a href="#" data-toggle="modal" data-target="#addGroup" style="text-decoration: none">
                         <div class="add-button">
                             + add {{group_type}}
                         </div>
-                    </router-link>
+                    </a>
             </div>
         </div>
         </div>
+            <!-- Modal add group -->
+            <div class="modal fade" id="addGroup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">add {{group_type}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                            <label for="addGroup">name of {{group_type}}</label>
+                            <input type="text" class="form-control" id="addGroup" autofocus></input>
+                    </div>
+                    <div class="form-group">
+                        <label for="addGroupDescription">description</label>
+                        <textarea class="form-control" id="addGroupDescription" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Send email</button>
+                </div>
+                </div>
+            </div>
+            </div>
     </div>
   </template>
 

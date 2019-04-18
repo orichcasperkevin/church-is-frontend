@@ -2,14 +2,14 @@
     <div class="memberList">
       <nav aria-label="breadcrumb" >
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><router-link :to="{name: 'Home'}">Home</router-link> 
+            <li class="breadcrumb-item"><span class="backButton"><router-link style="text-decoration: none" :to="{name: 'Home'}">Home</router-link></span> 
           <li class="breadcrumb-item active" aria-current="page">members</li>
         </ol>
       </nav>
       <body>
         <div class="container">
         <div class="row">
-        <div class="filters col-12 col-sm-10 col-md-8 col-lg-2" style="padding: 0px 0px 0px 0px">
+        <div class="filters col-12 col-sm-10 col-md-8 col-lg-2" style="padding: 3px 3px 3px 3px">
             <div class="form-group">
                 <label for="searchInput"><b>search by first name</b></label>
                 <input type="text" class="form-control"  aria-describedby="searchHelp" placeholder="e.g John,Brian etc" v-model="firstnamesearch" autofocus>
@@ -24,8 +24,9 @@
                 </div>
               </a>
           </p>
-          <div class="collapse" id="collapseMoreFilters">
-              <div id="container">
+          
+          <div class="collapse"  id="collapseMoreFilters">
+              <div id="container row" >
                   <div class="accordion">
                     <label for="tm" class="accordionitem"><b>age</b> <span class="arrow">&raquo;</span></label>
                     <input type="checkbox" id="tm"/>
@@ -64,6 +65,7 @@
 
                 </div>  
           </div>
+        
 
         </div>
           <div class="col" style="padding: 5px 60px 60px 60px">
@@ -118,7 +120,7 @@
           </div>
           <div class="col-12 col-sm-10 col-md-8 col-lg-3">
             <div style="padding: 0px 0px 25px 0px">
-              <router-link :to="{name: 'memberAdd'}">
+              <router-link :to="{name: 'memberAdd'}" style="text-decoration: none">
                   <div class="add-button">
                     + Add member
                   </div>
