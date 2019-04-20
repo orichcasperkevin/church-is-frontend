@@ -115,17 +115,75 @@
               </div>
               <div class="col-12 col-sm-10 col-md-8 col-lg-3">
                 <div style="padding: 0px 0px 25px 0px">
-                  <router-link :to="{name: 'memberAdd'}">
+                  <a href="#" data-toggle="modal" data-target="#addMemberToGroup" style="text-decoration: none">
                       <div class="add-button">
-                        + Add member
+                        + Add member to <span v-for="data in group.response">{{data.name}}</span>
                       </div>
-                  </router-link>
+                  </a>
                 </div>
                   <div class="list-group ">
                       <button type="button" class="action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#emailModatCenter" ><img src="@/assets/icons/icons8-email-64.png">email people</button>
                       <button type="button" class="list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#textModalCenter"><img src="@/assets/icons/icons8-comments-64.png">text people</button>
                     
                   </div>  
+                <!-- Modal add member to group -->
+                  <div class="modal fade" id="addMemberToGroup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalCenterTitle">add member to group</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close" v-on:click="fetchData()">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                            <div v-if="added_member.length > 0 ">
+                                <div class="alert alert-success alert-dismissible fade show" role="alert" v-for = "data in added_member">
+                                        <strong>{{data.member.member.first_name}} {{data.member.member.last_name}}</strong> added successfully. 
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label><b>member :</b></label>
+                                <input type = "text" class="form-control" placeholder="search" v-model="memberSearch" autofocus></input>
+                                <div style="padding: 10px 10px 10px 10px" class="text-info" >{{memberSearch_status}}</div>
+
+                                <div class="pre-scrollable searchedItemsDiv border " style="  max-height: 185px; overflow-y: scroll;" v-if="showMemberInput">
+                                    <table class="table border-0" >
+                                      <tbody>
+                                        <tr class="searchedItem border-0" v-for="data in found_members.response">
+                                          <a href="#" style="text-decoration: none" v-on:click="selectMember(data.id,data.member.first_name,data.member.last_name)"> 
+                                          <td class="border-0">
+                                            
+                                              <img v-if = "data.gender == 'M'" style = "height: 32px "src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
+                                               <img v-if = "data.gender == 'F'" style = "height: 32px "src="@/assets/avatars/icons8-user-female-skin-type-4-40.png">
+                                               <img v-if = "data.gender == 'R'" style = "height: 32px "src="@/assets/avatars/icons8-contacts-96.png">
+                                               
+                                              <span class = "text-secondary">{{data.member.first_name}} {{data.member.last_name}}</span>
+                                              
+                                           </td>
+                                          </a>  
+                                         
+                                       
+                                        </tr>
+                                      </tbody>
+                                    </table>
+                                </div>
+                                <label><b>role :</b></label>
+                                <select class=" form-control" v-model="role" >
+                                    <option v-for="data in roles.response" :value="data.id" >{{data.role}}</option>
+                                </select>
+                              </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="fetchData()">Close</button>
+                          <button type="button" class="btn btn-primary " v-on:click="addMemberToGroup()">add</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div> 
               <!-- Modal email -->
               <div class="modal fade" id="emailModatCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -163,6 +221,7 @@
                             <div class="form-group">
                                 <label for="exampleFormControlTextarea1">message</label>
                                 <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+
                               </div>
                         </div>
                         <div class="modal-footer">
@@ -192,19 +251,77 @@ export default {
       foundItems: null,
       fetch_group_activity_data_error: [],
       group_meetings: null,
-      activity_selected: false
+      activity_selected: false,
+      memberSearch: '',found_members:[],role: null,
+      memberSearch_status: '',selectedMember: null,
+      showMemberInput: true,roles: null,
+      added_member: []
     }
   },
   created() {
         this.fetchData()
+        this.debouncedGetAnswer = _.debounce(this.getAnswer, 1000)
     },
-
-  watch: {
-        '$route': 'fetchData'
-    },
+    watch: {
+    // whenever question changes, this function will run
+    memberSearch: function () {
+      if (this.memberSearch.length > 0){
+        this.showMemberInput = true
+        this.memberSearch_status = 'typing...'
+        this.debouncedGetAnswer()
+      }else{
+          this.memberSearch_status = ''
+          this.found_members = []
+          this.fetchData()
+      }
+    }
+  },
   methods: {
-        goBack: function() {
+      goBack: function() {
           window.history.back();
+      },
+      getAnswer: function () {
+          var vm = this
+          if (this.memberSearch.length > 0){
+            this.found_members = []
+            this.memberSearch_status = 'searching...'
+            this.$http.get('http://127.0.0.1:8000/api/members/filter-by-first_name/' + this.memberSearch +'/')
+              .then(function (response) {
+                vm.found_members = {"response": response.data } 
+                vm.memberSearch_status = ''
+              })
+              .catch(function (error) {
+              })
+            }
+        },
+        selectMember: function(id,first_name,last_name) {
+          this.selectedMember = id
+          this.memberSearch_status = 'selected ' + first_name + ' ' + last_name
+          this.showMemberInput = false
+        },
+        addMemberToGroup: function(){
+          if (this.selectMember && this.role){
+            var group_id
+            var obj = this.group.response
+            group_id = obj["0"].id
+            this.$http({
+                    method: 'post',
+                    url: 'http://127.0.0.1:8000/api/groups/add-member-to-group/',
+                    data: {
+                      group_type: this.$route.params.group_type ,
+                      group_id: group_id,
+                      member_id: this.selectedMember,
+                      role_id: this.role
+                    }
+                    }).then(response => {
+                    this.added_member.push(response.data )   
+                    this.memberSearch = ''
+                    this.role = ''
+                    })
+                    .catch((err) => {
+                    this.add_group_error.push(err)
+                    })
+          }
         },
         getGroupActivity: function() {
           this.activity_selected = true
@@ -261,7 +378,13 @@ export default {
             } 
         },
         fetchData() {
-
+          this.$http.get('http://127.0.0.1:8000/api/members/role-list/')
+                    .then(response => {
+                    this.roles = {"response": response.data } 
+                    })
+                    .catch((err) => {
+                        this.fetch_data_error.push(err)
+                    })
             if (this.$route.params.group_type == 'fellowship'){
                 this.fetch_data_error = []
                 this.$http.get('http://127.0.0.1:8000/api/groups/fellowship/' + this.$route.params.id + '/')
