@@ -10,6 +10,9 @@ import groupsLanding from '@/components/groups/groupsLanding'
 import groupList from "@/components/groups/groupList"
 import groupDetail from "@/components/groups/groupDetail"
 
+import projectList from "@/components/projects/projectList"
+import projectDetail from "@/components/projects/projectDetail"
+
 Vue.use(Router)
 
 export default new Router({
@@ -55,6 +58,16 @@ export default new Router({
       path:'/groupDetail/:id/:group_type',
       name: 'groupDetail',
       component: groupDetail
+    },
+    {
+      path:'/projectList/',
+      name:'projectList',
+      component: projectList
+    },
+    {
+      path: '/projectDetail/:id/',
+      name: 'projectDetail',
+      component: projectDetail
     }
 
   ]

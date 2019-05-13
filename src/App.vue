@@ -25,8 +25,10 @@
                   more
                 </a>
                 <div class="dropdown-menu" style="padding: 5px 5px" aria-labelledby="navbarDropdownMenuLink">
-                    <a class=" church-is-dropdown-item dropdown-item " href="#">finances</a>
                     <a class="dropdown-item" href="#">members & roles</a>
+                    
+                    <router-link class="dropdown-item" :to="{name: 'projectList'}">projects</router-link>
+                    <a class="dropdown-item " href="#">finances</a>
                     <hr/>
                     <a class="dropdown-item" href="#">daily verses</a>
                     <a class="dropdown-item" href="#">sermons</a>

@@ -20,7 +20,7 @@
                         <a class="nav-link list-group-item list-group-item-action border-0" id="pill-attendance-tab" data-toggle="pill" href="#pill-attendance" role="tab" aria-controls="pill-attendance" aria-selected="false">
                                 <img class="church-is-menu" src="@/assets/icons/icons8-attendance-filled-50 (1).png"> attendance
                         </a>
-                        <a class="nav-link list-group-item list-group-item-action border-0" id="pill-contributions-tab" data-toggle="pill" href="#pill-contributions" role="tab" aria-controls="pill-contributions" aria-selected="false">
+                        <a class="nav-link list-group-item list-group-item-action border-0" id="pill-contributions-tab" data-toggle="pill" href="#pill-contributions" role="tab" aria-controls="pill-contributions" aria-selected="false" v-on:click = "getMemberContributions()">
                                 <img class="church-is-menu" src="@/assets/icons/icons8-donate-filled-50.png"> contributions
                         </a>
                         <a class="nav-link list-group-item list-group-item-action border-0" id="pill-delete-tab" data-toggle="pill" href="#pill-delete" role="tab" aria-controls="pill-delete" aria-selected="false">
@@ -283,7 +283,63 @@
                          attendance
                         </div>
                         <div class="tab-pane fade" id="pill-contributions" role="tabpanel" aria-labelledby="pill-contributions-tab">
-                          contributions
+                                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                                        <li class="nav-item">
+                                                <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">contributions</a>
+                                        </li>
+                                        <li class="nav-item">
+                                                <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Pledges</a>
+                                        </li>
+                                </ul>
+                                <div class="tab-content" id="pills-tabContent">
+                                        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" v-if="contributions_selected">
+                                                        <h3 class="breadcrumb-item active">contributions</h3>
+                                                        <table class="table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>project</th>
+                                                                    <th>amount</th>
+                                                                    <th>date</th>
+                                                                    <th>recorded by</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr v-for = "data in contribution_info.contribution">
+                                                                    <td>{{data.project.name}}</td>
+                                                                    <td><p class="text-success">{{data.amount}}</p></td>
+                                                                    <td>{{data.recorded_at}}</td>
+                                                                    <td><p class="text-info">{{data.recorded_by.member.first_name}} {{data.recorded_by.member.last_name}}</p></td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                        </div>
+                                        <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" v-if="contributions_selected">
+                                                        <h3 class="breadcrumb-item active"><span>member</span> pledges</h3>
+                                                        <table class="table">
+                                                        
+                                                                <thead>
+                                                                        <tr>
+                                                                        <th>project</th>
+                                                                        <th>amount pledged</th>
+                                                                        <th>amount raised</th>
+                                                                        <th>amount remaining</th>
+                                                                        <th>percentage funded</th>
+                                                                        </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                        <tr v-for = "data in pledges_info.pledges">
+                                                                        <td>{{data.project.name}} </td>
+                                                                        <td>{{data.amount}}</td>
+                                                                        <td><p class="text-success">{{data.amount_so_far}}</p></td>
+                                                                        <td><p class="text-danger">{{data.remaining_amount}}</p></td>
+                                                                        <td><span class="badge badge-pill badge-info">{{data.percentage_funded}}</span></td>
+                                                                        
+                                                                        </tr>
+                                                                </tbody>
+                                                        </table>
+                                        </div>
+                                        <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">...</div>
+                                </div>                          
                         </div>
                         <div class="tab-pane fade" id="pill-delete" role="tabpanel" aria-labelledby="pill-delete-tab">
                          delete
@@ -308,7 +364,8 @@ export default {
         marital_status_info: null, marital_status_errors: [],
         family_info: null, family_errors: [],
         groups_selected: false,
-        fellowships: null,church_groups: null, ministries:null, cell_groups: null
+        fellowships: null,church_groups: null, ministries:null, cell_groups: null,
+        contributions_selected: false, contribution_info:null, pledges_info: null
     }
   },
   created() {
@@ -349,6 +406,25 @@ export default {
             .catch(error=> {
             this.groups_errors.push(error)
             })
+        },
+        getMemberContributions: function() {
+            this.contributions_selected = true
+            this.$http.get('http://127.0.0.1:8000/api/projects/contributions-by-member/'+this.$route.params.id+'/')
+            .then(response => {
+            this.contribution_info = {"contribution": response.data }
+        
+            })
+            .catch(error=> {
+            
+            })       
+            this.$http.get('http://127.0.0.1:8000/api/projects/pledges-by-member/'+this.$route.params.id+'/')
+            .then(response => {
+            this.pledges_info = {"pledges": response.data }
+            })
+            .catch(error=> {
+            
+            })  
+
         },
         fetchData() {
             this.$http.get('http://127.0.0.1:8000/api/members/member/'+this.$route.params.id+'/')
