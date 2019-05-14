@@ -28,7 +28,7 @@
                     <a class="dropdown-item" href="#">members & roles</a>
                     
                     <router-link class="dropdown-item" :to="{name: 'projectList'}">projects</router-link>
-                    <a class="dropdown-item " href="#">finances</a>
+                    <router-link class="dropdown-item" :to="{name: 'generalFinance'}">finances</router-link>
                     <hr/>
                     <a class="dropdown-item" href="#">daily verses</a>
                     <a class="dropdown-item" href="#">sermons</a>

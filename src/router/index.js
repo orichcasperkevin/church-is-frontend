@@ -13,6 +13,8 @@ import groupDetail from "@/components/groups/groupDetail"
 import projectList from "@/components/projects/projectList"
 import projectDetail from "@/components/projects/projectDetail"
 
+import generalFinance from "@/components/finance/generalFinance"
+
 Vue.use(Router)
 
 export default new Router({
@@ -68,6 +70,11 @@ export default new Router({
       path: '/projectDetail/:id/',
       name: 'projectDetail',
       component: projectDetail
+    },
+    {
+      path: '/generalFinance/',
+      name: 'generalFinance',
+      component: generalFinance
     }
 
   ]
