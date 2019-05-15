@@ -20,8 +20,8 @@
                         <a class="nav-link list-group-item list-group-item-action border-0" id="pill-attendance-tab" data-toggle="pill" href="#pill-attendance" role="tab" aria-controls="pill-attendance" aria-selected="false">
                                 <img class="church-is-menu" src="@/assets/icons/icons8-attendance-filled-50 (1).png"> attendance
                         </a>
-                        <a class="nav-link list-group-item list-group-item-action border-0" id="pill-contributions-tab" data-toggle="pill" href="#pill-contributions" role="tab" aria-controls="pill-contributions" aria-selected="false" v-on:click = "getMemberContributions()">
-                                <img class="church-is-menu" src="@/assets/icons/icons8-donate-filled-50.png"> contributions
+                        <a class="nav-link list-group-item list-group-item-action border-0" id="pill-contributions-tab" data-toggle="pill" href="#pill-contributions" role="tab" aria-controls="pill-contributions" aria-selected="false" v-on:click = "getMemberFinances()">
+                                <img class="church-is-menu" src="@/assets/icons/icons8-donate-filled-50.png"> finances
                         </a>
                         <a class="nav-link list-group-item list-group-item-action border-0" id="pill-delete-tab" data-toggle="pill" href="#pill-delete" role="tab" aria-controls="pill-delete" aria-selected="false">
                                 <img class="church-is-menu" src="@/assets/icons/icons8-cancel-26.png"> delete
@@ -290,9 +290,15 @@
                                         <li class="nav-item">
                                                 <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Pledges</a>
                                         </li>
+                                        <li class="nav-item">
+                                                <a class="nav-link" id="pills-tithes-tab" data-toggle="pill" href="#pills-tithes" role="tab" aria-controls="pills-tithes" aria-selected="false">Tithes</a>
+                                        </li>
+                                        <li class="nav-item">
+                                                <a class="nav-link" id="pills-offerings-tab" data-toggle="pill" href="#pills-offerings" role="tab" aria-controls="pills-offerings" aria-selected="false">Offerings</a>
+                                        </li>
                                 </ul>
                                 <div class="tab-content" id="pills-tabContent">
-                                        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" v-if="contributions_selected">
+                                        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" v-if="finances_selected">
                                                         <h3 class="breadcrumb-item active">contributions</h3>
                                                         <table class="table">
                                                             <thead>
@@ -313,7 +319,7 @@
                                                             </tbody>
                                                         </table>
                                         </div>
-                                        <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" v-if="contributions_selected">
+                                        <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" v-if="finances_selected">
                                                         <h3 class="breadcrumb-item active"><span>member</span> pledges</h3>
                                                         <table class="table">
                                                         
@@ -338,7 +344,53 @@
                                                                 </tbody>
                                                         </table>
                                         </div>
-                                        <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">...</div>
+                                        <div class="tab-pane fade" id="pills-tithes" role="tabpanel" aria-labelledby="pills-tithes-tab" v-if = "finances_selected">
+                                                        <div class="row" v-for = "data in tithe_stats.stats">
+                                                                        <p class="card-text" style="padding: 5px"><small class="text-muted">total this month-</small> <span class="badge badge-pill badge-info">{{data.total_this_month}}</span></p>
+                                                                        <p class="card-text" style="padding: 5px"><small class="text-muted">total this year-</small> <span class="badge badge-pill badge-success">{{data.total_this_year}}</span></p>
+                                                        </div>
+                                                        <h3 class="breadcrumb-item active">tithes </h3> 
+                                                        <table class="table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>amount</th>
+                                                                    <th>narration</th>                                                                    
+                                                                    <th>date</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr v-for = "data in tithe_info.tithes">                                                                    
+                                                                    <td><p class="text-success">{{data.amount}}</p></td>
+                                                                    <td> {{data.narration}}</td>
+                                                                    <td>{{data.date}}</td>                                                         
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                        </div>
+                                        <div class="tab-pane fade" id="pills-offerings" role="tabpanel" aria-labelledby="pills-offerings-tab" v-if = "finances_selected">
+                                                        <div class="row" v-for = "data in offering_stats.stats">
+                                                                        <p class="card-text" style="padding: 5px"><small class="text-muted">total this month-</small> <span class="badge badge-pill badge-info">{{data.total_this_month}}</span></p>
+                                                                        <p class="card-text" style="padding: 5px"><small class="text-muted">total this year-</small> <span class="badge badge-pill badge-success">{{data.total_this_year}}</span></p>
+                                                        </div>
+                                                        <h3 class="breadcrumb-item active">offerings </h3> 
+                                                        <table class="table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>amount</th>
+                                                                    <th>narration</th>                                        
+                                                                    <th>date</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr v-for = "data in offering_info.offerings">                                                                    
+                                                                    <td><p class="text-success">{{data.amount}}</p></td>
+                                                                    <td> {{data.narration}}</td>
+                                                                    <td>{{data.date}}</td>                                                         
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+
+                                        </div>
                                 </div>                          
                         </div>
                         <div class="tab-pane fade" id="pill-delete" role="tabpanel" aria-labelledby="pill-delete-tab">
@@ -365,7 +417,8 @@ export default {
         family_info: null, family_errors: [],
         groups_selected: false,
         fellowships: null,church_groups: null, ministries:null, cell_groups: null,
-        contributions_selected: false, contribution_info:null, pledges_info: null
+        finances_selected: false, contribution_info:null, pledges_info: null,
+        offering_info: null,tithe_info: null,tithe_stats: null,offering_stats: null
     }
   },
   created() {
@@ -407,8 +460,8 @@ export default {
             this.groups_errors.push(error)
             })
         },
-        getMemberContributions: function() {
-            this.contributions_selected = true
+        getMemberFinances: function() {
+            this.finances_selected = true
             this.$http.get('http://127.0.0.1:8000/api/projects/contributions-by-member/'+this.$route.params.id+'/')
             .then(response => {
             this.contribution_info = {"contribution": response.data }
@@ -424,6 +477,34 @@ export default {
             .catch(error=> {
             
             })  
+            this.$http.get('http://127.0.0.1:8000/api/finance/tithe-stats-for-member/'+this.$route.params.id+'/')
+            .then(response => {
+            this.tithe_stats = {"stats": response.data }
+            })
+            .catch(error=> {
+            
+            }) 
+            this.$http.get('http://127.0.0.1:8000/api/finance/tithe-for-member/'+this.$route.params.id+'/')
+            .then(response => {
+            this.tithe_info = {"tithes": response.data }
+            })
+            .catch(error=> {
+            
+            }) 
+            this.$http.get('http://127.0.0.1:8000/api/finance/offering-stats-for-member/'+this.$route.params.id+'/')
+            .then(response => {
+            this.offering_stats = {"stats": response.data }
+            })
+            .catch(error=> {
+            
+            }) 
+            this.$http.get('http://127.0.0.1:8000/api/finance/offerings-by-member/'+this.$route.params.id+'/')
+            .then(response => {
+            this.offering_info = {"offerings": response.data }
+            })
+            .catch(error=> {
+            
+            }) 
 
         },
         fetchData() {
