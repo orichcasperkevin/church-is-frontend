@@ -15,6 +15,8 @@ import projectDetail from "@/components/projects/projectDetail"
 
 import generalFinance from "@/components/finance/generalFinance"
 
+import  dailyVerse from "@/components/daily-verses/dailyVerse"
+
 Vue.use(Router)
 
 export default new Router({
@@ -75,6 +77,11 @@ export default new Router({
       path: '/generalFinance/',
       name: 'generalFinance',
       component: generalFinance
+    },
+    {
+      path: '/dailyVerse/',
+      name: 'dailyVerse',
+      component: dailyVerse
     }
 
   ]

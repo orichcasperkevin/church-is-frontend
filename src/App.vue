@@ -30,7 +30,7 @@
                     <router-link class="dropdown-item" :to="{name: 'projectList'}">projects</router-link>
                     <router-link class="dropdown-item" :to="{name: 'generalFinance'}">finances</router-link>
                     <hr/>
-                    <a class="dropdown-item" href="#">daily verses</a>
+                    <router-link class="dropdown-item" :to="{name: 'dailyVerse'}">daily verses</router-link>              
                     <a class="dropdown-item" href="#">sermons</a>
                     <a class="dropdown-item" href="#">services</a>
                     <hr/>
