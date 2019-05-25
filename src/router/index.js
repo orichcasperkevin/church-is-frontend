@@ -10,6 +10,8 @@ import groupsLanding from '@/components/groups/groupsLanding'
 import groupList from "@/components/groups/groupList"
 import groupDetail from "@/components/groups/groupDetail"
 
+import events from "@/components/events/events"
+
 import projectList from "@/components/projects/projectList"
 import projectDetail from "@/components/projects/projectDetail"
 
@@ -17,6 +19,9 @@ import generalFinance from "@/components/finance/generalFinance"
 
 import  dailyVerse from "@/components/daily-verses/dailyVerse"
 
+import sermons from "@/components/sermons/sermons"
+
+import services from "@/components/services/services"
 Vue.use(Router)
 
 export default new Router({
@@ -64,6 +69,11 @@ export default new Router({
       component: groupDetail
     },
     {
+      path:'/events/',
+      name: 'events',
+      component: events  
+    },
+    {
       path:'/projectList/',
       name:'projectList',
       component: projectList
@@ -82,6 +92,16 @@ export default new Router({
       path: '/dailyVerse/',
       name: 'dailyVerse',
       component: dailyVerse
+    },
+    {
+      path: '/sermons/',
+      name: 'sermons',
+      component: sermons
+    },
+    {
+      path: '/services/',
+      name: 'services',
+      component: services
     }
 
   ]

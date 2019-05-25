@@ -17,7 +17,7 @@
               </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#"><span class="navButton">events</span></a>
+                    <router-link class="nav-link" :to="{name: 'events'}"><span class="navButton">events</span></router-link> 
                 </li>
    
               <li class="nav-item dropdown">
@@ -30,9 +30,9 @@
                     <router-link class="dropdown-item" :to="{name: 'projectList'}">projects</router-link>
                     <router-link class="dropdown-item" :to="{name: 'generalFinance'}">finances</router-link>
                     <hr/>
-                    <router-link class="dropdown-item" :to="{name: 'dailyVerse'}">daily verses</router-link>              
-                    <a class="dropdown-item" href="#">sermons</a>
-                    <a class="dropdown-item" href="#">services</a>
+                    <router-link class="dropdown-item" :to="{name: 'dailyVerse'}">daily verses</router-link>
+                    <router-link class="dropdown-item" :to="{name: 'sermons'}">sermons</router-link>                            
+                    <router-link class="dropdown-item" :to="{name: 'services'}">services</router-link>                  
                     <hr/>
                     <a class="dropdown-item" href="#">news</a>
                     <a class="dropdown-item" href="#">blog</a>
