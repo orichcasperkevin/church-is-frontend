@@ -12,6 +12,9 @@ Vue.use(VueLodash, options)
 
 Vue.config.productionTip = false
 Vue.prototype.$http = axios
+Vue.prototype.$BASE_URL = "http://127.0.0.1:8000"
+
+
 
 /* eslint-disable no-new */
 new Vue({

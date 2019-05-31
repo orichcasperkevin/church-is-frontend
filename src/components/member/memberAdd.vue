@@ -292,7 +292,7 @@ export default {
         }
         this.$http({
                 method: 'post',
-                url: 'http://127.0.0.1:8000/api/members/add-member/',
+                url: this.$BASE_URL + '/api/members/add-member/',
                 data: {
                   first_name: this.first_name,
                   last_name: this.last_name,

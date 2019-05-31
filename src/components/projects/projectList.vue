@@ -84,7 +84,7 @@ export default {
     methods: {
         fetchdata () {
             this.fetch_data_error = []
-            this.$http.get('http://127.0.0.1:8000/api/projects/project-list/')
+            this.$http.get(this.$BASE_URL + '/api/projects/project-list/')
                 .then(response => {
                 this.projects = {"response": response.data } 
                 var array = this.projects.response

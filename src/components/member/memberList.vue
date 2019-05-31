@@ -255,7 +255,7 @@ export default {
   methods: {
     fetchData() {
       this.fetch_data_error = []
-      this.$http.get('http://127.0.0.1:8000/api/members/member-list/')
+      this.$http.get(this.$BASE_URL + '/api/members/member-list/')
             .then(response => {
               this.members = {"response": response.data } 
               var array = this.members.response
@@ -269,7 +269,7 @@ export default {
       var vm = this
       if (this.firstnamesearch.length > 0){
         this.firstnamesearch_status = 'searching...'
-        this.$http.get('http://127.0.0.1:8000/api/members/filter-by-first_name/' + this.firstnamesearch +'/')
+        this.$http.get(this.$BASE_URL + '/api/members/filter-by-first_name/' + this.firstnamesearch +'/')
           .then(function (response) {
             vm.members = {"response": response.data } 
             vm.firstnamesearch_status = ''
@@ -281,7 +281,7 @@ export default {
         }
     },
     searchByGender() {
-      this.$http.get('http://127.0.0.1:8000/api/members/filter-by-gender/'+ this.gendersearch)
+      this.$http.get(this.$BASE_URL + '/api/members/filter-by-gender/'+ this.gendersearch)
             .then(response => {
               this.members = {"response": response.data } 
               var array = this.members.response
@@ -293,7 +293,7 @@ export default {
     },
     searchByAge() {
       if (this.min_age != '' && this.max_age != ''){
-      this.$http.get('http://127.0.0.1:8000/api/members/filter-by-age/'+ this.min_age +'/' + this.max_age + '/')
+      this.$http.get(this.$BASE_URL + '/api/members/filter-by-age/'+ this.min_age +'/' + this.max_age + '/')
             .then(response => {
               this.members = {"response": response.data } 
               var array = this.members.response

@@ -104,9 +104,9 @@
            this.fetchData() 
         },
         methods: {
-            fetchData () {
+            fetchData () {               
                 this.fetch_data_error = []
-                this.$http.get('http://127.0.0.1:8000/api/events/event-list/')
+                this.$http.get(this.$BASE_URL + '/api/events/event-list/')
                     .then(response => {
                     this.events = {"response": response.data }
                     if (this.events.response.length > 0){

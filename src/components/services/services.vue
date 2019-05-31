@@ -126,7 +126,7 @@
         methods: {
             fetchData () {
                 this.fetch_data_error = []
-                this.$http.get('http://127.0.0.1:8000/api/services/services-today/')
+                this.$http.get(this.$BASE_URL + '/api/services/services-today/')
                     .then(response => {
                     this.services_today = {"response": response.data }
                     if (this.services_today.response.length > 0){
@@ -139,7 +139,7 @@
             },
             getServicesThisMonth: function () {
                 this.this_month_selected = true
-                this.$http.get('http://127.0.0.1:8000/api/services/services-this-month/')
+                this.$http.get(this.$BASE_URL + '/api/services/services-this-month/')
                     .then(response => {
                     this.services_this_month = {"response": response.data }
                     })

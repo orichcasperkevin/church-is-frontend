@@ -160,14 +160,14 @@ export default {
     methods: {
         fetchdata () {
             this.fetch_data_error = []
-            this.$http.get('http://127.0.0.1:8000/api/finance/tithe-stats/')
+            this.$http.get(this.$BASE_URL + '/api/finance/tithe-stats/')
                 .then(response => {
                 this.tithe_stats = {"response": response.data } 
                 })
                 .catch((err) => {
                     this.fetch_data_error.push(err)
                 })
-            this.$http.get('http://127.0.0.1:8000/api/finance/tithe-by-members-this-month/')
+            this.$http.get(this.$BASE_URL + '/api/finance/tithe-by-members-this-month/')
                 .then(response => {
                 this.tithes = {"response": response.data } 
                 })
@@ -177,14 +177,14 @@ export default {
         },
         getOfferings: function(){
             this.offerings_selected = true
-            this.$http.get('http://127.0.0.1:8000/api/finance/offering-stats/')
+            this.$http.get(this.$BASE_URL + '/api/finance/offering-stats/')
                 .then(response => {
                 this.offering_stats = {"response": response.data } 
                 })
                 .catch((err) => {
                     this.fetch_data_error.push(err)
                 })
-            this.$http.get('http://127.0.0.1:8000/api/finance/offerings-by-members-this-month/')
+            this.$http.get(this.$BASE_URL + '/api/finance/offerings-by-members-this-month/')
                 .then(response => {
                 this.offerings = {"response": response.data } 
                 })
@@ -195,14 +195,14 @@ export default {
         },
         getAnyOther: function(){
             this.any_other_selected = true
-            this.$http.get('http://127.0.0.1:8000/api/finance/income-stats/')
+            this.$http.get(this.$BASE_URL + '/api/finance/income-stats/')
                 .then(response => {
                 this.income_stats = {"response": response.data } 
                 })
                 .catch((err) => {
                     this.fetch_data_error.push(err)
                 })
-            this.$http.get('http://127.0.0.1:8000/api/finance/income-type-list/')
+            this.$http.get(this.$BASE_URL + '/api/finance/income-type-list/')
                 .then(response => {
                 this.incomes = {"response": response.data } 
                 })

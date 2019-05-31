@@ -25,7 +25,7 @@
                   more
                 </a>
                 <div class="dropdown-menu" style="padding: 5px 5px" aria-labelledby="navbarDropdownMenuLink">
-                    <a class="dropdown-item" href="#">members & roles</a>
+                    
                     
                     <router-link class="dropdown-item" :to="{name: 'projectList'}">projects</router-link>
                     <router-link class="dropdown-item" :to="{name: 'generalFinance'}">finances</router-link>
@@ -34,8 +34,7 @@
                     <router-link class="dropdown-item" :to="{name: 'sermons'}">sermons</router-link>                            
                     <router-link class="dropdown-item" :to="{name: 'services'}">services</router-link>                  
                     <hr/>
-                    <a class="dropdown-item" href="#">news</a>
-                    <a class="dropdown-item" href="#">blog</a>
+                 
 
 
                 </div>

@@ -431,28 +431,28 @@ export default {
   methods: {
         getMemberGroups: function(){
             this.groups_selected = true
-            this.$http.get('http://127.0.0.1:8000/api/groups/fellowships-for-a-member/'+this.$route.params.id+'/')
+            this.$http.get(this.$BASE_URL + '/api/groups/fellowships-for-a-member/'+this.$route.params.id+'/')
             .then(response => {
             this.fellowships = {"response": response.data }
             })
             .catch(error=> {
             this.groups_errors.push(error)
             })
-            this.$http.get('http://127.0.0.1:8000/api/groups/ministries-for-a-member/'+this.$route.params.id+'/')
+            this.$http.get(this.$BASE_URL + '/api/groups/ministries-for-a-member/'+this.$route.params.id+'/')
             .then(response => {
             this.ministries = {"response": response.data }
             })
             .catch(error=> {
             this.groups_errors.push(error)
             })
-            this.$http.get('http://127.0.0.1:8000/api/groups/church-groups-for-a-member/'+this.$route.params.id+'/')
+            this.$http.get(this.$BASE_URL + '/api/groups/church-groups-for-a-member/'+this.$route.params.id+'/')
             .then(response => {
             this.church_groups = {"response": response.data }
             })
             .catch(error=> {
             this.groups_errors.push(error)
             })
-            this.$http.get('http://127.0.0.1:8000/api/groups/cell-groups-for-a-member/'+this.$route.params.id+'/')
+            this.$http.get(this.$BASE_URL + '/api/groups/cell-groups-for-a-member/'+this.$route.params.id+'/')
             .then(response => {
             this.cell_groups = {"response": response.data }
             })
@@ -462,7 +462,7 @@ export default {
         },
         getMemberFinances: function() {
             this.finances_selected = true
-            this.$http.get('http://127.0.0.1:8000/api/projects/contributions-by-member/'+this.$route.params.id+'/')
+            this.$http.get(this.$BASE_URL + '/api/projects/contributions-by-member/'+this.$route.params.id+'/')
             .then(response => {
             this.contribution_info = {"contribution": response.data }
         
@@ -470,35 +470,35 @@ export default {
             .catch(error=> {
             
             })       
-            this.$http.get('http://127.0.0.1:8000/api/projects/pledges-by-member/'+this.$route.params.id+'/')
+            this.$http.get(this.$BASE_URL + '/api/projects/pledges-by-member/'+this.$route.params.id+'/')
             .then(response => {
             this.pledges_info = {"pledges": response.data }
             })
             .catch(error=> {
             
             })  
-            this.$http.get('http://127.0.0.1:8000/api/finance/tithe-stats-for-member/'+this.$route.params.id+'/')
+            this.$http.get(this.$BASE_URL + '/api/finance/tithe-stats-for-member/'+this.$route.params.id+'/')
             .then(response => {
             this.tithe_stats = {"stats": response.data }
             })
             .catch(error=> {
             
             }) 
-            this.$http.get('http://127.0.0.1:8000/api/finance/tithe-for-member/'+this.$route.params.id+'/')
+            this.$http.get(this.$BASE_URL + '/api/finance/tithe-for-member/'+this.$route.params.id+'/')
             .then(response => {
             this.tithe_info = {"tithes": response.data }
             })
             .catch(error=> {
             
             }) 
-            this.$http.get('http://127.0.0.1:8000/api/finance/offering-stats-for-member/'+this.$route.params.id+'/')
+            this.$http.get(this.$BASE_URL + '/api/finance/offering-stats-for-member/'+this.$route.params.id+'/')
             .then(response => {
             this.offering_stats = {"stats": response.data }
             })
             .catch(error=> {
             
             }) 
-            this.$http.get('http://127.0.0.1:8000/api/finance/offerings-by-member/'+this.$route.params.id+'/')
+            this.$http.get(this.$BASE_URL + '/api/finance/offerings-by-member/'+this.$route.params.id+'/')
             .then(response => {
             this.offering_info = {"offerings": response.data }
             })
@@ -508,49 +508,49 @@ export default {
 
         },
         fetchData() {
-            this.$http.get('http://127.0.0.1:8000/api/members/member/'+this.$route.params.id+'/')
+            this.$http.get(this.$BASE_URL + '/api/members/member/'+this.$route.params.id+'/')
             .then(response => {
             this.member_info = {"member": response.data }
             })
             .catch(error=> {
             this.contact_errors.push(error)
             })
-            this.$http.get('http://127.0.0.1:8000/api/members/contact-for-member/'+this.$route.params.id+'/')
+            this.$http.get(this.$BASE_URL + '/api/members/contact-for-member/'+this.$route.params.id+'/')
             .then(response => {
             this.contact_info = {"contact": response.data }
             })
             .catch(error=> {
             this.contact_errors.push(error)
             })
-            this.$http.get('http://127.0.0.1:8000/api/members/age-for-member/'+this.$route.params.id+'/')
+            this.$http.get(this.$BASE_URL + '/api/members/age-for-member/'+this.$route.params.id+'/')
             .then(response => {
             this.age_info = {"age": response.data }
             })
             .catch(error=> {
             this.age_errors.push(error)
             })
-            this.$http.get('http://127.0.0.1:8000/api/members/residence-for-member/'+this.$route.params.id+'/')
+            this.$http.get(this.$BASE_URL + '/api/members/residence-for-member/'+this.$route.params.id+'/')
             .then(response => {
             this.residence_info = {"residence": response.data }
             })
             .catch(error=> {
             this.residence_errors.push(error)
             })
-            this.$http.get('http://127.0.0.1:8000/api/members/roles-for-member/'+this.$route.params.id+'/')
+            this.$http.get(this.$BASE_URL + '/api/members/roles-for-member/'+this.$route.params.id+'/')
             .then(response => {
             this.roles_info = {"roles": response.data }
             })
             .catch(error=> {
             this.roles_errors.push(error)
             })
-            this.$http.get('http://127.0.0.1:8000/api/members/marital-status-for-member/'+this.$route.params.id+'/')
+            this.$http.get(this.$BASE_URL + '/api/members/marital-status-for-member/'+this.$route.params.id+'/')
             .then(response => {
             this.marital_status_info = {"marital_status": response.data }
             })
             .catch(error=> {
             this.marital_status_errors.push(error)
             })
-            this.$http.get('http://127.0.0.1:8000/api/members/family-for-member/'+this.$route.params.id+'/')
+            this.$http.get(this.$BASE_URL + '/api/members/family-for-member/'+this.$route.params.id+'/')
             .then(response => {
             this.family_info = {"family": response.data }
             })

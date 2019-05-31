@@ -285,7 +285,7 @@ export default {
           if (this.memberSearch.length > 0){
             this.found_members = []
             this.memberSearch_status = 'searching...'
-            this.$http.get('http://127.0.0.1:8000/api/members/filter-by-first_name/' + this.memberSearch +'/')
+            this.$http.get(this.$BASE_URL + '/api/members/filter-by-first_name/' + this.memberSearch +'/')
               .then(function (response) {
                 vm.found_members = {"response": response.data } 
                 vm.memberSearch_status = ''
@@ -306,7 +306,7 @@ export default {
             group_id = obj["0"].id
             this.$http({
                     method: 'post',
-                    url: 'http://127.0.0.1:8000/api/groups/add-member-to-group/',
+                    url: this.$BASE_URL + '/api/groups/add-member-to-group/',
                     data: {
                       group_type: this.$route.params.group_type ,
                       group_id: group_id,
@@ -327,7 +327,7 @@ export default {
           this.activity_selected = true
           if (this.$route.params.group_type == 'fellowship'){
                 this.fetch_group_activity_data_error = []
-                this.$http.get('http://127.0.0.1:8000/api/groups/fellowship-meeting-list/' + this.$route.params.id + '/')
+                this.$http.get(this.$BASE_URL + '/api/groups/fellowship-meeting-list/' + this.$route.params.id + '/')
                     .then(response => {
                     this.group_meetings = {"response": response.data } 
                     var array = this.group_meetings.response
@@ -340,7 +340,7 @@ export default {
             }
             if (this.$route.params.group_type == 'church-group'){
                 this.fetch_group_activity_data_error = []
-                this.$http.get('http://127.0.0.1:8000/api/groups/church-group-meeting-list/' + this.$route.params.id + '/')
+                this.$http.get(this.$BASE_URL + '/api/groups/church-group-meeting-list/' + this.$route.params.id + '/')
                     .then(response => {
                     this.group_meetings = {"response": response.data } 
                     var array = this.group_meetings.response
@@ -353,7 +353,7 @@ export default {
             }
             if (this.$route.params.group_type == 'ministry'){
                 this.fetch_group_activity_data_error = []
-                this.$http.get('http://127.0.0.1:8000/api/groups/ministry-meeting-list/' + this.$route.params.id + '/')
+                this.$http.get(this.$BASE_URL + '/api/groups/ministry-meeting-list/' + this.$route.params.id + '/')
                     .then(response => {
                     this.group_meetings = {"response": response.data }
                     var array = this.group_meetings.response
@@ -366,7 +366,7 @@ export default {
             }
             if (this.$route.params.group_type == 'cell-group'){
                 this.fetch_group_activity_data_error = []
-                this.$http.get('http://127.0.0.1:8000/api/groups/cell-group-meeting-list/' + this.$route.params.id + '/')
+                this.$http.get(this.$BASE_URL + '/api/groups/cell-group-meeting-list/' + this.$route.params.id + '/')
                     .then(response => {
                     this.group_meetings = {"response": response.data } 
                     var array = this.group_meetings.response
@@ -378,7 +378,7 @@ export default {
             } 
         },
         fetchData() {
-          this.$http.get('http://127.0.0.1:8000/api/members/role-list/')
+          this.$http.get(this.$BASE_URL + '/api/members/role-list/')
                     .then(response => {
                     this.roles = {"response": response.data } 
                     })
@@ -387,7 +387,7 @@ export default {
                     })
             if (this.$route.params.group_type == 'fellowship'){
                 this.fetch_data_error = []
-                this.$http.get('http://127.0.0.1:8000/api/groups/fellowship/' + this.$route.params.id + '/')
+                this.$http.get(this.$BASE_URL + '/api/groups/fellowship/' + this.$route.params.id + '/')
                     .then(response => {
                     this.group = {"response": response.data } 
                     })
@@ -395,7 +395,7 @@ export default {
                         this.fetch_data_error.push(err)
                     })
 
-                this.$http.get('http://127.0.0.1:8000/api/groups/fellowship-members/' + this.$route.params.id + '/')
+                this.$http.get(this.$BASE_URL + '/api/groups/fellowship-members/' + this.$route.params.id + '/')
                     .then(response => {
                       this.members = {"response": response.data } 
                       var array = this.members.response
@@ -408,7 +408,7 @@ export default {
             }
             if (this.$route.params.group_type == 'church-group'){
                 this.fetch_data_error = []
-                this.$http.get('http://127.0.0.1:8000/api/groups/church-group/' + this.$route.params.id + '/')
+                this.$http.get(this.$BASE_URL + '/api/groups/church-group/' + this.$route.params.id + '/')
                     .then(response => {
                     this.group = {"response": response.data } 
                     })
@@ -416,7 +416,7 @@ export default {
                         this.fetch_data_error.push(err)
                     })
                     
-                this.$http.get('http://127.0.0.1:8000/api/groups/church-group-members/' + this.$route.params.id + '/')
+                this.$http.get(this.$BASE_URL + '/api/groups/church-group-members/' + this.$route.params.id + '/')
                     .then(response => {
                       this.members = {"response": response.data } 
                       var array = this.members.response
@@ -428,14 +428,14 @@ export default {
             }
             if (this.$route.params.group_type == 'ministry'){
                 this.fetch_data_error = []
-                this.$http.get('http://127.0.0.1:8000/api/groups/ministry/' + this.$route.params.id + '/')
+                this.$http.get(this.$BASE_URL + '/api/groups/ministry/' + this.$route.params.id + '/')
                     .then(response => {
                     this.group = {"response": response.data } 
                     })
                     .catch((err) => {
                         this.fetch_data_error.push(err)
                     })
-                this.$http.get('http://127.0.0.1:8000/api/groups/ministry-members/' + this.$route.params.id + '/')
+                this.$http.get(this.$BASE_URL + '/api/groups/ministry-members/' + this.$route.params.id + '/')
                     .then(response => {
                       this.members = {"response": response.data } 
                       var array = this.members.response
@@ -447,7 +447,7 @@ export default {
             }
             if (this.$route.params.group_type == 'cell-group'){
                 this.fetch_data_error = []
-                this.$http.get('http://127.0.0.1:8000/api/groups/cell-group/' + this.$route.params.id + '/')
+                this.$http.get('this.$BASE_URL + /api/groups/cell-group/' + this.$route.params.id + '/')
                     .then(response => {
                     this.group = {"response": response.data } 
                     })
@@ -455,7 +455,7 @@ export default {
                         this.fetch_data_error.push(err)
                     })
 
-                this.$http.get('http://127.0.0.1:8000/api/groups/cell-group-members/' + this.$route.params.id + '/')
+                this.$http.get('this.$BASE_URL + /api/groups/cell-group-members/' + this.$route.params.id + '/')
                     .then(response => {
                       this.members = {"response": response.data } 
                       var array = this.members.response

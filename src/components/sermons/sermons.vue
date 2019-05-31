@@ -94,7 +94,7 @@
         methods: {
             fetchData () {
                 this.fetch_data_error = []
-                this.$http.get('http://127.0.0.1:8000/api/sermons/sermons-today/')
+                this.$http.get(this.$BASE_URL + '/api/sermons/sermons-today/')
                     .then(response => {
                     this.sermons_today = {"response": response.data }
                     if (this.sermons_today.response.length > 0){
@@ -107,7 +107,7 @@
             },
             getSermonsThisMonth: function () {
                 this.this_month_selected = true
-                this.$http.get('http://127.0.0.1:8000/api/sermons/sermons-this-month/')
+                this.$http.get(this.$BASE_URL + '/api/sermons/sermons-this-month/')
                     .then(response => {
                     this.sermons_this_month = {"response": response.data }
                     })
