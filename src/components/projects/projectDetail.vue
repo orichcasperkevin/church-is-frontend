@@ -112,7 +112,7 @@ export default {
     methods: {
         fetchdata () {
             this.fetch_data_error = []
-            this.$http.get('http://127.0.0.1:8000/api/projects/project-list/')
+            this.$http.get(this.$BASE_URL +'/api/projects/project-list/')
                 .then(response => {
                 this.context = {"response": response.data } 
                 })
@@ -120,7 +120,7 @@ export default {
                     this.fetch_data_error.push(err)
                 })
 
-            this.$http.get('http://127.0.0.1:8000/api/projects/contribution-for-project/'+ this.$route.params.id + '/')
+            this.$http.get(this.$BASE_URL +'/api/projects/contribution-for-project/'+ this.$route.params.id + '/')
                 .then(response => {
                 this.contributions = {"response": response.data } 
                 })
@@ -130,7 +130,7 @@ export default {
         },
         getPledges: function(){
             this.pledges_selected = true
-            this.$http.get('http://127.0.0.1:8000/api/projects/pledges-for-project/'+ this.$route.params.id + '/')
+            this.$http.get(this.$BASE_URL +'/api/projects/pledges-for-project/'+ this.$route.params.id + '/')
                 .then(response => {
                 this.pledges = {"response": response.data } 
                 })

@@ -196,6 +196,7 @@
                       </div>
                       <div class="modal-body">
                           <div class="form-group">
+                              <p class="text-info"> !! this feature is still under development</p>
                               <label for="exampleFormControlTextarea1">message</label>
                               <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                             </div>
@@ -212,21 +213,25 @@
                     <div class="modal-dialog modal-dialog-centered" role="document">
                       <div class="modal-content">
                         <div class="modal-header">
-                          <h5 class="modal-title" >text people</h5>
+                          <h5 class="modal-title" >text group members</h5>
                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                           </button>
                         </div>
                         <div class="modal-body">
-                            <div class="form-group">
+                            <div class="form-group" v-if="sms_status.length == 0">
                                 <label for="exampleFormControlTextarea1">message</label>
-                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-
+                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model = "message"></textarea>
                               </div>
+                              <div v-if="sms_status.length > 0">
+                                <p class="text-info">!! </p>
+                                <p class="text-info"> The members will receive your message.</p>
+                                <p> check sms status later as it may take a while</p>
+                                </div>
                         </div>
                         <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                          <button type="button" class="btn btn-primary">send text</button>
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="closeSmsModal()">Close</button>
+                          <span v-if = "message.length > 5 && sms_status.length == 0"><button type="button" class="btn btn-primary" v-on:click=sendMessage()>send text</button></span>
                         </div>
                       </div>
                     </div>
@@ -255,7 +260,10 @@ export default {
       memberSearch: '',found_members:[],role: null,
       memberSearch_status: '',selectedMember: null,
       showMemberInput: true,roles: null,
-      added_member: []
+      added_member: [],
+      member_ids: [],
+      message: "",
+      sms_status: []
     }
   },
   created() {
@@ -377,6 +385,27 @@ export default {
                     })
             } 
         },
+        sendMessage: function (){
+          this.$http({
+                        method: 'post',
+                        url: this.$BASE_URL + '/api/sms/add-sms/',
+                        data: {
+                          sending_member_id: 2 ,
+                          app: "members-admin",
+                          message: this.message,
+                          website: true,
+                          receipient_member_ids: this.member_ids
+                        }
+                        }).then(response => {
+                          this.sms_status.push(response.data)
+                        })
+                        .catch((err) => {
+                        })
+        },
+        closeSmsModal: function (){
+          this.sms_status = []
+          this.message = ""
+        },
         fetchData() {
           this.$http.get(this.$BASE_URL + '/api/members/role-list/')
                     .then(response => {
@@ -400,6 +429,9 @@ export default {
                       this.members = {"response": response.data } 
                       var array = this.members.response
                       this.foundItems = array.length
+                      for (var data in this.members.response){
+                        this.member_ids.push(this.members.response[data].member.id)
+                      }
                     })
                     .catch((err) => {
                         this.fetch_data_error.push(err)
@@ -421,6 +453,9 @@ export default {
                       this.members = {"response": response.data } 
                       var array = this.members.response
                       this.foundItems = array.length
+                      for (var data in this.members.response){
+                        this.member_ids.push(this.members.response[data].member.id)
+                      }
                     })
                     .catch((err) => {
                         this.fetch_data_error.push(err)
@@ -440,6 +475,9 @@ export default {
                       this.members = {"response": response.data } 
                       var array = this.members.response
                       this.foundItems = array.length
+                      for (var data in this.members.response){
+                        this.member_ids.push(this.members.response[data].member.id)
+                      }
                     })
                     .catch((err) => {
                         this.fetch_data_error.push(err)
@@ -460,6 +498,9 @@ export default {
                       this.members = {"response": response.data } 
                       var array = this.members.response
                       this.foundItems = array.length
+                      for (var data in this.members.response){
+                        this.member_ids.push(this.members.response[data].member.id)
+                      }
                     })
                     .catch((err) => {
                         this.fetch_data_error.push(err)

@@ -127,8 +127,8 @@
               </router-link>
             </div>
               <div class="list-group ">
-                  <button type="button" class="action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#emailModatCenter" ><img src="@/assets/icons/icons8-email-64.png">email people</button>
-                  <button type="button" class="list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#textModalCenter"><img src="@/assets/icons/icons8-comments-64.png">text people</button>
+                  <button type="button" class="action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#emailModatCenter" ><img src="@/assets/icons/icons8-email-64.png">email all members</button>
+                  <button type="button" class="list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#textModalCenter"><img src="@/assets/icons/icons8-comments-64.png">{{text_button_name}}</button>
                   <button type="button" class="list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#assignModalCenter"><img src="@/assets/icons/icons8-add-user-group-man-man-64.png">assign group</button>
               </div>  
           <!-- Modal email -->
@@ -143,6 +143,7 @@
                   </div>
                   <div class="modal-body">
                       <div class="form-group">
+                          <p class = "text-info"> !! this feature is still under development</p>
                           <label for="exampleFormControlTextarea1">message</label>
                           <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                         </div>
@@ -159,20 +160,25 @@
                 <div class="modal-dialog modal-dialog-centered" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title" >text people</h5>
+                      <h5 class="modal-title" >{{text_button_name}}</h5>
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
                     </div>
                     <div class="modal-body">
-                        <div class="form-group">
+                        <div class="form-group" v-if="sms_status.length == 0">
                             <label for="exampleFormControlTextarea1">message</label>
-                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model = "message"></textarea>
                           </div>
+                          <div v-if="sms_status.length > 0">
+                            <p class="text-info">!! </p>
+                            <p class="text-info"> The members will receive your message.</p>
+                            <p> check sms status later as it may take a while</p>
+                            </div>
                     </div>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                      <button type="button" class="btn btn-primary">send text</button>
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="closeSmsModal()">Close</button>
+                      <span v-if = "message.length > 5 && sms_status.length == 0"><button type="button" class="btn btn-primary" v-on:click=sendMessage()>send text</button></span>
                     </div>
                   </div>
                 </div>
@@ -188,7 +194,7 @@
                         </button>
                       </div>
                       <div class="modal-body">
-                        ......
+                        <p class="text-info">!! this feature is under development</p>
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -216,7 +222,12 @@ export default {
       firstnamesearch_status: null,
       gendersearch: null,
       min_age: 0,
-      max_age:150
+      max_age:150,
+      member_ids: [],
+      text_button_name: "",
+      message: " ",
+      sms_status: []
+
     }
   },
   watch: {
@@ -260,10 +271,35 @@ export default {
               this.members = {"response": response.data } 
               var array = this.members.response
               this.foundItems = array.length
+              for (var data in this.members.response){
+                this.member_ids.push(this.members.response[data].member.id)
+              }
+              this.text_button_name = "Text All Members"
             })
             .catch((err) => {
                 this.fetch_data_error.push(err)
             })  
+    },
+    sendMessage: function (){
+      this.$http({
+                    method: 'post',
+                    url: this.$BASE_URL + '/api/sms/add-sms/',
+                    data: {
+                      sending_member_id: 2 ,
+                      app: "members-admin",
+                      message: this.message,
+                      website: true,
+                      receipient_member_ids: this.member_ids
+                    }
+                    }).then(response => {
+                      this.sms_status.push(response.data)
+                    })
+                    .catch((err) => {
+                    })
+    },
+    closeSmsModal: function (){
+      this.sms_status = []
+      this.message = ""
     },
     getAnswer: function () {
       var vm = this
@@ -286,6 +322,15 @@ export default {
               this.members = {"response": response.data } 
               var array = this.members.response
               this.foundItems = array.length
+              for (var data in this.members.response){
+                this.member_ids.push(this.members.response[data].member.id)
+              }
+              if (this.gendersearch == "F"){
+                  this.text_button_name = "text all Females"
+                }
+                else{
+                  this.text_button_name = "text all Males"
+                }
             })
             .catch((err) => {
                 console.log(err)
@@ -298,6 +343,10 @@ export default {
               this.members = {"response": response.data } 
               var array = this.members.response
               this.foundItems = array.length
+              for (var data in this.members.response){
+                this.member_ids.push(this.members.response[data].member.id)
+              }
+              this.text_button_name = "Text members between ages " + this.min_age + " and " + this.max_age
             })
             .catch((err) => {
                 console.log(err)
