@@ -16,7 +16,7 @@ Vue.use(VueSession)
 Vue.config.productionTip = false
 
 Vue.prototype.$http = axios
-Vue.prototype.$BASE_URL = process.env.BASE_URL
+Vue.prototype.$BASE_URL = process.env.BASE_URL || 'http://app.church.nanocomputing.co.ke'
 
 
 
