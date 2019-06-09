@@ -55,9 +55,6 @@ export default {
     created () {
         this.fetchdata()
     },
-    watch: {
-        '$route': 'fetchData',
-    },
     methods: {
         getToken: function (){
             this.$http({
@@ -68,6 +65,7 @@ export default {
                              password: this.password
                         }
                 }).then(response => {
+                    console.log(this.$TEST)
                     this.login_error = []
                     this.$session.start();
                     this.$session.set('token', response.data.access);
