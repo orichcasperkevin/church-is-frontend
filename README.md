@@ -5,8 +5,13 @@
 ## Build Setup
 
 ``` bash
+# install vue CLI
+npm install vue-cli -g
+
 # install dependencies
 npm install
+
+#configuration: in the config folder, modifiy the BASE_URL variables in prod.env.js and dev.env.js to the ones you are using
 
 # serve with hot reload at localhost:8080
 npm run dev
