@@ -211,6 +211,8 @@
   </template>
 
 <script>
+import router from "../../router";
+
 export default {
   name: 'memberList',
   data () {
@@ -259,10 +261,16 @@ export default {
     }
   },
   created(){
+    this.checkLoggedIn()
     this.fetchData()
     this.debouncedGetAnswer = _.debounce(this.getAnswer, 1000)
   },
   methods: {
+    checkLoggedIn() {
+      if (!this.$session.has("token")) {
+          router.push("/login")
+      }
+    },
     fetchData() {
       this.fetch_data_error = []
       this.$http.get(this.$BASE_URL + '/api/members/member-list/')

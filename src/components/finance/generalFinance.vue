@@ -139,6 +139,7 @@
 </template>
 
 <script>
+import router from "../../router";
 export default {
     name: 'generalFinance',
     data () {
@@ -155,9 +156,15 @@ export default {
         }
     },
     created () {
+        this.checkLoggedIn()
         this.fetchdata()
     },
     methods: {
+        checkLoggedIn() {
+            if (!this.$session.has("token")) {
+                router.push("/login")
+            }
+        },
         fetchdata () {
             this.fetch_data_error = []
             this.$http.get(this.$BASE_URL + '/api/finance/tithe-stats/')

@@ -22,10 +22,17 @@ import  dailyVerse from "@/components/daily-verses/dailyVerse"
 import sermons from "@/components/sermons/sermons"
 
 import services from "@/components/services/services"
+
+import login from "@/components/auth/login"
 Vue.use(Router)
 
 export default new Router({
   routes: [
+    {
+      path: '/login/',
+      name: 'login',
+      component: login
+    },
     {
       path: '/',
       name: 'Home',

@@ -33,6 +33,7 @@
                     <router-link class="dropdown-item" :to="{name: 'dailyVerse'}">daily verses</router-link>
                     <router-link class="dropdown-item" :to="{name: 'sermons'}">sermons</router-link>                            
                     <router-link class="dropdown-item" :to="{name: 'services'}">services</router-link>                  
+                    <router-link class="dropdown-item" :to="{name: 'login'}">login</router-link> 
                     <hr/>
                  
 

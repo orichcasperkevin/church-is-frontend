@@ -88,6 +88,7 @@
   </template>
 
 <script>
+import router from "../../router";
 export default {
   name: 'groupList',
   data () {
@@ -101,6 +102,7 @@ export default {
     }
   },
   created() {
+        this.checkLoggedIn()
         this.fetchData()
     },
 
@@ -108,6 +110,11 @@ export default {
         '$route': 'fetchData'
     },
   methods: {
+        checkLoggedIn() {
+            if (!this.$session.has("token")) {
+                router.push("/login")
+            }
+        },
         fetchData() {
             this.group_type = this.$route.params.group_type
             if (this.$route.params.group_type == 'fellowship'){

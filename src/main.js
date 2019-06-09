@@ -7,8 +7,11 @@ import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import axios from 'axios';
 import VueLodash from 'vue-lodash'
+import VueSession from 'vue-session'
+
 const options = { name: 'lodash' }
-Vue.use(VueLodash, options) 
+Vue.use(VueLodash, options)
+Vue.use(VueSession) 
 
 Vue.config.productionTip = false
 

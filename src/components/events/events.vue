@@ -91,6 +91,7 @@
     </template>
     
     <script>
+    import router from "../../router";
     export default {
         name: 'events',
         data () {
@@ -101,9 +102,15 @@
             }
         },
         created () {
+           this.checkLoggedIn()
            this.fetchData() 
         },
         methods: {
+            checkLoggedIn() {
+                if (!this.$session.has("token")) {
+                    router.push("/login")
+                }
+            },
             fetchData () {               
                 this.fetch_data_error = []
                 this.$http.get(this.$BASE_URL + '/api/events/event-list/')
