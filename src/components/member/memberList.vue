@@ -231,7 +231,6 @@ export default {
     }
   },
   watch: {
-    // whenever question changes, this function will run
     firstnamesearch: function () {
       if (this.firstnamesearch.length > 0){
         this.firstnamesearch_status = 'typing...'

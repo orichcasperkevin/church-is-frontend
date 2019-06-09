@@ -17,10 +17,10 @@
                             <label><input type="checkbox" checked disabled> personal</label>
                         </div>
                         <div class="checkbox">
-                                <label><input type="checkbox" :value= true v-model = "age_field"> age</label>
+                                <label><input type="checkbox" :value= true v-model = "contact_field"> contact </label>
                         </div>
                         <div class="checkbox">
-                                <label><input type="checkbox" :value= true v-model = "contact_field"> contact </label>
+                                <label><input type="checkbox" :value= true v-model = "age_field"> age</label>
                         </div>
                         <div class="checkbox">
                                 <label><input type="checkbox" :value= true v-model = "residence_field"> residence </label>
@@ -96,9 +96,20 @@
                     <div class="row" style="padding: 5px 60px ">
                         <div class="col">
                         <div class="form-group">
-                                <label><b>date of birth :</b></label>
-                                <input type="date" name="bday" max="3000-12-31" 
-                                min="1000-01-01" class="form-control" v-model="date">
+                                <div class="row">
+                                        <span class="col">
+                                                <label><b>birth year :</b></label>
+                                                <input type="number" class="form-control" v-model="year">
+                                        </span>
+                                        <span class="col">
+                                                <label><b>birth month :</b></label>
+                                                <input type="number" class="form-control" v-model="month">
+                                        </span>
+                                        <span class="col">
+                                                <label><b>birth day :</b></label>
+                                                <input type="number" class="form-control" v-model="day">
+                                        </span>
+                                </div>
                         </div>
                         </div>
                     </div>
@@ -148,13 +159,31 @@
                                                 <label><b>email :</b></label>
                                                 <input type="email" class="form-control"  placeholder="example@gmail.com" v-model = "email">
                                         </div>
-                                        <div class="form-group">
-                                                <label><b>phone number :</b></label>
-                                                <input type="text" class="form-control"  placeholder="07********" autofocus>
+                                        <div class="form-group">                
+                                                <div class="row">
+                                                        <span class="col">
+                                                                <label><b>country code :</b></label>
+                                                                <input class="form-control" type="text" placeholder="+254" v-model = "country_code">
+                                                        </span>
+                                                        <span class="col">
+                                                                <label><b>number :</b></label>
+                                                                <input type="text" class="form-control"  placeholder="712345678" v-model = "phone_number">
+                                                        </span>
+                                                </div>
+                                                <p v-if="phone_number_errors.length">
+                                                        <ul>
+                                                                <small><li v-for="error in phone_number_errors"><p class="text-danger">{{ error }}</p></li></small>
+                                                        </ul>
+                                                </p>
+                                                <p v-if="phone_number_OK.length">
+                                                        <ul>
+                                                                <small><li v-for="error in phone_number_OK"><p class="text-success">{{ error }}</p></li></small>
+                                                        </ul>
+                                                </p>
                                         </div>
                                         <div class="form-group">
                                                 <label><b>postal address :</b></label>
-                                                <input type="text" class="form-control"  placeholder="123-456" autofocus>
+                                                <input type="text" class="form-control"  placeholder="123-456" v-model="postal_address">
                                         </div>
                                         </div>
                                 </div>                            
@@ -236,11 +265,16 @@ export default {
         contact_field:false,
         residence_field:false,
         email: '',
+        country_code: '+254',
         first_name: '',first_name_errors: [],
         last_name: '',last_name_errors: [],
         gender_male: false, gender_female: false,gender_errors: [],
         added_member: [],add_member_button_text: "+ add member",
-        add_member_error: []
+        add_member_error: [],
+        added_member_id: null,
+        phone_number: '',phone_number_errors: [],phone_number_OK: [],
+        contact: ' ',postal_address: '',
+        day: null,month: null,year: null,date_errors: []
     }
   },
   created() {
@@ -253,7 +287,50 @@ export default {
                 if (this.first_name.length > 0){
                         this.add_member_button_text = "+ add member"
                 }
+        },
+        phone_number: function(){
+                if (this.phone_number.isNaN){
+                        this.phone_number_errors = []
+                        this.phone_number_errors.push(" phone number should be numbers only")
+                }
+                if (this.phone_number.length > 9){
+                        this.phone_number_OK = []
+                        this.phone_number_errors = []
+                        this.phone_number_errors.push("number too long")
+                }
+                if (this.phone_number.length < 9){
+                        this.phone_number_OK = []
+                        this.phone_number_errors = []
+                        this.phone_number_errors.push("number too short")
+                }
+                if (this.phone_number.length == 9){
+                        this.phone_number_errors = []
+                        this.phone_number_OK.push(" number OK")
+                }
+        },
+        day: function (){
+                if (this.month == 0){
+                        this.date_errors = []
+                        this.date_errors.push("input month first")
+                }
+                if (this.day > 0 && this.day > 30){
+                        this.date_errors = []
+                        this.date_errors.push("day must between 1 & 30")
+                }
+        },
+        month: function (){
+                if (this.year == 0){
+                        this.date_errors = []
+                        this.date_errors.push("input year first")
+                }
+                if (this.month > 0 && this.month > 12){
+                        this.month
+                }
+        },
+        year: function (){
+
         }
+        
   },
   methods: {
     resetForm() {
@@ -301,6 +378,20 @@ export default {
                 }
               }).then(response => {
                 this.added_member.push(response.data )  
+                this.added_member_id = this.added_member[0].member.id
+                if (this.phone_number_OK.length > 0){
+                this.$http({
+                        method:'post',
+                        url: this.$BASE_URL + '/api/members/add-member-contact/',
+                        data: {
+                                member_id: this.added_member_id,
+                                postal_address: this.postal_address,
+                                phone: this.country_code + this.phone_number,
+                                contact: this.contact
+                        }
+                })
+                
+                }
                 this.add_member_button_text = " added successfully"  
 
                 this.gender_male = false
@@ -311,6 +402,7 @@ export default {
                 .catch((err) => {
                  this.add_member_error.push(err)
                 })
+        
     }
     
 }
