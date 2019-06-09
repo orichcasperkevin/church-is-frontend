@@ -1,11 +1,11 @@
 from fabric.api import cd, run, local, sudo
 from fabric.contrib.files import exists
 
-REPO_URL = 'git@github.com:alice-njoroge/VueMovies.git'
+REPO_URL = 'https://github.com/orichcasperkevin/church-is-frontend.git'
 
 
 def deploy():
-    site_folder = f'/home/nanoafrika/VueMovies'
+    site_folder = f'/home/nanoafrika/church-is-frontend'
     run(f'mkdir  -p {site_folder}')
     with cd(site_folder):
         _get_latest_source()
@@ -30,7 +30,7 @@ def _update_packages():
 
 
 def _set_up_nginx():
-    if not exists('/etc/nginx/sites-available/movies'):
-        sudo('cp nginx.template.conf /etc/nginx/sites-available/movies')
-        sudo('ln -s /etc/nginx/sites-available/movies /etc/nginx/sites-enabled/movies')
+    if not exists('/etc/nginx/sites-available/church_is_frontend'):
+        sudo('cp nginx.template.conf /etc/nginx/sites-available/church_is_frontend')
+        sudo('ln -s /etc/nginx/sites-available/church_is_frontend /etc/nginx/sites-enabled/church_is_frontend')
         sudo('service nginx restart')
