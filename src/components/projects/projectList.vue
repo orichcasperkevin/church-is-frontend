@@ -57,11 +57,91 @@
                     <div style="padding: 0px 0px 25px 10px">
                             <a href="#" data-toggle="modal" data-target="#addProject" style="text-decoration: none">
                                 <div class="add-button">
-                                    + add project
+                                    <b>+</b> add project
                                 </div>
                             </a>
                     </div>
             </div>
+            <!-- add project Modal -->
+            <div class="modal fade" id="addProject" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">add a project</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+                        <div class="modal-body">
+                                <form>
+                                        <div class=" row form-group">
+                                          <label class="col-3"><b>name:</b></label>
+                                          <input type="text" class="col-8 form-control" placeholder="enter name of the project" autofocus>                                        
+                                        </div>
+                                        <div class="row form-group">
+                                                <label class="col-3"><b>description:</b></label>
+                                                <textarea type="text" class="col-8 form-control" rows='3'></textarea>                                                   
+                                        </div>
+                                        
+                                        <hr/>
+                                        <div class="form-group">
+                                                <div class="row">
+                                                        <label class="col-3 text-success"><b>start</b></label>
+                                                        <div class="col-8">
+                                                            <div class="row">
+                                                                    <span class="col">
+                                                                            <label ><b>year :</b></label>
+                                                                            <input type="number" class="form-control" v-model="year">
+                                                                    </span>
+                                                                    <span class="col">
+                                                                            <label ><b>month :</b></label>
+                                                                            <input type="number" class="form-control" v-model="month">
+                                                                    </span>
+                                                                    <span class="col">
+                                                                            <label ><b>day :</b></label>
+                                                                            <input type="number" class="form-control" v-model="day">
+                                                                    </span> 
+                                                            </div>                                                           
+                                                        </div>
+                                                </div>
+                                        </div>
+                                        <hr/>
+                                        <div class="form-group">
+                                                <div class="row">
+                                                        <label class="col-3 text-danger"><b>end</b></label>
+                                                        <div class="col-8">
+                                                            <div class="row">
+                                                                    <span class="col">
+                                                                            <label ><b>year :</b></label>
+                                                                            <input type="number" class="form-control" v-model="year">
+                                                                    </span>
+                                                                    <span class="col">
+                                                                            <label ><b>month :</b></label>
+                                                                            <input type="number" class="form-control" v-model="month">
+                                                                    </span>
+                                                                    <span class="col">
+                                                                            <label ><b>day :</b></label>
+                                                                            <input type="number" class="form-control" v-model="day">
+                                                                    </span> 
+                                                            </div>                                                           
+                                                        </div>
+                                                </div>
+                                        </div>
+                                        <hr/>
+                                        <div class="row form-group">
+                                                <label class="col-3"><b>amount:</b></label>
+                                                <input type="number" class=" col-8 form-control" placeholder="enter required amount">                                                    
+                                        </div>                                                                                   
+                                </form>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary"><b>+</b> add project</button>
+                        </div>
+                    </div>
+                    </div>
+            </div>
+
         </div>
         </div>
     </div>

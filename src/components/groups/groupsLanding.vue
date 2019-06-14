@@ -31,6 +31,7 @@
   </template>
 
 <script>
+import router from "../../router";
 export default {
   name: 'groupsLanding',
   data () {
@@ -39,20 +40,19 @@ export default {
     }
   },
   created() {
-        this.fetchData()
+        console.log("dsiuhodjsoijed")
+        this.checkLoggedIn()       
     },
-
   watch: {
         '$route': 'fetchData'
     },
   methods: {
-        fetchData() {
-            
-            
+    checkLoggedIn() {
+            if (!this.$session.has("token")) {
+                router.push("/login")
+            }
         }
-      
-    }
-
+}
 }
 </script>
 

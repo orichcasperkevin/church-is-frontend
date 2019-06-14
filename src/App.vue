@@ -48,8 +48,25 @@
 </template>
 
 <script>
+import router from "./router";
 export default {
-  name: 'App'
+  name: 'App',
+  data () {
+        return{
+          
+        }
+    },
+  created(){
+    this.checkLoggedIn()
+  },
+  methods: {
+    checkLoggedIn() {
+      console.log("kjfnkjn")
+      if (!this.$session.has("token")) {          
+          router.push("/login")
+      }
+    }
+  }
 }
 </script>
 
