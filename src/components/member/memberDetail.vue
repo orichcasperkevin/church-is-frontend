@@ -12,7 +12,7 @@
               <div class="col-3">
                     <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                         <a class="nav-link active list-group-item list-group-item-action border-0" id="pill-detail-tab" data-toggle="pill" href="#pill-detail" role="tab" aria-controls="pill-detail" aria-selected="true">
-                                <img class="church-is-menu" src="@/assets/icons/icons8-user-groups-filled-50.png"> detail
+                                <img class="church-is-menu" src="@/assets/icons/icons8-user-groups-208.png"> detail
                         </a>
                         <a class="nav-link list-group-item list-group-item-action border-0" id="pill-groups-tab" data-toggle="pill" href="#pill-groups" role="tab" aria-controls="pill-groups" aria-selected="false" v-on:click = "getMemberGroups()">
                                 <img class="church-is-menu" src="@/assets/icons/icons8-user-groups-filled-50.png"> groups

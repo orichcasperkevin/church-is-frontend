@@ -119,12 +119,20 @@
                 </table>
           </div>
           <div class="col-12 col-sm-10 col-md-8 col-lg-3">
-            <div style="padding: 0px 0px 25px 0px">
+            <div class="btn-group" style="padding: 0px 0px 25px 0px">
               <router-link :to="{name: 'memberAdd'}" style="text-decoration: none">
                   <div class="add-button">
                     + Add member
                   </div>
               </router-link>
+              <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
+                <span class="sr-only">Toggle Dropdown</span>
+              </button>
+              <div class="dropdown-menu border-success" aria-labelledby="dropdownMenuReference">
+                  <router-link class="dropdown-item" :to="{name: 'adminRoles'}"><b>+</b> assign roles</router-link>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addIncome"><b>+</b> manage roles</a>                                                                
+              </div>
             </div>
               <div class="list-group ">
                   <button type="button" class="action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#emailModatCenter" ><img src="@/assets/icons/icons8-email-64.png">email all members</button>

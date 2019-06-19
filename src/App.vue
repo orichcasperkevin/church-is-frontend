@@ -27,8 +27,14 @@
                 <div class="dropdown-menu" style="padding: 5px 5px" aria-labelledby="navbarDropdownMenuLink">
                     
                     
-                    <router-link class="dropdown-item" :to="{name: 'projectList'}">projects</router-link>
-                    <router-link class="dropdown-item" :to="{name: 'generalFinance'}">finances</router-link>
+                    <router-link class="dropdown-item" :to="{name: 'projectList'}">
+                        <img style="width: 30%; height: auto" src="@/assets/icons/icons8-group-of-projects-filled-50.png">
+                        projects
+                    </router-link>
+                    <router-link class="dropdown-item" :to="{name: 'generalFinance'}">
+                        <img style="width: 30%; height: auto" src="@/assets/icons/icons8-expensive-filled-50.png">
+                        finances
+                    </router-link>
                     <hr/>
                     <router-link class="dropdown-item" :to="{name: 'dailyVerse'}">daily verses</router-link>
                     <router-link class="dropdown-item" :to="{name: 'sermons'}">sermons</router-link>                            

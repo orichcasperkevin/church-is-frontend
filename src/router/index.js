@@ -5,6 +5,7 @@ import Home from '@/components/Home'
 import memberList from '@/components/member/memberList'
 import memberDetail from '@/components/member/memberDetail'
 import memberAdd from '@/components/member/memberAdd'
+import adminRoles from '@/components/member/adminRoles'
 
 import groupsLanding from '@/components/groups/groupsLanding'
 import groupList from "@/components/groups/groupList"
@@ -52,6 +53,11 @@ export default new Router({
       path: '/memberAdd/',
       name: 'memberAdd',
       component: memberAdd
+    },
+    {
+      path: '/adminRoles',
+      name: 'adminRoles',
+      component: adminRoles
     },
     {
       path: 'groupsLanding',

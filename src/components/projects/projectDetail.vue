@@ -11,8 +11,14 @@
             <div class="row">
                 <div class="col-12 col-sm-10 col-md-8 col-lg-2">
                         <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                <a class="action-list list-group-item list-group-item-action border-0 active" id="v-pills-contributions-tab" data-toggle="pill" href="#v-pills-contributions" role="tab" aria-controls="v-pills-contributions" aria-selected="true" v-on:click="getContributions()">Contributions</a>
-                                <a class="action-list list-group-item list-group-item-action border-0" id="v-pills-pledges-tab" data-toggle="pill" href="#v-pills-pledges" role="tab" aria-controls="v-pills-pledges" aria-selected="false" v-on:click="getPledges()">Pledges</a>
+                                <a class="action-list list-group-item list-group-item-action border-0 active" id="v-pills-contributions-tab" data-toggle="pill" href="#v-pills-contributions" role="tab" aria-controls="v-pills-contributions" aria-selected="true" v-on:click="getContributions()">
+                                        <img style="width: 30%; height: auto" src="@/assets/icons/icons8-request-money-filled-50.png">
+                                        contributions
+                                </a>
+                                <a class="action-list list-group-item list-group-item-action border-0" id="v-pills-pledges-tab" data-toggle="pill" href="#v-pills-pledges" role="tab" aria-controls="v-pills-pledges" aria-selected="false" v-on:click="getPledges()">
+                                        <img style="width: 30%; height: auto" src="@/assets/icons/icons8-promise-filled-50.png">
+                                        pledges
+                                </a>
                             
                         </div>
                         <div style="padding:40px 0px 20px 0px">
@@ -384,7 +390,7 @@ export default {
             fetch_data_error: [],
             memberSearch: '',found_members:[],
             memberSearch_status: '',selectedMember: null,
-            showMemberInput: true,
+            showMemberInput: false,
             member_ids: [],
 
         }
@@ -403,6 +409,7 @@ export default {
             }else{
                 this.memberSearch_status = ''
                 this.found_members = []
+                this.showMemberInput = false
                 this.fetchData()
             }
         }

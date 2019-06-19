@@ -10,8 +10,14 @@
             <div class = "row">
                 <div class = "col-12 col-sm-10 col-md-8 col-lg-2">
                         <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                <a class="action-list list-group-item list-group-item-action border-0 active" id="v-pills-income-tab" data-toggle="pill" href="#v-pills-income" role="tab" aria-controls="v-pills-income" aria-selected="true">Income</a>
-                                <a class="action-list list-group-item list-group-item-action border-0" id="v-pills-expenditure-tab" data-toggle="pill" href="#v-pills-expenditure" role="tab" aria-controls="v-pills-expenditure" aria-selected="false" v-on:click="getExpenditures()">Expenditure</a>  
+                                <a class="action-list list-group-item list-group-item-action border-0 active" id="v-pills-income-tab" data-toggle="pill" href="#v-pills-income" role="tab" aria-controls="v-pills-income" aria-selected="true">
+                                        <img style="width: 30%; height: auto" src="@/assets/icons/icons8-request-money-filled-50.png">
+                                        income
+                                </a>
+                                <a class="action-list list-group-item list-group-item-action border-0" id="v-pills-expenditure-tab" data-toggle="pill" href="#v-pills-expenditure" role="tab" aria-controls="v-pills-expenditure" aria-selected="false" v-on:click="getExpenditures()">
+                                        <img style="width: 30%; height: auto" src="@/assets/icons/icons8-receipt-filled-50.png">
+                                        expenditure  
+                                </a>  
                         </div>
                         <div style="padding:40px 0px 20px 0px">                                                               
                             <div class="home-menu-item">
@@ -118,18 +124,18 @@
                                                     <table class="table">
                                                         <thead>
                                                             <tr>
-                                                                <th>name</th>
-                                                                <th>description</th>
+                                                                <th>type</th>                                                                
                                                                 <th>total this month</th>
                                                                 <th>total this year</th>
+                                                                <th></th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
                                                             <tr v-for = "data in incomes.response">
-                                                                <td>{{data.type_name}}</td>
-                                                                <td><p class="text-success">{{data.description}}</p></td>
+                                                                <td>{{data.type_name}}</td>                                                               
                                                                 <td><p class="text-info">{{data.total_this_month}}</p></td>
                                                                 <td><p class="text-secondary">{{data.total_this_year}}</p></td>                                                          
+                                                                <td><a href="# " style="text-decoration: none"><h3 class="text-muted">></h3></a></td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
@@ -155,8 +161,8 @@
                             <div class="dropdown-menu border-success" aria-labelledby="dropdownMenuReference">
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addOffering"><b>+</b> add offering</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#"><b>+</b> add income</a>                                                                
-                                <a class="dropdown-item" href="#"><b>+</b> add a type of income</a>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addIncome"><b>+</b> add income</a>                                                                
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addIncomeType"><b>+</b> add a type of income</a>
                             </div>
                     </div>
                     <div class="btn-group" style="padding: 0px 0px 25px 10px" v-if = "offerings_selected">
@@ -171,12 +177,12 @@
                             <div class="dropdown-menu border-success" aria-labelledby="dropdownMenuReference">
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addTithe"><b>+</b> add tithe</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#"><b>+</b> add income</a>                                                                
-                                <a class="dropdown-item" href="#"><b>+</b> add a type of income</a>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addIncome"><b>+</b> add income</a>                                                                
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addIncomeType"><b>+</b> add a type of income</a>
                             </div>
                     </div>
                     <div class="btn-group" style="padding: 0px 0px 25px 10px" v-if = "any_other_selected">
-                            <a href="#" data-toggle="modal" data-target="#addProject" style="text-decoration: none">
+                            <a href="#" data-toggle="modal" data-target="#addIncome" style="text-decoration: none">
                                 <div class="add-button">
                                     <b>+</b> add income
                                 </div>
@@ -185,7 +191,7 @@
                                     <span class="sr-only">Toggle Dropdown</span>
                             </button>
                             <div class="dropdown-menu border-success" aria-labelledby="dropdownMenuReference">                            
-                                <a class="dropdown-item" href="#"><b>+</b> add a type of income</a>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addIncomeType"><b>+</b> add a type of income</a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addTithe"><b>+</b> add tithe</a>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addOffering"><b>+</b> add offering</a>                                                                
@@ -328,6 +334,73 @@
                         </div>
                         </div>
                 </div>
+                <!-- add income modal -->
+                <div class="modal fade" id="addIncome" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">add income</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+                        <div class="modal-body">
+                                <form>                                            
+                                        <div class=" row form-group">
+                                            <label class="col-3"><b>type:</b></label>                                                                                       
+                                            <select class="col-8 form-control" v-model="income_type" >
+                                                <option v-for="data in income_types.response" :value="data.id" >{{data.type_name}}</option>
+                                            </select>                                          
+                                        </div>                                                                                
+                                        <hr/>
+                                        <div class="row form-group">
+                                                <label class="col-3"><b>amount:</b></label>
+                                                <input type="number" class=" col-8 form-control" placeholder="enter the amount">                                                    
+                                        </div>
+                                        <hr/>   
+                                        <div class="row form-group">
+                                            <label class="col-3"><b>narration:</b></label>
+                                            <textarea type="text" class="col-8 form-control" rows='3'></textarea>                                                   
+                                        </div>                                                                                
+                                </form>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary"><b>+</b> add income</button>
+                        </div>
+                    </div>
+                    </div>
+            </div>
+            <!-- add income type modal -->
+            <div class="modal fade" id="addIncomeType" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">add income type</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    </div>
+                    <div class="modal-body">
+                            <form>                                            
+                                    <div class="row form-group">
+                                            <label class="col-3"><b>name:</b></label>
+                                            <input type="text" class=" col-8 form-control" placeholder="give the type a name">                                                    
+                                    </div>
+                                    <hr/>   
+                                    <div class="row form-group">
+                                        <label class="col-3"><b>narration:</b></label>
+                                        <textarea type="text" class="col-8 form-control" rows='3'></textarea>                                                   
+                                    </div>                                                                                
+                            </form>
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary"><b>+</b> add income type</button>
+                    </div>
+                </div>
+                </div>
+        </div>
         </div>
     </div>
 </template>
@@ -352,7 +425,8 @@ export default {
             incomes: null,
             memberSearch: '',found_members:[],
             memberSearch_status: '',selectedMember: null,
-            showMemberInput: true,
+            showMemberInput: false,
+            income_type: null, income_types: null
         }
     },
     created () {
@@ -370,6 +444,7 @@ export default {
             }else{
                 this.memberSearch_status = ''
                 this.found_members = []
+                this.showMemberInput = false
                 this.fetchData()
             }
         }
@@ -383,6 +458,13 @@ export default {
         fetchdata () {
             this.tithes_selected = true
             this.fetch_data_error = []
+            this.$http.get(this.$BASE_URL + '/api/finance/tithe-by-members-this-month/')
+                .then(response => {
+                this.tithes = {"response": response.data } 
+                })
+                .catch((err) => {
+                    this.fetch_data_error.push(err)
+                })
             this.$http.get(this.$BASE_URL + '/api/finance/tithe-stats/')
                 .then(response => {
                 this.tithe_stats = {"response": response.data } 
@@ -390,9 +472,9 @@ export default {
                 .catch((err) => {
                     this.fetch_data_error.push(err)
                 })
-            this.$http.get(this.$BASE_URL + '/api/finance/tithe-by-members-this-month/')
+            this.$http.get(this.$BASE_URL + '/api/finance/income-type-list/')
                 .then(response => {
-                this.tithes = {"response": response.data } 
+                this.income_types = {"response": response.data } 
                 })
                 .catch((err) => {
                     this.fetch_data_error.push(err)
