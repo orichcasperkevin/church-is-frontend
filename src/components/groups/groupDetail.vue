@@ -14,10 +14,10 @@
             <div class="filters  col-sm-10 col-md-8 col-lg-2" style="padding: 0px 0px 0px 0px">
                 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                   <a class="action-list list-group-item list-group-item-action border-0"  data-toggle="pill" href="#member" role="tab" aria-controls="members" aria-selected="true">
-                    <img  src="@/assets/icons/icons8-user-groups-40.png"> members
+                    <img  style="width: 30px; height: auto; " src="@/assets/icons/icons8-user-groups-40.png"> members
                   </a>
                   <a class="action-list list-group-item list-group-item-action border-0"  data-toggle="pill" href="#activity" role="tab" aria-controls="activity" aria-selected="false" v-on:click="getGroupActivity()">
-                      <img  src="@/assets/icons/icons8-activity-history-48.png">  activity
+                      <img style="width: 30px; height: auto;" src="@/assets/icons/icons8-activity-history-48.png">  activity
                   </a>
                 </div>
             </div>
@@ -30,7 +30,7 @@
                 </div>
                 <div v-if = "fetch_data_error.length == 0">
                 <div>
-                    <span class="breadcrumb-item active" aria-current="page" v-for="data in group.response">
+                    <span aria-current="page" v-for="data in group.response">
                       <h3>
                         <span class="backButton">
                         <a href="#" v-on:click="goBack()" class="text-muted" style="text-decoration: none;">
@@ -117,7 +117,7 @@
                 <div style="padding: 0px 0px 25px 0px">
                   <a href="#" data-toggle="modal" data-target="#addMemberToGroup" style="text-decoration: none">
                       <div class="add-button">
-                        + Add member to <span v-for="data in group.response">{{data.name}}</span>
+                      <span> <b>+</b> Add member</span>
                       </div>
                   </a>
                 </div>
@@ -179,7 +179,7 @@
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="fetchData()">Close</button>
-                          <button type="button" class="btn btn-primary " v-on:click="addMemberToGroup()">add</button>
+                          <button type="button" class="btn btn-success " v-on:click="addMemberToGroup()"><b>+</b> add</button>
                         </div>
                       </div>
                     </div>
@@ -461,7 +461,7 @@ export default {
                         this.fetch_data_error.push(err)
                     })
             }
-            if (this.$route.params.group_type == 'ministry'){
+            if (this.$route.params.group_type == 'ministrie'){
                 this.fetch_data_error = []
                 this.$http.get(this.$BASE_URL + '/api/groups/ministry/' + this.$route.params.id + '/')
                     .then(response => {
@@ -485,7 +485,7 @@ export default {
             }
             if (this.$route.params.group_type == 'cell-group'){
                 this.fetch_data_error = []
-                this.$http.get('this.$BASE_URL + /api/groups/cell-group/' + this.$route.params.id + '/')
+                this.$http.get(this.$BASE_URL + '/api/groups/cell-group/' + this.$route.params.id + '/')
                     .then(response => {
                     this.group = {"response": response.data } 
                     })
@@ -493,7 +493,7 @@ export default {
                         this.fetch_data_error.push(err)
                     })
 
-                this.$http.get('this.$BASE_URL + /api/groups/cell-group-members/' + this.$route.params.id + '/')
+                this.$http.get(this.$BASE_URL + '/api/groups/cell-group-members/' + this.$route.params.id + '/')
                     .then(response => {
                       this.members = {"response": response.data } 
                       var array = this.members.response

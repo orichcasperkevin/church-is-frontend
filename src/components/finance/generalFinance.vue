@@ -11,11 +11,11 @@
                 <div class = "col-12 col-sm-10 col-md-8 col-lg-2">
                         <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                                 <a class="action-list list-group-item list-group-item-action border-0 active" id="v-pills-income-tab" data-toggle="pill" href="#v-pills-income" role="tab" aria-controls="v-pills-income" aria-selected="true">
-                                        <img style="width: 30%; height: auto" src="@/assets/icons/icons8-request-money-filled-50.png">
+                                        <img style="width: 20%; height: auto" src="@/assets/icons/icons8-request-money-filled-50.png">
                                         income
                                 </a>
                                 <a class="action-list list-group-item list-group-item-action border-0" id="v-pills-expenditure-tab" data-toggle="pill" href="#v-pills-expenditure" role="tab" aria-controls="v-pills-expenditure" aria-selected="false" v-on:click="getExpenditures()">
-                                        <img style="width: 30%; height: auto" src="@/assets/icons/icons8-receipt-filled-50.png">
+                                        <img style="width: 20%; height: auto" src="@/assets/icons/icons8-receipt-filled-50.png">
                                         expenditure  
                                 </a>  
                         </div>

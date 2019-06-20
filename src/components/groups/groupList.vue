@@ -2,7 +2,7 @@
     <div>
         <div class="row">
         <div class="col">
-        <h3 class="breadcrumb-item active">groups / {{group_type}}s</h3>
+        <h3 >groups / {{group_type}}s</h3>
         <hr/>
         <div class="col-8 center-div" v-if = "fetch_data_error.length > 0">
             <div class = "center-div" >
@@ -11,34 +11,35 @@
             </div>
         </div>
         <div v-if = "fetch_data_error.length == 0">
-        found <span class="badge badge-pill badge-info">{{foundItems}}</span>
-        <hr/>
-        <div v-for = "data in groups.response " class = "shadowonhover border-0">
-        <router-link style="text-decoration: none;"  :to="`/groupDetail/`+ data.id + `/` + group_type" >
-        <div class="card mb-3" style="max-width: 540px;">
-                <div class="row no-gutters">
-                    <div class="col-md-4">
-                    <img  src="@/assets/avatars/icons8-crowd-100.png" class="card-img" alt="...">
-                    </div>
-                    <div class="col-md-8">
-                    <div class="card-body">
-                        <h5 class="card-title">{{data.name}}</h5>
-                        <p class="card-text text-muted">{{data.description}}</p>
-                        <p class="card-text"><small class="text-muted">members -</small> <span class="badge badge-pill badge-info">{{data.number_of_members}}</span></p>
-                    
-                    </div>
-                    </div>
-                </div>
-        </div>
-        </router-link>
-        </div>
+        found <span class="badge badge-pill badge-info">{{foundItems}}</span>        
+        <p></p>
+        <table class="table">                     
+            <tbody>
+                <tr v-for = "data in groups.response ">                    
+                <td>
+                    <router-link class="text-secondary" style="text-decoration: none;"  :to="`/groupDetail/`+ data.id + `/` + group_type">
+                        <img  src="@/assets/avatars/icons8-crowd-100.png" style="width: 60px; height: auto;" alt="...">                        
+                        {{data.name}}
+                    </router-link>
+                </td>
+                <td></td>
+                <td></td>
+                <td> 
+                    <p> 
+                        <small class="text-muted">members -</small>
+                        <span class="badge badge-pill badge-info">{{data.number_of_members}}</span>
+                    </p>
+                </td>
+                </tr>             
+            </tbody>
+        </table>
         </div>
         </div>
         <div class="col-sm-10 col-md-8 col-lg-3">
             <div style="padding: 0px 0px 25px 0px">
                     <a href="#" data-toggle="modal" data-target="#addGroup" style="text-decoration: none">
                         <div class="add-button">
-                            + add {{group_type}}
+                            <b>+</b> add
                         </div>
                     </a>
             </div>
@@ -49,7 +50,7 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalCenterTitle">add {{group_type}}</h5>
+                    <h5 class="modal-title" id="exampleModalCenterTitle">add</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close" v-on:click="fetchData()">
                     <span aria-hidden="true">&times;</span>
                     </button>
@@ -79,7 +80,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="fetchData()">Close</button>
-                    <button type="button" class="btn btn-primary" v-on:click="addGroup()">add group</button>
+                    <button type="button" class="btn btn-success" v-on:click="addGroup()"><b>+</b> add group</button>
                 </div>
                 </div>
             </div>
@@ -141,7 +142,7 @@ export default {
                     this.fetch_data_error.push(err)
                 })
             }
-            if (this.$route.params.group_type == 'ministry'){
+            if (this.$route.params.group_type == 'ministrie'){
                 this.fetch_data_error = []
                 this.$http.get(this.$BASE_URL + '/api/groups/ministry-list/')
                 .then(response => {
@@ -155,7 +156,7 @@ export default {
             }
             if (this.$route.params.group_type == 'cell-group'){
                 this.fetch_data_error = []
-                this.$http.get(this.$BASE_URL + '/api/groups/cell-group-list')
+                this.$http.get(this.$BASE_URL + '/api/groups/cell-group-list/')
                 .then(response => {
                 this.groups = {"response": response.data } 
                 var array = this.groups.response
@@ -198,8 +199,8 @@ export default {
                     method: 'post',
                     url: this.$BASE_URL + '/api/groups/church-group-list/',
                     data: {
-                    name: this.name,
-                    description: this.description
+                        name: this.name,
+                        description: this.description
                     }
                     }).then(response => {
                     this.added_group.push(response.data )   
@@ -227,7 +228,7 @@ export default {
                     this.add_group_error.push(err)
                     })
             }
-            if (this.$route.params.group_type == 'ministry'){
+            if (this.$route.params.group_type == 'ministrie'){
                 this.$http({
                     method: 'post',
                     url: this.$BASE_URL + '/api/groups/ministry-list/',

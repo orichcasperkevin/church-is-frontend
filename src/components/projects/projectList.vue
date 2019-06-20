@@ -11,11 +11,11 @@
             <div class="col-12 col-sm-10 col-md-8 col-lg-2">
                     <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                             <a class="action-list list-group-item list-group-item-action border-0"  data-toggle="pill" href="#inProgress" role="tab" aria-controls="members" aria-selected="true">
-                              <img  src="@/assets/icons/icons8-present-48.png">
+                              <img style="width: 20px; height: auto" src="@/assets/icons/icons8-present-48.png">
                               in-progress
                             </a>
                             <a class="action-list list-group-item list-group-item-action border-0"  data-toggle="pill" href="#completed" role="tab" aria-controls="activity" aria-selected="false" v-on:click="getGroupActivity()">
-                                <img  src="@/assets/icons/icons8-future-64.png">
+                                <img style="width: 20px; height: auto" src="@/assets/icons/icons8-future-64.png">
                                 completed
                             </a>
                     </div>

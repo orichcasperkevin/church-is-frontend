@@ -27,20 +27,20 @@
                 <div class="dropdown-menu" style="padding: 5px 5px" aria-labelledby="navbarDropdownMenuLink">
                     
                     
-                    <router-link class="dropdown-item" :to="{name: 'projectList'}">
-                        <img style="width: 30%; height: auto" src="@/assets/icons/icons8-group-of-projects-filled-50.png">
+                    <router-link class="dropdown-item" :to="{name: 'projectList'}">                      
+                        <img style="width: 20%; height: auto" src="@/assets/icons/icons8-group-of-projects-filled-50.png">
                         projects
                     </router-link>
                     <router-link class="dropdown-item" :to="{name: 'generalFinance'}">
-                        <img style="width: 30%; height: auto" src="@/assets/icons/icons8-expensive-filled-50.png">
+                        <img style="width: 20%; height: auto" src="@/assets/icons/icons8-expensive-filled-50.png">
                         finances
                     </router-link>
                     <hr/>
                     <router-link class="dropdown-item" :to="{name: 'dailyVerse'}">daily verses</router-link>
                     <router-link class="dropdown-item" :to="{name: 'sermons'}">sermons</router-link>                            
                     <router-link class="dropdown-item" :to="{name: 'services'}">services</router-link>                  
-                    <router-link class="dropdown-item" :to="{name: 'login'}">login</router-link> 
                     <hr/>
+                    <router-link class="dropdown-item" :to="{name: 'login'}">logout x{{username}}</router-link>                     
                  
 
 
@@ -59,18 +59,19 @@ export default {
   name: 'App',
   data () {
         return{
-          
+          username: null
         }
     },
   created(){
     this.checkLoggedIn()
   },
   methods: {
-    checkLoggedIn() {
-      console.log("kjfnkjn")
+    checkLoggedIn() {      
       if (!this.$session.has("token")) {          
           router.push("/login")
       }
+      console.log(this.$session)
+      this.username = this.$session.get("username")
     }
   }
 }
