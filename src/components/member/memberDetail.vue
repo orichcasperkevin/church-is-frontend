@@ -9,7 +9,7 @@
     </nav>
     <div class="container">
             <div class="row">
-              <div class="col-3">
+              <div class="col-12 col-sm-8 col-md-8 col-lg-3">
                     <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                         <a class="nav-link active list-group-item list-group-item-action border-0" id="pill-detail-tab" data-toggle="pill" href="#pill-detail" role="tab" aria-controls="pill-detail" aria-selected="true">
                                 <img class="church-is-menu" src="@/assets/icons/icons8-user-groups-208.png"> detail

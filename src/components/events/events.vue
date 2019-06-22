@@ -99,12 +99,12 @@
                                     <form>
                                             <div class=" row form-group">
                                               <label class="col-3"><b>name:</b></label>
-                                              <input type="text" class="col-8 form-control" placeholder="enter name of the event" autofocus>                                        
+                                              <input type="text" class="col-8 form-control" placeholder="enter name of the event" v-model="event_name">                                        
                                             </div>
                                             
                                             <div class="row form-group">
                                                     <label class="col-3"><b>location:</b></label>
-                                                    <input type="text" class="col-8 form-control" placeholder="enter event location" autofocus>                                        
+                                                    <input type="text" class="col-8 form-control" placeholder="enter event location" v-model="event_location">                                        
                                             </div>
                                             <hr/>
                                             <div class="form-group">
@@ -114,41 +114,32 @@
                                                                 <div class="row">
                                                                         <span class="col">
                                                                                 <label><b>year :</b></label>
-                                                                                <input type="number" class="form-control" v-model="year">
+                                                                                <input type="number" class="form-control" v-model="year" placeholder="YYYY">
                                                                         </span>
                                                                         <span class="col">
                                                                                 <label><b>month :</b></label>
-                                                                                <input type="number" class="form-control" v-model="month">
+                                                                                <input type="number" class="form-control" v-model="month" placeholder="MM">
                                                                         </span>
                                                                         <span class="col">
                                                                                 <label><b>day :</b></label>
-                                                                                <input type="number" class="form-control" v-model="day">
+                                                                                <input type="number" class="form-control" v-model="day" placeholder="DD">
                                                                         </span> 
                                                                 </div>                                                           
                                                             </div>
                                                     </div>
                                             </div>
-                                            <hr/>
-                                            <div class="row form-group">
-                                                    <label class="col-3"><b>slug:</b></label>
-                                                    <input type="text" class=" col-8 form-control" placeholder="enter SEO friendly slug ">                                                    
-                                            </div>
-                                            
+                                            <hr/>                                                         
                                             <div class="row form-group">
                                                     <label class="col-3"><b>description:</b></label>
-                                                    <textarea type="text" class="col-8 form-control" rows='3'></textarea>                                                   
-                                            </div>
-                                            
-                                            <div class="row form-group">
-                                                    <label class="col-3"><b>poster:</b></label>
-                                                    <input type="file" class="col-8 form-control-file">
-                                            </div>                                       
+                                                    <textarea type="text" class="col-8 form-control" rows='3' v-model="event_description"></textarea>                                                   
+                                            </div>                                                                                  
                                 
                                     </form>
                             </div>
                             <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary"><b>+</b> add event</button>
+                            <button type="button" class="btn btn-success" disabled v-if="! enable_add_event_button"><b>+</b> add event</button>
+                            <button type="button" class="btn btn-success" v-if="enable_add_event_button" v-on:click="addEvent()">{{add_event_button_text}}</button>
                             </div>
                         </div>
                         </div>
@@ -164,16 +155,82 @@
         name: 'events',
         data () {
             return{
+                //fetch data
                 fetch_data_error: [],
                 events: null,
                 events_available: false,
+                add_event_button_text: 'add event',
+                //add event
+                enable_add_event_button: false,
+                event_name: '',
+                event_location: '',
+                slug: 'fedrjoeijrpojerij',
+                event_description: '',
+                year: '',month: '',day: '',
+                date: '',
+                added_event: [],
+
+
             }
         },
         created () {
            this.checkLoggedIn()
            this.fetchData() 
         },
+        watch: {
+            event_name: function(){                
+                if ( this.event_name.length > 0
+                     && this.event_location.length > 0 
+                     && this.event_description.length > 0
+                     && this.date.length > 0){
+
+                    this.enable_add_event_button = true
+                }                
+            },
+            event_description: function(){                
+                if (this.event_name.length > 0
+                     && this.event_location.length > 0
+                     && this.event_description.length > 0 
+                     && this.date.length > 0){
+
+                    this.enable_add_event_button = true
+                }                
+            },
+            date: function(){                
+                if (this.event_name.length > 0
+                     && this.event_location.length > 0
+                     && this.event_description.length > 0
+                     && this.date.length > 0){
+
+                    this.enable_add_event_button = true
+                }                
+            },
+            year: function(){
+                if (this.year.length > 0 
+                     && this.month.length > 0 
+                     && this.day > 0){
+                    this.date = this.year + '-' + this.month + '-' + this.day
+                }
+            },
+            month: function(){
+                if (this.year.length > 0 
+                     && this.month.length > 0 
+                     && this.day > 0){
+                    this.date = this.year + '-' + this.month + '-' + this.day
+                }
+            },
+            day: function(){
+                if (this.year.length > 0 
+                     && this.month.length > 0 
+                     && this.day > 0){
+                    this.date = this.year + '-' + this.month + '-' + this.day
+                }
+            }
+        },
         methods: {
+            humanize: function(x) {
+                return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            },
             checkLoggedIn() {
                 if (!this.$session.has("token")) {
                     router.push("/login")
@@ -192,6 +249,34 @@
                         this.fetch_data_error.push(err)
                     })
             },
+            addEvent (){                
+                this.enable_add_event_button = false
+                this.add_event_button_text = 'adding event...'            
+                this.$http({
+                    method: 'post',
+                    url: this.$BASE_URL + '/api/events/event-list/',
+                    data: {
+                        name: this.event_name,
+                        description: this.event_description,
+                        slug: this.slug,
+                        date: this.date,
+                        website: true,
+                        location: this.event_location                  
+                    }
+                }).then(response => {
+                        this.added_event.push(response.data)                    
+                        this.event_name = ''
+                        this.event_description = ''
+                        this.year = ''
+                        this.month = ''
+                        this.day = ''
+                        this.event_location = ''
+                        this.add_event_button_text = '+ add role'                    
+                    })
+                    .catch((err) => {
+                        this.add_event_button_text = 'failed, check date'
+                    })                        
+            }
         }
     }
     </script>

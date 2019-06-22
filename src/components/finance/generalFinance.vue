@@ -68,8 +68,8 @@
                                       </div>                                                       
                                 <div class="tab-content" id="pills-tabContent">
                                     <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">                                          
-                                            <div>
-                                                <h3 class="breadcrumb-item active">tithes</h3>
+                                            <h3>tithes</h3>                                
+                                            <div>                                                
                                                 <table class="table">
                                                     <thead>
                                                         <tr>
@@ -83,10 +83,10 @@
                                                     <tbody>
                                                         <tr v-for = "data in tithes.response">
                                                             <td>{{data.member.member.first_name}} {{data.member.member.last_name}}</td>
-                                                            <td><p class="text-success">{{data.amount}}</p></td>
+                                                            <td><p class="text-success">{{humanize(data.amount)}}</p></td>
                                                             <td>{{data.date}}</td>
-                                                            <td><p class="text-info">{{data.total_this_month}}</p></td>
-                                                            <td><p class="text-secondary">{{data.total_this_year}}</p></td>                                                          
+                                                            <td><p class="text-info">{{humanize(data.total_this_month)}}</p></td>
+                                                            <td><p class="text-secondary">{{humanize(data.total_this_year)}}</p></td>                                                          
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -109,10 +109,10 @@
                                                         <tr v-for = "data in offerings.response">
                                                             <td v-if = "data.member != null">{{data.member.member.first_name}} {{data.member.member.last_name}}</td>
                                                             <td v-if = "data.name_if_not_member != null"><span class="text-info">(N.M)</span> {{data.name_if_not_member}}</td>
-                                                            <td><p class="text-success">{{data.amount}}</p></td>
+                                                            <td><p class="text-success">{{humanize(data.amount)}}</p></td>
                                                             <td>{{data.date}}</td>
-                                                            <td><p class="text-info">{{data.total_this_month}}</p></td>
-                                                            <td><p class="text-secondary">{{data.total_this_year}}</p></td>                                                          
+                                                            <td><p class="text-info">{{humanize(data.total_this_month)}}</p></td>
+                                                            <td><p class="text-secondary">{{humanize(data.total_this_year)}}</p></td>                                                          
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -133,8 +133,8 @@
                                                         <tbody>
                                                             <tr v-for = "data in incomes.response">
                                                                 <td>{{data.type_name}}</td>                                                               
-                                                                <td><p class="text-info">{{data.total_this_month}}</p></td>
-                                                                <td><p class="text-secondary">{{data.total_this_year}}</p></td>                                                          
+                                                                <td><p class="text-info">{{humanize(data.total_this_month)}}</p></td>
+                                                                <td><p class="text-secondary">{{humanize(data.total_this_year)}}</p></td>                                                          
                                                                 <td><a href="# " style="text-decoration: none"><h3 class="text-muted">></h3></a></td>
                                                             </tr>
                                                         </tbody>
@@ -210,6 +210,16 @@
                             </button>
                             </div>
                             <div class="modal-body">
+                                    <div class="alert alert-warning alert-dismissible fade show" role="alert" v-if="added_tithe.length > 0">
+                                        <strong>
+                                            <span v-for="data in added_tithe">
+                                                tithe of amount {{data.amount}} added for {{data.member.member.first_name }}
+                                            </span>
+                                        </strong> 
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
                                     <form>                                            
                                             <div class=" row form-group">
                                                 <label class="col-3"><b>member:</b></label>
@@ -221,7 +231,7 @@
                                                             <table class="table border-0" >
                                                                 <tbody>
                                                                 <tr class="searchedItem border-0" v-for="data in found_members.response">
-                                                                    <a href="#" style="text-decoration: none" v-on:click="selectMember(data.id,data.member.first_name,data.member.last_name)"> 
+                                                                    <a href="#" style="text-decoration: none" v-on:click="selectMember(data.member.id,data.member.first_name,data.member.last_name)"> 
                                                                     <td class="border-0">
                                                                     
                                                                         <img v-if = "data.gender == 'M'" style = "height: 32px "src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
@@ -234,7 +244,16 @@
                                                                 </tr>
                                                                 </tbody>
                                                             </table>
-                                                        </div>                                                    
+                                                        </div> 
+                                                        <div v-if="tithe_member_error.length > 0">
+                                                            <ul>
+                                                                    <small>
+                                                                        <li v-for="error in tithe_member_error">
+                                                                            <p class="text-danger">{{ error }}</p>
+                                                                        </li>
+                                                                    </small>
+                                                            </ul>
+                                                        </div>                                                   
                                                 </div>                                           
                                                 
                                             </div>
@@ -242,13 +261,28 @@
                                             <hr/>
                                             <div class="row form-group">
                                                     <label class="col-3"><b>amount:</b></label>
-                                                    <input type="number" class=" col-8 form-control" placeholder="enter the amount">                                                    
-                                            </div>                                                                                   
+                                                    <input type="number" class=" col-3 form-control" placeholder="amount" v-model="tithe_amount">
+                                                    <div class="col-6 text-success" v-if ="tithe_amount > 0"><h3>KSh {{humanize(tithe_amount)}}</h3></div>                                                                               
+                                            </div>  
+                                            <div v-if="tithe_amount_error.length > 0">
+                                                <ul>
+                                                        <small>
+                                                            <li v-for="error in tithe_amount_error">
+                                                                <p class="text-danger">{{ error }}</p>
+                                                            </li>
+                                                        </small>
+                                                </ul>
+                                            </div> 
+                                            <hr/>
+                                            <div class="row form-group">
+                                                    <label class="col-3"><b>narration:</b></label>
+                                                    <textarea type="text" class="col-8 form-control" rows='3' v-model="tithe_narration"></textarea>                                                   
+                                            </div>                                                                                
                                     </form>
                             </div>
                             <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary"><b>+</b> add tithe</button>
+                            <button type="button" class="btn btn-success" v-on:click="addTithe()">{{add_tithe_button_text}}</button>
                             </div>
                         </div>
                         </div>
@@ -264,6 +298,12 @@
                             </button>
                             </div>
                             <div class="modal-body">
+                                    <div class="alert alert-warning alert-dismissible fade show" role="alert" v-if="added_offering.length > 0">
+                                            <strong>offering added successfully</strong> 
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                              <span aria-hidden="true">&times;</span>
+                                            </button>
+                                          </div>
                                     <form>
                                             <div class="row checkbox">
                                                     <div class="col-3"></div>
@@ -283,7 +323,7 @@
                                                             <table class="table border-0" >
                                                                 <tbody>
                                                                 <tr class="searchedItem border-0" v-for="data in found_members.response">
-                                                                    <a href="#" style="text-decoration: none" v-on:click="selectMember(data.id,data.member.first_name,data.member.last_name)"> 
+                                                                    <a href="#" style="text-decoration: none" v-on:click="selectMember(data.member.id,data.member.first_name,data.member.last_name)"> 
                                                                     <td class="border-0">
                                                                     
                                                                         <img v-if = "data.gender == 'M'" style = "height: 32px "src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
@@ -296,14 +336,24 @@
                                                                 </tr>
                                                                 </tbody>
                                                             </table>
-                                                        </div>                                                    
+                                                        </div>  
+                                                        <p v-if="selected_member_errors.length">
+                                                            <ul>
+                                                                    <small><li v-for="error in selected_member_errors"><p class="text-danger">{{ error }}</p></li></small>
+                                                            </ul>
+                                                        </p>                                                  
                                                 </div>                                           
                                                 
                                             </div>
                                 
                                             <div class=" row form-group" v-if="non_member">
                                                     <label class="col-3"><b>names:</b></label>
-                                                    <input type="text" class="col-8 form-control" placeholder="enter name of person offering" autofocus>                                        
+                                                    <input type="text" class="col-8 form-control" placeholder="enter name of the source of offering" v-model="name_if_not_member">                                        
+                                                    <p v-if="name_if_not_member_errors.length">
+                                                        <ul>
+                                                                <small><li v-for="error in name_if_not_member_errors"><p class="text-danger">{{ error }}</p></li></small>
+                                                        </ul>
+                                                    </p> 
                                             </div>
                                             <div class=" row form-group" v-if="non_member">
                                                     <label class="col-3"><b>phone:</b></label>                                                    
@@ -317,19 +367,69 @@
                                                                             <label><b>number :</b></label>
                                                                             <input type="text" class="form-control"  placeholder="712345678" v-model = "phone_number">
                                                                     </span>
+                                                                    <div style="padding: 5px">
+                                                                        <p v-if="phone_number_errors.length">
+                                                                            <ul>
+                                                                                    <small><li v-for="error in phone_number_errors"><p class="text-danger">{{ error }}</p></li></small>
+                                                                            </ul>
+                                                                            </p>
+                                                                        <p v-if="phone_number_OK.length">
+                                                                            <ul>
+                                                                                    <small><li v-for="error in phone_number_OK"><p class="text-success">{{ error }}</p></li></small>
+                                                                            </ul>
+                                                                        </p>
+                                                                    </div>
                                                             </div> 
                                                     </div>                                                                                                                                         
                                             </div>                                                    
                                             <hr/>
                                             <div class="row form-group">
                                                     <label class="col-3"><b>amount:</b></label>
-                                                    <input type="number" class=" col-8 form-control" placeholder="enter the amount">                                                    
-                                            </div>                                                                                   
+                                                    <input type="number" class=" col-3 form-control" placeholder="amount" v-model="offering_amount">
+                                                    <div class="col-6 text-success" v-if ="offering_amount > 0"><h3>KSh {{humanize(offering_amount)}}</h3></div>
+                                                    <p v-if="offering_amount_errors.length">
+                                                        <ul>
+                                                                <small><li v-for="error in offering_amount_errors"><p class="text-danger">{{ error }}</p></li></small>
+                                                        </ul>
+                                                    </p> 
+                                            </div>
+                                            <hr/>
+                                            <div class="form-group">
+                                                    <div class="row">
+                                                            <label class="col-3 "><b>date</b></label>
+                                                            <div class="col-8">
+                                                                <div class="row">
+                                                                        <span class="col">
+                                                                                <label ><b>year :</b></label>
+                                                                                <input type="number" class="form-control" placeholder="YYYY" v-model="offering_year">
+                                                                        </span>
+                                                                        <span class="col">
+                                                                                <label ><b>month :</b></label>
+                                                                                <input type="number" class="form-control" placeholder="MM" v-model="offering_month">
+                                                                        </span>
+                                                                        <span class="col">
+                                                                                <label ><b>day :</b></label>
+                                                                                <input type="number" class="form-control" placeholder="DD" v-model="offering_day">
+                                                                        </span> 
+                                                                </div>  
+                                                                <p v-if="offering_date_errors.length">
+                                                                        <ul>
+                                                                                <small><li v-for="error in offering_date_errors"><p class="text-danger">{{ error }}</p></li></small>
+                                                                        </ul>
+                                                                    </p>                                                         
+                                                            </div>
+                                                    </div>
+                                            </div>
+                                            <hr/>
+                                            <div class="row form-group">
+                                                    <label class="col-3"><b>narration:</b></label>
+                                                    <textarea type="text" class="col-8 form-control" rows='3' v-model="offering_narration"></textarea>                                                   
+                                            </div>                                                                                     
                                     </form>
                             </div>
                             <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary"><b>+</b> add offering</button>
+                            <button type="button" class="btn btn-success" v-on:click="addOffering()"><b>+</b> add offering</button>
                             </div>
                         </div>
                         </div>
@@ -344,29 +444,40 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                         </div>
-                        <div class="modal-body">
+                        <div class="modal-body">                                
                                 <form>                                            
                                         <div class=" row form-group">
-                                            <label class="col-3"><b>type:</b></label>                                                                                       
+                                            <label class="col-3"><b>type:</b></label>                                                                                                                                   
                                             <select class="col-8 form-control" v-model="income_type" >
                                                 <option v-for="data in income_types.response" :value="data.id" >{{data.type_name}}</option>
-                                            </select>                                          
+                                            </select>   
+                                            <p v-if="income_type_errors.length">
+                                                <ul>
+                                                        <small><li v-for="error in income_type_errors"><p class="text-danger">{{ error }}</p></li></small>
+                                                </ul>
+                                            </p>                                       
                                         </div>                                                                                
                                         <hr/>
                                         <div class="row form-group">
                                                 <label class="col-3"><b>amount:</b></label>
-                                                <input type="number" class=" col-8 form-control" placeholder="enter the amount">                                                    
+                                                <input type="number" class=" col-3 form-control" placeholder="amount" v-model="income_amount">
+                                                <div class="col-6 text-success" v-if ="income_amount > 0"><h3>KSh {{humanize(income_amount)}}</h3></div>                                               
+                                                <p v-if="income_amount_errors.length">
+                                                    <ul>
+                                                            <small><li v-for="error in income_amount_errors"><p class="text-danger">{{ error }}</p></li></small>
+                                                    </ul>
+                                                </p> 
                                         </div>
                                         <hr/>   
                                         <div class="row form-group">
                                             <label class="col-3"><b>narration:</b></label>
-                                            <textarea type="text" class="col-8 form-control" rows='3'></textarea>                                                   
+                                            <textarea type="text" class="col-8 form-control" rows='3' v-model="income_narration"></textarea>                                                   
                                         </div>                                                                                
                                 </form>
                         </div>
                         <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary"><b>+</b> add income</button>
+                        <button type="button" class="btn btn-primary" v-on:click="addIncome()"><b>+</b> add income</button>
                         </div>
                     </div>
                     </div>
@@ -382,21 +493,34 @@
                     </button>
                     </div>
                     <div class="modal-body">
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert" v-if="added_income_type.length">
+                                <strong>
+                                    <span v-for="data in added_income_type">income of type {{data.type_name}} was added sucessfully</span>
+                                </strong> 
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
                             <form>                                            
                                     <div class="row form-group">
                                             <label class="col-3"><b>name:</b></label>
-                                            <input type="text" class=" col-8 form-control" placeholder="give the type a name">                                                    
-                                    </div>
+                                            <input type="text" class=" col-8 form-control" placeholder="give the type a name" v-model="income_type_name">                                                    
+                                            <p v-if="income_type_name_errors.length">
+                                                <ul>
+                                                        <small><li v-for="error in income_type_name_errors"><p class="text-danger">{{ error }}</p></li></small>
+                                                </ul>
+                                            </p>
+                                    </div>                                    
                                     <hr/>   
                                     <div class="row form-group">
-                                        <label class="col-3"><b>narration:</b></label>
-                                        <textarea type="text" class="col-8 form-control" rows='3'></textarea>                                                   
+                                        <label class="col-3"><b>describe:</b></label>
+                                        <textarea type="text" class="col-8 form-control" rows='3' v-model="income_type_description"></textarea>                                                   
                                     </div>                                                                                
                             </form>
                     </div>
                     <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary"><b>+</b> add income type</button>
+                    <button type="button" class="btn btn-success" v-on:click="addIncomeType()"><b>+</b> add income type</button>
                     </div>
                 </div>
                 </div>
@@ -411,22 +535,56 @@ export default {
     name: 'generalFinance',
     data () {
         return{
+        //get data
             tithe_stats: null,    
             tithes: null,
             non_member: false,
             group: false,
             fetch_data_error: [],
+            income_types: null,
+        //select tabs
             tithes_selected: false,
             offerings_selected: false,
             any_other_selected: false,
+        //get stats data
             offering_stats: null,
             offerings: null,
             income_stats: null,
             incomes: null,
+        //search for member
             memberSearch: '',found_members:[],
             memberSearch_status: '',selectedMember: null,
-            showMemberInput: false,
-            income_type: null, income_types: null
+            showMemberInput: false,  
+        //add_tithe
+            add_tithe_button_text: '+ add tithe',
+            enable_add_tithe_button: true,
+            tithe_amount: null,
+            tithe_narration: '',
+            tithe_amount_error: [], tithe_member_error: [],
+            added_tithe: [],
+        //add offering
+            offering_amount: null,
+            name_if_not_member: ''        ,
+            country_code: '+254',phone_number:'',
+            offering_narration: '',
+            offering_year: '',offering_month: '',offering_day: '',
+            offering_date: '',
+            phone_number_errors: [],
+            phone_number_OK: [],
+            offering_amount_errors: [],selected_member_errors: [],
+            name_if_not_member_errors: [], offering_date_errors: [], 
+            added_offering: [],
+        //add income type
+            income_type_name: '',
+            income_type_description: '',
+            income_type_name_errors: [],
+            added_income_type: [],
+        //income type
+            income_type: null,
+            income_narration: null,
+            income_type_errors: [],
+            income_amount: null,
+            income_amount_errors: []
         }
     },
     created () {
@@ -435,7 +593,7 @@ export default {
         this.debouncedGetAnswer = _.debounce(this.getAnswer, 1000)
     },
     watch: {
-    // whenever question changes, this function will run
+    // watch for searching for member
     memberSearch: function () {
             if (this.memberSearch.length > 0){
                 this.showMemberInput = true
@@ -449,12 +607,37 @@ export default {
             }
         }
      },
+     phone_number: function(){
+                if (this.phone_number.isNaN){
+                        this.phone_number_errors = []
+                        this.phone_number_errors.push(" phone number should be numbers only")
+                }
+                if (this.phone_number.length > 9){
+                        this.phone_number_OK = []
+                        this.phone_number_errors = []
+                        this.phone_number_errors.push("number too long")
+                }
+                if (this.phone_number.length < 9){
+                        this.phone_number_OK = []
+                        this.phone_number_errors = []
+                        this.phone_number_errors.push("number too short")
+                }
+                if (this.phone_number.length == 9){
+                        this.phone_number_errors = []
+                        this.phone_number_OK.push(" number OK")
+                }
+        },
     methods: {
+        //check if member is logged in
         checkLoggedIn() {
             if (!this.$session.has("token")) {
                 router.push("/login")
             }
         },
+        humanize: function(x) {
+                return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        },
+        //fetch data
         fetchdata () {
             this.tithes_selected = true
             this.fetch_data_error = []
@@ -524,6 +707,7 @@ export default {
                     this.fetch_data_error.push(err)
                 })
         },
+        //search for member
         getAnswer: function () {
           var vm = this
           if (this.memberSearch.length > 0){
@@ -543,7 +727,192 @@ export default {
           this.memberSearch_status =  first_name + ' ' + last_name + ' selected'
           this.showMemberInput = false
         },
-    }
+        //check if add tithe form is correct
+        addTitheFormOK: function(){
+            this.tithe_member_error = []
+            this.tithe_amount_error = []
+            if (this.tithe_narration.length < 1){                    
+                    this.tithe_narration = " none given"
+            }   
+            if (this.selectedMember == null){                
+                this.tithe_member_error.push("No member selected, select one")
+                return false
+            }
+            if (this.tithe_amount < 1){
+                this.tithe_amount_error.push(" enter an amount")
+                return false
+            }
+            if (this.selectedMember > 0
+                && this.tithe_amount > 0){                    
+                    return true
+                }
+        },
+        addTithe: function(){
+            if (this.addTitheFormOK()){
+                this.$http({
+                        method: 'post',
+                        url: this.$BASE_URL + '/api/finance/add-tithe-for-member/',
+                        data: {
+                                member_id: this.selectedMember,
+                                narration: this.tithe_narration,
+                                recording_member_id: this.$session.get('member_id'),                             
+                                amount: this.tithe_amount                                      
+                        }
+                        }).then(response => {
+                               this.added_tithe.push(response.data)                                                                 
+                               this.selectedMember = null,
+                               this.tithe_narration = '',
+                               this.tithe_amount = ''                        
+                        })
+                        .catch((err) => {
+                                
+                        })
+            }
+        },
+        //validate offering form
+        addOfferingFormOK: function(){
+
+            this.offering_amount_errors = []
+            this.selected_member_errors = []
+            this.name_if_not_member_errors = []
+
+            this.offering_date = this.offering_year.toString()
+                                + '-' 
+                                + this.offering_month.toString()
+                                + '-'
+                                + this.offering_day
+
+            if (this.offering_narration.length < 1){
+                this.offering_narration = "none given"
+            }
+            if (this.phone_number.length < 1
+                || this.phone_number_errors.length > 0){
+                    this.phone_number = "none given"
+                }
+            if (! this.non_member
+                && this.selectedMember != null
+                && this.offering_amount > 0){
+                    return true
+                }
+            if (this.non_member
+                && this.name_if_not_member.length > 0
+                && this.offering_amount > 0){
+                    return true
+                }
+            if (this.offering_amount < 1){
+                this.offering_amount_errors.push("enter an amount")
+                return false
+            }
+            if (! this.non_member
+                && this.selectedMember == null){
+                this.selected_member_errors.push("select member, none selected")
+                return false
+            }
+            if (this.non_member
+                && this.name_if_not_member.length < 1){
+                    this.name_if_not_member_errors.push("name required")
+                    return false
+                }
+            if (this.offering_date.length != 10){
+                this.offering_date_errors.push("incorrect date , use format YYYY-MM-DD")
+                return false
+            }
+        },
+        //add offerring
+        addOffering: function(){
+            if (this.addOfferingFormOK()){
+                if (this.non_member){
+                    this.selectedMember = null
+                }
+                if (! this.non_member){
+                    this.name_if_not_member = null
+                }
+                this.$http({                        
+                        method: 'post',
+                        url: this.$BASE_URL + '/api/finance/add-offering/',
+                        data: {
+                                member_id: this.selectedMember,                                
+                                recording_member_id: this.$session.get('member_id'),                             
+                                name_if_not_member: this.name_if_not_member,
+                                date: this.offering_date,
+                                anonymous: false,
+                                narration: this.offering_narration,                        
+                                amount: this.offering_amount                                      
+                        }
+                        }).then(response => {
+                               this.added_offering.push(response.data)
+                               this.name_if_not_member = ''
+                               this.offering_day = ''
+                               this.offering_month = ''
+                               this.offering_year = ''                      
+                        })
+                        .catch((err) => {
+                                
+                        })  
+            }
+        },
+        incomeTypeFormOK: function(){  
+            this.income_type_name_errors = []
+
+            if (this.income_type_description.length < 1){
+                this.income_type_description = "none given"
+            }
+            console.log(this.income_type_description)
+            if (this.income_type_name.length > 0){
+                return true
+            }
+            if (this.income_type_name.length < 1){                
+                this.income_type_name_errors.push("name required")
+                return false
+            }
+        },
+        addIncomeType: function(){        
+            if (this.incomeTypeFormOK()){
+                this.$http({                        
+                        method: 'post',
+                        url: this.$BASE_URL + '/api/finance/income-type-list/',
+                        data: {
+                                type_name: this.income_type_name,                                
+                                description: this.income_type_description                                                                                            
+                        }
+                        }).then(response => {
+                               this.added_income_type.push(response.data)
+                               this.income_type_name = '',
+                               this.income_type_description = ''                       
+                        })
+                        .catch((err) => {
+                                
+                        }) 
+            }
+        },
+        incomeFormOK: function(){
+            this.income_amount_errors = []
+            this.income_type_errors = []
+
+            console.log(this.income_type)
+            console.log(this.income_amount)
+            if (this.income_type != null 
+                && this.income_amount != null){
+                    return true
+                }
+            if (this.income_type == null){
+                    this.income_type_errors.push("select an income type or add one ")
+                    return false
+                }
+            if (this.income_amount == null){
+                this.income_amount_errors.push("enter an amount")
+                return false
+            }
+        },
+        addIncome: function(){
+            console.log("entered function")
+            if (this.incomeFormOK()){
+                console.log("finished")
+            }
+        }
+        
+    },
+
 }
 </script>
 

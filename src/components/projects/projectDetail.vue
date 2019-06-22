@@ -20,31 +20,31 @@
                                         pledges
                                 </a>
                             
-                        </div>
-                        <div style="padding:40px 0px 20px 0px">
-                                <div class="home-menu-item">
-                                        <div class="row" v-for = "data in context.response " >
-                                                <p class="breadcrumb-item active"><b><span v-for = "data in context.response">{{data.name}}</span></b></p>
-                                                <p class="card-text" style="padding: 5px">
-                                                        <small class="text-muted">required amount-</small>
-                                                        <span class="badge badge-pill badge-info">{{data.required_amount}}</span>
-                                                </p>
-                                                <p class="card-text" style="padding: 5px">
-                                                        <small class="text-muted">raised amount-</small>
-                                                        <span class="badge badge-pill badge-success">{{data.raised_amount}}</span>
-                                                </p>
-                                                <p class="card-text" style="padding: 5px">
-                                                        <small class="text-muted">percentage funded-</small>
-                                                        <span class="badge badge-pill badge-danger">{{data.percentage_funded}} %</span>
-                                                </p>
-                                        </div>
-                                </div>
                         </div>                
                 </div>
                 <div class="col">
                         <div class="tab-content" id="v-pills-tabContent">
                                 <div class="tab-pane fade show active" id="v-pills-contributions" role="tabpanel" aria-labelledby="v-pills-contributions-tab">
-                                    <h3 class="breadcrumb-item active"><span v-for = "data in context.response">{{data.name}} /</span> contributions</h3>
+                                <h3 ><span v-for = "data in context.response">{{data.name}} /</span> contributions</h3>
+                                <hr/>
+                                <div class="home-menu-item" style="text-align: center">
+
+                                                <div class="row" v-for = "data in context.response " >                                                        
+                                                        <div class=" col-4 card-text" style=" padding: 5px">
+                                                                <small class="text-muted">required amount</small>                                                                
+                                                                <h3 class="text-info">KSh {{humanize(data.required_amount)}}</h3>
+                                                        </div>
+                                                        <div class=" col-4 card-text" style="padding: 5px">
+                                                                <small class="text-muted">raised amount</small>                                                                
+                                                                <h3 class="text-success">KSh {{humanize(data.raised_amount)}}</h3>
+
+                                                        </div>
+                                                        <div class="col-4 card-text" style="padding: 5px">
+                                                                <small class="text-muted">percentage funded</small>                                                      
+                                                                <h3 class="text-danger">{{data.percentage_funded}} %</h3>
+                                                        </div>
+                                                </div>
+                                        </div>                                       
                                     <table class="table">
                                         <thead>
                                             <tr>
@@ -59,7 +59,7 @@
                                                 
                                                 <td v-if = "data.member != null">{{data.member.member.first_name}} {{data.member.member.last_name}}</td>
                                                 <td v-if = "data.names != ''"><span class="text-info">(N.M)</span> {{data.names}}</td>
-                                                <td><p class="text-success">{{data.amount}}</p></td>
+                                                <td><p class="text-success">{{humanize(data.amount)}}</p></td>
                                                 <td>{{data.recorded_at}}</td>
                                                 <td><p class="text-info">{{data.recorded_by.member.first_name}} {{data.recorded_by.member.last_name}}</p></td>
                                             </tr>
@@ -83,9 +83,9 @@
                                                     <tr v-for = "data in pledges.response">                                                        
                                                         <td v-if = "data.member != null">{{data.member.member.first_name}} {{data.member.member.last_name}}</td>
                                                         <td v-if = "data.names != ''"><span class="text-info">(N.M)</span> {{data.names}}</td>
-                                                        <td>{{data.amount}}</td>
-                                                        <td><p class="text-success">{{data.amount_so_far}}</p></td>
-                                                        <td><p class="text-danger">{{data.remaining_amount}}</p></td>
+                                                        <td>{{humanize(data.amount)}}</td>
+                                                        <td><p class="text-success">{{humanize(data.amount_so_far)}}</p></td>
+                                                        <td><p class="text-danger">{{humanize(data.remaining_amount)}}</p></td>
                                                         <td><span class="badge badge-pill badge-info">{{data.percentage_funded}}</span></td>
                                                         
                                                     </tr>
@@ -138,6 +138,14 @@
                             </button>
                             </div>
                             <div class="modal-body">
+                                        <div class="alert alert-warning alert-dismissible fade show" role="alert" v-if="added_contribution.length > 0">
+                                                <strong>
+                                                        <span v-for="data in added_contribution">contribution by {{data.member.member.username}} amount {{humanize(data.amount)}} was successfully added</span>
+                                                </strong> 
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                </button>
+                                        </div>
                                     <form>
                                             <div class="row checkbox">
                                                     <div class="col-3"></div>
@@ -150,14 +158,14 @@
                                             <div class=" row form-group" v-if="! non_member">
                                               <label class="col-3"><b>member:</b></label>
                                               <div class="col-8">
-                                                    <input type="text" class=" form-control" placeholder="type to search member" v-model="memberSearch" autofocus>   
+                                                    <input type="text" class=" form-control" placeholder="type to search member" v-model="memberSearch">   
                                                     <div style="padding: 10px 10px 10px 10px" class="text-info" >{{memberSearch_status}}</div> 
 
                                                     <div class="pre-scrollable searchedItemsDiv border " style="  max-height: 185px; overflow-y: scroll;" v-if="showMemberInput">
                                                             <table class="table border-0" >
                                                               <tbody>
                                                                 <tr class="searchedItem border-0" v-for="data in found_members.response">
-                                                                  <a href="#" style="text-decoration: none" v-on:click="selectMember(data.id,data.member.first_name,data.member.last_name)"> 
+                                                                  <a href="#" style="text-decoration: none" v-on:click="selectMember(data.member.id,data.member.first_name,data.member.last_name)"> 
                                                                   <td class="border-0">
                                                                     
                                                                       <img v-if = "data.gender == 'M'" style = "height: 32px "src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
@@ -177,7 +185,7 @@
                                 
                                             <div class=" row form-group" v-if="non_member">
                                                     <label class="col-3"><b>names:</b></label>
-                                                    <input type="text" class="col-8 form-control" placeholder="enter name of conributor" autofocus>                                        
+                                                    <input type="text" class="col-8 form-control" placeholder="enter name of contributor" v-model = "name_if_not_member">                                        
                                             </div>
                                             <div class=" row form-group" v-if="non_member">
                                                     <label class="col-3"><b>phone:</b></label>                                                    
@@ -191,19 +199,33 @@
                                                                             <label><b>number :</b></label>
                                                                             <input type="text" class="form-control"  placeholder="712345678" v-model = "phone_number">
                                                                     </span>
-                                                            </div> 
+                                                                    <div style="padding: 5px">
+                                                                    <p v-if="phone_number_errors.length">
+                                                                        <ul>
+                                                                                <small><li v-for="error in phone_number_errors"><p class="text-danger">{{ error }}</p></li></small>
+                                                                        </ul>
+                                                                        </p>
+                                                                   <p v-if="phone_number_OK.length">
+                                                                        <ul>
+                                                                                <small><li v-for="error in phone_number_OK"><p class="text-success">{{ error }}</p></li></small>
+                                                                        </ul>
+                                                                    </p>
+                                                                    </div>
+                                                            </div>                                                                 
                                                     </div>                                                                                                                                         
                                             </div>                                                    
                                             <hr/>
                                             <div class="row form-group">
                                                     <label class="col-3"><b>amount:</b></label>
-                                                    <input type="number" class=" col-8 form-control" placeholder="enter KSh value of the contribution">                                                    
+                                                    <input type="number" class=" col-3 form-control" placeholder="amount" v-model="contribution_amount">                                                    
+                                                    <div class="col-6 text-success" v-if ="contribution_amount > 0"><h3>KSh {{humanize(contribution_amount)}}</h3></div> 
                                             </div>                                                                                   
                                     </form>
                             </div>
                             <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary"><b>+</b> add contribution</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="fetchdata()">Close</button>
+                            <button type="button" class="btn btn-success" disabled v-if="! enable_add_button"><b>+</b> add contribution</button>
+                            <button type="button" class="btn btn-success" v-if="enable_add_button" v-on:click="addContribution()">{{add_contribution_button_text}}</button>
                             </div>
                         </div>
                         </div>
@@ -258,7 +280,7 @@
                                 
                                             <div class=" row form-group" v-if="non_member">
                                                     <label class="col-3"><b>names:</b></label>
-                                                    <input type="text" class="col-8 form-control" placeholder="enter name of person pledging" autofocus>                                        
+                                                    <input type="text" class="col-8 form-control" placeholder="enter name of person pledging" v-model="name_if_not_member">                                        
                                             </div>
                                             <div class=" row form-group" v-if="non_member">
                                                     <label class="col-3"><b>phone:</b></label>                                                    
@@ -274,17 +296,39 @@
                                                                     </span>
                                                             </div> 
                                                     </div>                                                                                                                                         
-                                            </div>                                                    
+                                            </div>  
+                                            <hr/>
+                                            <div class="row">
+                                                        <label class="col-3 "><b>due date</b></label>
+                                                        <div class="col-8">
+                                                            <div class="row">
+                                                                    <span class="col">
+                                                                            <label ><b>year :</b></label>
+                                                                            <input type="number" class="form-control" placeholder="YYYY" v-model="ending_year">
+                                                                    </span>
+                                                                    <span class="col">
+                                                                            <label ><b>month :</b></label>
+                                                                            <input type="number" class="form-control" placeholder="MM" v-model="ending_month">
+                                                                    </span>
+                                                                    <span class="col">
+                                                                            <label ><b>day :</b></label>
+                                                                            <input type="number" class="form-control" placeholder="DD" v-model="ending_day">
+                                                                    </span> 
+                                                            </div>                                                           
+                                                        </div>
+                                                </div>                                                  
                                             <hr/>
                                             <div class="row form-group">
-                                                    <label class="col-3"><b>amount:</b></label>
-                                                    <input type="number" class=" col-8 form-control" placeholder="enter the amount pledged">                                                    
+                                                    <label class="col-3"><b>amount:</b></label>                                                                                                      
+                                                    <input type="number" class=" col-3 form-control" placeholder="amount" v-model="contribution_amount">                                                    
+                                                    <div class="col-6 text-success" v-if ="contribution_amount > 0"><h3>KSh {{humanize(contribution_amount)}}</h3></div> 
                                             </div>                                                                                   
                                     </form>
                             </div>
                             <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-primary"><b>+</b> add pledge</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="fetchdata()">Close</button>
+                            <button type="button" class="btn btn-success" disabled v-if="! enable_add_button"><b>+</b> add pledge</button>
+                            <button type="button" class="btn btn-success" disabled v-if="enable_add_button">{{add_pledge_button_text}}</button>
                             </div>
                         </div>
                         </div>
@@ -359,7 +403,7 @@
                                             <hr/>
                                             <div class="row form-group">
                                                     <label class="col-3"><b>amount:</b></label>
-                                                    <input type="number" class=" col-8 form-control" placeholder="enter the amount">                                                    
+                                                    <input type="number" class=" col-8 form-control" placeholder="amount">                                                    
                                             </div>                                                                                   
                                     </form>
                             </div>
@@ -380,18 +424,33 @@ export default {
     name : 'projectDetail',
     data () {
         return {
+        //get data
+            logged_in_member_id: null,    
             context: null,
-            tab: 'contributions',
-            non_member: false,
+            tab: 'contributions',            
             contributions: null,
             pledges: null,
             pledges_selected: false,
             foundItems: null,
             fetch_data_error: [],
+        //search for member
             memberSearch: '',found_members:[],
-            memberSearch_status: '',selectedMember: null,
+            memberSearch_status: '',selectedMember: 0,
             showMemberInput: false,
             member_ids: [],
+        //add contribution
+            non_member: false,
+            add_contribution_button_text: '+ add contribution',
+            contribution_amount: null,
+            name_if_not_member: '',
+            phone_number: '',
+            country_code: '+254',
+            enable_add_button: false,
+            phone_number_errors: [], phone_number_OK: [],
+            added_contribution: [],
+        //add pledge 
+            add_pledge_button_text: '+ addd pledge',
+            enable_add_pledge_button: false
 
         }
     },
@@ -400,8 +459,9 @@ export default {
         this.debouncedGetAnswer = _.debounce(this.getAnswer, 1000)
     },
     watch: {
-    // whenever question changes, this function will run
-    memberSearch: function () {
+        '$route': 'fetchdata',
+    // search for member
+        memberSearch: function () {
             if (this.memberSearch.length > 0){
                 this.showMemberInput = true
                 this.memberSearch_status = 'typing...'
@@ -412,12 +472,61 @@ export default {
                 this.showMemberInput = false
                 this.fetchData()
             }
-        }
+        },
+        selectedMember: function(){
+                if (this.selectMember > 0
+                    && ! this.non_member
+                    && this.contribution_amount > 0){
+                        this.added_contribution = []
+                        this.enable_add_button = true
+                }
+        },
+    //add contribution
+        name_if_not_member: function(){
+                if (this.name_if_not_member.length > 0
+                    && this.non_member
+                    && this.contribution_amount > 0){
+                        this.added_contribution = []
+                        this.enable_add_button = true
+                }
+        },
+        contribution_amount: function(){
+                if (this.contribution_amount > 0
+                    && this.selectedMember > 0
+                    || this.name_if_not_member.length > 0){
+                        this.added_contribution = []
+                        this.enable_add_button = true
+                }
+        },
+        phone_number: function(){
+                if (this.phone_number.isNaN){
+                        this.phone_number_errors = []
+                        this.phone_number_errors.push(" phone number should be numbers only")
+                }
+                if (this.phone_number.length > 9){
+                        this.phone_number_OK = []
+                        this.phone_number_errors = []
+                        this.phone_number_errors.push("number too long")
+                }
+                if (this.phone_number.length < 9){
+                        this.phone_number_OK = []
+                        this.phone_number_errors = []
+                        this.phone_number_errors.push("number too short")
+                }
+                if (this.phone_number.length == 9){
+                        this.phone_number_errors = []
+                        this.phone_number_OK.push(" number OK")
+                }
+        },
+
      },
     methods: {
-        fetchdata () {
+        humanize: function(x) {
+                return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        },
+        fetchdata: function() {
             this.fetch_data_error = []
-            this.$http.get(this.$BASE_URL +'/api/projects/project-list/')
+            this.$http.get(this.$BASE_URL +'/api/projects/project-with-id/' + this.$route.params.id + '/')
                 .then(response => {
                 this.context = {"response": response.data } 
                 })
@@ -466,6 +575,55 @@ export default {
           this.memberSearch_status = first_name + ' ' + last_name + ' selected'
           this.showMemberInput = false
         },
+        //add contribution
+        addContribution: function(){
+                if (this.non_member){
+                        this.enable_add_project_button = false
+                        this.add_contribution_button_text = 'adding contribution...'            
+                        this.$http({
+                        method: 'post',
+                        url: this.$BASE_URL + '/api/projects/add-non-member-contribution-to-project/',
+                        data: {
+                                project_id: this.$route.params.id,
+                                names: this.name_if_not_member,
+                                recording_member_id: this.$session.get('member_id'),
+                                phone: this.country_code.toString() + this.phone_number.toString(),
+                                anonymous: true,
+                                amount: this.contribution_amount                                      
+                        }
+                        }).then(response => {
+                               this.added_contribution.push(response.data)                                                                 
+                               this.add_contribution_button_text = '+ add contribution'                        
+                        })
+                        .catch((err) => {
+                                this.add_contribution_button_text = 'failed'
+                        })
+                }
+                if (! this.non_member){                   
+                        this.enable_add_project_button = false
+                        this.add_contribution_button_text = 'adding contribution...'            
+                        this.$http({
+                        method: 'post',
+                        url: this.$BASE_URL + '/api/projects/add-contribution-to-project/',
+                        data: {
+                                project_id: this.$route.params.id,
+                                member_id: this.selectedMember,
+                                recording_member_id: this.$session.get('member_id'),
+                                anonymous: false,
+                                amount: this.contribution_amount                                      
+                        }
+                        }).then(response => {                                
+                               this.memberSearch = ''
+                               this.amount = null
+                               this.added_contribution.push(response.data)  
+                               this.enable_add_button = false  
+                               this.add_contribution_button_text = '+ add contribution'
+                        })
+                        .catch((err) => {
+                                this.add_contribution_button_text = 'failed'
+                        })    
+                }
+        }
     }
 
 }

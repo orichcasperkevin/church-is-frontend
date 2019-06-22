@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <router_link class="navbar-brand"  href="#" :to="{name: 'groupsLanding'}" >NanoComputing ChurchSys</router_link>
+      <router_link class="navbar-brand"  href="#" :to="{name: 'groupsLanding'}" >nanocomputing ChMs</router_link>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
       </button>
@@ -40,7 +40,7 @@
                     <router-link class="dropdown-item" :to="{name: 'sermons'}">sermons</router-link>                            
                     <router-link class="dropdown-item" :to="{name: 'services'}">services</router-link>                  
                     <hr/>
-                    <router-link class="dropdown-item" :to="{name: 'login'}">logout x{{username}}</router-link>                     
+                    <router-link class="dropdown-item" :to="{name: 'login'}">logout {{username}}</router-link>                     
                  
 
 
@@ -65,13 +65,18 @@ export default {
   created(){
     this.checkLoggedIn()
   },
+  watch: {
+    username: function(){      
+      this.username = this.$session.get("username")      
+    }
+  },
   methods: {
     checkLoggedIn() {      
       if (!this.$session.has("token")) {          
           router.push("/login")
-      }
-      console.log(this.$session)
-      this.username = this.$session.get("username")
+          return false
+      }      
+      return true                 
     }
   }
 }

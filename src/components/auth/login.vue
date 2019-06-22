@@ -85,9 +85,19 @@ export default {
                     this.login_error = []
                     this.login_info.push("logging you in...")
                     this.$session.start();
-                    this.$session.set('token', response.data.access);
-                    this.$session.set('username', this.username) 
-                    router.push('/');  
+                    this.$session.set('token', response.data.access)
+                    this.$session.set('username', this.username)  
+                    //get logged in member data          
+                    this.$http.get(this.$BASE_URL + '/api/members/member/' + this.$session.get('username') +'/')
+                            .then(response => {
+                                    console.log(response.data[0].member.id)                                                                      
+                                    this.$session.set('member_id', response.data[0].member.id)
+                                    console.log("finished") 
+                            })
+                            .catch((err) => {
+                                this.fetch_data_error.push(err)
+                            })                                    
+                                router.push('/');  
                 })
                     .catch((err) => {
                         this.login_info = []

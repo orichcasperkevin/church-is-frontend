@@ -9,7 +9,7 @@
       <body>
         <div class="container">
         <div class="row">
-        <div class="filters col-12 col-sm-10 col-md-8 col-lg-2" style="padding: 3px 3px 3px 3px">
+        <div class="filters col-12 col-sm-8 col-md-8 col-lg-2" style="padding: 3px 3px 3px 3px">
             <div class="form-group">
                 <label for="searchInput"><b>search by first name</b></label>
                 <input type="text" class="form-control"  aria-describedby="searchHelp" placeholder="e.g John,Brian etc" v-model="firstnamesearch" autofocus>
@@ -68,7 +68,7 @@
         
 
         </div>
-          <div class="col" style="padding: 5px 60px 60px 60px">
+          <div class="col" >
             <div class = "center-div" v-if = "fetch_data_error.length > 0">
               <img style = "height: 64px "src="@/assets/icons/icons8-wi-fi-off-64.png">
               <p class="text-info">check your connection</p>
@@ -118,7 +118,7 @@
                   </tbody>
                 </table>
           </div>
-          <div class="col-12 col-sm-10 col-md-8 col-lg-3">
+          <div class="col-12 col-sm-10 col-md-5 col-lg-3">
             <div class="btn-group" style="padding: 0px 0px 25px 0px">
               <router-link :to="{name: 'memberAdd'}" style="text-decoration: none">
                   <div class="add-button">
