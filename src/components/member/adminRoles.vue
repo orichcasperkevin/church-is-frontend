@@ -159,7 +159,32 @@
                                             <div class="row form-group">
                                                     <label class="col-3"><b>description:</b></label>
                                                     <textarea type="text" class="col-8 form-control" rows='3' v-model="role_description"></textarea>                                                   
-                                            </div>                                                                                                                                                                      
+                                            </div>  
+                                            <hr/>
+                                            <div class="form-check form-check-inline">
+                                                 <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value=true v-model="member_admin">
+                                                 <label class="form-check-label" for="inlineCheckbox1">member admin</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                  <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value=true v-model="site_admin">
+                                                  <label class="form-check-label" for="inlineCheckbox2">website admin</label>
+                                            </div>  
+                                            <div class="form-check form-check-inline">
+                                                 <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value=true v-model="group_admin">
+                                                  <label class="form-check-label" for="inlineCheckbox2">group admin</label>
+                                            </div> 
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value=true v-model="events_admin">
+                                                <label class="form-check-label" for="inlineCheckbox1">events admin</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value=true v-model="projects_admin">
+                                                    <label class="form-check-label" for="inlineCheckbox2">projects admin</label>
+                                            </div>  
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value=true v-model="finance_admin">
+                                                    <label class="form-check-label" for="inlineCheckbox2">finance admin</label>
+                                            </div>                                                                                                                                                                  
                                     </form>
                             </div>
                             <div class="modal-footer">
@@ -202,6 +227,12 @@ export default {
             //assign roles 
             selected_role: [],
             assign_button_text: 'assign role(s)',
+            member_admin: false,
+            site_admin: false,
+            group_admin: false,
+            event_admin: false,
+            projects_admin: false,
+            finance_admin: false,
             assigned_roles: []       
         }
     },
@@ -258,8 +289,7 @@ export default {
                 this.roles_for_member = {"response": response.data } 
                 var count = 0
                 for (var data in this.roles_for_member.response){
-                    count = count + 1
-                    console.log(count)
+                    count = count + 1                    
                 }
                 if (count > 0){
                     this.member_has_roles = true
@@ -303,7 +333,13 @@ export default {
                 url: this.$BASE_URL + '/api/members/role-list/',
                 data: {
                   role: this.role_name,
-                  description: this.role_description                  
+                  description: this.role_description,  
+                  member_admin: this.member_admin,
+                  site_admin: this.site_admin,
+                  group_admin: this.group_admin,
+                  event_admin: this.event_admin,
+                  projects_admin: this.projects_admin,
+                  finance_admin: this.finance_admin               
                 }
               }).then(response => {
                     this.added_role.push(response.data)                    

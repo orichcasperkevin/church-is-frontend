@@ -22,7 +22,7 @@
    
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  more
+                  finances
                 </a>
                 <div class="dropdown-menu" style="padding: 5px 5px" aria-labelledby="navbarDropdownMenuLink">
                     
@@ -34,18 +34,22 @@
                     <router-link class="dropdown-item" :to="{name: 'generalFinance'}">
                         <img style="width: 20%; height: auto" src="@/assets/icons/icons8-expensive-filled-50.png">
                         finances
-                    </router-link>
-                    <hr/>
+                    </router-link>                                         
+                 
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  website
+                </a>
+                <div class="dropdown-menu" style="padding: 5px 5px" aria-labelledby="navbarDropdownMenuLink">
+                    
                     <router-link class="dropdown-item" :to="{name: 'dailyVerse'}">daily verses</router-link>
                     <router-link class="dropdown-item" :to="{name: 'sermons'}">sermons</router-link>                            
                     <router-link class="dropdown-item" :to="{name: 'services'}">services</router-link>                  
-                    <hr/>
-                    <router-link class="dropdown-item" :to="{name: 'login'}">logout {{username}}</router-link>                     
-                 
-
-
                 </div>
             </li>
+
           </ul>
       </div>
   </nav>

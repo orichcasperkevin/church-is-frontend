@@ -260,7 +260,7 @@
                                                             <table class="table border-0" >
                                                               <tbody>
                                                                 <tr class="searchedItem border-0" v-for="data in found_members.response">
-                                                                  <a href="#" style="text-decoration: none" v-on:click="selectMember(data.id,data.member.first_name,data.member.last_name)"> 
+                                                                  <a href="#" style="text-decoration: none" v-on:click="selectMember(data.member.id,data.member.first_name,data.member.last_name)"> 
                                                                   <td class="border-0">
                                                                     
                                                                       <img v-if = "data.gender == 'M'" style = "height: 32px "src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
@@ -273,14 +273,19 @@
                                                                 </tr>
                                                               </tbody>
                                                             </table>
-                                                        </div>                                                    
+                                                        </div>  
+                                                        <p v-if="selected_member_errors.length">
+                                                                <ul>
+                                                                        <small><li v-for="error in selected_member_errors"><p class="text-danger">{{ error }}</p></li></small>
+                                                                </ul>
+                                                        </p>                                                  
                                               </div>                                           
                                               
                                             </div>
                                 
                                             <div class=" row form-group" v-if="non_member">
                                                     <label class="col-3"><b>names:</b></label>
-                                                    <input type="text" class="col-8 form-control" placeholder="enter name of person pledging" v-model="name_if_not_member">                                        
+                                                    <input type="text" class="col-8 form-control" placeholder="enter name of person pledging" v-model="pledge_name_if_not_member">                                        
                                             </div>
                                             <div class=" row form-group" v-if="non_member">
                                                     <label class="col-3"><b>phone:</b></label>                                                    
@@ -304,15 +309,15 @@
                                                             <div class="row">
                                                                     <span class="col">
                                                                             <label ><b>year :</b></label>
-                                                                            <input type="number" class="form-control" placeholder="YYYY" v-model="ending_year">
+                                                                            <input type="number" class="form-control" placeholder="YYYY" v-model="pledge_due_year">
                                                                     </span>
                                                                     <span class="col">
                                                                             <label ><b>month :</b></label>
-                                                                            <input type="number" class="form-control" placeholder="MM" v-model="ending_month">
+                                                                            <input type="number" class="form-control" placeholder="MM" v-model="pledge_due_month">
                                                                     </span>
                                                                     <span class="col">
                                                                             <label ><b>day :</b></label>
-                                                                            <input type="number" class="form-control" placeholder="DD" v-model="ending_day">
+                                                                            <input type="number" class="form-control" placeholder="DD" v-model="pledge_due_day">
                                                                     </span> 
                                                             </div>                                                           
                                                         </div>
@@ -320,15 +325,15 @@
                                             <hr/>
                                             <div class="row form-group">
                                                     <label class="col-3"><b>amount:</b></label>                                                                                                      
-                                                    <input type="number" class=" col-3 form-control" placeholder="amount" v-model="contribution_amount">                                                    
-                                                    <div class="col-6 text-success" v-if ="contribution_amount > 0"><h3>KSh {{humanize(contribution_amount)}}</h3></div> 
+                                                    <input type="number" class=" col-3 form-control" placeholder="amount" v-model="pledge_amount">                                                    
+                                                    <div class="col-6 text-success" v-if ="pledge_amount > 0"><h3>KSh {{humanize(pledge_amount)}}</h3></div> 
                                             </div>                                                                                   
                                     </form>
                             </div>
                             <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="fetchdata()">Close</button>
-                            <button type="button" class="btn btn-success" disabled v-if="! enable_add_button"><b>+</b> add pledge</button>
-                            <button type="button" class="btn btn-success" disabled v-if="enable_add_button">{{add_pledge_button_text}}</button>
+                            <button type="button" class="btn btn-success" disabled v-if="! enable_add_pledge_button"><b>+</b> add pledge</button>
+                            <button type="button" class="btn btn-success" v-if="enable_add_pledge_button" v-on:click="addPledge()">{{add_pledge_button_text}}</button>
                             </div>
                         </div>
                         </div>
@@ -450,7 +455,13 @@ export default {
             added_contribution: [],
         //add pledge 
             add_pledge_button_text: '+ addd pledge',
-            enable_add_pledge_button: false
+            enable_add_pledge_button: true,
+            pledge_amount: null,
+            pledge_due_year: '',pledge_due_month: '',pledge_due_day: '',
+            pledge_date: '',
+            pledge_amount_errrors: [],
+            selected_member_errors: [],
+            pledge_date_errors: []
 
         }
     },
@@ -491,6 +502,7 @@ export default {
                 }
         },
         contribution_amount: function(){
+                this.add_contribution_button_text = '+ add contribution'
                 if (this.contribution_amount > 0
                     && this.selectedMember > 0
                     || this.name_if_not_member.length > 0){
@@ -592,8 +604,10 @@ export default {
                                 amount: this.contribution_amount                                      
                         }
                         }).then(response => {
-                               this.added_contribution.push(response.data)                                                                 
-                               this.add_contribution_button_text = '+ add contribution'                        
+                               this.added_contribution.push(response.data)     
+                               this.name_if_not_member = ''
+                               this.phone_number = '',                                                                                         
+                               this.add_contribution_button_text = 'contribution added'                        
                         })
                         .catch((err) => {
                                 this.add_contribution_button_text = 'failed'
@@ -615,13 +629,48 @@ export default {
                         }).then(response => {                                
                                this.memberSearch = ''
                                this.amount = null
-                               this.added_contribution.push(response.data)  
+                               this.added_contribution.push(response.data)                                 
+                               this.add_contribution_button_text = '+ contribution added'
                                this.enable_add_button = false  
-                               this.add_contribution_button_text = '+ add contribution'
                         })
                         .catch((err) => {
                                 this.add_contribution_button_text = 'failed'
                         })    
+                }
+        },
+        pledgeFormOkay: function(){
+
+                this.pledge_amount_errrors = []
+                this.selected_member_errors = []
+                this.pledge_date_errors = []
+
+                this.pledge_date = this.pledge_due_year
+                                        + '-'
+                                        + this.pledge_due_month
+                                        + '-'
+                                        + this.pledge_due_day   
+
+                if ((this.pledge_amount != null 
+                        || this.pledge_amount > 0)
+                        && this.selectedMember != null
+                        && this.pledge_date.length == 10){
+                                return true
+                        }   
+                if (this.pledge_amount < 1
+                        || this.pledge_amount == null){
+                        this.pledge_amount_errors.push("pledge amount required")
+                        }
+                if (this.selected_member == null){
+                        this.selected_member_errors.push("select a member")
+                }
+                if (this.pledge_date.length != 10){
+                        this.pledge_date_errors.push("incorrect date use YYYY-MM-DD format")
+                }
+        },
+        addPledge: function(){
+                console.log("entered function")
+                if (this.pledgeFormOkay()){
+                        console.log("finished")
                 }
         }
     }
