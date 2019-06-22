@@ -444,7 +444,17 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                         </div>
-                        <div class="modal-body">                                
+                        <div class="modal-body"> 
+                                <div class="alert alert-warning alert-dismissible fade show" role="alert" v-if ="added_income.length > 0">
+                                        <strong>
+                                            <span v-for="data in added_income">
+                                                income of type {{data.type.type_name}} and amount {{humanize(data.amount)}} succesfuly added
+                                            </span>
+                                        </strong> 
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
+                                        </button>
+                                      </div>                               
                                 <form>                                            
                                         <div class=" row form-group">
                                             <label class="col-3"><b>type:</b></label>                                                                                                                                   
@@ -477,7 +487,7 @@
                         </div>
                         <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" v-on:click="addIncome()"><b>+</b> add income</button>
+                        <button type="button" class="btn btn-success" v-on:click="addIncome()"><b>+</b> add income</button>
                         </div>
                     </div>
                     </div>
@@ -579,12 +589,13 @@ export default {
             income_type_description: '',
             income_type_name_errors: [],
             added_income_type: [],
-        //income type
+        //add income
             income_type: null,
             income_narration: null,
             income_type_errors: [],
             income_amount: null,
-            income_amount_errors: []
+            income_amount_errors: [],
+            added_income: []
         }
     },
     created () {
@@ -856,8 +867,7 @@ export default {
 
             if (this.income_type_description.length < 1){
                 this.income_type_description = "none given"
-            }
-            console.log(this.income_type_description)
+            }        
             if (this.income_type_name.length > 0){
                 return true
             }
@@ -886,11 +896,10 @@ export default {
             }
         },
         incomeFormOK: function(){
+            this.added_income = []
             this.income_amount_errors = []
             this.income_type_errors = []
 
-            console.log(this.income_type)
-            console.log(this.income_amount)
             if (this.income_type != null 
                 && this.income_amount != null){
                     return true
@@ -899,15 +908,32 @@ export default {
                     this.income_type_errors.push("select an income type or add one ")
                     return false
                 }
-            if (this.income_amount == null){
+            if (! this.income_amount > 0
+                || this.income_amount == null){
                 this.income_amount_errors.push("enter an amount")
                 return false
             }
         },
-        addIncome: function(){
-            console.log("entered function")
+        addIncome: function(){           
             if (this.incomeFormOK()){
-                console.log("finished")
+                this.$http({                        
+                        method: 'post',
+                        url: this.$BASE_URL + '/api/finance/add-income/',
+                        data: {                                                               
+                                recording_member_id: this.$session.get('member_id'),                             
+                                income_type_id: this.income_type,                        
+                                narration: this.income_narration,                        
+                                amount: this.income_amount                                    
+                        }
+                        }).then(response => {
+                            this.added_income.push(response.data)
+                            this.income_type = null,
+                            this.income_amount = null,
+                            this.income_narration = ''                  
+                        })
+                        .catch((err) => {
+                                
+                        })
             }
         }
         
