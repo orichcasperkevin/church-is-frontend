@@ -74,9 +74,6 @@
 
       }
     },
-    created() {
-      this.fetchdata()
-    },
     methods: {
       getToken: function () {
         this.login_info = []
