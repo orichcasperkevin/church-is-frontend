@@ -210,7 +210,7 @@
                             </button>
                             </div>
                             <div class="modal-body">
-                                    <div class="alert alert-warning alert-dismissible fade show" role="alert" v-if="added_tithe.length > 0">
+                                    <div class="alert alert-success alert-dismissible fade show" role="alert" v-if="added_tithe.length > 0">
                                         <strong>
                                             <span v-for="data in added_tithe">
                                                 tithe of amount {{data.amount}} added for {{data.member.member.first_name }}
@@ -219,6 +219,15 @@
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
+                                    </div>
+                                    <div v-if="add_tithe_errors.length > 0">
+                                        <ul>
+                                                <small>
+                                                    <li v-for="error in add_tithe_errors">
+                                                        <p class="text-danger">{{ error }}</p>
+                                                    </li>
+                                                </small>
+                                        </ul>
                                     </div>
                                     <form>                                            
                                             <div class=" row form-group">
@@ -282,6 +291,7 @@
                             </div>
                             <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-success" disabled v-if= "! enable_add_tithe_button && add_tithe_button_text != 'adding tithe...'">{{add_tithe_button_text}}</button>
                             <button type="button" class="btn btn-success" v-on:click="addTithe()">{{add_tithe_button_text}}</button>
                             </div>
                         </div>
@@ -571,7 +581,7 @@ export default {
             tithe_amount: null,
             tithe_narration: '',
             tithe_amount_error: [], tithe_member_error: [],
-            added_tithe: [],
+            added_tithe: [],add_tithe_errors: [],
         //add offering
             offering_amount: null,
             name_if_not_member: ''        ,
@@ -608,7 +618,7 @@ export default {
     memberSearch: function () {
             if (this.memberSearch.length > 0){
                 this.showMemberInput = true
-                this.memberSearch_status = 'typing...'
+                this.memberSearch_status = 'searching...'
                 this.debouncedGetAnswer()
             }else{
                 this.memberSearch_status = ''
@@ -727,23 +737,28 @@ export default {
             this.$http.get(this.$BASE_URL + '/api/members/filter-by-first_name/' + this.memberSearch +'/')
               .then(function (response) {
                 vm.found_members = {"response": response.data } 
-                vm.memberSearch_status = ''
+                vm.memberSearch_status = ''                
               })
               .catch(function (error) {
+                  vm.memberSearch_status = ''  
+                  vm.showMemberInput = false
               })
             }
         },
         selectMember: function(id,first_name,last_name) {
-          this.selectedMember = id
-          this.memberSearch_status =  first_name + ' ' + last_name + ' selected'
+        
+          this.selectedMember = id          
+          this.memberSearch =  first_name + ' ' + last_name 
+          this.memberSearch_status = ''
           this.showMemberInput = false
         },
         //check if add tithe form is correct
         addTitheFormOK: function(){
+            this.added_tithe = []
             this.tithe_member_error = []
             this.tithe_amount_error = []
             if (this.tithe_narration.length < 1){                    
-                    this.tithe_narration = " none given"
+                    this.tithe_narration = "none given"
             }   
             if (this.selectedMember == null){                
                 this.tithe_member_error.push("No member selected, select one")
@@ -760,6 +775,8 @@ export default {
         },
         addTithe: function(){
             if (this.addTitheFormOK()){
+                this.enable_add_tithe_button = false
+                this.add_tithe_button_text = 'adding tithe...'                
                 this.$http({
                         method: 'post',
                         url: this.$BASE_URL + '/api/finance/add-tithe-for-member/',
@@ -769,14 +786,27 @@ export default {
                                 recording_member_id: this.$session.get('member_id'),                             
                                 amount: this.tithe_amount                                      
                         }
-                        }).then(response => {
-                               this.added_tithe.push(response.data)                                                                 
+                        }).then(response => {                             
+                               this.added_tithe.push(response.data)                                                                                                
                                this.selectedMember = null,
                                this.tithe_narration = '',
                                this.tithe_amount = ''                        
+                               this.enable_add_tithe_button = true
+                               this.add_tithe_button_text = '+ add tithe '
+                               this.memberSearch = ''       
+                               alert("tithe of amount " + response.data.amount + "\n"
+                                      + "added for " + response.data.member.member.first_name)                     
                         })
                         .catch((err) => {
-                                
+                               this.add_tithe_errors.push('oops, an error occured \n you may be disconnected ,check your connection and try again')
+                                                            
+                        })
+                        .finally( function(){
+                            console.log("reached function")
+                            if (this.added_tithe.length > 1){
+                                alert("tithe of amount " + response.data.amount + "\n"
+                                      + "added for " + response.data.member.member.first_name)
+                            }
                         })
             }
         },
