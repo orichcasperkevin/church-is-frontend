@@ -18,6 +18,10 @@
                                         <img style="width: 20%; height: auto" src="@/assets/icons/icons8-receipt-filled-50.png">
                                         expenditure  
                                 </a>  
+                                <router-link class="action-list list-group-item list-group-item-action border-0" id="v-pills-expenditure-tab" :to="{name: 'projectList'}">
+                                    <img style="width: 20%; height: auto" src="@/assets/icons/icons8-group-of-projects-filled-50.png">
+                                    projects  
+                                </router-link>
                         </div>
                         <div style="padding:40px 0px 20px 0px">                                                               
                             <div class="home-menu-item">

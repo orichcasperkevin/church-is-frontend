@@ -16,28 +16,13 @@
                   <router-link class="nav-link" :to="{name: 'groupsLanding'}"><span class="navButton">groups</span></router-link> 
               </li>
 
-                <li class="nav-item">
-                    <router-link class="nav-link" :to="{name: 'events'}"><span class="navButton">events</span></router-link> 
-                </li>
-   
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  finances
-                </a>
-                <div class="dropdown-menu" style="padding: 5px 5px" aria-labelledby="navbarDropdownMenuLink">
-                    
-                    
-                    <router-link class="dropdown-item" :to="{name: 'projectList'}">                      
-                        <img style="width: 20%; height: auto" src="@/assets/icons/icons8-group-of-projects-filled-50.png">
-                        projects
-                    </router-link>
-                    <router-link class="dropdown-item" :to="{name: 'generalFinance'}">
-                        <img style="width: 20%; height: auto" src="@/assets/icons/icons8-expensive-filled-50.png">
-                        finances
-                    </router-link>                                         
-                 
-                </div>
+              <li class="nav-item">
+                  <router-link class="nav-link" :to="{name: 'events'}"><span class="navButton">events</span></router-link> 
+              </li>
+              <li class="nav-item">
+                <router-link class="nav-link" :to="{name: 'generalFinance'}"><span class="navButton">finances</span></router-link> 
             </li>
+   
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   website
