@@ -3,7 +3,8 @@
         <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><span class="backButton"><router-link style="text-decoration: none" :to="{name: 'Home'}">Home</router-link></span> 
-                        <li class="breadcrumb-item"><span class="backButton"><router-link style="text-decoration: none" :to="{name: 'projectList'}">projects</router-link></span> 
+                    <li class="breadcrumb-item"><span class="backButton"><router-link style="text-decoration: none" :to="{name: 'generalFinance'}">finances</router-link></span>
+                    <li class="breadcrumb-item"><span class="backButton"><router-link style="text-decoration: none" :to="{name: 'projectList'}">projects</router-link></span> 
                     <li class="breadcrumb-item active" aria-current="page"><span v-for = "data in context.response">{{data.name}}</span></li>
                 </ol>
         </nav>
@@ -307,19 +308,16 @@
                                                         <label class="col-3 "><b>due date</b></label>
                                                         <div class="col-8">
                                                             <div class="row">
-                                                                    <span class="col">
-                                                                            <label ><b>year :</b></label>
-                                                                            <input type="number" class="form-control" placeholder="YYYY" v-model="pledge_due_year">
-                                                                    </span>
-                                                                    <span class="col">
-                                                                            <label ><b>month :</b></label>
-                                                                            <input type="number" class="form-control" placeholder="MM" v-model="pledge_due_month">
-                                                                    </span>
-                                                                    <span class="col">
-                                                                            <label ><b>day :</b></label>
-                                                                            <input type="number" class="form-control" placeholder="DD" v-model="pledge_due_day">
-                                                                    </span> 
-                                                            </div>                                                           
+                                                                <div class="input-group form-group col-8" style="padding: 0px" >
+                                                                        <input type="date" name="bday" max="3000-12-31" 
+                                                                               min="1000-01-01" class="form-control" v-model="pledge_due_date">                                                                                                                      
+                                                                </div>
+                                                            </div>   
+                                                            <p v-if="pledge_date_errors.length">
+                                                                <ul>
+                                                                        <small><li v-for="error in pledge_date_errors"><p class="text-danger">{{ error }}</p></li></small>
+                                                                </ul>
+                                                            </p>                                                        
                                                         </div>
                                                 </div>                                                  
                                             <hr/>
@@ -327,6 +325,11 @@
                                                     <label class="col-3"><b>amount:</b></label>                                                                                                      
                                                     <input type="number" class=" col-3 form-control" placeholder="amount" v-model="pledge_amount">                                                    
                                                     <div class="col-6 text-success" v-if ="pledge_amount > 0"><h3>KSh {{humanize(pledge_amount)}}</h3></div> 
+                                                    <p v-if="pledge_amount_errors.length">
+                                                        <ul>
+                                                                <small><li v-for="error in pledge_amount_errors"><p class="text-danger">{{ error }}</p></li></small>
+                                                        </ul>
+                                                    </p>
                                             </div>                                                                                   
                                     </form>
                             </div>
@@ -456,10 +459,9 @@ export default {
         //add pledge 
             add_pledge_button_text: '+ addd pledge',
             enable_add_pledge_button: true,
-            pledge_amount: null,
-            pledge_due_year: '',pledge_due_month: '',pledge_due_day: '',
-            pledge_date: '',
-            pledge_amount_errrors: [],
+            pledge_amount: null,        
+            pledge_due_date: '',
+            pledge_amount_errors: [],
             selected_member_errors: [],
             pledge_date_errors: []
 
@@ -650,35 +652,62 @@ export default {
 
                 this.pledge_amount_errrors = []
                 this.selected_member_errors = []
-                this.pledge_date_errors = []
-
-                this.pledge_date = this.pledge_due_year
-                                        + '-'
-                                        + this.pledge_due_month
-                                        + '-'
-                                        + this.pledge_due_day   
+                this.pledge_date_errors = []   
+                this.pledge_amount_errors = []
 
                 if ((this.pledge_amount != null 
                         || this.pledge_amount > 0)
-                        && this.selectedMember != null
-                        && this.pledge_date.length == 10){
+                        && (this.selectedMember != null
+                        || this.selectedMember != 0)
+                        && this.pledge_due_date.length == 10){
                                 return true
                         }   
+                if (   this.selectedMember == null
+                        || this.selectedMember == 0){
+                                this.selected_member_errors.push("select a member")
+                                return false
+                }       
+                if (this.pledge_due_date.length == 0){
+                        this.pledge_date_errors.push("date input required") 
+                        return false
+                }          
+                if (this.pledge_due_date.length != 10){
+                        this.pledge_date_errors.push("incorrect date use YYYY-MM-DD format")
+                        return false
+                }                                       
                 if (this.pledge_amount < 1
                         || this.pledge_amount == null){
-                        this.pledge_amount_errors.push("pledge amount required")
-                        }
-                if (this.selected_member == null){
-                        this.selected_member_errors.push("select a member")
-                }
-                if (this.pledge_date.length != 10){
-                        this.pledge_date_errors.push("incorrect date use YYYY-MM-DD format")
+                                this.pledge_amount_errors.push("pledge amount required")
+                                return false
                 }
         },
         addPledge: function(){
-                console.log("entered function")
                 if (this.pledgeFormOkay()){
-                        console.log("finished")
+                        if (! this.non_member){
+                                this.$http({
+                                        method: 'post',
+                                        url: this.$BASE_URL + '/api/projects/add-pledge-to-project/',
+                                        data: {
+                                                project_id: this.$route.params.id,
+                                                member_id: this.selectedMember,
+                                                recording_member_id: this.$session.get('member_id'),                             
+                                                amount: this.pledge_amount,
+                                                date: this.pledge_due_date                                      
+                                        }
+                                        }).then(response => {                                                                                                                                                                     
+                                                this.selectedMember = null,                                                
+                                                this.pledge_amount = null                        
+                                                this.enable_add_pledge_button = true                                                
+                                                this.memberSearch = ''       
+                                                alert("pledge of amount " + response.data.amount + "\n"
+                                                        + "added for " + response.data.member.member.first_name)                     
+                                        })
+                                        .catch((err) => {
+                                                alert("an error occured while attempting to add pledge. \n"
+                                                        + "check your connection and try again")
+                                                                        
+                                        })
+                        }
                 }
         }
     }

@@ -793,13 +793,6 @@ export default {
                                this.add_tithe_errors.push('oops, an error occured \n you may be disconnected ,check your connection and try again')
                                                             
                         })
-                        .finally( function(){
-                            console.log("reached function")
-                            if (this.added_tithe.length > 1){
-                                alert("tithe of amount " + response.data.amount + "\n"
-                                      + "added for " + response.data.member.member.first_name)
-                            }
-                        })
             }
         },
         //validate offering form
