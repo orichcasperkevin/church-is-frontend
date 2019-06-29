@@ -368,7 +368,7 @@
                                                             <table class="table border-0" >
                                                                 <tbody>
                                                                 <tr class="searchedItem border-0" v-for="data in found_members.response">
-                                                                    <a href="#" style="text-decoration: none" v-on:click="selectMember(data.id,data.member.first_name,data.member.last_name)"> 
+                                                                    <a href="#" style="text-decoration: none" v-on:click="selectMember(data.member.id,data.member.first_name,data.member.last_name)"> 
                                                                     <td class="border-0">
                                                                     
                                                                         <img v-if = "data.gender == 'M'" style = "height: 32px "src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
@@ -475,7 +475,7 @@ export default {
         memberSearch: function () {
             if (this.memberSearch.length > 0){
                 this.showMemberInput = true
-                this.memberSearch_status = 'typing...'
+                this.memberSearch_status = 'searching...'
                 this.debouncedGetAnswer()
             }else{
                 this.memberSearch_status = ''
@@ -579,19 +579,22 @@ export default {
                 vm.memberSearch_status = ''
               })
               .catch(function (error) {
+                vm.memberSearch_status = ''  
+                vm.showMemberInput = false
               })
             }
         },
         selectMember: function(id,first_name,last_name) {
-          this.selectedMember = id
-          this.memberSearch_status = first_name + ' ' + last_name + ' selected'
+          this.selectedMember = id          
+          this.memberSearch =  first_name + ' ' + last_name 
+          this.memberSearch_status = ''
           this.showMemberInput = false
         },
         //add contribution
         addContribution: function(){
                 if (this.non_member){
                         this.enable_add_project_button = false
-                        this.add_contribution_button_text = 'adding contribution...'            
+                        this.add_contribution_button_text = '+ add contribution'            
                         this.$http({
                         method: 'post',
                         url: this.$BASE_URL + '/api/projects/add-non-member-contribution-to-project/',
@@ -606,11 +609,15 @@ export default {
                         }).then(response => {
                                this.added_contribution.push(response.data)     
                                this.name_if_not_member = ''
-                               this.phone_number = '',                                                                                         
-                               this.add_contribution_button_text = 'contribution added'                        
+                               this.phone_number = ''
+                               this.contribution_amount = null                                                                                                                       
+                               this.add_contribution_button_text = '+ add contribution'  
+                               this.enable_add_button = false  
+                               alert("contribution succesfully added")
+
                         })
                         .catch((err) => {
-                                this.add_contribution_button_text = 'failed'
+                                alert("an error has occured")
                         })
                 }
                 if (! this.non_member){                   
@@ -628,13 +635,14 @@ export default {
                         }
                         }).then(response => {                                
                                this.memberSearch = ''
-                               this.amount = null
+                               this.contribution_amount = null
                                this.added_contribution.push(response.data)                                 
-                               this.add_contribution_button_text = '+ contribution added'
+                               this.add_contribution_button_text = '+ add contribution'
                                this.enable_add_button = false  
+                               alert("contribution added")
                         })
                         .catch((err) => {
-                                this.add_contribution_button_text = 'failed'
+                                alert("an error has occured.")
                         })    
                 }
         },
