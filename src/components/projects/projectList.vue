@@ -98,21 +98,9 @@
                                         <div class="form-group">
                                                 <div class="row">
                                                         <label class="col-3 "><b>start</b></label>
-                                                        <div class="col-8">
-                                                            <div class="row">
-                                                                    <span class="col">
-                                                                            <label ><b>year :</b></label>
-                                                                            <input type="number" class="form-control" placeholder="YYYY" v-model="start_year">
-                                                                    </span>
-                                                                    <span class="col">
-                                                                            <label ><b>month :</b></label>
-                                                                            <input type="number" class="form-control" placeholder="MM" v-model="start_month">
-                                                                    </span>
-                                                                    <span class="col">
-                                                                            <label ><b>day :</b></label>
-                                                                            <input type="number" class="form-control" placeholder="DD" v-model="start_day">
-                                                                    </span> 
-                                                            </div>                                                           
+                                                        <div class="input-group form-group col-5" style="padding: 0px" >
+                                                            <input type="date" name="bday" max="3000-12-31" 
+                                                                   min="1000-01-01" class="form-control" v-model="start_date">                                                                                                                      
                                                         </div>
                                                 </div>
                                         </div>
@@ -120,21 +108,9 @@
                                         <div class="form-group">
                                                 <div class="row">
                                                         <label class="col-3 "><b>end</b></label>
-                                                        <div class="col-8">
-                                                            <div class="row">
-                                                                    <span class="col">
-                                                                            <label ><b>year :</b></label>
-                                                                            <input type="number" class="form-control" placeholder="YYYY" v-model="ending_year">
-                                                                    </span>
-                                                                    <span class="col">
-                                                                            <label ><b>month :</b></label>
-                                                                            <input type="number" class="form-control" placeholder="MM" v-model="ending_month">
-                                                                    </span>
-                                                                    <span class="col">
-                                                                            <label ><b>day :</b></label>
-                                                                            <input type="number" class="form-control" placeholder="DD" v-model="ending_day">
-                                                                    </span> 
-                                                            </div>                                                           
+                                                        <div class="input-group form-group col-5" style="padding: 0px" >
+                                                            <input type="date" name="bday" max="3000-12-31" 
+                                                                   min="1000-01-01" class="form-control" v-model="ending_date">                                                                                                                      
                                                         </div>
                                                 </div>
                                         </div>
@@ -209,7 +185,7 @@ export default {
                     this.enable_add_project_button = true
                 }                
             },
-            start_date: function(){                      
+            start_date: function(){                                      
                 if (this.project_name.length > 0                    
                      && this.project_description.length > 0
                      && this.start_date.length > 0
@@ -229,7 +205,7 @@ export default {
                     this.enable_add_project_button = true
                 }                
             },
-            ending_date: function(){                      
+            ending_date: function(){                                  
                 if (this.project_name.length > 0                    
                      && this.project_description.length > 0
                      && this.start_date.length > 0
@@ -238,51 +214,6 @@ export default {
 
                     this.enable_add_project_button = true
                 }                
-            },
-            //start date
-            start_year: function(){
-                if (this.start_year.length > 0 
-                     && this.start_month.length > 0 
-                     && this.start_date.length > 0){
-                    this.start_date = this.start_year + '-' + this.start_month + '-' + this.start_day
-                }
-            },
-            start_month: function(){
-                if (this.start_year.length > 0 
-                     && this.start_month.length > 0 
-                     && this.start_date.length > 0){
-                    this.start_date = this.start_year + '-' + this.start_month + '-' + this.start_day
-                }
-            },
-            start_day: function(){
-                if (this.start_year.length > 0 
-                     && this.start_month.length > 0 
-                     && this.start_day.length > 0){
-                    this.start_date = this.start_year + '-' + this.start_month + '-' + this.start_day
-                    console.log(this.start_date)
-                }
-            },
-        //ending year
-            ending_year: function(){                    
-                if (this.ending_year.length > 0 
-                     && this.ending_month.length > 0 
-                     && this.ending_day.length > 0){
-                    this.ending_date = this.ending_year + '-' + this.ending_month + '-' + this.ending_day
-                }
-            },
-            ending_month: function(){                    
-                if (this.ending_year.length > 0 
-                     && this.ending_month.length > 0 
-                     && this.ending_day.length > 0){
-                    this.ending_date = this.ending_year + '-' + this.ending_month + '-' + this.ending_day
-                }
-            },
-            ending_day: function(){                                        
-                if (this.ending_year.length > 0 
-                     && this.ending_month.length > 0 
-                     && this.ending_day.length > 0){
-                    this.ending_date = this.ending_year + '-' + this.ending_month + '-' + this.ending_day                    
-                }
             }
         },
     methods: {
@@ -324,13 +255,10 @@ export default {
                         this.project_name = ''
                         this.project_description = ''
                         this.amount = ''                        
-                        this.start_day = ''
-                        this.start_month = ''
-                        this.start_year = ''
-                        this.ending_year = ''
-                        this.ending_month = ''
-                        this.ending_day = ''                        
-                        this.add_project_button_text = '+ add project'                    
+                        this.start_date = ''
+                        this.ending_date = ''                      
+                        this.add_project_button_text = '+ add project'
+                        alert("project added succesfully")                    
                     })
                     .catch((err) => {
                         this.add_project_button_text = 'failed, check date'
