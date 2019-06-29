@@ -407,27 +407,15 @@
                                             <div class="form-group">
                                                     <div class="row">
                                                             <label class="col-3 "><b>date</b></label>
-                                                            <div class="col-8">
-                                                                <div class="row">
-                                                                        <span class="col">
-                                                                                <label ><b>year :</b></label>
-                                                                                <input type="number" class="form-control" placeholder="YYYY" v-model="offering_year">
-                                                                        </span>
-                                                                        <span class="col">
-                                                                                <label ><b>month :</b></label>
-                                                                                <input type="number" class="form-control" placeholder="MM" v-model="offering_month">
-                                                                        </span>
-                                                                        <span class="col">
-                                                                                <label ><b>day :</b></label>
-                                                                                <input type="number" class="form-control" placeholder="DD" v-model="offering_day">
-                                                                        </span> 
-                                                                </div>  
-                                                                <p v-if="offering_date_errors.length">
-                                                                        <ul>
-                                                                                <small><li v-for="error in offering_date_errors"><p class="text-danger">{{ error }}</p></li></small>
-                                                                        </ul>
-                                                                    </p>                                                         
+                                                            <div class="input-group form-group col-5" style="padding: 0px" >
+                                                                <input type="date" name="bday" max="3000-12-31" 
+                                                                       min="1000-01-01" class="form-control" v-model="offering_date">                                                                                                                      
                                                             </div>
+                                                            <p v-if="offering_date_errors.length">
+                                                                <ul>
+                                                                        <small><li v-for="error in offering_date_errors"><p class="text-danger">{{ error }}</p></li></small>
+                                                                </ul>
+                                                            </p>
                                                     </div>
                                             </div>
                                             <hr/>
@@ -811,17 +799,11 @@ export default {
             }
         },
         //validate offering form
-        addOfferingFormOK: function(){
-
+        addOfferingFormOK: function(){                     
             this.offering_amount_errors = []
             this.selected_member_errors = []
+            this.offering_date_errors = []
             this.name_if_not_member_errors = []
-
-            this.offering_date = this.offering_year.toString()
-                                + '-' 
-                                + this.offering_month.toString()
-                                + '-'
-                                + this.offering_day
 
             if (this.offering_narration.length < 1){
                 this.offering_narration = "none given"
@@ -831,8 +813,10 @@ export default {
                     this.phone_number = "none given"
                 }
             if (! this.non_member
-                && this.selectedMember != null
-                && this.offering_amount > 0){
+                && (this.selectedMember != null
+                &&  this.selectedMember != '')
+                && this.offering_date.length == 10
+                && this.offering_amount > 0){                 
                     return true
                 }
             if (this.non_member
@@ -843,9 +827,10 @@ export default {
             if (this.offering_amount < 1){
                 this.offering_amount_errors.push("enter an amount")
                 return false
-            }
+            }     
             if (! this.non_member
-                && this.selectedMember == null){
+                && (this.selectedMember == null
+                || this.selectedMember == '')){
                 this.selected_member_errors.push("select member, none selected")
                 return false
             }
@@ -853,7 +838,11 @@ export default {
                 && this.name_if_not_member.length < 1){
                     this.name_if_not_member_errors.push("name required")
                     return false
-                }
+                }     
+            if (this.offering_date.length < 1){
+                this.offering_date_errors.push("date input required")
+                return false
+            }
             if (this.offering_date.length != 10){
                 this.offering_date_errors.push("incorrect date , use format YYYY-MM-DD")
                 return false
@@ -863,7 +852,7 @@ export default {
         addOffering: function(){
             if (this.addOfferingFormOK()){
                 if (this.non_member){
-                    this.selectedMember = null
+                    this.selectedMember = null                
                 }
                 if (! this.non_member){
                     this.name_if_not_member = null
@@ -882,10 +871,11 @@ export default {
                         }
                         }).then(response => {
                                this.added_offering.push(response.data)
+                               this.offering_amount = null
+                               this.offering_narration = null
                                this.name_if_not_member = ''
-                               this.offering_day = ''
-                               this.offering_month = ''
-                               this.offering_year = ''                      
+                               this.offering_date = ''
+                               this.memberSearch = ''                      
                         })
                         .catch((err) => {
                                 

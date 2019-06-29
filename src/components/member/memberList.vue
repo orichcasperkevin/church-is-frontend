@@ -300,7 +300,7 @@ export default {
                     method: 'post',
                     url: this.$BASE_URL + '/api/sms/add-sms/',
                     data: {
-                      sending_member_id: 2 ,
+                      sending_member_id: this.$session.get('member_id'),
                       app: "members-admin",
                       message: this.message,
                       website: true,
