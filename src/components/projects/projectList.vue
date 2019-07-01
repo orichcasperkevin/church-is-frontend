@@ -59,6 +59,11 @@
                                     <span class="badge badge-pill badge-danger">{{data.percentage_funded}} %</span>
                                 </div>
                             </td>
+                            <td>
+                                    <router-link class="text-muted" style="text-decoration: none;"  :to="`/projectDetail/`+ data.id + `/`">                                                         
+                                        >
+                                    </router-link>
+                                </td> 
                             </tr>             
                         </tbody>
                     </table>

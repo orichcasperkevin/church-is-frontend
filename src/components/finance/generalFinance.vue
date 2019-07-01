@@ -8,7 +8,7 @@
         </nav>
         <div class = "container">
             <div class = "row">
-                <div class = "col-12 col-sm-10 col-md-8 col-lg-2">
+                <div class="filters col-12 col-sm-8 col-md-8 col-lg-2" style="padding: 3px 3px 3px 3px">
                         <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                                 <a class="action-list list-group-item list-group-item-action border-0 active" id="v-pills-income-tab" data-toggle="pill" href="#v-pills-income" role="tab" aria-controls="v-pills-income" aria-selected="true">
                                         <img style="width: 20%; height: auto" src="@/assets/icons/icons8-request-money-filled-50.png">
@@ -22,28 +22,7 @@
                                     <img style="width: 20%; height: auto" src="@/assets/icons/icons8-group-of-projects-filled-50.png">
                                     projects  
                                 </router-link>
-                        </div>
-                        <div style="padding:40px 0px 20px 0px">                                                               
-                            <div class="home-menu-item">
-                                    <div class="row" v-if = "tithes_selected">
-                                            <p class="breadcrumb-item active" ><b>tithe totals:</b></p>
-                                            <p class="card-text" style="padding: 5px"><small class="text-muted">this month-</small> <span class="badge badge-pill badge-info">{{tithe_stats.response.total_in_tithe_this_month}}</span></p>
-                                            <p class="card-text" style="padding: 5px"><small class="text-muted">this year-</small> <span class="badge badge-pill badge-success">{{tithe_stats.response.total_in_tithe_this_year}}</span></p>
-                                    </div>
-                                    
-                                    <div class="row" v-if = "offerings_selected">
-                                            <p class="breadcrumb-item active"><b>offering totals:</b></p>
-                                            <p class="card-text" style="padding: 5px"><small class="text-muted">this month-</small> <span class="badge badge-pill badge-info">{{offering_stats.response.total_in_offerings_this_month}}</span></p>
-                                            <p class="card-text" style="padding: 5px"><small class="text-muted">this year-</small> <span class="badge badge-pill badge-success">{{offering_stats.response.total_in_offerings_this_year}}</span></p>
-                                    </div> 
-                                    
-                                    <div class="row" v-if = "any_other_selected">
-                                            <p class="breadcrumb-item active"><b>others totals:</b></p>
-                                            <p class="card-text" style="padding: 5px"><small class="text-muted">this month-</small> <span class="badge badge-pill badge-info">{{income_stats.response.total_this_month}}</span></p>
-                                            <p class="card-text" style="padding: 5px"><small class="text-muted">this year-</small> <span class="badge badge-pill badge-success">{{income_stats.response.total_this_year}}</span></p>
-                                    </div>                                   
                             </div>
-                        </div>
                 </div>
                 <div class = "col">
                     <div class="tab-content" id="v-pills-tabContent">
@@ -72,7 +51,23 @@
                                       </div>                                                       
                                 <div class="tab-content" id="pills-tabContent">
                                     <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">                                          
-                                            <h3>tithes</h3>                                
+                                            <h3>tithes</h3>                                            
+                                            <div class="home-menu-item">
+                                                    <div class="row" v-if = "tithes_selected"> 
+                                                            <div class=" col-6 card-text" style=" padding: 5px">
+                                                                    <small class="text-muted">total this month-</small>                                                                
+                                                                    <h3 class="text-info">KSh {{humanize(tithe_stats.response.total_in_tithe_this_month)}}</h3>
+                                                            </div>    
+                                                            <div class=" col-6 card-text" style=" padding: 5px">
+                                                                    <small class="text-muted">total this year-</small>                                                                
+                                                                    <h3 class="text-info">KSh {{humanize(tithe_stats.response.total_in_tithe_this_year)}}</h3>
+                                                            </div>                                                                                                                 
+                                                    </div>                                  
+                                            </div> 
+                                            <hr/>
+                                            <p>
+                                                <span class="badge badge-pill badge-info">{{foundTithes}}</span> entries found
+                                            </p>                             
                                             <div>                                                
                                                 <table class="table">
                                                     <thead>
@@ -98,7 +93,24 @@
                                     </div>
                                     <div class="tab-pane fade" id="pills-offerings" role="tabpanel" aria-labelledby="pills-offerings-tab">                                                                                  
                                             <div v-if = "offerings_selected">
-                                                <h3 class="breadcrumb-item active">offerings</h3>
+                                                <h3 >offerings</h3>
+                                                <div class="home-menu-item">
+
+                                                        <div class="row" v-if = "offerings_selected">
+                                                                <div class=" col-6 card-text" style=" padding: 5px">
+                                                                        <small class="text-muted">total this month-</small>                                                                
+                                                                        <h3 class="text-info">KSh {{humanize(offering_stats.response.total_in_offerings_this_month)}}</h3>
+                                                                </div>                                                                
+                                                                <div class=" col-6 card-text" style=" padding: 5px">
+                                                                        <small class="text-muted">total this year-</small>                                                                
+                                                                        <h3 class="text-info">KSh {{humanize(offering_stats.response.total_in_offerings_this_year)}}</h3>
+                                                                </div>
+                                                        </div>                                                                                      
+                                                </div>
+                                                <hr/>
+                                                <p class="col-8">
+                                                        <span class="badge badge-pill badge-info">{{foundOfferings}}</span> entries found
+                                                </p>
                                                 <table class="table">
                                                     <thead>
                                                         <tr>
@@ -125,6 +137,23 @@
                                     <div class="tab-pane fade" id="pills-anyOther" role="tabpanel" aria-labelledby="pills-anyOther-tab">                                        
                                             <div v-if = "any_other_selected">
                                                     <h3 class="breadcrumb-item active">others</h3>
+                                                    <div class="home-menu-item">
+                                                        
+                                                            <div class="row" v-if = "any_other_selected">
+                                                                    <div class=" col-6 card-text" style=" padding: 5px">
+                                                                            <small class="text-muted">this month</small>                                                                
+                                                                            <h3 class="text-info">KSh {{humanize(income_stats.response.total_this_month)}}</h3>
+                                                                    </div>  
+                                                                    <div class=" col-6 card-text" style=" padding: 5px">
+                                                                            <small class="text-muted">total this year</small>                                                                
+                                                                            <h3 class="text-info">KSh {{humanize(income_stats.response.total_this_year)}}</h3>
+                                                                    </div>                                                                  
+                                                            </div>                                   
+                                                    </div>
+                                                    <hr/>
+                                                    <p class="col-8">
+                                                            <span class="badge badge-pill badge-info">{{foundIncomes}}</span> types found
+                                                    </p>
                                                     <table class="table">
                                                         <thead>
                                                             <tr>
@@ -136,10 +165,18 @@
                                                         </thead>
                                                         <tbody>
                                                             <tr v-for = "data in incomes.response">
-                                                                <td>{{data.type_name}}</td>                                                               
+                                                                <td>
+                                                                    <router-link class="text-secondary" style="text-decoration: none;"  :to="`/income/`+ data.id + `/`">                                                         
+                                                                        {{data.type_name}}
+                                                                    </router-link>
+                                                                </td>                                                               
                                                                 <td><p class="text-info">{{humanize(data.total_this_month)}}</p></td>
                                                                 <td><p class="text-secondary">{{humanize(data.total_this_year)}}</p></td>                                                          
-                                                                <td><a href="# " style="text-decoration: none"><h3 class="text-muted">></h3></a></td>
+                                                                <td>
+                                                                    <router-link class="text-muted" style="text-decoration: none;"  :to="`/income/`+ data.id + `/`">                                                         
+                                                                        >
+                                                                    </router-link>
+                                                                </td>                                                                
                                                             </tr>
                                                         </tbody>
                                                     </table>
@@ -164,9 +201,6 @@
                             </button>
                             <div class="dropdown-menu border-success" aria-labelledby="dropdownMenuReference">
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addOffering"><b>+</b> add offering</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addIncome"><b>+</b> add income</a>                                                                
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addIncomeType"><b>+</b> add a type of income</a>
                             </div>
                     </div>
                     <div class="btn-group" style="padding: 0px 0px 25px 10px" v-if = "offerings_selected">
@@ -180,25 +214,19 @@
                             </button>
                             <div class="dropdown-menu border-success" aria-labelledby="dropdownMenuReference">
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addTithe"><b>+</b> add tithe</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addIncome"><b>+</b> add income</a>                                                                
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addIncomeType"><b>+</b> add a type of income</a>
                             </div>
                     </div>
                     <div class="btn-group" style="padding: 0px 0px 25px 10px" v-if = "any_other_selected">
-                            <a href="#" data-toggle="modal" data-target="#addIncome" style="text-decoration: none">
+                            <a href="#" data-toggle="modal" data-target="#addIncomeType" style="text-decoration: none">
                                 <div class="add-button">
-                                    <b>+</b> add income
+                                    <b>+</b> add income type
                                 </div>
                             </a>
                             <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
                                     <span class="sr-only">Toggle Dropdown</span>
                             </button>
                             <div class="dropdown-menu border-success" aria-labelledby="dropdownMenuReference">                            
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addIncomeType"><b>+</b> add a type of income</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addTithe"><b>+</b> add tithe</a>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addOffering"><b>+</b> add offering</a>                                                                
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addIncome"><b>+</b> add income</a>                                                                
                             </div>
                     </div>
                 </div>
@@ -294,7 +322,7 @@
                                     </form>
                             </div>
                             <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="fetchdata()">Close</button>
                             <button type="button" class="btn btn-success" disabled v-if= "! enable_add_tithe_button && add_tithe_button_text != 'adding tithe...'">{{add_tithe_button_text}}</button>
                             <button type="button" class="btn btn-success" v-on:click="addTithe()">{{add_tithe_button_text}}</button>
                             </div>
@@ -430,7 +458,7 @@
                                     </form>
                             </div>
                             <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="getOfferings()">Close</button>
                             <button type="button" class="btn btn-success" v-on:click="addOffering()"><b>+</b> add offering</button>
                             </div>
                         </div>
@@ -554,6 +582,9 @@ export default {
             group: false,
             fetch_data_error: [],
             income_types: null,
+            foundIncomes: 0,
+            foundOfferings: 0,
+            foundTithes: 0,
         //select tabs
             tithes_selected: false,
             offerings_selected: false,
@@ -615,8 +646,7 @@ export default {
             }else{
                 this.memberSearch_status = ''
                 this.found_members = []
-                this.showMemberInput = false
-                this.fetchData()
+                this.showMemberInput = false                
             }
         }
      },
@@ -657,6 +687,8 @@ export default {
             this.$http.get(this.$BASE_URL + '/api/finance/tithe-by-members-this-month/')
                 .then(response => {
                 this.tithes = {"response": response.data } 
+                var array = this.tithes.response
+                this.foundTithes = array.length
                 })
                 .catch((err) => {
                     this.fetch_data_error.push(err)
@@ -695,6 +727,8 @@ export default {
             this.$http.get(this.$BASE_URL + '/api/finance/offerings-by-members-this-month/')
                 .then(response => {
                 this.offerings = {"response": response.data } 
+                var array = this.offerings.response
+                this.foundOfferings = array.length
                 })
                 .catch((err) => {
                     this.fetch_data_error.push(err)
@@ -715,6 +749,8 @@ export default {
             this.$http.get(this.$BASE_URL + '/api/finance/income-type-list/')
                 .then(response => {
                 this.incomes = {"response": response.data } 
+                var array = this.incomes.response
+                this.foundIncomes = array.length
                 })
                 .catch((err) => {
                     this.fetch_data_error.push(err)
@@ -864,7 +900,7 @@ export default {
                                 date: this.offering_date,
                                 anonymous: false,
                                 narration: this.offering_narration,                        
-                                amount: this.offering_amount                                      
+                                amount: this.offering_amount                                                                   
                         }
                         }).then(response => {
                                this.added_offering.push(response.data)
@@ -872,7 +908,8 @@ export default {
                                this.offering_narration = null
                                this.name_if_not_member = ''
                                this.offering_date = ''
-                               this.memberSearch = ''                      
+                               this.memberSearch = ''            
+                               alert("offering succesfully added")          
                         })
                         .catch((err) => {
                                 
@@ -905,7 +942,9 @@ export default {
                         }).then(response => {
                                this.added_income_type.push(response.data)
                                this.income_type_name = '',
-                               this.income_type_description = ''                       
+                               this.income_type_description = '' 
+                               alert("income type succesfully added")  
+                               this.getAnyOther()                    
                         })
                         .catch((err) => {
                                 
@@ -946,7 +985,9 @@ export default {
                             this.added_income.push(response.data)
                             this.income_type = null,
                             this.income_amount = null,
-                            this.income_narration = ''                  
+                            this.income_narration = ''
+                            alert("income successfully added")   
+                            this.getAnyOther()               
                         })
                         .catch((err) => {
                                 

@@ -17,9 +17,6 @@
                         <a class="nav-link list-group-item list-group-item-action border-0" id="pill-groups-tab" data-toggle="pill" href="#pill-groups" role="tab" aria-controls="pill-groups" aria-selected="false" v-on:click = "getMemberGroups()">
                                 <img class="church-is-menu" src="@/assets/icons/icons8-user-groups-filled-50.png"> groups
                         </a>
-                        <a class="nav-link list-group-item list-group-item-action border-0" id="pill-attendance-tab" data-toggle="pill" href="#pill-attendance" role="tab" aria-controls="pill-attendance" aria-selected="false">
-                                <img class="church-is-menu" src="@/assets/icons/icons8-attendance-filled-50 (1).png"> attendance
-                        </a>
                         <a class="nav-link list-group-item list-group-item-action border-0" id="pill-contributions-tab" data-toggle="pill" href="#pill-contributions" role="tab" aria-controls="pill-contributions" aria-selected="false" v-on:click = "getMemberFinances()">
                                 <img class="church-is-menu" src="@/assets/icons/icons8-donate-filled-50.png"> finances
                         </a>
@@ -282,7 +279,10 @@
                         <div class="tab-pane fade" id="pill-attendance" role="tabpanel" aria-labelledby="pill-attendance-tab">
                          attendance
                         </div>
-                        <div class="tab-pane fade" id="pill-contributions" role="tabpanel" aria-labelledby="pill-contributions-tab">
+                        <div class=" tab-pane fade" id="pill-contributions" role="tabpanel" aria-labelledby="pill-contributions-tab">
+                                <div class="row">
+                                <div class="col-2"></div>
+                                <div class="col-8">
                                 <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                                         <li class="nav-item">
                                                 <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">contributions</a>
@@ -297,6 +297,9 @@
                                                 <a class="nav-link" id="pills-offerings-tab" data-toggle="pill" href="#pills-offerings" role="tab" aria-controls="pills-offerings" aria-selected="false">Offerings</a>
                                         </li>
                                 </ul>
+                                </div>
+                                <div class="col-2"></div>
+                                </div>
                                 <div class="tab-content" id="pills-tabContent">
                                         <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" v-if="finances_selected">
                                                         <h3 class="breadcrumb-item active">contributions</h3>

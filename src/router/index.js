@@ -17,6 +17,7 @@ import projectList from "@/components/projects/projectList"
 import projectDetail from "@/components/projects/projectDetail"
 
 import generalFinance from "@/components/finance/generalFinance"
+import income from "@/components/finance/income"
 
 import  dailyVerse from "@/components/daily-verses/dailyVerse"
 
@@ -100,6 +101,11 @@ export default new Router({
       path: '/generalFinance/',
       name: 'generalFinance',
       component: generalFinance
+    },
+    {
+      path: '/income/:id',
+      name: 'income',
+      component: income
     },
     {
       path: '/dailyVerse/',
