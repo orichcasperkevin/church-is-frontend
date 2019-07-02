@@ -33,7 +33,7 @@
                                                                 <span class="sr-only">Toggle Dropdown</span>
                                                         </button>                                                        
                                                 </div>
-                                        </div>
+                                        </div>                                        
                                     </div>
                                     <div class="home-menu-item">
                                                                     

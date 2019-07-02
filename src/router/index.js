@@ -18,11 +18,10 @@ import projectDetail from "@/components/projects/projectDetail"
 
 import generalFinance from "@/components/finance/generalFinance"
 import income from "@/components/finance/income"
+import expenditure from "@/components/finance/expenditure"
 
 import  dailyVerse from "@/components/daily-verses/dailyVerse"
-
 import sermons from "@/components/sermons/sermons"
-
 import services from "@/components/services/services"
 
 import login from "@/components/auth/login"
@@ -106,6 +105,11 @@ export default new Router({
       path: '/income/:id',
       name: 'income',
       component: income
+    },
+    {
+      path: '/expenditure/:id',
+      name: 'expenditure',
+      component: expenditure
     },
     {
       path: '/dailyVerse/',
