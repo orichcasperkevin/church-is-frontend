@@ -72,8 +72,8 @@
                                             </tr>
                                         </tbody>
                                     </table>
-                        </div>
-                                    <!-- add income modal -->
+                          </div>
+                <!-- add income modal -->
                 <div class="modal fade" id="addIncome" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
@@ -203,7 +203,7 @@
                 return false
             }
         },
-        addIncome: function(){           
+            addIncome: function(){           
             if (this.incomeFormOK()){
                 this.$http({                        
                         method: 'post',

@@ -185,7 +185,53 @@
                                 </div>
                         </div>
                         <div class="tab-pane fade show " id="v-pills-expenditure" role="tabpanel" aria-labelledby="v-pills-expenditure-tab">
-                            <p class="text-info"> feature still under development</p>
+                            <div v-if = "expenditures_selected">
+                                <h3 >expenditures</h3>
+                                <hr/>
+                                <div class="home-menu-item">
+                                        <div class="row">
+                                            <div class=" col-6 card-text" style=" padding: 5px">
+                                                <small class="text-muted">total this month-</small>                                                                
+                                                <h3 class="text-info">KSh {{humanize(expenditure_stats.total_this_month)}}</h3>
+                                            </div>                                                                
+                                            <div class=" col-6 card-text" style=" padding: 5px">
+                                                    <small class="text-muted">total this year-</small>                                                                
+                                                    <h3 class="text-info">KSh {{humanize(expenditure_stats.total_this_year)}}</h3>
+                                            </div>
+                                        </div>                                                                                                                                                                                                             
+                                </div>
+                                <hr/>
+                                <p class="col-8">
+                                        <span class="badge badge-pill badge-info">{{found_expenditure_types}}</span> entries found
+                                </p>
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>name</th>
+                                            <th>description</th>        
+                                            <th>total this month</th>
+                                            <th>total this year</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for = "data in expenditure_types.response">                                           
+                                            <td>
+                                                <router-link class="text-muted" style="text-decoration: none;"  :to="`/expenditure/`+ data.id + `/`">                                                         
+                                                    {{data.type_name}}
+                                                </router-link>
+                                            </td>
+                                            <td>{{data.description}}</td>
+                                            <td><p class="text-info">{{humanize(data.total_this_month)}}</p></td>
+                                            <td><p class="text-secondary">{{humanize(data.total_this_year)}}</p></td>                                                          
+                                            <td>
+                                                <router-link class="text-muted" style="text-decoration: none;"  :to="`/expenditure/`+ data.id + `/`">                                                         
+                                                    >
+                                                </router-link>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -229,6 +275,13 @@
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addIncome"><b>+</b> add income</a>                                                                
                             </div>
                     </div>
+                    <div class="btn-group" style="padding: 0px 0px 25px 10px" v-if = "expenditures_selected">
+                        <a href="#" data-toggle="modal" data-target="#addExpenditureType" style="text-decoration: none">
+                            <div class="add-button">
+                                <b>+</b> add expenditure
+                            </div>
+                        </a>                     
+                </div>
                 </div>
             </div>
                 <!-- add tithe modal -->
@@ -521,9 +574,9 @@
                         </div>
                     </div>
                     </div>
-            </div>
-            <!-- add income type modal -->
-            <div class="modal fade" id="addIncomeType" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                </div>
+                <!-- add income type modal -->
+                <div class="modal fade" id="addIncomeType" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -564,7 +617,42 @@
                     </div>
                 </div>
                 </div>
-        </div>
+                </div>
+                <!-- add expenditure type modal -->
+                <div class="modal fade" id="addExpenditureType" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">add expenditure type</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+                        <div class="modal-body">
+                                <form>                                            
+                                        <div class="row form-group">
+                                                <label class="col-3"><b>name:</b></label>
+                                                <input type="text" class=" col-8 form-control" placeholder="give the type a name" v-model="expenditure_type_name">                                                    
+                                                <p v-if="expenditure_type_name_errors.length">
+                                                    <ul>
+                                                            <small><li v-for="error in expenditure_type_name_errors"><p class="text-danger">{{ error }}</p></li></small>
+                                                    </ul>
+                                                </p>
+                                        </div>                                    
+                                        <hr/>   
+                                        <div class="row form-group">
+                                            <label class="col-3"><b>describe:</b></label>
+                                            <textarea type="text" class="col-8 form-control" rows='3' v-model="expenditure_type_description"></textarea>                                                   
+                                        </div>                                                                                
+                                </form>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-success" v-on:click="addExpenditureType()"><b>+</b> add expenditure type</button>
+                        </div>
+                    </div>
+                    </div>
+                </div>
         </div>
     </div>
 </template>
@@ -585,15 +673,20 @@ export default {
             foundIncomes: 0,
             foundOfferings: 0,
             foundTithes: 0,
+            found_expenditure_types: 0,
         //select tabs
             tithes_selected: false,
             offerings_selected: false,
             any_other_selected: false,
+            expenditures_selected: false,
         //get stats data
             offering_stats: null,
             offerings: null,
             income_stats: null,
             incomes: null,
+        //get ependitures
+            expenditure_types: null,
+            expenditure_stats: null,
         //search for member
             memberSearch: '',found_members:[],
             memberSearch_status: '',selectedMember: null,
@@ -628,7 +721,11 @@ export default {
             income_type_errors: [],
             income_amount: null,
             income_amount_errors: [],
-            added_income: []
+            added_income: [],
+        //add income type
+            expenditure_type_name: '',
+            expenditure_type_description: '',
+            expenditure_type_name_errors: []
         }
     },
     created () {
@@ -648,9 +745,8 @@ export default {
                 this.found_members = []
                 this.showMemberInput = false                
             }
-        }
-     },
-     phone_number: function(){
+        },
+        phone_number: function(){
                 if (this.phone_number.isNaN){
                         this.phone_number_errors = []
                         this.phone_number_errors.push(" phone number should be numbers only")
@@ -669,7 +765,8 @@ export default {
                         this.phone_number_errors = []
                         this.phone_number_OK.push(" number OK")
                 }
-        },
+        }
+     },
     methods: {
         //check if member is logged in
         checkLoggedIn() {
@@ -711,12 +808,15 @@ export default {
         getTithes: function(){
             this.offerings_selected = false
             this.any_other_selected = false
+            this.expenditures_selected = false
             this.tithes_selected = true
         },
         getOfferings: function(){
             this.tithes_selected = false
             this.any_other_selected = false
+            this.expenditures_selected = false
             this.offerings_selected = true
+
             this.$http.get(this.$BASE_URL + '/api/finance/offering-stats/')
                 .then(response => {
                 this.offering_stats = {"response": response.data }             
@@ -738,6 +838,7 @@ export default {
         getAnyOther: function(){
             this.tithes_selected = false            
             this.offerings_selected = false
+            this.expenditures_selected = false
             this.any_other_selected = true
             this.$http.get(this.$BASE_URL + '/api/finance/income-stats/')
                 .then(response => {
@@ -751,6 +852,30 @@ export default {
                 this.incomes = {"response": response.data } 
                 var array = this.incomes.response
                 this.foundIncomes = array.length
+                })
+                .catch((err) => {
+                    this.fetch_data_error.push(err)
+                })
+        },
+        getExpenditures: function(){            
+            this.tithes_selected = false            
+            this.offerings_selected = false        
+            this.any_other_selected = false
+            this.expenditures_selected = true
+
+            this.$http.get(this.$BASE_URL + '/api/finance/expenditure-stats/')
+                .then(response => {
+                this.expenditure_stats =  response.data
+                })
+                .catch((err) => {
+                    this.fetch_data_error.push(err)
+                })
+
+            this.$http.get(this.$BASE_URL + '/api/finance/expenditure-type-list/')
+                .then(response => {
+                this.expenditure_types = {"response": response.data } 
+                var array = this.expenditure_types.response
+                this.found_expenditure_types = array.length
                 })
                 .catch((err) => {
                     this.fetch_data_error.push(err)
@@ -993,8 +1118,41 @@ export default {
                                 
                         })
             }
-        }
-        
+        },
+        expenditureTypeFormOK: function(){  
+            this.expenditure_type_name_errors = []
+
+            if (this.expenditure_type_description.length < 1){
+                this.expenditure_type_description = "none given"
+            }        
+            if (this.expenditure_type_name.length > 0){
+                return true
+            }
+            if (this.expenditure_type_name.length < 1){                
+                this.expenditure_type_name_errors.push("name required")
+                return false
+            }
+        },
+        addExpenditureType: function(){        
+            if (this.expenditureTypeFormOK()){
+                this.$http({                        
+                        method: 'post',
+                        url: this.$BASE_URL + '/api/finance/expenditure-type-list/',
+                        data: {
+                                type_name: this.expenditure_type_name,                                
+                                description: this.description_type_description                                                                                            
+                        }
+                        }).then(response => {                              
+                               this.expenditure_type_name = '',
+                               this.expenditure_type_description = '' 
+                               alert("expenditure type succesfully added")  
+                               this.getExpenditures()                    
+                        })
+                        .catch((err) => {
+                                
+                        }) 
+            }
+        },        
     },
 
 }
