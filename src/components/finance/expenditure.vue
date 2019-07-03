@@ -20,7 +20,11 @@
                         </div>
                         <div class="col-9">
                                 <div class="row">
-                                    <div class="col-4"></div>
+                                    <div class="col-4">
+                                        <h3>
+                                            <span v-for="data in expenditure_type.response">{{data.type_name}}</span>
+                                        </h3>
+                                    </div>
                                     <div class="col-4"></div>
                                     <div class="col-4">
                                             <div class="btn-group" style="padding: 0px 0px 25px 10px" >
@@ -223,4 +227,4 @@ export default {
 
 
 <style >
-</styl
+</style>

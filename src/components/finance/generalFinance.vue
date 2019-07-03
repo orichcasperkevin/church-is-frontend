@@ -246,11 +246,11 @@
                                 <span class="sr-only">Toggle Dropdown</span>
                             </button>
                             <div class="dropdown-menu border-success" aria-labelledby="dropdownMenuReference">
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addOffering"><b>+</b> add offering</a>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addOffering" v-on:click="getServiceTypes()"><b>+</b> add offering</a>
                             </div>
                     </div>
                     <div class="btn-group" style="padding: 0px 0px 25px 10px" v-if = "offerings_selected">
-                            <a href="#" data-toggle="modal" data-target="#addOffering" style="text-decoration: none">
+                            <a href="#" data-toggle="modal" data-target="#addOffering" style="text-decoration: none" v-on:click="getServiceTypes()">
                                 <div class="add-button">
                                     <b>+</b> add offering
                                 </div>
@@ -392,18 +392,12 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                             </div>
-                            <div class="modal-body">
-                                    <div class="alert alert-warning alert-dismissible fade show" role="alert" v-if="added_offering.length > 0">
-                                            <strong>offering added successfully</strong> 
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                              <span aria-hidden="true">&times;</span>
-                                            </button>
-                                          </div>
+                            <div class="modal-body">                            
                                     <form>
                                             <div class="row checkbox">
                                                     <div class="col-3"></div>
                                                     <div class="col-8">
-                                                            <label><input type="checkbox" :value= true v-model = "non_member"> offering from non-member </label>                                                            
+                                                            <label><input type="checkbox" :value= true v-model = "non_member"> offering from service </label>                                                            
                                                     </div>                                                    
                                             </div>
                                             <hr/>
@@ -442,41 +436,38 @@
                                             </div>
                                 
                                             <div class=" row form-group" v-if="non_member">
-                                                    <label class="col-3"><b>names:</b></label>
-                                                    <input type="text" class="col-8 form-control" placeholder="enter name of the source of offering" v-model="name_if_not_member">                                        
-                                                    <p v-if="name_if_not_member_errors.length">
-                                                        <ul>
-                                                                <small><li v-for="error in name_if_not_member_errors"><p class="text-danger">{{ error }}</p></li></small>
-                                                        </ul>
-                                                    </p> 
-                                            </div>
-                                            <div class=" row form-group" v-if="non_member">
-                                                    <label class="col-3"><b>phone:</b></label>                                                    
-                                                    <div class="col-8">
-                                                            <div class="row">
-                                                                    <span class="col-4">
-                                                                            <label><b>code :</b></label>
-                                                                            <input class="form-control" type="text" placeholder="+254" v-model = "country_code">
-                                                                    </span>
-                                                                    <span class="col-8">
-                                                                            <label><b>number :</b></label>
-                                                                            <input type="text" class="form-control"  placeholder="712345678" v-model = "phone_number">
-                                                                    </span>
-                                                                    <div style="padding: 5px">
-                                                                        <p v-if="phone_number_errors.length">
-                                                                            <ul>
-                                                                                    <small><li v-for="error in phone_number_errors"><p class="text-danger">{{ error }}</p></li></small>
-                                                                            </ul>
-                                                                            </p>
-                                                                        <p v-if="phone_number_OK.length">
-                                                                            <ul>
-                                                                                    <small><li v-for="error in phone_number_OK"><p class="text-success">{{ error }}</p></li></small>
-                                                                            </ul>
-                                                                        </p>
-                                                                    </div>
-                                                            </div> 
-                                                    </div>                                                                                                                                         
-                                            </div>                                                    
+                                                    <label class="col-3"><b>service type:</b></label>                                                                                                                                   
+                                                <select class="col-8 form-control" v-model="service_type" >
+                                                    <option v-for="data in service_types.response" :value="data.id" >{{data.name}}</option>
+                                                </select>
+                                                <p v-if="service_type_errors.length">
+                                                    <ul>
+                                                            <small><li v-for="error in service_type_errors"><p class="text-danger">{{ error }}</p></li></small>
+                                                    </ul>
+                                                </p>                                                                                                                                          
+                                            </div>  
+                                            <div class="row" v-if="non_member">
+                                                <label class="col-3 "><b>service date</b></label>
+                                                <div class="input-group form-group col-5" style="padding: 0px" >
+                                                    <input type="date" name="bday" max="3000-12-31" 
+                                                           min="1000-01-01" class="form-control" v-model="offering_date">                                                                                                                      
+                                                </div>
+                                                <p v-if="offering_date_errors.length">
+                                                    <ul>
+                                                            <small><li v-for="error in offering_date_errors"><p class="text-danger">{{ error }}</p></li></small>
+                                                    </ul>
+                                                </p>
+                                            </div> 
+                                            <p v-if="found_service.length">
+                                                <ul v-if="found_service.length > 0">
+                                                        <small><li><p class="text-success"> found a service for that date</p></li></small>
+                                                </ul>
+                                            </p>  
+                                            <p v-if="found_service.length == 0">
+                                                <ul >
+                                                        <small><li ><p class="text-danger"> NO service found for that date</p></li></small>
+                                                </ul>
+                                            </p>                                                                                                                                   
                                             <hr/>
                                             <div class="row form-group">
                                                     <label class="col-3"><b>amount:</b></label>
@@ -490,7 +481,7 @@
                                             </div>
                                             <hr/>
                                             <div class="form-group">
-                                                    <div class="row">
+                                                    <div class="row" v-if="! non_member">
                                                             <label class="col-3 "><b>date</b></label>
                                                             <div class="input-group form-group col-5" style="padding: 0px" >
                                                                 <input type="date" name="bday" max="3000-12-31" 
@@ -687,6 +678,8 @@ export default {
         //get ependitures
             expenditure_types: null,
             expenditure_stats: null,
+        //service types
+            service_types: null,
         //search for member
             memberSearch: '',found_members:[],
             memberSearch_status: '',selectedMember: null,
@@ -707,9 +700,11 @@ export default {
             offering_date: '',
             phone_number_errors: [],
             phone_number_OK: [],
+            found_service: [],
             offering_amount_errors: [],selected_member_errors: [],
-            name_if_not_member_errors: [], offering_date_errors: [], 
+            name_if_not_member_errors: [], offering_date_errors: [], service_type_errors: [],
             added_offering: [],
+            service_type: null,
         //add income type
             income_type_name: '',
             income_type_description: '',
@@ -734,18 +729,19 @@ export default {
         this.debouncedGetAnswer = _.debounce(this.getAnswer, 1000)
     },
     watch: {
-    // watch for searching for member
-    memberSearch: function () {
-            if (this.memberSearch.length > 0){
-                this.showMemberInput = true
-                this.memberSearch_status = 'searching...'
-                this.debouncedGetAnswer()
-            }else{
-                this.memberSearch_status = ''
-                this.found_members = []
-                this.showMemberInput = false                
-            }
-        },
+        // watch for searching for member
+        memberSearch: function () {
+                if (this.memberSearch.length > 0){
+                    this.showMemberInput = true
+                    this.memberSearch_status = 'searching...'
+                    this.debouncedGetAnswer()
+                }else{
+                    this.memberSearch_status = ''
+                    this.found_members = []
+                    this.showMemberInput = false                
+                }
+            },
+        //watch for phone number input
         phone_number: function(){
                 if (this.phone_number.isNaN){
                         this.phone_number_errors = []
@@ -765,6 +761,27 @@ export default {
                         this.phone_number_errors = []
                         this.phone_number_OK.push(" number OK")
                 }
+        },
+        // watch for service date and type to determine if there exists a service for that day
+        offering_date: function(){            
+            this.found_service = []
+            this.service_type_errors = []
+            if (this.non_member){                
+                if (this.service_type == null){
+                    this.service_type_errors.push("select a type of service")
+                    return
+                }                           
+                this.checkForService()                              
+            }            
+        },
+        service_type: function(){
+            this.found_service = []
+            if (this.non_member && this.offering_date.length > 0){                
+                if (this.offering_date == null){                    
+                    return
+                }                           
+                this.checkForService()               
+            }
         }
      },
     methods: {
@@ -804,6 +821,17 @@ export default {
                 .catch((err) => {
                     this.fetch_data_error.push(err)
                 })
+        },
+        checkForService: function(){            
+            this.$http.get(this.$BASE_URL + '/api/services/service-on-date/' + this.offering_date +'/of-type/' + this.service_type + '/')
+                    .then(response => {
+                    this.found_service = response.data 
+                    console.log(this.found_service)              
+                    })
+                    .catch((err) => {
+                        this.fetch_data_error.push(err)
+                    })
+                    
         },
         getTithes: function(){
             this.offerings_selected = false
@@ -857,7 +885,7 @@ export default {
                     this.fetch_data_error.push(err)
                 })
         },
-        getExpenditures: function(){            
+        getExpenditures: function(){
             this.tithes_selected = false            
             this.offerings_selected = false        
             this.any_other_selected = false
@@ -879,6 +907,16 @@ export default {
                 })
                 .catch((err) => {
                     this.fetch_data_error.push(err)
+                })
+        },
+        //get service types
+        getServiceTypes: function(){
+            this.$http.get(this.$BASE_URL + '/api/services/service-types/')
+                .then(response => {
+                this.service_types =  {"response":response.data}
+                })
+                .catch((err) => {
+                    this.found_service = []
                 })
         },
         //search for member
@@ -970,16 +1008,17 @@ export default {
                 || this.phone_number_errors.length > 0){
                     this.phone_number = "none given"
                 }
+            if (this.non_member
+                && this.service_type > 0
+                && this.offering_date.length == 10
+                && this.offering_amount > 0){                 
+                    return true
+                }
             if (! this.non_member
                 && (this.selectedMember != null
                 &&  this.selectedMember != '')
                 && this.offering_date.length == 10
                 && this.offering_amount > 0){                 
-                    return true
-                }
-            if (this.non_member
-                && this.name_if_not_member.length > 0
-                && this.offering_amount > 0){
                     return true
                 }
             if (this.offering_amount < 1){
@@ -991,12 +1030,7 @@ export default {
                 || this.selectedMember == '')){
                 this.selected_member_errors.push("select member, none selected")
                 return false
-            }
-            if (this.non_member
-                && this.name_if_not_member.length < 1){
-                    this.name_if_not_member_errors.push("name required")
-                    return false
-                }     
+            }    
             if (this.offering_date.length < 1){
                 this.offering_date_errors.push("date input required")
                 return false
@@ -1007,15 +1041,31 @@ export default {
             }
         },
         //add offerring
-        addOffering: function(){
-            if (this.addOfferingFormOK()){
+        addOffering: function(){           
+            if (this.addOfferingFormOK()){                                
                 if (this.non_member){
-                    this.selectedMember = null                
+                    this.$http({                        
+                        method: 'post',
+                        url: this.$BASE_URL + '/api/finance/add-service-offering/',
+                        data: {
+                                service_type_id: this.service_type,                                
+                                recording_member_id: this.$session.get('member_id'),                                 
+                                date: this.offering_date,                                
+                                narration: this.offering_narration,                        
+                                amount: this.offering_amount                                                                   
+                        }
+                        }).then(response => {                              
+                               this.offering_amount = null
+                               this.offering_narration = null
+                               this.service_type = null
+                               alert("offering succesfully added ")          
+                        })
+                        .catch((err) => {
+                                
+                        })               
                 }
                 if (! this.non_member){
-                    this.name_if_not_member = null
-                }
-                this.$http({                        
+                    this.$http({                        
                         method: 'post',
                         url: this.$BASE_URL + '/api/finance/add-offering/',
                         data: {
@@ -1038,7 +1088,8 @@ export default {
                         })
                         .catch((err) => {
                                 
-                        })  
+                        })
+                }  
             }
         },
         incomeTypeFormOK: function(){  
