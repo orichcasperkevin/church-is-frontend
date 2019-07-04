@@ -178,8 +178,7 @@
                             <label for="exampleFormControlTextarea1">message</label>
                             <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model = "message"></textarea>
                           </div>
-                          <div v-if="sms_status.length > 0">
-                            <p class="text-info">!! </p>
+                          <div v-if="sms_status.length > 0">                            
                             <p class="text-info"> The members will receive your message.</p>
                             <p> check sms status later as it may take a while</p>
                             </div>

@@ -551,9 +551,10 @@ export default {
         '$route': 'fetchdata',
     // search for member
         memberSearch: function () {
-            if (this.memberSearch.length > 0){
+            var array = this.memberSearch.split(" ")
+            if (this.memberSearch.length > 0 && array.length == 1){
                 this.showMemberInput = true
-                this.memberSearch_status = 'searching...'
+                this.memberSearch_status = 'typing...'
                 this.debouncedGetAnswer()
             }else{
                 this.memberSearch_status = ''

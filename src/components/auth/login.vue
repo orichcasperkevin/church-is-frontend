@@ -94,15 +94,7 @@
           this.$session.set('token', response.data.access)
           this.$session.set('username', this.username)
           //get logged in member data
-          this.$http.get(this.$BASE_URL + '/api/members/member/' + this.$session.get('username') + '/')
-            .then(response => {
-              console.log(response.data[0].member.id)
-              this.$session.set('member_id', response.data[0].member.id)
-              console.log("finished")
-            })
-            .catch((err) => {
-              this.fetch_data_error.push(err)
-            })
+          this.getLoggedInMemberData()
           router.push('/');
         })
           .catch((err) => {
@@ -111,6 +103,15 @@
             this.login_error.push("LOGIN ERROR. check your username password combination")
 
           })
+      },
+      getLoggedInMemberData: function(){
+        this.$http.get(this.$BASE_URL + '/api/members/member/' + this.$session.get('username') + '/')
+            .then(response => {              
+              this.$session.set('member_id', response.data[0].member.id)              
+            })
+            .catch((err) => {
+              this.fetch_data_error.push(err)
+            })
       }
     }
   }

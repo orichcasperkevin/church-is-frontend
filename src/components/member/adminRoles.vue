@@ -346,6 +346,8 @@ export default {
                     this.role_name = ''
                     this.role_description = '' 
                     this.add_role_button_text = '+ add role'
+                    alert("role succesfuly added")
+                    this.fetchdata()                    
                 })
                 .catch((err) => {
                     console.log(err)
@@ -364,10 +366,11 @@ export default {
               }).then(response => {
                     this.assigned_roles.push(response.data)
                     this.assign_button_text = "assign role(s)"
-                    this.selected_role = []
+                    this.selected_role = []                    
+                    alert("successfully assigned roles")
+                    this.fetchdata()
                 })
-                .catch((err) => {
-                    console.log(err)
+                .catch((err) => {                    
                 }) 
             }
         }

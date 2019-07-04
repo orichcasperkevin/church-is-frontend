@@ -273,7 +273,8 @@ export default {
     watch: {
     // whenever question changes, this function will run
     memberSearch: function () {
-      if (this.memberSearch.length > 0){
+      var array = this.memberSearch.split(" ")
+      if (this.memberSearch.length > 0 && array.length == 1){
         this.showMemberInput = true
         this.memberSearch_status = 'typing...'
         this.debouncedGetAnswer()
@@ -299,12 +300,14 @@ export default {
                 vm.memberSearch_status = ''
               })
               .catch(function (error) {
+                vm.memberSearch_status = ''  
+                vm.showMemberInput = false
               })
             }
         },
         selectMember: function(id,first_name,last_name) {
           this.selectedMember = id
-          this.memberSearch_status = 'selected ' + first_name + ' ' + last_name
+          this.memberSearch = first_name + ' ' + last_name
           this.showMemberInput = false
         },
         addMemberToGroup: function(){
@@ -325,6 +328,7 @@ export default {
                     this.added_member.push(response.data )   
                     this.memberSearch = ''
                     this.role = ''
+                    alert("member successfully added")
                     })
                     .catch((err) => {
                     this.add_group_error.push(err)

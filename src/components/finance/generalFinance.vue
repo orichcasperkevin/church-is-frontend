@@ -123,10 +123,11 @@
                                                     </thead>
                                                     <tbody>
                                                         <tr v-for = "data in offerings.response">
-                                                            <td v-if = "data.member != null">{{data.member.member.first_name}} {{data.member.member.last_name}}</td>
-                                                            <td v-if = "data.name_if_not_member != null"><span class="text-info">(N.M)</span> {{data.name_if_not_member}}</td>
+                                                            <td v-if = "data.member != null">({{data.member.member.first_name}} {{data.member.member.last_name}})</td>
+                                                            <td v-if = "data.service != null"> {{data.service.type.name}}</td>
                                                             <td><p class="text-success">{{humanize(data.amount)}}</p></td>
-                                                            <td>{{data.date}}</td>
+                                                            <td v-if = "data.member != null">{{data.date}}</td>
+                                                            <td v-if = "data.service != null"> {{data.service.date}}</td>
                                                             <td><p class="text-info">{{humanize(data.total_this_month)}}</p></td>
                                                             <td><p class="text-secondary">{{humanize(data.total_this_year)}}</p></td>                                                          
                                                         </tr>
@@ -436,7 +437,7 @@
                                             </div>
                                 
                                             <div class=" row form-group" v-if="non_member">
-                                                    <label class="col-3"><b>service type:</b></label>                                                                                                                                   
+                                                <label class="col-3"><b>service type:</b></label>                                                                                                                                   
                                                 <select class="col-8 form-control" v-model="service_type" >
                                                     <option v-for="data in service_types.response" :value="data.id" >{{data.name}}</option>
                                                 </select>
@@ -458,12 +459,12 @@
                                                     </ul>
                                                 </p>
                                             </div> 
-                                            <p v-if="found_service.length">
+                                            <p v-if="found_service.length && non_member  ">
                                                 <ul v-if="found_service.length > 0">
                                                         <small><li><p class="text-success"> found a service for that date</p></li></small>
                                                 </ul>
                                             </p>  
-                                            <p v-if="found_service.length == 0">
+                                            <p v-if="found_service.length == 0 && non_member && searched_for_service">
                                                 <ul >
                                                         <small><li ><p class="text-danger"> NO service found for that date</p></li></small>
                                                 </ul>
@@ -700,6 +701,7 @@ export default {
             offering_date: '',
             phone_number_errors: [],
             phone_number_OK: [],
+            searched_for_service: false,
             found_service: [],
             offering_amount_errors: [],selected_member_errors: [],
             name_if_not_member_errors: [], offering_date_errors: [], service_type_errors: [],
@@ -731,9 +733,10 @@ export default {
     watch: {
         // watch for searching for member
         memberSearch: function () {
-                if (this.memberSearch.length > 0){
+                var array = this.memberSearch.split(" ")
+                if (this.memberSearch.length > 0 && array.length == 1){
                     this.showMemberInput = true
-                    this.memberSearch_status = 'searching...'
+                    this.memberSearch_status = 'typing...'
                     this.debouncedGetAnswer()
                 }else{
                     this.memberSearch_status = ''
@@ -763,7 +766,8 @@ export default {
                 }
         },
         // watch for service date and type to determine if there exists a service for that day
-        offering_date: function(){            
+        offering_date: function(){      
+            this.searched_for_service = false      
             this.found_service = []
             this.service_type_errors = []
             if (this.non_member){                
@@ -775,6 +779,7 @@ export default {
             }            
         },
         service_type: function(){
+            this.searched_for_service = false
             this.found_service = []
             if (this.non_member && this.offering_date.length > 0){                
                 if (this.offering_date == null){                    
@@ -824,9 +829,9 @@ export default {
         },
         checkForService: function(){            
             this.$http.get(this.$BASE_URL + '/api/services/service-on-date/' + this.offering_date +'/of-type/' + this.service_type + '/')
-                    .then(response => {
-                    this.found_service = response.data 
-                    console.log(this.found_service)              
+                    .then(response => {                    
+                    this.found_service = response.data                                  
+                    this.searched_for_service = true
                     })
                     .catch((err) => {
                         this.fetch_data_error.push(err)
