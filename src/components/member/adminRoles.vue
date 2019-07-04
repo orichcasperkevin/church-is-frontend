@@ -82,8 +82,12 @@
                                             <tr v-for="data in roles.response">
                                                 <td>
                                                 <span v-for="data2 in roles_for_member.response">                                                                                                                                                            
-                                                    <span v-if =" data2.role.role == data.role"><input multiple class="form-check-input" type="checkbox" :value=data.id v-model="selected_role" disabled ></span>
-                                                    <span v-else><input multiple class="form-check-input" type="checkbox" :value=data.id v-model="selected_role"> </span>
+                                                    <span v-if =" data2.role.role == data.role">
+                                                        <input multiple class="form-check-input" type="checkbox" :value=data.id v-model="selected_role" disabled >
+                                                    </span>
+                                                    <span v-else>
+                                                        <input multiple class="form-check-input" type="checkbox" :value=data.id v-model="selected_role">
+                                                    </span>
                                                 </span>
                                                 <span v-if = "! member_has_roles"><input multiple class="form-check-input" type="checkbox" :value=data.id v-model="selected_role"> </span>
                                                </td>                                                                                           

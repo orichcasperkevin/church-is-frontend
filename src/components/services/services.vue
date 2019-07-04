@@ -112,7 +112,7 @@
                             </div>
                     </div>
                 </div>
-                <!-- add offering -->
+                <!-- add service -->
                 <div class="modal fade" id="addService" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
@@ -125,9 +125,10 @@
                             <div class="modal-body">  
                                 <div class="row form-group">
                                         <label class="col-3"><b>type:</b></label>                                                                                                                                   
-                                        <select class="col-8 form-control" v-model="service_type" >
+                                        <select class="col-6 form-control" v-model="service_type" >
                                             <option v-for="data in service_types.response" :value="data.id" >{{data.name}}</option>
                                         </select>
+                                        <a href=# class="col-2 text-success" data-toggle="modal" data-target="#addServiceType"><h3>+</h3></a>
                                         <p v-if="service_type_errors.length">
                                                 <ul>
                                                         <small><li v-for="error in service_type_errors"><p class="text-danger">{{ error }}</p></li></small>
@@ -205,6 +206,41 @@
                         </div>
                         </div>
                 </div>
+                <!-- add service type -->
+                <div class="modal fade" id="addServiceType" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalCenterTitle">add service type</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                            <div class="modal-body">                                 
+                                    <form>                                            
+                                            <div class="row form-group">
+                                                    <label class="col-3"><b>name:</b></label>
+                                                    <input type="text" class=" col-8 form-control" placeholder="give the type a name" v-model="service_type_name">                                                    
+                                                    <p v-if="service_type_name_errors.length">
+                                                        <ul>
+                                                                <small><li v-for="error in service_type_name_errors"><p class="text-danger">{{ error }}</p></li></small>
+                                                        </ul>
+                                                    </p>
+                                            </div>                                    
+                                            <hr/>   
+                                            <div class="row form-group">
+                                                <label class="col-3"><b>describe:</b></label>
+                                                <textarea type="text" class="col-8 form-control" rows='3' v-model="service_type_description"></textarea>                                                   
+                                            </div>                                                                                
+                                    </form>
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-success" v-on:click="addServiceType()"><b>+</b> add income type</button>
+                            </div>
+                        </div>
+                        </div>
+                        </div>
             </div>
         </div>
     </template>
@@ -228,8 +264,12 @@
                 service_start: null,service_period_errors: [],
                 service_end: null,
                 service_action: null,service_action_errors: [],
-                service_value: null,service_value_errors: []
-
+                service_value: null,service_value_errors: [],
+        //add service type
+                service_type_name: '',
+                service_type_description: '',
+                service_type_name_errors: [],
+                added_income_type: [],
             }
         },
         created () {
@@ -367,7 +407,41 @@
                         .catch((err) => {
                                 
                         })
+            },
+            serviceTypeFormOkay: function(){  
+            this.service_type_name_errors = []
+
+            if (this.service_type_description.length < 1){
+                this.service_type_description = "none given"
+            }        
+            if (this.service_type_name.length > 0){
+                return true
             }
+            if (this.service_type_name.length < 1){                
+                this.service_type_name_errors.push("name required")
+                return false
+            }
+        },
+        addServiceType: function(){        
+            if (this.serviceTypeFormOkay()){
+                this.$http({                        
+                        method: 'post',
+                        url: this.$BASE_URL + '/api/services/service-types/',
+                        data: {
+                                name: this.service_type_name,                                
+                                description: this.service_type_description                                                                                            
+                        }
+                        }).then(response => {                              
+                               this.service_type_name = '',
+                               this.service_type_description = '' 
+                               alert("service type succesfully added")  
+                               this.getServiceTypes()                    
+                        })
+                        .catch((err) => {
+                                
+                        }) 
+            }
+        }
         }
     }
     </script>

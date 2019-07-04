@@ -27,10 +27,7 @@
                         </div>
                         <div class="checkbox">
                                 <label><input type="checkbox" :value= true v-model = "marital_field"> marital status</label>
-                        </div>
-                        <div class="checkbox">
-                                <label><input type="checkbox" :value=true v-model = "roles_field"> roles</label>
-                        </div>
+                        </div>                      
                     </div>  
               </div>
               <div class="col">
@@ -77,10 +74,10 @@
                         <div class="row" style="padding: 5px 60px ">
                                 <div class="checkbox col">
                                         <div class="radio">
-                                                <label><input type="radio" :value = true v-model = "gender_male" > male</label>
+                                                <label><input type="radio" value = "M" v-model = "gender" > male</label>
                                         </div>
                                         <div class="radio">
-                                                 <label><input type="radio" :value = true v-model = "gender_female"> female</label>
+                                                 <label><input type="radio" value = "F" v-model = "gender"> female</label>
                                         </div>
                                         <p v-if="gender_errors.length">
                                         <ul>
@@ -96,20 +93,9 @@
                     <div class="row" style="padding: 5px 60px ">
                         <div class="col">
                         <div class="form-group">
-                                <div class="row">
-                                        <span class="col">
-                                                <label><b>birth year :</b></label>
-                                                <input type="number" class="form-control" v-model="year">
-                                        </span>
-                                        <span class="col">
-                                                <label><b>birth month :</b></label>
-                                                <input type="number" class="form-control" v-model="month">
-                                        </span>
-                                        <span class="col">
-                                                <label><b>birth day :</b></label>
-                                                <input type="number" class="form-control" v-model="day">
-                                        </span>
-                                </div>
+                                <label><b>date of birth :</b></label>
+                                <input type="date" name="bday" max="3000-12-31" 
+                                min="1000-01-01" class="form-control" v-model="d_o_b"> 
                         </div>
                         </div>
                     </div>
@@ -121,35 +107,23 @@
                         <div class="row" style="padding: 5px 60px ">
                                 <div class="col">
                                         <div class="radio">
-                                                <label><input type="radio" name="optradio" checked> single</label>
+                                                <label>
+                                                        <input type="radio" name="optradio" value="S" v-model="marital_status"> single</label>
                                               </div>
                                               <div class="radio">
-                                                <label><input type="radio" name="optradio"> married</label>
+                                                <label><input type="radio" name="optradio" value="M" v-model="marital_status"> married</label>
                                               </div>
                                               <div class="radio">
-                                                <label><input type="radio" name="optradio" > divorced</label>
+                                                <label><input type="radio" name="optradio" value="D" v-model="marital_status"> divorced</label>
                                               </div>
                                               <div class="radio">
-                                                    <label><input type="radio" name="optradio" > widowed</label>
+                                                    <label><input type="radio" name="optradio" value="W" v-model="marital_status"> widowed</label>
                                              </div>
                                 </div>
                         </div>
                     </div>
                 </div>
                 <hr v-if = "marital_field == true"/>         
-                <div class="mx-auto" v-if = "roles_field == true">
-                        <div class="">
-                            <div class="row" style="padding: 5px 60px ">
-                                    <div class="checkbox col">
-                                            <div><label><input type="checkbox" value=""> role 1</label></div>
-                                            <div><label><input type="checkbox" value=""> role 2</label></div>
-                                            <div><label><input type="checkbox" value=""> role 3</label></div>
-                                            <div><label><input type="checkbox" value=""> role 4</label></div>
-                                    </div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr v-if = "roles_field == true">
         
                     <div class="mx-auto" v-if = "contact_field == true">
                             <div class="">                                
@@ -166,7 +140,7 @@
                                                                 <input class="form-control" type="text" placeholder="+254" v-model = "country_code">
                                                         </span>
                                                         <span class="col">
-                                                                <label><b>number :</b></label>
+                                                                <label><b>phone number :</b></label>
                                                                 <input type="text" class="form-control"  placeholder="712345678" v-model = "phone_number">
                                                         </span>
                                                 </div>
@@ -197,23 +171,23 @@
                                             <div class="col">
                                             <div class="form-group">
                                                     <label><b>home town :</b></label>
-                                                    <input type="text" class="form-control"  placeholder="e.g Nakuru,Nairobi" autofocus>
+                                                    <input type="text" class="form-control"  placeholder="e.g Nakuru,Nairobi" v-model="home_town">
                                             </div>
                                             <div class="form-group">
                                                     <label><b>road :</b></label>
-                                                    <input type="text" class="form-control"  placeholder="e.g Mombasa road" autofocus>
+                                                    <input type="text" class="form-control"  placeholder="e.g Mombasa road" v-model="road">
                                             </div>
                                             <div class="form-group">
                                                     <label><b>street / drive :</b></label>
-                                                    <input type="text" class="form-control"  placeholder="e.g lumumba drive" autofocus>
+                                                    <input type="text" class="form-control"  placeholder="e.g lumumba drive" v-model="street">
                                             </div>
                                             <div class="form-group">
                                                     <label><b>estate / area name :</b></label>
-                                                    <input type="text" class="form-control"  placeholder="e.g Kamkunji,Kaloleni" autofocus>
+                                                    <input type="text" class="form-control"  placeholder="e.g Kamkunji,Kaloleni" v-model="estate">
                                             </div>
                                             <div class="form-group">
                                                     <label for="exampleFormControlTextarea1"><b>description</b></label>
-                                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model="description"></textarea>
                                                   </div>
                                             </div>
                                     </div>                            
@@ -258,23 +232,32 @@ export default {
   name: 'memberAdd',
   data () {
     return {
+        //select fields you can see
         names_field: true,
         roles_field: false,
         age_field: false,
         marital_field:false,
         contact_field:false,
         residence_field:false,
+        //contact
         email: '',
         country_code: '+254',
+        contact: ' ',postal_address: '',
+        phone_number: '',phone_number_errors: [],phone_number_OK: [],
+        //names and gender
         first_name: '',first_name_errors: [],
         last_name: '',last_name_errors: [],
-        gender_male: false, gender_female: false,gender_errors: [],
+        gender: '',gender_errors: [],
         added_member: [],add_member_button_text: "+ add member",
         add_member_error: [],
-        added_member_id: null,
-        phone_number: '',phone_number_errors: [],phone_number_OK: [],
-        contact: ' ',postal_address: '',
-        day: null,month: null,year: null,date_errors: []
+        added_member_id: null,        
+        //date of birth        
+        d_o_b: '',
+        //residence
+        home_town: '', road: '', street: '',
+        estate: '', description: '',
+        //marital status
+        marital_status: ''        
     }
   },
   created() {
@@ -340,13 +323,7 @@ export default {
         this.first_name_errors = []
         this.last_name_errors = []
         this.gender_errors = []
-        var gender
-        if (this.gender_male ){
-                gender = "M"
-        }
-        if (this.gender_female){
-                gender = "F"
-        }
+
         if (! this.first_name){
                 this.first_name_errors.push('you must have a first name')
                 return false;
@@ -363,7 +340,7 @@ export default {
                 this.last_name_errors.push('last name must be one word only')
                 return false;
         }
-        if (! this.gender_female && ! this.gender_male){
+        if (! this.gender ){
                 this.gender_errors.push('select gender')
                 return false;
         }
@@ -373,36 +350,87 @@ export default {
                 data: {
                   first_name: this.first_name,
                   last_name: this.last_name,
-                  gender: gender,
+                  gender: this.gender,
                   email: this.email         
                 }
               }).then(response => {
                 this.added_member.push(response.data )  
-                this.added_member_id = this.added_member[0].member.id
-                if (this.phone_number_OK.length > 0){
-                this.$http({
-                        method:'post',
-                        url: this.$BASE_URL + '/api/members/add-member-contact/',
-                        data: {
-                                member_id: this.added_member_id,
-                                postal_address: this.postal_address,
-                                phone: this.country_code + this.phone_number,
-                                contact: this.contact
-                        }
-                })
-                
-                }
-                this.add_member_button_text = " added successfully"  
-
+                this.added_member_id = this.added_member[0].member.id  
+                alert("member added succesfully")              
+                this.addOthers()                
                 this.gender_male = false
                 this.gender_female = false
                 this.last_name = ''
-                this.first_name = ''
+                this.first_name = ''   
+                this.added_member_id = null                                            
                 })
                 .catch((err) => {
                  this.add_member_error.push(err)
                 })
         
+    },
+    addContact: function(){
+        this.$http({
+                method:'post',
+                url: this.$BASE_URL + '/api/members/add-member-contact/',
+                data: {
+                        member_id: this.added_member_id,
+                        postal_address: this.postal_address,
+                        phone: this.country_code + this.phone_number,
+                        contact: this.contact
+                }
+        })            
+    },
+    addDateOfBirth: function(){
+        this.$http({
+                method:'post',
+                url: this.$BASE_URL + '/api/members/add-member-d_o_b/',
+                data: {
+                        member_id: this.added_member_id,
+                        d_o_b: this.d_o_b                        
+                }
+        })
+    },
+    addMaritalStatus: function(){
+        this.$http({
+                method:'post',
+                url: this.$BASE_URL + '/api/members/add-member-marital-status/',
+                data: {
+                        member_id: this.added_member_id,
+                        status: this.marital_status                      
+                }
+        })
+    },
+    addResidence: function(){
+        this.$http({
+                method:'post',
+                url: this.$BASE_URL + '/api/members/add-member-contact/',
+                data: {
+                        member_id: this.added_member_id,
+                        town: this.home_town,
+                        road: this.road,
+                        street: this.street,
+                        description: this.description
+                }
+        }) 
+    },
+    addOthers: function(){
+        if (this.phone_number_OK.length > 0){
+                this.addContact()                
+        } 
+        if (this.d_o_b.length > 0){
+                this.addDateOfBirth()  
+        }
+        if (this.marital_status.length > 0){
+                this.addMaritalStatus()
+        }
+        if (this.home_town.length > 0
+                || this.road.length > 0
+                || this.street.length > 0
+                || this.estate.length > 0
+                || this.description > 0){
+                        this.addResidence()
+                }
     }
     
 }
