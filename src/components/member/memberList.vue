@@ -158,7 +158,7 @@
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Send email</button>
+                    <button type="button" class="btn btn-success">Send email</button>
                   </div>
                 </div>
               </div>
@@ -185,7 +185,7 @@
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="closeSmsModal()">Close</button>
-                      <span v-if = "message.length > 5 && sms_status.length == 0"><button type="button" class="btn btn-primary" v-on:click=sendMessage()>send text</button></span>
+                      <span v-if = "message.length > 5 && sms_status.length == 0"><button type="button" class="btn btn-success" v-on:click=sendMessage()>send text</button></span>
                     </div>
                   </div>
                 </div>
@@ -205,7 +205,7 @@
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">assign</button>
+                        <button type="button" class="btn btn-success">assign</button>
                       </div>
                     </div>
                   </div>

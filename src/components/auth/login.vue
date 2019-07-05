@@ -107,7 +107,7 @@
       getLoggedInMemberData: function(){
         this.$http.get(this.$BASE_URL + '/api/members/member/' + this.$session.get('username') + '/')
             .then(response => {              
-              this.$session.set('member_id', response.data[0].member.id)              
+              this.$session.set('member_id', response.data[0].member.id)                
             })
             .catch((err) => {
               this.fetch_data_error.push(err)

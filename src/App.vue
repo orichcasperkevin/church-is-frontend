@@ -36,6 +36,18 @@
             </li>
 
           </ul>
+          <ul class="navbar-nav mr-auto">
+              <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    session
+                  </a>
+                  <div class="dropdown-menu" style="padding: 5px 5px" aria-labelledby="navbarDropdownMenuLink">
+                      
+                      <div class="dropdown-item" >{{username}}</div>                                                
+                      <a href="#" class="dropdown-item" v-on:click="logOut()">log out</a>                  
+                  </div>
+              </li>              
+          </ul>
       </div>
   </nav>
     <router-view/>
@@ -48,24 +60,25 @@ export default {
   name: 'App',
   data () {
         return{
-          username: null
+          username: null, 
         }
     },
   created(){
-    this.checkLoggedIn()
-  },
-  watch: {
-    username: function(){      
-      this.username = this.$session.get("username")      
-    }
+    this.username = this.$session.get("username") 
+    this.checkLoggedIn()    
   },
   methods: {
     checkLoggedIn() {      
       if (!this.$session.has("token")) {          
           router.push("/login")
           return false
-      }      
+      }  
+      this.username = this.$session.get("username")       
       return true                 
+    },
+    logOut() {      
+      this.$session.destroy()
+      router.push("/login")                 
     }
   }
 }

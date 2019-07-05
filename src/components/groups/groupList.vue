@@ -65,7 +65,7 @@
                     </div>
                     </div>
                     <div class="form-group">
-                            <label for="addGroup">name of {{group_type}}</label>
+                            <label for="addGroup">name</label>
                             <input type="text" class="form-control" id="addGroup" autofocus v-model="name"></input>
                             <p v-if="name_errors.length">
                                     <ul>
