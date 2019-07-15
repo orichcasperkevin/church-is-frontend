@@ -295,7 +295,7 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                             </div>
-                            <div class="modal-body">
+                            <div class="modal-body">                                   
                                     <div class="alert alert-success alert-dismissible fade show" role="alert" v-if="added_tithe.length > 0">
                                         <strong>
                                             <span v-for="data in added_tithe">
@@ -314,14 +314,13 @@
                                                     </li>
                                                 </small>
                                         </ul>
-                                    </div>
-                                    <form>                                            
+                                    </div>                                    
+                                    <form>                                                                                       
                                             <div class=" row form-group">
                                                 <label class="col-3"><b>member:</b></label>
                                                 <div class="col-8">
                                                     <input type="text" class=" form-control" placeholder="type to search member" v-model="memberSearch" autofocus>   
-                                                    <div style="padding: 10px 10px 10px 10px" class="text-info" >{{memberSearch_status}}</div> 
-
+                                                    <div style="padding: 10px 10px 10px 10px" class="text-info" >{{memberSearch_status}}</div>                                                                                                       
                                                     <div class="pre-scrollable searchedItemsDiv border " style="  max-height: 185px; overflow-y: scroll;" v-if="showMemberInput">
                                                             <table class="table border-0" >
                                                                 <tbody>
@@ -393,7 +392,7 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                             </div>
-                            <div class="modal-body">                            
+                            <div class="modal-body">                                                            
                                     <form>
                                             <div class="row checkbox">
                                                     <div class="col-3"></div>
@@ -408,7 +407,7 @@
                                                 <div class="col-8">
                                                     <input type="text" class=" form-control" placeholder="type to search member" v-model="memberSearch" autofocus>   
                                                     <div style="padding: 10px 10px 10px 10px" class="text-info" >{{memberSearch_status}}</div> 
-
+                                                    
                                                     <div class="pre-scrollable searchedItemsDiv border " style="  max-height: 185px; overflow-y: scroll;" v-if="showMemberInput">
                                                             <table class="table border-0" >
                                                                 <tbody>

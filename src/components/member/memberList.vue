@@ -129,9 +129,9 @@
                 <span class="sr-only">Toggle Dropdown</span>
               </button>
               <div class="dropdown-menu border-success" aria-labelledby="dropdownMenuReference">
-                  <router-link class="dropdown-item" :to="{name: 'adminRoles'}"><b>+</b> assign roles</router-link>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addIncome"><b>+</b> manage roles</a>                                                                
+                  <a class="dropdown-item" href="#" data-toggle="modal" data-target="#importCSV"><b>+</b> import from csv</a> 
+                  <div class="dropdown-divider"></div> 
+                  <router-link class="dropdown-item" :to="{name: 'adminRoles'}"> assign roles</router-link>                                                                                                  
               </div>
             </div>
               <div class="list-group ">
@@ -210,6 +210,93 @@
                     </div>
                   </div>
                 </div>   
+                <!-- Modal import CSV -->
+                <div class="modal fade bd-example-modal-xl" id="importCSV" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalCenterTitle">import from CSV</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <h3>demo</h3>
+                            <div class="container">
+                                <table class="table">
+                                    <thead>
+                                      <tr>                                        
+                                        <th scope="col">names</th>
+                                        <th scope="col">gender</th>
+                                        <th scope="col">date of birth <br/>(YYYY-MM-DD)</th>
+                                        <th scope="col">phone number</th>
+                                        <th scope="col">email</th>
+                                        <th scope="col">marital status</th>                                      
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr>                                        
+                                        <td>John The Baptist</td>
+                                        <td>M</td>
+                                        <td>1997-07-17</td>
+                                        <td>07********</td>
+                                        <td>example@nano.com</td>
+                                        <td>M</td>
+                                      </tr>
+                                      <tr>                                        
+                                        <td>Mark Laboso</td>
+                                        <td>M</td>
+                                        <td>1990-12-03</td>
+                                        <td>07********</td>
+                                        <td>example@nano.com</td>
+                                        <td>S</td>
+                                      </tr>
+                                      <tr>                                        
+                                        <td>Martha Kari</td>
+                                        <td>F</td>
+                                        <td>1984-02-20</td>
+                                        <td>07********</td>
+                                        <td>example@nano.com</td>
+                                        <td>D</td>
+                                      </tr>
+                                      <td>Maria Desa malibo</td>
+                                        <td>F</td>
+                                        <td>1990-07-29</td>
+                                        <td>07********</td>
+                                        <td>example@nano.com</td>
+                                        <td>W</td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                <hr/>
+                                marital status: <b>M</b> => married, <b>S</b> => single, <b>D</b> => divorced, <b>W</b> => widowed
+                                <hr/>
+                                <div class="large-12 medium-12 small-12 cell">
+                                  <label><b>file: </b>
+                                    <input type="file" id="file" ref="file" v-on:change="handleFileUpload()"/>
+                                  </label>                                
+                                </div>
+                                <p class="text-success" v-if="file_format_okay">file okay, proceed to import</p>
+                                <p v-if="error_500.length">
+                                    <ul>
+                                            <small><li v-for="error in error_500"><p class="text-danger">unexpected data format in your file, make sure your CSV or EXCEL file matches the demo</p></li></small>
+                                    </ul>
+                                </p>
+                                <p v-if="test_csv_errors.length">
+                                    <ul>
+                                            <small><li v-for="error in test_csv_errors"><p class="text-danger">{{error}}</p></li></small>
+                                    </ul>
+                                </p>
+                              </div>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                          <button type="button" class="btn btn-success" v-on:click="submitFile()">{{test_import_button_text}}</button>
+                          <button type="button" class="btn btn-success">import data</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div> 
           </div>
         </div>
         </div>
@@ -227,19 +314,29 @@ export default {
       fetch_data_error: [],
       members: null,
       foundItems: null,
+      //search for member
       firstnamesearch: null,
       firstnamesearch_status: null,
       gendersearch: null,
       min_age: 0,
       max_age:150,
       member_ids: [],
+      //text messaging
       text_button_name: "",
       message: " ",
-      sms_status: []
+      sms_status: [],
+      // csv file upload
+      test_import_button_text: "test import",
+      file: '',
+      error_500: [],
+      test_csv_errors: [],
+      uploaded_file: '',
+      file_format_okay: false
 
     }
   },
   watch: {
+  //search for member
     firstnamesearch: function () {
       if (this.firstnamesearch.length > 0){
         this.firstnamesearch_status = 'typing...'
@@ -294,27 +391,29 @@ export default {
                 this.fetch_data_error.push(err)
             })  
     },
+  // send message to selected members
     sendMessage: function (){
       this.$http({
-                    method: 'post',
-                    url: this.$BASE_URL + '/api/sms/add-sms/',
-                    data: {
-                      sending_member_id: this.$session.get('member_id'),
-                      app: "members-admin",
-                      message: this.message,
-                      website: true,
-                      receipient_member_ids: this.member_ids
-                    }
-                    }).then(response => {
-                      this.sms_status.push(response.data)
-                    })
-                    .catch((err) => {
-                    })
+        method: 'post',
+        url: this.$BASE_URL + '/api/sms/add-sms/',
+        data: {
+          sending_member_id: this.$session.get('member_id'),
+          app: "members-admin",
+          message: this.message,
+          website: true,
+          receipient_member_ids: this.member_ids
+        }
+        }).then(response => {
+          this.sms_status.push(response.data)
+        })
+        .catch((err) => {
+        })
     },
     closeSmsModal: function (){
       this.sms_status = []
       this.message = ""
     },
+  // search for member
     getAnswer: function () {
       var vm = this
       if (this.firstnamesearch.length > 0){
@@ -366,7 +465,43 @@ export default {
                 console.log(err)
             })
       }
-    }
+    },
+        
+    //Submits the file to the server      
+      submitFile: function(){
+            this.error_500 = []
+            this.test_csv_errors = []
+            this.test_import_button_text = "checking document..."
+            let formData = new FormData();
+            formData.append('csv', this.file);
+
+            this.$http.post( this.$BASE_URL + '/api/members/upload-csv/',
+                formData,
+                {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+              }
+            ).then(response =>{
+                var data = response.data   
+                //if data is not array there are no errors             
+                if (! data.length){
+                  this.uploaded_file = data.csv
+                  this.file_format_okay = true
+                  this.test_import_button_text = "test import"
+                  alert("file format okay")
+                }
+                else{
+                  this.test_csv_errors = data
+                }
+            })
+            .catch((err) =>{
+                this.error_500.push(err)
+            });
+      },
+      handleFileUpload: function(){
+        this.file = this.$refs.file.files[0];
+      }
   }
 
 }
