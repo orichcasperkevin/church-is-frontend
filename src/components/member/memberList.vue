@@ -269,7 +269,8 @@
                                     </tbody>
                                   </table>
                                 <hr/>
-                                marital status: <b>M</b> => married, <b>S</b> => single, <b>D</b> => divorced, <b>W</b> => widowed
+                                <p>gender: <b>M</b> => male, <b>F</b> => female</p>
+                                <p>marital status: <b>M</b> => married, <b>S</b> => single, <b>D</b> => divorced, <b>W</b> => widowed</p>
                                 <hr/>
                                 <div class="large-12 medium-12 small-12 cell">
                                   <label><b>file: </b>
@@ -292,7 +293,7 @@
                         <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                           <button type="button" class="btn btn-success" v-on:click="submitFile()">{{test_import_button_text}}</button>
-                          <button type="button" class="btn btn-success">import data</button>
+                          <button type="button" class="btn btn-success" v-if="file_format_okay" v-on:click="extractData()">{{extract_data_button_text}}</button>
                         </div>
                       </div>
                     </div>
@@ -327,6 +328,7 @@ export default {
       sms_status: [],
       // csv file upload
       test_import_button_text: "test import",
+      extract_data_button_text: "import data",
       file: '',
       error_500: [],
       test_csv_errors: [],
@@ -493,14 +495,37 @@ export default {
                 }
                 else{
                   this.test_csv_errors = data
+                  this.test_import_button_text = "test import"
                 }
             })
             .catch((err) =>{
                 this.error_500.push(err)
+                this.test_import_button_text = "test import"
             });
       },
+    // handle the case that the file changes
       handleFileUpload: function(){
         this.file = this.$refs.file.files[0];
+      },
+    // extract data from the csv file
+      extractData: function(){
+        this.extract_data_button_text = "extracting..."
+        var file_name = this.uploaded_file.split("/")[1]       
+        this.$http({
+          method: 'post',
+          url: this.$BASE_URL + '/api/members/import-data-from-csv/',
+          data: {
+            file_name: file_name,                                 
+          }
+        }).then(response => {
+              alert("data extracted succesfully")
+              this.extract_data_button_text = "import data"
+              this.fetchData()
+          })
+          .catch((err) => {     
+            alert("something went wrong while trying to extract data.\n Check the file and try again")   
+            this.extract_data_button_text = "import data"    
+          })
       }
   }
 
