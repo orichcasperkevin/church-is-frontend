@@ -114,12 +114,18 @@
               </div>
               </div>
               <div class="col-12 col-sm-10 col-md-8 col-lg-3">
-                <div style="padding: 0px 0px 25px 0px">
+                <div class="btn-group" style="padding: 0px 0px 25px 0px">
                   <a href="#" data-toggle="modal" data-target="#addMemberToGroup" style="text-decoration: none">
                       <div class="add-button">
                       <span> <b>+</b> Add member</span>
-                      </div>
+                      </div>                      
                   </a>
+                  <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
+                    <span class="sr-only">Toggle Dropdown</span>
+                  </button>
+                  <div class="dropdown-menu border-success" aria-labelledby="dropdownMenuReference">
+                      <a class="dropdown-item" href="#" data-toggle="modal" data-target="#importCSV"><b>+</b> import from csv</a>                                                                                                  
+                  </div>
                 </div>
                   <div class="list-group ">
                       <button type="button" class="action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#emailModatCenter" ><img src="@/assets/icons/icons8-email-64.png">email people</button>

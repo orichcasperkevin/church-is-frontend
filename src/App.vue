@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <router_link class="navbar-brand"  href="#" :to="{name: 'groupsLanding'}" >nanocomputing ChMs</router_link>
+      <router_link class="navbar-brand"  href="#" :to="{name: 'groupsLanding'}" >jumbo</router_link>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
       </button>

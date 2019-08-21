@@ -11,7 +11,9 @@ import VueSession from 'vue-session'
 
 const options = { name: 'lodash' }
 Vue.use(VueLodash, options)
+
 Vue.use(VueSession) 
+
 
 Vue.config.productionTip = false
 

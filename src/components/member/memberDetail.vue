@@ -14,15 +14,18 @@
                         <a class="nav-link active list-group-item list-group-item-action border-0" id="pill-detail-tab" data-toggle="pill" href="#pill-detail" role="tab" aria-controls="pill-detail" aria-selected="true">
                                 <img class="church-is-menu" src="@/assets/icons/icons8-user-groups-208.png"> detail
                         </a>
+                        <a class="nav-link list-group-item list-group-item-action border-0" id="pill-delete-tab" data-toggle="pill" href="#pill-delete" role="tab" aria-controls="pill-delete" aria-selected="false">
+                                <img class="church-is-menu" src="@/assets/icons/icons8-cancel-26.png"> family
+                        </a>                                            
                         <a class="nav-link list-group-item list-group-item-action border-0" id="pill-groups-tab" data-toggle="pill" href="#pill-groups" role="tab" aria-controls="pill-groups" aria-selected="false" v-on:click = "getMemberGroups()">
                                 <img class="church-is-menu" src="@/assets/icons/icons8-user-groups-filled-50.png"> groups
-                        </a>
+                        </a> 
+                        <a class="nav-link list-group-item list-group-item-action border-0" id="pill-dates-tab" data-toggle="pill" href="#pill-dates" role="tab" aria-controls="pill-dates" aria-selected="false">
+                                <img class="church-is-menu" src="@/assets/icons/icons8-donate-filled-50.png"> important dates
+                        </a>  
                         <a class="nav-link list-group-item list-group-item-action border-0" id="pill-contributions-tab" data-toggle="pill" href="#pill-contributions" role="tab" aria-controls="pill-contributions" aria-selected="false" v-on:click = "getMemberFinances()">
                                 <img class="church-is-menu" src="@/assets/icons/icons8-donate-filled-50.png"> finances
-                        </a>
-                        <a class="nav-link list-group-item list-group-item-action border-0" id="pill-delete-tab" data-toggle="pill" href="#pill-delete" role="tab" aria-controls="pill-delete" aria-selected="false">
-                                <img class="church-is-menu" src="@/assets/icons/icons8-cancel-26.png"> delete
-                        </a>     
+                        </a>                            
                     </div> 
               </div>
               <div class="col-9">
@@ -43,7 +46,7 @@
                                                         <span v-for = "data in data">
                                                         <div class=" row mx-auto"><b>name :</b> {{data.member.first_name}}  {{data.member.last_name}}</div>
                                                         </span>
-                                                </span>
+                                                </span>                                                 
                                         </div>
                                 </div>
                                 </div>
@@ -111,7 +114,7 @@
                                                                 </span>
                                                         </span>
                                                 </div>
-                                        </div>
+                                        </div>                                       
                                 </div>
                                 <div class="col">
                                         <div class="card border-0" style="max-width: 18rem;">
@@ -161,7 +164,7 @@
                                                 </div>
                                         </div>
                                 </div>
-                                </div>
+                                </div>                             
                         </div>
                         <div class="tab-pane fade" id="pill-groups" role="tabpanel" aria-labelledby="pill-groups-tab">
                         <h3>
@@ -276,8 +279,13 @@
                                 </div>
                                 </div>
                         </div>
-                        <div class="tab-pane fade" id="pill-attendance" role="tabpanel" aria-labelledby="pill-attendance-tab">
-                         attendance
+                        <div class="tab-pane fade" id="pill-dates" role="tabpanel" aria-labelledby="pill-dates-tab">
+                                        <ul class="progressbar">
+                                                        <li class="active">login</li>
+                                                       <li class="active">choose interest</li>
+                                                        <li>add friends</li>
+                                                        <li>View map</li>
+                                        </ul> 
                         </div>
                         <div class=" tab-pane fade" id="pill-contributions" role="tabpanel" aria-labelledby="pill-contributions-tab">
                                 <div class="row">
@@ -396,8 +404,124 @@
                                         </div>
                                 </div>                          
                         </div>
-                        <div class="tab-pane fade" id="pill-delete" role="tabpanel" aria-labelledby="pill-delete-tab">
-                         delete
+                        <div class="tab-pane fade" id="pill-delete" role="tabpanel" aria-labelledby="pill-delete-tab">                                                                             
+                                <div class="tree">
+                                        <ul>
+                                        <li>
+                                        <div class="family">
+                                                <div class="person child male">
+                                                        <div class="name">Grandfather</div>
+                                                </div>
+                                            <div class="parent">
+                                              <div class="person female">
+                                                <div class="name">Grandmother</div>
+                                              </div>
+                                              <ul>
+                                                <li>
+                                                  <div class="family" style="width: 172px">
+                                                    <div class="person child male">
+                                                      <div class="name">Uncle</div>
+                                                    </div>
+                                                    <div class="parent">
+                                                      <div class="person female">
+                                                        <div class="name">Wife of Uncle</div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </li>
+                                                <li>
+                                                  <div class="family" style="width: 172px">
+                                                    <div class="person child female">
+                                                      <div class="name">Aunt</div>
+                                                    </div>
+                                                    <div class="parent">
+                                                      <div class="person male">
+                                                        <div class="name">Husband of Aunt</div>
+                                                      </div>
+                                                    </div>
+                                                  </div>
+                                                </li>
+                                                <li>
+                                                  <div class="family" style="width: 344px">
+                                                    <div class="person child female">
+                                                      <div class="name">Mother</div>
+                                                    </div>
+                                                    <div class="parent">
+                                                      <div class="person male">
+                                                        <div class="name">Father</div>
+                                                      </div>
+                                                      <ul>
+                                                        <li>
+                                                          <div class="person child male">
+                                                            <div class="name">Me</div>
+                                                          </div>
+                                                        </li>                                                        
+                                                        <li>
+                                                          <div class="person child female">
+                                                            <div class="name">Sister</div>
+                                                          </div>
+                                                        </li>
+                                                      </ul>
+                                                    </div>
+                                                    <div class="person spouse male">
+                                                      <div class="name">Spouse</div>
+                                                    </div>
+                                                  </div>
+                                                </li>
+                                              </ul>
+                                            </div>
+                                                </div>
+                                        </li>
+                                        </ul>
+                                        </div>
+                                        <div class="tree">
+                                                {{family_tree}} 
+                                                <ul >
+                                                <li v-for="data in family_tree.tree" v-if="data.member.level == 0">
+                                                        <div class="person child male">
+                                                                <div class="name">{{data.member.member}}</div>
+                                                        </div>
+                                                        <div class="parent">
+                                                                <div class="person female">
+                                                                        <div class="name" v-if="data.member.spouse != null">
+                                                                                {{data.member.spouse}}
+                                                                        </div>
+                                                                        <div class="name" v-if="data.member.spouse == null">
+                                                                                no spouse
+                                                                        </div>
+                                                                </div>                                                                                                        
+                                                        </div>
+                                                        <ul>
+                                                        <span v-for="child in data.member.children">                                                                
+                                                                <li v-for="data in family_tree.tree" v-if="data.member.level == 1 && data.member.member == child">
+                                                                        <div class="person child male">
+                                                                                <div class="name">{{data.member.member}}</div>
+                                                                        </div>  
+                                                                        <div class="parent">
+                                                                                <div class="person female">
+                                                                                        <div class="name" v-if="data.member.spouse != null">
+                                                                                                {{data.member.spouse}}
+                                                                                        </div>
+                                                                                        <div class="name" v-if="data.member.spouse == null">
+                                                                                                no spouse
+                                                                                        </div>
+                                                                                </div>
+                                                                        </div>
+                                                                        <ul>
+                                                                                <span v-for="child in data.member.children">       
+                                                                                        <li  v-for="data in family_tree.tree" v-if="data.member.level == 2 && data.member.member == child">
+                                                                                                <div class="person child male">
+                                                                                                        <div class="name">{{data.member.member}}</div>
+                                                                                                </div>  
+                                                                                        </li>
+                                                                                </span>
+                                                                        </ul>                                                                  
+                                                                </li>                                                             
+                                                        </span>
+                                                        </ul>                                                        
+                                                </li>
+                                                </ul>                                        
+                                        </div>
                         </div>
 
                 </div>
@@ -421,7 +545,8 @@ export default {
         groups_selected: false,
         fellowships: null,church_groups: null, ministries:null, cell_groups: null,
         finances_selected: false, contribution_info:null, pledges_info: null,
-        offering_info: null,tithe_info: null,tithe_stats: null,offering_stats: null
+        offering_info: null,tithe_info: null,tithe_stats: null,offering_stats: null,
+        family_tree: null      
     }
   },
   created() {
@@ -556,6 +681,13 @@ export default {
             this.$http.get(this.$BASE_URL + '/api/members/family-for-member/'+this.$route.params.id+'/')
             .then(response => {
             this.family_info = {"family": response.data }
+            })
+            .catch(error=> {
+            this.family_errors.push(error)
+            })
+            this.$http.get(this.$BASE_URL + '/api/members/family-tree-for-member/'+this.$route.params.id+'/')
+            .then(response => {
+            this.family_tree = {"tree": response.data }
             })
             .catch(error=> {
             this.family_errors.push(error)

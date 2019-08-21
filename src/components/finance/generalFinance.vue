@@ -75,8 +75,8 @@
                                                             <th>name</th>
                                                             <th>amount</th>
                                                             <th>date</th>
-                                                            <th>total this month</th>
-                                                            <th>total this year</th>
+                                                            <th>this month</th>
+                                                            <th>this year</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -117,8 +117,8 @@
                                                             <th>name</th>
                                                             <th>amount</th>
                                                             <th>date</th>
-                                                            <th>total this month</th>
-                                                            <th>total this year</th>
+                                                            <th>this month</th>
+                                                            <th>this year</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -159,8 +159,8 @@
                                                         <thead>
                                                             <tr>
                                                                 <th>type</th>                                                                
-                                                                <th>total this month</th>
-                                                                <th>total this year</th>
+                                                                <th>this month</th>
+                                                                <th>this year</th>
                                                                 <th></th>
                                                             </tr>
                                                         </thead>
@@ -210,8 +210,8 @@
                                         <tr>
                                             <th>name</th>
                                             <th>description</th>        
-                                            <th>total this month</th>
-                                            <th>total this year</th>
+                                            <th>this month</th>
+                                            <th>this year</th>
                                         </tr>
                                     </thead>
                                     <tbody>
