@@ -81,7 +81,7 @@
               found <span class="badge badge-pill badge-info">{{foundItems}}</span>
               </p>
             </div>
-              <table class="table" v-if = "min_age == 0 || min_age == '' || max_age == 150 || max_age  == ''">
+              <table class="table" v-if = "(min_age == 0 || min_age == '') && (max_age == 150 || max_age  == '')">
                   <tbody>
                     <tr v-for="data in members.response">
                       <th scope="row"></th>
@@ -98,11 +98,11 @@
                     </tr>
                   </tbody>
                 </table>
+                
                 </div>
-                <table class="table" v-if = "min_age > 0  || max_age != 150 ">
+                <table class="table" v-if = "min_age > 0  || max_age != 150 ">                  
                   <tbody>
-                    <tr v-for="data in members.response">
-                     
+                    <tr v-for="data in members.response">                     
                       <th scope="row"></th>
                       <td ><img v-if = "data.member.gender == 'M'" style = "height: 32px "src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
                            <img v-if = "data.member.gender == 'F'" style = "height: 32px "src="@/assets/avatars/icons8-user-female-skin-type-4-40.png">
@@ -110,10 +110,7 @@
                         <router-link :to="`/memberDetail/`+ data.member.member.id">
                           <span class = "text-secondary">{{data.member.member.first_name}} {{data.member.member.last_name}}</span>
                         </router-link>
-                       </td>
-                     
-                     
-                   
+                       </td>                                                            
                     </tr>
                   </tbody>
                 </table>
@@ -436,6 +433,7 @@ export default {
             .then(response => {
               this.members = {"response": response.data } 
               var array = this.members.response
+              console.log(this.members.response)
               this.foundItems = array.length
               for (var data in this.members.response){
                 this.member_ids.push(this.members.response[data].member.id)
@@ -456,6 +454,7 @@ export default {
       this.$http.get(this.$BASE_URL + '/api/members/filter-by-age/'+ this.min_age +'/' + this.max_age + '/')
             .then(response => {
               this.members = {"response": response.data } 
+              console.log(this.members.response)
               var array = this.members.response
               this.foundItems = array.length
               for (var data in this.members.response){

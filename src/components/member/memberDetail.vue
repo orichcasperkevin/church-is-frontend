@@ -166,118 +166,29 @@
                                 </div>
                                 </div>                             
                         </div>
-                        <div class="tab-pane fade" id="pill-groups" role="tabpanel" aria-labelledby="pill-groups-tab">
-                        <h3>
-                        <span class="backButton">
-                                <a href="#" class="text-muted" style="text-decoration: none;">
-                                        fellowships
-                                </a>
-                        </span>
-                        </h3>
-                          <table class="table" v-if = "groups_selected == true">
-                                <thead class="thead-dark"  v-if = "fellowships.response.length > 0 ">
-                                        <tr>
-                                           <th>fellowship</th>
-                                           <th>date joined</th>
-                                           <th>role</th>
-                                        </tr>
-                                </thead>
-                                        <tr v-for = "data in fellowships.response">
-                                           <td>{{data.fellowship.name}}</td>
-                                           <td>{{data.date_joined}}</td>
-                                           <td>{{data.role.role}}</td>
-                                        </tr>
+                        <div class="tab-pane fade" id="pill-groups" role="tabpanel" aria-labelledby="pill-groups-tab">                                                                                                 
+                        
+                        <h3>Church groups</h3>
+                        <table class="table" v-if = "groups_selected == true">
+                        <thead class=""  v-if = "church_groups.response.length > 0">
+                                <tr>
+                                        <th>group</th>
+                                        <th>joined</th>
+                                        <th>role</th>
+                                </tr>
+                        </thead>
+                                <tr v-for = "data in church_groups.response">
+                                        <td>{{data.church_group.name}}</td>
+                                        <td>{{data.date_joined}}</td>
+                                        <td>{{data.role.role}}</td>
+                                </tr>
 
-                          </table>
-                          <div v-if = "groups_selected == true">
-                          <div v-if = "fellowships.response.length == 0 ">
-                                <p class="text-info center-div">none</p> 
-                          </div>
-                          </div>
-                          <hr/>
-                          <h3>
-                        <span class="backButton">
-                                <a href="#" class="text-muted" style="text-decoration: none;">
-                                        ministries
-                                </a>
-                        </span>
-                        </h3>
-                                <table class="table" v-if = "groups_selected == true">
-                                <thead class="thead-dark"  v-if = "ministries.response.length > 0 ">
-                                        <tr>
-                                                <th>ministry</th>
-                                                <th>date joined</th>
-                                                <th>role</th>
-                                        </tr>
-                                </thead>
-                                        <tr v-for = "data in ministries.response">
-                                                <td>{{data.ministry.name}}</td>
-                                                <td>{{data.date_joined}}</td>
-                                                <td>{{data.role.role}}</td>
-                                        </tr>
-
-                                </table>
-                                <div v-if = "groups_selected == true">
-                                        <div v-if = "ministries.response.length == 0 ">
-                                        <p class="text-info center-div">none</p> 
-                                        </div>
-                                </div>
-                                <h3>
-                                <hr/>
-                        <span class="backButton">
-                                <a href="#" class="text-muted" style="text-decoration: none;">
-                                        cell groups
-                                </a>
-                        </span>
-                        </h3>
-                                <table class="table" v-if = "groups_selected == true">
-                                <thead class="thead-dark" v-if = "cell_groups.response.length > 0 ">
-                                        <tr>
-                                                <th>cell group</th>
-                                                <th>date joined</th>
-                                                <th>role</th>
-                                        </tr>
-                                </thead>
-                                        <tr v-for = "data in cell_groups.response">
-                                                <td>{{data.cell_group.name}}</td>
-                                                <td>{{data.date_joined}}</td>
-                                                <td>{{data.role.role}}</td>
-                                        </tr>
-
-                                </table>
-                                <div v-if = "groups_selected == true">
-                                <div v-if = "cell_groups.response.length == 0 ">
-                                <p class="text-info center-div">none</p> 
-                                </div>
-                                </div>
-                                <h3>
-                                <hr/>
-                        <span class="backButton">
-                                <a href="#" class="text-muted" style="text-decoration: none;">
-                                        church groups
-                                </a>
-                        </span>
-                        </h3>
-                                <table class="table" v-if = "groups_selected == true">
-                                <thead class="thead-dark"  v-if = "fellowships.response.length > 0 ">
-                                        <tr>
-                                                <th>church_groups</th>
-                                                <th>date joined</th>
-                                                <th>role</th>
-                                        </tr>
-                                </thead>
-                                        <tr v-for = "data in church_groups.response">
-                                                <td>{{data.church_group.name}}</td>
-                                                <td>{{data.date_joined}}</td>
-                                                <td>{{data.role.role}}</td>
-                                        </tr>
-
-                                </table>
-                                <div v-if = "groups_selected == true">
-                                <div v-if = "church_groups.response.length == 0 ">
-                                <p class="text-info center-div">none</p> 
-                                </div>
-                                </div>
+                        </table>
+                        <div v-if = "groups_selected == true">
+                        <div v-if = "church_groups.response.length == 0 ">
+                        <p class="text-info center-div">none</p> 
+                        </div>
+                        </div>
                         </div>
                         <div class="tab-pane fade" id="pill-dates" role="tabpanel" aria-labelledby="pill-dates-tab">
                                         <ul class="progressbar">
@@ -331,7 +242,7 @@
                                                         </table>
                                         </div>
                                         <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" v-if="finances_selected">
-                                                        <h3 class="breadcrumb-item active"><span>member</span> pledges</h3>
+                                                        <h3 class="breadcrumb-item active">pledges</h3>
                                                         <table class="table">
                                                         
                                                                 <thead>
@@ -355,12 +266,14 @@
                                                                 </tbody>
                                                         </table>
                                         </div>
-                                        <div class="tab-pane fade" id="pills-tithes" role="tabpanel" aria-labelledby="pills-tithes-tab" v-if = "finances_selected">
-                                                        <div class="row" v-for = "data in tithe_stats.stats">
-                                                                        <p class="card-text" style="padding: 5px"><small class="text-muted">total this month-</small> <span class="badge badge-pill badge-info">{{data.total_this_month}}</span></p>
-                                                                        <p class="card-text" style="padding: 5px"><small class="text-muted">total this year-</small> <span class="badge badge-pill badge-success">{{data.total_this_year}}</span></p>
-                                                        </div>
+                                        <div class="tab-pane fade" id="pills-tithes" role="tabpanel" aria-labelledby="pills-tithes-tab" v-if = "finances_selected">                                                        
                                                         <h3 class="breadcrumb-item active">tithes </h3> 
+                                                        <div class="row" v-for = "data in tithe_stats.stats">
+                                                                <p class="card-text" style="padding: 5px"><small class="text-muted">total this month-</small> <span class="badge badge-pill badge-info">{{data.total_this_month}}</span></p>                                                                
+                                                        </div>
+                                                        <div class="row" v-for = "data in tithe_stats.stats">                                                               
+                                                                <p class="card-text" style="padding: 5px"><small class="text-muted">total this year-</small> <span class="badge badge-pill badge-success">{{data.total_this_year}}</span></p>
+                                                        </div>
                                                         <table class="table">
                                                             <thead>
                                                                 <tr>
@@ -543,7 +456,7 @@ export default {
         marital_status_info: null, marital_status_errors: [],
         family_info: null, family_errors: [],
         groups_selected: false,
-        fellowships: null,church_groups: null, ministries:null, cell_groups: null,
+        church_groups: null,
         finances_selected: false, contribution_info:null, pledges_info: null,
         offering_info: null,tithe_info: null,tithe_stats: null,offering_stats: null,
         family_tree: null      
@@ -558,140 +471,120 @@ export default {
     },
   methods: {
         getMemberGroups: function(){
-            this.groups_selected = true
-            this.$http.get(this.$BASE_URL + '/api/groups/fellowships-for-a-member/'+this.$route.params.id+'/')
-            .then(response => {
-            this.fellowships = {"response": response.data }
-            })
-            .catch(error=> {
-            this.groups_errors.push(error)
-            })
-            this.$http.get(this.$BASE_URL + '/api/groups/ministries-for-a-member/'+this.$route.params.id+'/')
-            .then(response => {
-            this.ministries = {"response": response.data }
-            })
-            .catch(error=> {
-            this.groups_errors.push(error)
-            })
-            this.$http.get(this.$BASE_URL + '/api/groups/church-groups-for-a-member/'+this.$route.params.id+'/')
-            .then(response => {
-            this.church_groups = {"response": response.data }
-            })
-            .catch(error=> {
-            this.groups_errors.push(error)
-            })
-            this.$http.get(this.$BASE_URL + '/api/groups/cell-groups-for-a-member/'+this.$route.params.id+'/')
-            .then(response => {
-            this.cell_groups = {"response": response.data }
-            })
-            .catch(error=> {
-            this.groups_errors.push(error)
-            })
+                this.groups_selected = true                
+                this.$http.get(this.$BASE_URL + '/api/groups/church-groups-for-a-member/'+this.$route.params.id+'/')
+                .then(response => {
+                this.church_groups = {"response": response.data }
+                })
+                .catch(error=> {
+                this.groups_errors.push(error)
+                })            
         },
         getMemberFinances: function() {
-            this.finances_selected = true
-            this.$http.get(this.$BASE_URL + '/api/projects/contributions-by-member/'+this.$route.params.id+'/')
-            .then(response => {
-            this.contribution_info = {"contribution": response.data }
-        
-            })
-            .catch(error=> {
-            
-            })       
-            this.$http.get(this.$BASE_URL + '/api/projects/pledges-by-member/'+this.$route.params.id+'/')
-            .then(response => {
-            this.pledges_info = {"pledges": response.data }
-            })
-            .catch(error=> {
-            
-            })  
-            this.$http.get(this.$BASE_URL + '/api/finance/tithe-stats-for-member/'+this.$route.params.id+'/')
-            .then(response => {
-            this.tithe_stats = {"stats": response.data }
-            })
-            .catch(error=> {
-            
-            }) 
-            this.$http.get(this.$BASE_URL + '/api/finance/tithe-for-member/'+this.$route.params.id+'/')
-            .then(response => {
-            this.tithe_info = {"tithes": response.data }
-            })
-            .catch(error=> {
-            
-            }) 
-            this.$http.get(this.$BASE_URL + '/api/finance/offering-stats-for-member/'+this.$route.params.id+'/')
-            .then(response => {
-            this.offering_stats = {"stats": response.data }
-            })
-            .catch(error=> {
-            
-            }) 
-            this.$http.get(this.$BASE_URL + '/api/finance/offerings-by-member/'+this.$route.params.id+'/')
-            .then(response => {
-            this.offering_info = {"offerings": response.data }
-            })
-            .catch(error=> {
-            
-            }) 
+
+                this.finances_selected = true
+                this.$http.get(this.$BASE_URL + '/api/projects/contributions-by-member/'+this.$route.params.id+'/')
+                .then(response => {
+                this.contribution_info = {"contribution": response.data }
+                
+                })
+                .catch(error=> {
+                
+                })       
+                this.$http.get(this.$BASE_URL + '/api/projects/pledges-by-member/'+this.$route.params.id+'/')
+                .then(response => {
+                this.pledges_info = {"pledges": response.data }
+                })
+                .catch(error=> {
+                
+                })  
+                this.$http.get(this.$BASE_URL + '/api/finance/tithe-stats-for-member/'+this.$route.params.id+'/')
+                .then(response => {
+                this.tithe_stats = {"stats": response.data }
+                })
+                .catch(error=> {
+                
+                }) 
+                this.$http.get(this.$BASE_URL + '/api/finance/tithe-for-member/'+this.$route.params.id+'/')
+                .then(response => {
+                this.tithe_info = {"tithes": response.data }
+                })
+                .catch(error=> {
+                
+                }) 
+                this.$http.get(this.$BASE_URL + '/api/finance/offering-stats-for-member/'+this.$route.params.id+'/')
+                .then(response => {
+                this.offering_stats = {"stats": response.data }
+                })
+                .catch(error=> {
+                
+                }) 
+                this.$http.get(this.$BASE_URL + '/api/finance/offerings-by-member/'+this.$route.params.id+'/')
+                .then(response => {
+                this.offering_info = {"offerings": response.data }
+                })
+                .catch(error=> {
+                
+                }) 
 
         },
         fetchData() {
-            this.$http.get(this.$BASE_URL + '/api/members/member/'+this.$route.params.id+'/')
-            .then(response => {
-            this.member_info = {"member": response.data }
-            })
-            .catch(error=> {
-            this.contact_errors.push(error)
-            })
-            this.$http.get(this.$BASE_URL + '/api/members/contact-for-member/'+this.$route.params.id+'/')
-            .then(response => {
-            this.contact_info = {"contact": response.data }
-            })
-            .catch(error=> {
-            this.contact_errors.push(error)
-            })
-            this.$http.get(this.$BASE_URL + '/api/members/age-for-member/'+this.$route.params.id+'/')
-            .then(response => {
-            this.age_info = {"age": response.data }
-            })
-            .catch(error=> {
-            this.age_errors.push(error)
-            })
-            this.$http.get(this.$BASE_URL + '/api/members/residence-for-member/'+this.$route.params.id+'/')
-            .then(response => {
-            this.residence_info = {"residence": response.data }
-            })
-            .catch(error=> {
-            this.residence_errors.push(error)
-            })
-            this.$http.get(this.$BASE_URL + '/api/members/roles-for-member/'+this.$route.params.id+'/')
-            .then(response => {
-            this.roles_info = {"roles": response.data }
-            })
-            .catch(error=> {
-            this.roles_errors.push(error)
-            })
-            this.$http.get(this.$BASE_URL + '/api/members/marital-status-for-member/'+this.$route.params.id+'/')
-            .then(response => {
-            this.marital_status_info = {"marital_status": response.data }
-            })
-            .catch(error=> {
-            this.marital_status_errors.push(error)
-            })
-            this.$http.get(this.$BASE_URL + '/api/members/family-for-member/'+this.$route.params.id+'/')
-            .then(response => {
-            this.family_info = {"family": response.data }
-            })
-            .catch(error=> {
-            this.family_errors.push(error)
-            })
-            this.$http.get(this.$BASE_URL + '/api/members/family-tree-for-member/'+this.$route.params.id+'/')
-            .then(response => {
-            this.family_tree = {"tree": response.data }
-            })
-            .catch(error=> {
-            this.family_errors.push(error)
-            })
+                this.$http.get(this.$BASE_URL + '/api/members/member/'+this.$route.params.id+'/')
+                .then(response => {
+                this.member_info = {"member": response.data }
+                })
+                .catch(error=> {
+                this.contact_errors.push(error)
+                })
+                this.$http.get(this.$BASE_URL + '/api/members/contact-for-member/'+this.$route.params.id+'/')
+                .then(response => {
+                this.contact_info = {"contact": response.data }
+                })
+                .catch(error=> {
+                this.contact_errors.push(error)
+                })
+                this.$http.get(this.$BASE_URL + '/api/members/age-for-member/'+this.$route.params.id+'/')
+                .then(response => {
+                this.age_info = {"age": response.data }
+                })
+                .catch(error=> {
+                this.age_errors.push(error)
+                })
+                this.$http.get(this.$BASE_URL + '/api/members/residence-for-member/'+this.$route.params.id+'/')
+                .then(response => {
+                this.residence_info = {"residence": response.data }
+                })
+                .catch(error=> {
+                this.residence_errors.push(error)
+                })
+                this.$http.get(this.$BASE_URL + '/api/members/roles-for-member/'+this.$route.params.id+'/')
+                .then(response => {
+                this.roles_info = {"roles": response.data }
+                })
+                .catch(error=> {
+                this.roles_errors.push(error)
+                })
+                this.$http.get(this.$BASE_URL + '/api/members/marital-status-for-member/'+this.$route.params.id+'/')
+                .then(response => {
+                this.marital_status_info = {"marital_status": response.data }
+                })
+                .catch(error=> {
+                this.marital_status_errors.push(error)
+                })
+                this.$http.get(this.$BASE_URL + '/api/members/family-for-member/'+this.$route.params.id+'/')
+                .then(response => {
+                this.family_info = {"family": response.data }
+                })
+                .catch(error=> {
+                this.family_errors.push(error)
+                })
+                this.$http.get(this.$BASE_URL + '/api/members/family-tree-for-member/'+this.$route.params.id+'/')
+                .then(response => {
+                this.family_tree = {"tree": response.data }
+                })
+                .catch(error=> {
+                this.family_errors.push(error)
+                })
             
         }
       

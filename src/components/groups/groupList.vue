@@ -118,45 +118,9 @@ export default {
         },
         fetchData() {
             this.group_type = this.$route.params.group_type
-            if (this.$route.params.group_type == 'fellowship'){
-                this.fetch_data_error = []
-                this.$http.get(this.$BASE_URL + '/api/groups/fellowship-list/')
-                .then(response => {
-                this.groups = {"response": response.data } 
-                var array = this.groups.response
-                this.foundItems = array.length
-                })
-                .catch((err) => {
-                    this.fetch_data_error.push(err)
-                })
-            }
             if (this.$route.params.group_type == 'church-group'){
                 this.fetch_data_error = []
                 this.$http.get(this.$BASE_URL + '/api/groups/church-group-list/')
-                .then(response => {
-                this.groups = {"response": response.data } 
-                var array = this.groups.response
-                this.foundItems = array.length
-                })
-                .catch((err) => {
-                    this.fetch_data_error.push(err)
-                })
-            }
-            if (this.$route.params.group_type == 'ministrie'){
-                this.fetch_data_error = []
-                this.$http.get(this.$BASE_URL + '/api/groups/ministry-list/')
-                .then(response => {
-                this.groups = {"response": response.data } 
-                var array = this.groups.response
-                this.foundItems = array.length
-                })
-                .catch((err) => {
-                    this.fetch_data_error.push(err)
-                })
-            }
-            if (this.$route.params.group_type == 'cell-group'){
-                this.fetch_data_error = []
-                this.$http.get(this.$BASE_URL + '/api/groups/cell-group-list/')
                 .then(response => {
                 this.groups = {"response": response.data } 
                 var array = this.groups.response
@@ -177,23 +141,6 @@ export default {
             if (! this.description){
                 this.description = 'none given'
             }
-            if (this.$route.params.group_type == 'fellowship'){
-                this.$http({
-                    method: 'post',
-                    url: this.$BASE_URL + '/api/groups/fellowship-list/',
-                    data: {
-                    name: this.name,
-                    description: this.description
-                    }
-                    }).then(response => {
-                    this.added_group.push(response.data )   
-                    this.name = ''
-                    this.description = ''
-                    })
-                    .catch((err) => {
-                    this.add_group_error.push(err)
-                    })
-            }
             if (this.$route.params.group_type == 'church-group'){
                 this.$http({
                     method: 'post',
@@ -201,40 +148,6 @@ export default {
                     data: {
                         name: this.name,
                         description: this.description
-                    }
-                    }).then(response => {
-                    this.added_group.push(response.data )   
-                    this.name = ''
-                    this.description = ''
-                    })
-                    .catch((err) => {
-                    this.add_group_error.push(err)
-                    })
-            }
-            if (this.$route.params.group_type == 'cell-group'){
-                this.$http({
-                    method: 'post',
-                    url: this.$BASE_URL + '/api/groups/cell-group-list/',
-                    data: {
-                    name: this.name,
-                    description: this.description
-                    }
-                    }).then(response => {
-                    this.added_group.push(response.data )   
-                    this.name = ''
-                    this.description = ''
-                    })
-                    .catch((err) => {
-                    this.add_group_error.push(err)
-                    })
-            }
-            if (this.$route.params.group_type == 'ministrie'){
-                this.$http({
-                    method: 'post',
-                    url: this.$BASE_URL + '/api/groups/ministry-list/',
-                    data: {
-                    name: this.name,
-                    description: this.description
                     }
                     }).then(response => {
                     this.added_group.push(response.data )   
