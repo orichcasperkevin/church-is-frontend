@@ -35,44 +35,72 @@
                     <div class="modal-content">
                         <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalCenterTitle">add an upcoming event</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" v-on:click="fetchData()">
                             <span aria-hidden="true">&times;</span>
                         </button>
                         </div>
                         <div class="modal-body">
                                 <form>
                                         <div class=" row form-group">
-                                            <label class="col-3"><b>name:</b></label>
-                                            <input type="text" class="col-8 form-control" placeholder="enter name of the event" v-model="event_name">                                        
+                                            <label class="col-3"><b>title:</b></label>
+                                            <input type="text" class="col-8 form-control" placeholder="enter title of event" v-model="event_title">                                        
+                                            <p v-if="event_title_errors.length">
+                                                <ul>
+                                                        <small><li v-for="error in event_title_errors"><p class="text-danger">{{ error }}</p></li></small>
+                                                </ul>
+                                            </p>
                                         </div>
                                         
                                         <div class="row form-group">
                                                 <label class="col-3"><b>location:</b></label>
                                                 <input type="text" class="col-8 form-control" placeholder="enter event location" v-model="event_location">                                        
+                                                <p v-if="event_location_errors.length">
+                                                    <ul>
+                                                            <small><li v-for="error in event_location_errors"><p class="text-danger">{{ error }}</p></li></small>
+                                                    </ul>
+                                                </p>
                                         </div>
                                         <hr/>
                                         <div class="form-group">
                                                 <div class="row">
-                                                        <label class="col-3"><b>date</b></label>
+                                                        <label class="col-3"><b> start date:</b></label>
                                                         <div class="col-8">
-                                                            <div class="row">
-                                                                    <span class="col">
-                                                                            <label><b>year :</b></label>
-                                                                            <input type="number" class="form-control" v-model="year" placeholder="YYYY">
-                                                                    </span>
-                                                                    <span class="col">
-                                                                            <label><b>month :</b></label>
-                                                                            <input type="number" class="form-control" v-model="month" placeholder="MM">
-                                                                    </span>
-                                                                    <span class="col">
-                                                                            <label><b>day :</b></label>
-                                                                            <input type="number" class="form-control" v-model="day" placeholder="DD">
-                                                                    </span> 
-                                                            </div>                                                           
+                                                            <input type="date" name="bday" max="3000-12-31" 
+                                                            min="1000-01-01" class="form-control" v-model="start_date"> 
+                                                            <p v-if="start_date_errors.length">
+                                                                <ul>
+                                                                        <small><li v-for="error in start_date_errors"><p class="text-danger">{{ error }}</p></li></small>
+                                                                </ul>
+                                                            </p>
+
+                                                            <label class="col-3">from</label>
+                                                            <input type="text" class=" col-8 form-control" placeholder="HH:MM" v-model="start_time">                                                          
+                                                            <p v-if="start_time_errors.length">
+                                                                <ul>
+                                                                        <small><li v-for="error in start_time_errors"><p class="text-danger">{{ error }}</p></li></small>
+                                                                </ul>
+                                                            </p>
                                                         </div>
                                                 </div>
                                         </div>
-                                        <hr/>                                                         
+                                        <hr/> 
+                                        <div class="form-group">
+                                            <div class="row">
+                                                    <label class="col-3"><b> end date:</b></label>
+                                                    <div class="col-8">
+                                                        <input type="date" name="bday" max="3000-12-31" 
+                                                        min="1000-01-01" class="form-control" v-model="end_date"> 
+                                                        <p v-if="end_date_errors.length">
+                                                            <ul>
+                                                                    <small><li v-for="error in end_date_errors"><p class="text-danger">{{ error }}</p></li></small>
+                                                            </ul>
+                                                        </p>
+
+                                                        <label class="col-3">to</label>
+                                                        <input type="text" class=" col-8 form-control" placeholder="HH:MM" v-model="end_time">                                                          
+                                                    </div>
+                                            </div>
+                                        </div>                                                        
                                         <div class="row form-group">
                                                 <label class="col-3"><b>description:</b></label>
                                                 <textarea type="text" class="col-8 form-control" rows='3' v-model="event_description"></textarea>                                                   
@@ -81,9 +109,8 @@
                                 </form>
                         </div>
                         <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-success" disabled v-if="! enable_add_event_button"><b>+</b> add event</button>
-                        <button type="button" class="btn btn-success" v-if="enable_add_event_button" v-on:click="addEvent()">{{add_event_button_text}}</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="fetchData()">Close</button>                       
+                        <button type="button" class="btn btn-success" v-on:click="addEvent()">{{add_event_button_text}}</button>
                         </div>
                     </div>
                     </div>
@@ -108,14 +135,12 @@
                 fetch_data_error: [],               
                 events_available: false,
                 add_event_button_text: 'add event',
-                //add event
-                enable_add_event_button: false,
-                event_name: '',
-                event_location: '',
-                slug: 'fedrjoeijrpojerij',
-                event_description: '',
-                year: '',month: '',day: '',
-                date: '',
+                //add event                
+                event_title: '',event_title_errors: [],
+                event_location: '',event_location_errors: [],                
+                event_description: '',                
+                start_date: '',start_time:'',start_date_errors:[], start_time_errors:[],
+                end_date: '',end_time:'',end_time_errors:[], end_date_errors:[],
                 added_event: [],
                 //events
                 events: []
@@ -126,56 +151,6 @@
         created () {
            this.checkLoggedIn()
            this.fetchData() 
-        },
-        watch: {
-            event_name: function(){                
-                if ( this.event_name.length > 0
-                     && this.event_location.length > 0 
-                     && this.event_description.length > 0
-                     && this.date.length > 0){
-
-                    this.enable_add_event_button = true
-                }                
-            },
-            event_description: function(){                
-                if (this.event_name.length > 0
-                     && this.event_location.length > 0
-                     && this.event_description.length > 0 
-                     && this.date.length > 0){
-
-                    this.enable_add_event_button = true
-                }                
-            },
-            date: function(){                
-                if (this.event_name.length > 0
-                     && this.event_location.length > 0
-                     && this.event_description.length > 0
-                     && this.date.length > 0){
-
-                    this.enable_add_event_button = true
-                }                
-            },
-            year: function(){
-                if (this.year.length > 0 
-                     && this.month.length > 0 
-                     && this.day > 0){
-                    this.date = this.year + '-' + this.month + '-' + this.day
-                }
-            },
-            month: function(){
-                if (this.year.length > 0 
-                     && this.month.length > 0 
-                     && this.day > 0){
-                    this.date = this.year + '-' + this.month + '-' + this.day
-                }
-            },
-            day: function(){
-                if (this.year.length > 0 
-                     && this.month.length > 0 
-                     && this.day > 0){
-                    this.date = this.year + '-' + this.month + '-' + this.day
-                }
-            }
         },
         methods: {
             humanize: function(x) {
@@ -195,33 +170,81 @@
                     this.fetch_data_error.push(err)
                 })
             },
-            addEvent (){                
-                this.enable_add_event_button = false
-                this.add_event_button_text = 'adding event...'            
-                this.$http({
-                    method: 'post',
-                    url: this.$BASE_URL + '/api/events/event-list/',
-                    data: {
-                        name: this.event_name,
-                        description: this.event_description,
-                        slug: this.slug,
-                        date: this.date,
-                        website: true,
-                        location: this.event_location                  
+            //check if the add event form is okay
+            addEventFormOkay: function (){
+                this.event_title_errors = []
+                this.event_location_errors = []
+                this.start_date_errors = []
+                this.start_time_errors = []
+                this.end_date_errors = []
+                this.end_time_errors = []
+                if (this.event_title.length > 0
+                    && this.event_location.length > 0
+                    && this.event_description.length > 0
+                    && this.start_date.length > 0
+                    && this.start_time.length > 0
+                    && this.end_date.length > 0
+                    && this.end_time.length > 0){
+                        return true
                     }
-                }).then(response => {
-                        this.added_event.push(response.data)                    
-                        this.event_name = ''
-                        this.event_description = ''
-                        this.year = ''
-                        this.month = ''
-                        this.day = ''
-                        this.event_location = ''
-                        this.add_event_button_text = '+ add role'                    
-                    })
-                    .catch((err) => {
-                        this.add_event_button_text = 'failed, check date'
-                    })                        
+                if (this.event_title.length == 0){
+                    this.event_title_errors.push("a title to the event needed")
+                    return false
+                }
+                if (this.event_location.length == 0){
+                    this.event_location_errors.push("location of the event needed")
+                    return false
+                }
+                if (this.event_description.length == 0){
+                    this.event_description = "none given"                    
+                }
+                if (this.start_date.length == 0){
+                    this.start_date_errors.push("select a starting date for the event")
+                    return false
+                }
+                if (this.end_date.length == 0){
+                    this.end_date_errors.push("select an ending date for the event")
+                    return false
+                }
+                if (this.start_time.length != 4
+                    || this.start_time.split(":") != 2 ){
+                    this.start_time_errors.push("use HH:MM format for time")
+                    return false
+                }
+                if (this.end_time.length != 4
+                    || this.end_time.split(":") != 2 ){
+                    this.end_time_errors.push("use HH:MM format for time")
+                    return false
+                }
+            },
+            addEvent: function (){                
+                if (this.addEventFormOkay()){
+                    this.$http({                        
+                        method: 'post',
+                        url: this.$BASE_URL + '/api/events/add-event/',
+                        data: {
+                                title: this.event_title,                                                                                               
+                                description: this.event_description,                                
+                                location: this.event_location,                        
+                                start_date: this.start_date,
+                                start_time: this.start_time,
+                                end_date: this.end_date,
+                                end_time: this.end_time                            
+                        }
+                        }).then(response => {                              
+                               this.event_title = ''
+                               this.event_location = ''
+                               this.event_description = ''
+                               this.start_date = ''
+                               this.start_time = ''
+                               this.end_date = ''
+                               this.end_time = ''                                                                                            
+                               alert("event succesfully added ")                                                    
+                        })
+                        .catch((err) => {
+                                alert("an error occurred when trying to add event, check your form and try again")
+                        }) 
+                }                       
             }
         }
     }
