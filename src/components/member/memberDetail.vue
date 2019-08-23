@@ -70,10 +70,10 @@
                                                 <p v-if = "marital_status_info.marital_status.length == 0"><b>marital status :</b> none given</p>
                                                 <span v-for = "data in marital_status_info" >
                                                         <span v-for = "data in data">
-                                                        <p v-if = "data.status == 'M'"><b>marital_status :</b> married </p>
-                                                        <p v-if = "data.status == 'S'"><b>marital_status :</b> single </p>
-                                                        <p v-if = "data.status == 'D'"><b>marital_status :</b> divorced </p>
-                                                        <p v-if = "data.status == 'W'"><b>marital_status :</b> widowed </p>
+                                                        <p v-if = "data.status == 'M'"><b>marital status :</b> married </p>
+                                                        <p v-if = "data.status == 'S'"><b>marital status :</b> single </p>
+                                                        <p v-if = "data.status == 'D'"><b>marital status :</b> divorced </p>
+                                                        <p v-if = "data.status == 'W'"><b>marital status :</b> widowed </p>
                                                         </span>
                                                 </span>
                                                 </span>

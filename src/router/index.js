@@ -70,14 +70,14 @@ export default new Router({
           component: groupList
         },
         {
-          path: '/groupList/:group_type',
+          path: '/groupList/:id/:group_name',
           name: 'groupList',
           component: groupList
         }
       ]
     },
     {
-      path:'/groupDetail/:id/:group_type',
+      path:'/groupDetail/:id/',
       name: 'groupDetail',
       component: groupDetail
     },

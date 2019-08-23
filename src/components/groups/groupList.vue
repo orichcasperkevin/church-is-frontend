@@ -2,7 +2,7 @@
     <div>
         <div class="row">
         <div class="col">
-        <h3 >groups / {{group_type}}s</h3>
+        <h3 >{{group_name}} / groups</h3>
         <hr/>
         <div class="col-8 center-div" v-if = "fetch_data_error.length > 0">
             <div class = "center-div" >
@@ -17,7 +17,7 @@
             <tbody>
                 <tr v-for = "data in groups.response ">                    
                 <td>
-                    <router-link class="text-secondary" style="text-decoration: none;"  :to="`/groupDetail/`+ data.id + `/` + group_type">
+                    <router-link class="text-secondary" style="text-decoration: none;"  :to="`/groupDetail/`+ data.id ">
                         <img  src="@/assets/avatars/icons8-crowd-100.png" style="width: 60px; height: auto;" alt="...">                        
                         {{data.name}}
                     </router-link>
@@ -39,7 +39,7 @@
             <div style="padding: 0px 0px 25px 0px">
                     <a href="#" data-toggle="modal" data-target="#addGroup" style="text-decoration: none">
                         <div class="add-button">
-                            <b>+</b> add
+                            <b>+</b> to {{group_name}}
                         </div>
                     </a>
             </div>
@@ -50,22 +50,14 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalCenterTitle">add</h5>
+                    <h5 class="modal-title" id="exampleModalCenterTitle">add group to {{group_name}} folder</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close" v-on:click="fetchData()">
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">
-                    <div v-if="added_group.length > 0 ">
-                    <div class="alert alert-success alert-dismissible fade show" role="alert" v-for = "data in added_group">
-                            <strong>{{data.name}}</strong> added successfully.
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                    </div>
-                    </div>
+                <div class="modal-body">                    
                     <div class="form-group">
-                            <label for="addGroup">name</label>
+                            <label for="addGroup"> group name</label>
                             <input type="text" class="form-control" id="addGroup" autofocus v-model="name"></input>
                             <p v-if="name_errors.length">
                                     <ul>
@@ -94,12 +86,12 @@ export default {
   name: 'groupList',
   data () {
     return {
-        group_type: '',
+        group_name: 'ljpoik',
         groups: null,
         foundItems: null,
         fetch_data_error: [],
         name: '',name_errors: [],description: '',
-        add_group_error: null,added_group: []
+        add_group_error: null
     }
   },
   created() {
@@ -117,19 +109,18 @@ export default {
             }
         },
         fetchData() {
-            this.group_type = this.$route.params.group_type
-            if (this.$route.params.group_type == 'church-group'){
-                this.fetch_data_error = []
-                this.$http.get(this.$BASE_URL + '/api/groups/church-group-list/')
-                .then(response => {
+            this.group_name = this.$route.params.group_name                                
+            this.fetch_data_error = []
+            this.$http.get(this.$BASE_URL + '/api/groups/church-groups-in-group/' + this.$route.params.id + '/')
+            .then(response => {
                 this.groups = {"response": response.data } 
                 var array = this.groups.response
                 this.foundItems = array.length
-                })
-                .catch((err) => {
-                    this.fetch_data_error.push(err)
-                })
-            }
+            })
+            .catch((err) => {
+                this.fetch_data_error.push(err)
+            })
+            
         },
         addGroup: function(){
             this.name_errors = [],
@@ -140,25 +131,21 @@ export default {
             }
             if (! this.description){
                 this.description = 'none given'
+            }            
+            this.$http({ method: 'post', url: this.$BASE_URL + '/api/groups/add-group/',
+            data: {
+                group_of_groups_id: this.$route.params.id,
+                name: this.name,
+                description: this.description
             }
-            if (this.$route.params.group_type == 'church-group'){
-                this.$http({
-                    method: 'post',
-                    url: this.$BASE_URL + '/api/groups/church-group-list/',
-                    data: {
-                        name: this.name,
-                        description: this.description
-                    }
-                    }).then(response => {
-                    this.added_group.push(response.data )   
-                    this.name = ''
-                    this.description = ''
-                    })
-                    .catch((err) => {
-                    this.add_group_error.push(err)
-                    })
-            }
-
+            }).then(response => {                 
+                this.name = ''
+                this.description = ''
+                alert("group succesfully added")
+            })
+                .catch((err) => {
+                this.add_group_error.push(err)
+            })            
         }
       
     }

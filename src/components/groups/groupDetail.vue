@@ -276,7 +276,7 @@ export default {
         this.fetchData()
         this.debouncedGetAnswer = _.debounce(this.getAnswer, 1000)
     },
-    watch: {
+  watch: {
     // whenever question changes, this function will run
     memberSearch: function () {
       var array = this.memberSearch.split(" ")
@@ -311,214 +311,101 @@ export default {
               })
             }
         },
-        selectMember: function(id,first_name,last_name) {
-          this.selectedMember = id
-          this.memberSearch = first_name + ' ' + last_name
-          this.showMemberInput = false
-        },
-        addMemberToGroup: function(){
-          if (this.selectMember && this.role){
-            var group_id
-            var obj = this.group.response
-            group_id = obj["0"].id
-            this.$http({
-                    method: 'post',
-                    url: this.$BASE_URL + '/api/groups/add-member-to-group/',
-                    data: {
-                      group_type: this.$route.params.group_type ,
-                      group_id: group_id,
-                      member_id: this.selectedMember,
-                      role_id: this.role
-                    }
-                    }).then(response => {
-                    this.added_member.push(response.data )   
-                    this.memberSearch = ''
-                    this.role = ''
-                    alert("member successfully added")
-                    })
-                    .catch((err) => {
-                    this.add_group_error.push(err)
-                    })
-          }
-        },
-        getGroupActivity: function() {
-          this.activity_selected = true
-          if (this.$route.params.group_type == 'fellowship'){
-                this.fetch_group_activity_data_error = []
-                this.$http.get(this.$BASE_URL + '/api/groups/fellowship-meeting-list/' + this.$route.params.id + '/')
-                    .then(response => {
-                    this.group_meetings = {"response": response.data } 
-                    var array = this.group_meetings.response
-                    this.foundItems = array.length
-                    })
-                    .catch((err) => {
-                        this.fetch_group_activity_data_error.push(err)
-                    })
-
-            }
-            if (this.$route.params.group_type == 'church-group'){
-                this.fetch_group_activity_data_error = []
-                this.$http.get(this.$BASE_URL + '/api/groups/church-group-meeting-list/' + this.$route.params.id + '/')
-                    .then(response => {
-                    this.group_meetings = {"response": response.data } 
-                    var array = this.group_meetings.response
-                    this.foundItems = array.length
-                    })
-                    .catch((err) => {
-                        this.fetch_group_activity_data_error.push(err)
-                    })
-
-            }
-            if (this.$route.params.group_type == 'ministry'){
-                this.fetch_group_activity_data_error = []
-                this.$http.get(this.$BASE_URL + '/api/groups/ministry-meeting-list/' + this.$route.params.id + '/')
-                    .then(response => {
-                    this.group_meetings = {"response": response.data }
-                    var array = this.group_meetings.response
-                    this.foundItems = array.length 
-                    })
-                    .catch((err) => {
-                        this.fetch_group_activity_data_error.push(err)
-                    })
-
-            }
-            if (this.$route.params.group_type == 'cell-group'){
-                this.fetch_group_activity_data_error = []
-                this.$http.get(this.$BASE_URL + '/api/groups/cell-group-meeting-list/' + this.$route.params.id + '/')
-                    .then(response => {
-                    this.group_meetings = {"response": response.data } 
-                    var array = this.group_meetings.response
-                    this.foundItems = array.length
-                    })
-                    .catch((err) => {
-                        this.fetch_group_activity_data_error.push(err)
-                    })
-            } 
-        },
-        sendMessage: function (){
+      selectMember: function(id,first_name,last_name) {
+        this.selectedMember = id
+        this.memberSearch = first_name + ' ' + last_name
+        this.showMemberInput = false
+      },
+      addMemberToGroup: function(){
+        if (this.selectMember && this.role){
+          var group_id
+          var obj = this.group.response
+          group_id = obj["0"].id
           this.$http({
-                        method: 'post',
-                        url: this.$BASE_URL + '/api/sms/add-sms/',
-                        data: {
-                          sending_member_id: 2 ,
-                          app: "members-admin",
-                          message: this.message,
-                          website: true,
-                          receipient_member_ids: this.member_ids
-                        }
-                        }).then(response => {
-                          this.sms_status.push(response.data)
-                        })
-                        .catch((err) => {
-                        })
-        },
-        closeSmsModal: function (){
-          this.sms_status = []
-          this.message = ""
-        },
-        fetchData() {
-          this.$http.get(this.$BASE_URL + '/api/members/role-list/')
-                    .then(response => {
-                    this.roles = {"response": response.data } 
-                    })
-                    .catch((err) => {
-                        this.fetch_data_error.push(err)
-                    })
-            if (this.$route.params.group_type == 'fellowship'){
-                this.fetch_data_error = []
-                this.$http.get(this.$BASE_URL + '/api/groups/fellowship/' + this.$route.params.id + '/')
-                    .then(response => {
-                    this.group = {"response": response.data } 
-                    })
-                    .catch((err) => {
-                        this.fetch_data_error.push(err)
-                    })
-
-                this.$http.get(this.$BASE_URL + '/api/groups/fellowship-members/' + this.$route.params.id + '/')
-                    .then(response => {
-                      this.members = {"response": response.data } 
-                      var array = this.members.response
-                      this.foundItems = array.length
-                      for (var data in this.members.response){
-                        this.member_ids.push(this.members.response[data].member.id)
-                      }
-                    })
-                    .catch((err) => {
-                        this.fetch_data_error.push(err)
-                    }) 
-
-            }
-            if (this.$route.params.group_type == 'church-group'){
-                this.fetch_data_error = []
-                this.$http.get(this.$BASE_URL + '/api/groups/church-group/' + this.$route.params.id + '/')
-                    .then(response => {
-                    this.group = {"response": response.data } 
-                    })
-                    .catch((err) => {
-                        this.fetch_data_error.push(err)
-                    })
+                  method: 'post',
+                  url: this.$BASE_URL + '/api/groups/add-member-to-group/',
+                  data: {
+                    group_type: this.$route.params.group_type ,
+                    group_id: group_id,
+                    member_id: this.selectedMember,
+                    role_id: this.role
+                  }
+                  }).then(response => {
+                  this.added_member.push(response.data )   
+                  this.memberSearch = ''
+                  this.role = ''
+                  alert("member successfully added")
+                  })
+                  .catch((err) => {
+                  this.add_group_error.push(err)
+                  })
+        }
+      },
+      getGroupActivity: function() {
+        this.activity_selected = true          
+        this.fetch_group_activity_data_error = []
+        this.$http.get(this.$BASE_URL + '/api/groups/church-group-meeting-list/' + this.$route.params.id + '/')
+        .then(response => {
+          this.group_meetings = {"response": response.data } 
+          var array = this.group_meetings.response
+          this.foundItems = array.length
+        })
+        .catch((err) => {
+          this.fetch_group_activity_data_error.push(err)
+        })          
+      },
+      sendMessage: function (){
+        this.$http({ method: 'post', url: this.$BASE_URL + '/api/sms/add-sms/',
+        data: {
+          sending_member_id: 2 ,
+          app: "members-admin",
+          message: this.message,
+          website: true,
+          receipient_member_ids: this.member_ids
+        }
+        }).then(response => {
+          this.sms_status.push(response.data)
+        })
+        .catch((err) => {
+        })
+      },
+      closeSmsModal: function (){
+        this.sms_status = []
+        this.message = ""
+      },
+      fetchData() {
+        this.$http.get(this.$BASE_URL + '/api/members/role-list/')
+        .then(response => {
+          this.roles = {"response": response.data } 
+        })
+        .catch((err) => {
+          this.fetch_data_error.push(err)
+        })
                     
-                this.$http.get(this.$BASE_URL + '/api/groups/church-group-members/' + this.$route.params.id + '/')
-                    .then(response => {
-                      this.members = {"response": response.data } 
-                      var array = this.members.response
-                      this.foundItems = array.length
-                      for (var data in this.members.response){
-                        this.member_ids.push(this.members.response[data].member.id)
-                      }
-                    })
-                    .catch((err) => {
-                        this.fetch_data_error.push(err)
-                    })
-            }
-            if (this.$route.params.group_type == 'ministrie'){
-                this.fetch_data_error = []
-                this.$http.get(this.$BASE_URL + '/api/groups/ministry/' + this.$route.params.id + '/')
-                    .then(response => {
-                    this.group = {"response": response.data } 
-                    })
-                    .catch((err) => {
-                        this.fetch_data_error.push(err)
-                    })
-                this.$http.get(this.$BASE_URL + '/api/groups/ministry-members/' + this.$route.params.id + '/')
-                    .then(response => {
-                      this.members = {"response": response.data } 
-                      var array = this.members.response
-                      this.foundItems = array.length
-                      for (var data in this.members.response){
-                        this.member_ids.push(this.members.response[data].member.id)
-                      }
-                    })
-                    .catch((err) => {
-                        this.fetch_data_error.push(err)
-                    })
-            }
-            if (this.$route.params.group_type == 'cell-group'){
-                this.fetch_data_error = []
-                this.$http.get(this.$BASE_URL + '/api/groups/cell-group/' + this.$route.params.id + '/')
-                    .then(response => {
-                    this.group = {"response": response.data } 
-                    })
-                    .catch((err) => {
-                        this.fetch_data_error.push(err)
-                    })
+        this.fetch_data_error = []
+        this.$http.get(this.$BASE_URL + '/api/groups/church-group/' + this.$route.params.id + '/')
+        .then(response => {
+          this.group = {"response": response.data } 
+        })
+        .catch((err) => {
+          this.fetch_data_error.push(err)
+        })
+                  
+        this.$http.get(this.$BASE_URL + '/api/groups/church-group-members/' + this.$route.params.id + '/')
+        .then(response => {
+          this.members = {"response": response.data } 
+          var array = this.members.response
+          this.foundItems = array.length
+          for (var data in this.members.response){
+            this.member_ids.push(this.members.response[data].member.id)
+        }
+        })
+        .catch((err) => {
+          this.fetch_data_error.push(err)
+        })        
+  }
 
-                this.$http.get(this.$BASE_URL + '/api/groups/cell-group-members/' + this.$route.params.id + '/')
-                    .then(response => {
-                      this.members = {"response": response.data } 
-                      var array = this.members.response
-                      this.foundItems = array.length
-                      for (var data in this.members.response){
-                        this.member_ids.push(this.members.response[data].member.id)
-                      }
-                    })
-                    .catch((err) => {
-                        this.fetch_data_error.push(err)
-                    })
-            }  
-        },
-    }
-
+  }
 }
 </script>
 
