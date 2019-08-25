@@ -218,7 +218,7 @@
                           </button>
                         </div>
                         <div class="modal-body">
-                          <h3>demo</h3>
+                          <h3 class="text-muted">demo</h3>
                             <div class="container">
                                 <table class="table">
                                     <thead>
@@ -266,14 +266,36 @@
                                     </tbody>
                                   </table>
                                 <hr/>
-                                <p>gender: <b>M</b> => male, <b>F</b> => female</p>
-                                <p>marital status: <b>M</b> => married, <b>S</b> => single, <b>D</b> => divorced, <b>W</b> => widowed</p>
-                                <hr/>
+                                <h3 class="text-muted">{{get_data_status}}</h3>
+                                <h3 class="text-muted">your csv :</h3>
+                                <small>showing only the first 5 lines</small>
+                                <div v-if="csv_data.length == 0" class="text-info">
+                                  no file chosen
+                                </div>
+
+                                <table class="table">
+                                  <thead>
+                                    <tr v-for="data in csv_data.slice(0,1)">                                        
+                                      <th scope="col" v-for="(value,key) in data">{{key}}</th>                                                                          
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr v-for="data in csv_data">                                                                            
+                                      <td v-for="(value,key) in data">{{value}}</td>
+                                    </tr>
+                                  </tbody>                                  
+                                </table>
+
                                 <div class="large-12 medium-12 small-12 cell">
                                   <label><b>file: </b>
                                     <input type="file" id="file" ref="file" v-on:change="handleFileUpload()"/>
                                   </label>                                
                                 </div>
+                                <hr>
+                                
+                                <p class="text-muted">gender: <b>M</b> => male, <b>F</b> => female</p>
+                                <p class="text-muted">marital status: <b>M</b> => married, <b>S</b> => single, <b>D</b> => divorced, <b>W</b> => widowed</p>
+                                <hr/>                                
                                 <p class="text-success" v-if="file_format_okay">file okay, proceed to import</p>
                                 <p v-if="error_500.length">
                                     <ul>
@@ -324,12 +346,13 @@ export default {
       message: " ",
       sms_status: [],
       // csv file upload
-      test_import_button_text: "test import",
+      test_import_button_text: "submit file",
       extract_data_button_text: "import data",
       file: '',
       error_500: [],
       test_csv_errors: [],
       uploaded_file: '',
+      csv_data: [],get_data_status: '',
       file_format_okay: false
 
     }
@@ -377,18 +400,18 @@ export default {
     fetchData() {
       this.fetch_data_error = []
       this.$http.get(this.$BASE_URL + '/api/members/member-list/')
-            .then(response => {
-              this.members = {"response": response.data } 
-              var array = this.members.response
-              this.foundItems = array.length
-              for (var data in this.members.response){
-                this.member_ids.push(this.members.response[data].member.id)
-              }
-              this.text_button_name = "Text All Members"
-            })
-            .catch((err) => {
-                this.fetch_data_error.push(err)
-            })  
+      .then(response => {
+        this.members = {"response": response.data } 
+        var array = this.members.response
+        this.foundItems = array.length
+        for (var data in this.members.response){
+          this.member_ids.push(this.members.response[data].member.id)
+      }
+        this.text_button_name = "Text All Members"
+      })
+      .catch((err) => {
+          this.fetch_data_error.push(err)
+      })  
     },
   // send message to selected members
     sendMessage: function (){
@@ -432,8 +455,7 @@ export default {
       this.$http.get(this.$BASE_URL + '/api/members/filter-by-gender/'+ this.gendersearch)
             .then(response => {
               this.members = {"response": response.data } 
-              var array = this.members.response
-              console.log(this.members.response)
+              var array = this.members.response              
               this.foundItems = array.length
               for (var data in this.members.response){
                 this.member_ids.push(this.members.response[data].member.id)
@@ -445,88 +467,99 @@ export default {
                   this.text_button_name = "text all Males"
                 }
             })
-            .catch((err) => {
-                console.log(err)
+            .catch((err) => {                
             })
     },
     searchByAge() {
       if (this.min_age != '' && this.max_age != ''){
       this.$http.get(this.$BASE_URL + '/api/members/filter-by-age/'+ this.min_age +'/' + this.max_age + '/')
-            .then(response => {
-              this.members = {"response": response.data } 
-              console.log(this.members.response)
-              var array = this.members.response
-              this.foundItems = array.length
-              for (var data in this.members.response){
-                this.member_ids.push(this.members.response[data].member.id)
-              }
-              this.text_button_name = "Text members between ages " + this.min_age + " and " + this.max_age
-            })
-            .catch((err) => {
-                console.log(err)
-            })
+      .then(response => {        
+        this.members = {"response": response.data }         
+        var array = this.members.response
+        this.foundItems = array.length
+        for (var data in this.members.response){
+          this.member_ids.push(this.members.response[data].member.id)
+         }
+        this.text_button_name = "Text members between ages " + this.min_age + " and " + this.max_age
+      })
+      .catch((err) => {                
+      })
       }
     },
         
-    //Submits the file to the server      
-      submitFile: function(){
-            this.error_500 = []
-            this.test_csv_errors = []
-            this.test_import_button_text = "checking document..."
-            let formData = new FormData();
-            formData.append('csv', this.file);
+  //Submits the file to the server      
+    submitFile: function(){
+          this.error_500 = []
+          this.test_csv_errors = []
+          this.test_import_button_text = "checking document..."
+          let formData = new FormData();
+          formData.append('csv', this.file);
 
-            this.$http.post( this.$BASE_URL + '/api/members/upload-csv/',
-                formData,
-                {
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
+          this.$http.post( this.$BASE_URL + '/api/members/upload-csv/',
+              formData,
+              {
+              headers: {
+                  'Content-Type': 'multipart/form-data'
               }
-            ).then(response =>{
-                var data = response.data   
-                //if data is not array there are no errors             
-                if (! data.length){
-                  this.uploaded_file = data.csv
-                  this.file_format_okay = true
-                  this.test_import_button_text = "test import"
-                  alert("file format okay")
-                }
-                else{
-                  this.test_csv_errors = data
-                  this.test_import_button_text = "test import"
-                }
-            })
-            .catch((err) =>{
-                this.error_500.push(err)
+            }
+          ).then(response =>{
+              var data = response.data   
+              //if data is not array there are no errors             
+              if (! data.length){
+                this.uploaded_file = data.csv
+                this.file_format_okay = true
                 this.test_import_button_text = "test import"
-            });
-      },
-    // handle the case that the file changes
-      handleFileUpload: function(){
-        this.file = this.$refs.file.files[0];
-      },
-    // extract data from the csv file
-      extractData: function(){
-        this.extract_data_button_text = "extracting..."
-        var file_name = this.uploaded_file.split("/")[1]       
-        this.$http({
-          method: 'post',
-          url: this.$BASE_URL + '/api/members/import-data-from-csv/',
-          data: {
-            file_name: file_name,                                 
-          }
-        }).then(response => {
-              alert("data extracted succesfully")
-              this.extract_data_button_text = "import data"
-              this.fetchData()
+                alert("file format okay")
+                this.previewCSV()
+              }
+              else{
+                this.test_csv_errors = data
+                this.test_import_button_text = "test import"
+              }
           })
-          .catch((err) => {     
-            alert("something went wrong while trying to extract data.\n Check the file and try again")   
-            this.extract_data_button_text = "import data"    
-          })
-      }
-  }
+          .catch((err) =>{
+              this.error_500.push(err)
+              this.test_import_button_text = "test import"
+          });
+    },
+  // handle the case that the file changes
+    handleFileUpload: function(){
+      this.file = this.$refs.file.files[0];
+    },
+  //preview the csv file
+    previewCSV: function(){
+      this.get_data_status = 'setting up preview ...'
+      var file_name = this.uploaded_file.split("/")[1]  
+      this.$http.get(this.$BASE_URL + '/api/members/preview-csv/'+ file_name + '/')
+      .then(response => {
+        this.csv_data = response.data
+        this.get_data_status = ''
+      })
+      .catch((err) => {
+        this.get_data_status = ''
+      })  
+    },
+  // extract data from the csv file
+    extractData: function(){
+      this.extract_data_button_text = "extracting..."
+      var file_name = this.uploaded_file.split("/")[1]       
+      this.$http({
+        method: 'post',
+        url: this.$BASE_URL + '/api/members/import-data-from-csv/',
+        data: {
+          file_name: file_name,                                 
+        }
+      }).then(response => {
+            alert("data extracted succesfully")
+            this.extract_data_button_text = "import data"
+            this.fetchData()
+        })
+        .catch((err) => {     
+          alert("something went wrong while trying to extract data.\n Check the file and try again")   
+          this.extract_data_button_text = "import data"    
+        })
+    }
+}
 
 }
 </script>

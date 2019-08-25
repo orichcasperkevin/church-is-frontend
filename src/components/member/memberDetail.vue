@@ -8,6 +8,19 @@
             </ol>
     </nav>
     <div class="container">
+        <div class="row">
+                <div class="col" v-if="member_info != null">
+                <h3 class="row" v-for="data in member_info.member">                                     
+                {{data.member.first_name}} {{data.member.last_name}}
+                </h3>
+                <p class="row">
+                member <b class="text-info"></b>
+                </p>          
+                </div>
+        </div>
+        <hr>
+    </div>
+    <div class="container">
             <div class="row">
               <div class="col-12 col-sm-8 col-md-8 col-lg-3">
                     <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
@@ -30,8 +43,7 @@
               </div>
               <div class="col-9">
                 <div class="tab-content" id="v-pills-tabContent">
-                        <div class="tab-pane fade show active" id="pill-detail" role="tabpanel" aria-labelledby="pill-detail-tab">
-                                <hr/>
+                        <div class="tab-pane fade show active" id="pill-detail" role="tabpanel" aria-labelledby="pill-detail-tab">                                
                                 <div style="padding: 10px 10px 10px 10px">
                                 </div>
                                 <div class="mx-auto" style="width: 200px;">
@@ -470,7 +482,7 @@ export default {
         '$route': 'fetchData'
     },
   methods: {
-        getMemberGroups: function(){
+        getMemberGroups: function(){                
                 this.groups_selected = true                
                 this.$http.get(this.$BASE_URL + '/api/groups/church-groups-for-a-member/'+this.$route.params.id+'/')
                 .then(response => {

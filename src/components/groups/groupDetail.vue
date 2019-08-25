@@ -9,6 +9,19 @@
         </nav>
         <body>
             <div class="container">
+                <div class="row">
+                  <div class="col" v-for="data in group.response">
+                      <h3 class="row">                                     
+                        {{data.name}}
+                      </h3>
+                      <p class="row">
+                        members |<b class="text-info">{{foundItems}}</b>|
+                      </p>          
+                  </div>
+                </div>
+                <hr>
+              </div>
+            <div class="container">
             <div class="row">
 
             <div class="filters  col-sm-10 col-md-8 col-lg-2" style="padding: 0px 0px 0px 0px">
@@ -32,11 +45,7 @@
                 <div>
                     <span aria-current="page" v-for="data in group.response">
                       <h3>
-                        <span class="backButton">
-                        <a href="#" v-on:click="goBack()" class="text-muted" style="text-decoration: none;">
-                            <img  src="@/assets/icons/icons8-back-filled-50.png" style=" width: 4%;height: auto;"> {{data.name}} 
-                        </a>
-                      </span>/ members
+                         members
                     </h3>
                     </span>
                     <hr/>
@@ -75,20 +84,10 @@
                         <p class="text-info">check your connection</p>
                       </div>
                       <div v-if = "fetch_group_activity_data_error.length == 0">
-                      <div>
-                          <span class="breadcrumb-item active" aria-current="page" v-for="data in group.response">
-                            <h3>
-                              <span class="backButton">
-                              <a href="#" v-on:click="goBack()" class="text-muted" style="text-decoration: none;">
-                                  <img  src="@/assets/icons/icons8-back-filled-50.png" style=" width: 4%;height: auto;"> {{data.name}} 
-                              </a>
-                            </span>/ activity
-                          </h3>
-                          </span>
-                          <hr/>
-                        <p>
-                        found <span class="badge badge-pill badge-info">{{foundItems}}</span>
-                        </p>
+                      <div>                          
+                          <h3  v-for="data in group.response">
+                              activity
+                          </h3>                                                                          
                       </div>
                       </div>
                   <table class="table">
@@ -321,24 +320,23 @@ export default {
           var group_id
           var obj = this.group.response
           group_id = obj["0"].id
-          this.$http({
-                  method: 'post',
-                  url: this.$BASE_URL + '/api/groups/add-member-to-group/',
-                  data: {
-                    group_type: this.$route.params.group_type ,
-                    group_id: group_id,
-                    member_id: this.selectedMember,
-                    role_id: this.role
-                  }
-                  }).then(response => {
-                  this.added_member.push(response.data )   
-                  this.memberSearch = ''
-                  this.role = ''
-                  alert("member successfully added")
-                  })
-                  .catch((err) => {
-                  this.add_group_error.push(err)
-                  })
+          this.$http({ method: 'post', url: this.$BASE_URL + '/api/groups/add-member-to-group/',
+          data: {
+            group_type: this.$route.params.group_type ,
+            group_id: group_id,
+            member_id: this.selectedMember,
+            role_id: this.role
+          }
+          }).then(response => {
+            this.added_member.push(response.data )   
+            this.memberSearch = ''
+            this.role = ''
+          alert("member successfully added")
+          })
+          .catch((err) => {
+            alert("an error occered while attempting to add member, check your data and try again")
+            this.add_group_error.push(err)
+          })
         }
       },
       getGroupActivity: function() {
@@ -346,9 +344,7 @@ export default {
         this.fetch_group_activity_data_error = []
         this.$http.get(this.$BASE_URL + '/api/groups/church-group-meeting-list/' + this.$route.params.id + '/')
         .then(response => {
-          this.group_meetings = {"response": response.data } 
-          var array = this.group_meetings.response
-          this.foundItems = array.length
+          this.group_meetings = {"response": response.data }           
         })
         .catch((err) => {
           this.fetch_group_activity_data_error.push(err)
