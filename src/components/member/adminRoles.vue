@@ -332,9 +332,7 @@ export default {
         addRole: function() {
             this.enable_role_button = false
             this.add_role_button_text = 'adding role...'            
-            this.$http({
-                method: 'post',
-                url: this.$BASE_URL + '/api/members/role-list/',
+            this.$http({ method: 'post', url: this.$BASE_URL + '/api/members/role-list/',
                 data: {
                   role: this.role_name,
                   description: this.role_description,  
@@ -346,15 +344,16 @@ export default {
                   finance_admin: this.finance_admin               
                 }
               }).then(response => {
-                    this.added_role.push(response.data)                    
-                    this.role_name = ''
-                    this.role_description = '' 
-                    this.add_role_button_text = '+ add role'
-                    alert("role succesfuly added")
-                    this.fetchdata()                    
+
+                this.added_role.push(response.data)                    
+                this.role_name = ''
+                this.role_description = '' 
+                this.add_role_button_text = '+ add role'
+                alert("role succesfuly added")
+                this.fetchdata()                    
                 })
                 .catch((err) => {
-                    console.log(err)
+                    
                 })                
         },
         assignRoles: function(){            

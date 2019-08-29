@@ -265,9 +265,9 @@
                                       </tr>
                                     </tbody>
                                   </table>
-                                <hr/>
-                                <h3 class="text-muted">{{get_data_status}}</h3>
+                                <hr/>                                                              
                                 <h3 class="text-muted">your csv :</h3>
+                                <h3 class="text-muted">{{get_data_status}}</h3> 
                                 <small>showing only the first 5 lines</small>
                                 <div v-if="csv_data.length == 0" class="text-info">
                                   no file chosen
@@ -276,7 +276,17 @@
                                 <table class="table">
                                   <thead>
                                     <tr v-for="data in csv_data.slice(0,1)">                                        
-                                      <th scope="col" v-for="(value,key) in data">{{key}}</th>                                                                          
+                                      <th scope="col" v-for="(value,key) in data">
+                                        {{key}}                                                                                
+                                        <select class="form-control"  v-model='csv_columns[key]'>
+                                            <option>names</option>
+                                            <option>gender</option>
+                                            <option>date of birth</option>
+                                            <option>phone number</option>
+                                            <option>email</option>
+                                            <option>marital status</option>
+                                          </select> 
+                                      </th>                                                                                                                                                 
                                     </tr>
                                   </thead>
                                   <tbody>
@@ -291,8 +301,13 @@
                                     <input type="file" id="file" ref="file" v-on:change="handleFileUpload()"/>
                                   </label>                                
                                 </div>
+                                <p v-if="test_csv_errors.length">
+                                  <ul>
+                                          <small><li v-for="error in test_csv_errors"><p class="text-danger">{{error}}</p></li></small>
+                                  </ul>
+                                </p>
                                 <hr>
-                                
+
                                 <p class="text-muted">gender: <b>M</b> => male, <b>F</b> => female</p>
                                 <p class="text-muted">marital status: <b>M</b> => married, <b>S</b> => single, <b>D</b> => divorced, <b>W</b> => widowed</p>
                                 <hr/>                                
@@ -301,17 +316,13 @@
                                     <ul>
                                             <small><li v-for="error in error_500"><p class="text-danger">unexpected data format in your file, make sure your CSV or EXCEL file matches the demo</p></li></small>
                                     </ul>
-                                </p>
-                                <p v-if="test_csv_errors.length">
-                                    <ul>
-                                            <small><li v-for="error in test_csv_errors"><p class="text-danger">{{error}}</p></li></small>
-                                    </ul>
-                                </p>
+                                </p>                               
                               </div>
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                           <button type="button" class="btn btn-success" v-on:click="submitFile()">{{test_import_button_text}}</button>
+                          <button type="button" class="btn btn-success" v-on:click="checkCSV()">check csv</button>
                           <button type="button" class="btn btn-success" v-if="file_format_okay" v-on:click="extractData()">{{extract_data_button_text}}</button>
                         </div>
                       </div>
@@ -353,7 +364,8 @@ export default {
       test_csv_errors: [],
       uploaded_file: '',
       csv_data: [],get_data_status: '',
-      file_format_okay: false
+      file_format_okay: false,
+      csv_columns: {}
 
     }
   },
@@ -494,7 +506,6 @@ export default {
           this.test_import_button_text = "checking document..."
           let formData = new FormData();
           formData.append('csv', this.file);
-
           this.$http.post( this.$BASE_URL + '/api/members/upload-csv/',
               formData,
               {
@@ -509,17 +520,15 @@ export default {
                 this.uploaded_file = data.csv
                 this.file_format_okay = true
                 this.test_import_button_text = "test import"
-                alert("file format okay")
+                alert("file uploaded")
                 this.previewCSV()
               }
               else{
-                this.test_csv_errors = data
-                this.test_import_button_text = "test import"
+                this.test_csv_errors = data                
               }
           })
           .catch((err) =>{
-              this.error_500.push(err)
-              this.test_import_button_text = "test import"
+              this.error_500.push(err)              
           });
     },
   // handle the case that the file changes
@@ -533,13 +542,28 @@ export default {
       this.$http.get(this.$BASE_URL + '/api/members/preview-csv/'+ file_name + '/')
       .then(response => {
         this.csv_data = response.data
-        this.get_data_status = ''
+        this.get_data_status = ''    
       })
       .catch((err) => {
         this.get_data_status = ''
       })  
     },
   // extract data from the csv file
+  // check that the csv file is of the required format
+    checkCSV: function(){   
+      var file_name = this.uploaded_file.split("/")[1]         
+      this.$http({ method: 'post', url: this.$BASE_URL + '/api/members/check-csv/',
+      data: {
+        file_name: file_name,
+        column_config: this.csv_columns
+      },
+      }).then(response => {
+            console.log("successfull")
+        })
+        .catch((err) => {   
+          console.log("not successful")                 
+        })       
+    },
     extractData: function(){
       this.extract_data_button_text = "extracting..."
       var file_name = this.uploaded_file.split("/")[1]       
