@@ -268,10 +268,7 @@
                                 <hr/>                                                              
                                 <h3 class="text-muted">your csv :</h3>
                                 <h3 class="text-muted">{{get_data_status}}</h3> 
-                                <small>showing only the first 5 lines</small>
-                                <div v-if="csv_data.length == 0" class="text-info">
-                                  no file chosen
-                                </div>
+                                <small  v-if="this.csv_data.length < 0">showing only the first 5 lines</small>                               
 
                                 <table class="table">
                                   <thead>
@@ -279,7 +276,8 @@
                                       <th scope="col" v-for="(value,key) in data">
                                         {{key}}                                                                                
                                         <select class="form-control"  v-model='csv_columns[key]'>
-                                            <option>names</option>
+                                            <option selected disabled>import as ...</option>
+                                            <option >names</option>
                                             <option>gender</option>
                                             <option>date of birth</option>
                                             <option>phone number</option>
@@ -306,23 +304,25 @@
                                           <small><li v-for="error in test_csv_errors"><p class="text-danger">{{error}}</p></li></small>
                                   </ul>
                                 </p>
-                                <hr>
-
-                                <p class="text-muted">gender: <b>M</b> => male, <b>F</b> => female</p>
-                                <p class="text-muted">marital status: <b>M</b> => married, <b>S</b> => single, <b>D</b> => divorced, <b>W</b> => widowed</p>
-                                <hr/>                                
                                 <p class="text-success" v-if="file_format_okay">file okay, proceed to import</p>
                                 <p v-if="error_500.length">
                                     <ul>
-                                            <small><li v-for="error in error_500"><p class="text-danger">unexpected data format in your file, make sure your CSV or EXCEL file matches the demo</p></li></small>
+                                            <small><li v-for="error in error_500">
+                                              <p class="text-danger">unexpected data format in your file, make sure your CSV or EXCEL file matches the demo</p>
+                                              <p class="text-danger">select how you want to import your csv above</p>
+                                            </li></small>
                                     </ul>
-                                </p>                               
+                                </p>  
+                                <hr>
+
+                                <p class="text-muted">gender: <b>M</b> => male, <b>F</b> => female</p>
+                                <p class="text-muted">marital status: <b>M</b> => married, <b>S</b> => single, <b>D</b> => divorced, <b>W</b> => widowed</p>                                                                                                                         
                               </div>
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                           <button type="button" class="btn btn-success" v-on:click="submitFile()">{{test_import_button_text}}</button>
-                          <button type="button" class="btn btn-success" v-on:click="checkCSV()">check csv</button>
+                          <button type="button" class="btn btn-success" v-if="this.uploaded_file.length != 0" v-on:click="checkCSV()">check csv</button>
                           <button type="button" class="btn btn-success" v-if="file_format_okay" v-on:click="extractData()">{{extract_data_button_text}}</button>
                         </div>
                       </div>
@@ -501,9 +501,9 @@ export default {
         
   //Submits the file to the server      
     submitFile: function(){
+          this.file_format_okay = false
           this.error_500 = []
-          this.test_csv_errors = []
-          this.test_import_button_text = "checking document..."
+          this.test_csv_errors = []          
           let formData = new FormData();
           formData.append('csv', this.file);
           this.$http.post( this.$BASE_URL + '/api/members/upload-csv/',
@@ -512,20 +512,15 @@ export default {
               headers: {
                   'Content-Type': 'multipart/form-data'
               }
-            }
-          ).then(response =>{
-              var data = response.data   
-              //if data is not array there are no errors             
-              if (! data.length){
-                this.uploaded_file = data.csv
-                this.file_format_okay = true
-                this.test_import_button_text = "test import"
-                alert("file uploaded")
-                this.previewCSV()
-              }
-              else{
-                this.test_csv_errors = data                
-              }
+          })
+          .then(response =>{            
+            var data = response.data   
+            //if data is not array there are no errors             
+            if (! data.length){
+              this.uploaded_file = data.csv                              
+              alert("file uploaded")
+              this.previewCSV()
+            }             
           })
           .catch((err) =>{
               this.error_500.push(err)              
@@ -550,19 +545,29 @@ export default {
     },
   // extract data from the csv file
   // check that the csv file is of the required format
-    checkCSV: function(){   
+    checkCSV: function(){  
+      this.test_csv_errors = [] 
+      this.file_format_okay = false      
       var file_name = this.uploaded_file.split("/")[1]         
       this.$http({ method: 'post', url: this.$BASE_URL + '/api/members/check-csv/',
       data: {
         file_name: file_name,
         column_config: this.csv_columns
       },
-      }).then(response => {
-            console.log("successfull")
-        })
-        .catch((err) => {   
-          console.log("not successful")                 
-        })       
+      })
+      .then(response => {
+        var data = response.data   
+        //if data is not array there are no errors             
+        if (! data.length){         
+          this.file_format_okay = true                         
+        }
+        else{
+          this.test_csv_errors = data                
+      }           
+      })
+      .catch((err) => {   
+        this.error_500.push(err)             
+      })       
     },
     extractData: function(){
       this.extract_data_button_text = "extracting..."
@@ -573,15 +578,16 @@ export default {
         data: {
           file_name: file_name,                                 
         }
-      }).then(response => {
-            alert("data extracted succesfully")
-            this.extract_data_button_text = "import data"
-            this.fetchData()
-        })
-        .catch((err) => {     
-          alert("something went wrong while trying to extract data.\n Check the file and try again")   
-          this.extract_data_button_text = "import data"    
-        })
+      })
+      .then(response => {
+          alert("data extracted succesfully")
+          this.extract_data_button_text = "import data"
+          this.fetchData()
+      })
+      .catch((err) => {     
+        alert("something went wrong while trying to extract data.\n Check the file and try again")   
+        this.extract_data_button_text = "import data"    
+      })
     }
 }
 
