@@ -353,10 +353,12 @@ export default {
                   gender: this.gender,
                   email: this.email         
                 }
-              }).then(response => {
+              }).then(response => {                
                 this.added_member.push(response.data )  
                 this.added_member_id = this.added_member[0].member.id  
-                alert("member added succesfully")              
+                alert("member added succesfully")  
+                this.$store.dispatch('incrementAction', 1)
+                                               
                 this.addOthers()                
                 this.gender_male = false
                 this.gender_female = false

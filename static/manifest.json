@@ -1,0 +1,15 @@
+{
+    "name": "nano church MS",
+    "short_name": "nano",
+    "icons": [{
+      "src": "/src/assets/icons/icons8-contacts-208.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }],
+    "lang": "en-US",
+    "start_url": "/index.html",
+    "display": "standalone",
+    "background_color": "white",
+    "theme_color": "white"
+  }
+  

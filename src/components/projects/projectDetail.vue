@@ -27,48 +27,38 @@
                         <div class="tab-content" id="v-pills-tabContent">
                                 <div class="tab-pane fade show active" id="v-pills-contributions" role="tabpanel" aria-labelledby="v-pills-contributions-tab">
                                 <h3 ><span v-for = "data in context.response">{{data.name}} /</span> contributions</h3>
+                                <div class="small text-muted" v-for = "data in context.response ">
+                                        <p>Required amount  |<span class="text-info">
+                                                        KSh {{humanize(data.required_amount)}}</span>|
+                                        
+                                            Raised amount  |<span class="text-info">
+                                                        KSh {{humanize(data.raised_amount)}}</span>|
+
+                                           percentage funded  |<span class="text-info">
+                                                        {{data.percentage_funded}} %</span>|
+                                        </p>
+                                </div>                                 
                                 <hr/>
-                                <div class="home-menu-item" style="text-align: center">
-
-                                                <div class="row" v-for = "data in context.response " >                                                        
-                                                        <div class=" col-4 card-text" style=" padding: 5px">
-                                                                <small class="text-muted">required amount</small>                                                                
-                                                                <h3 class="text-info">KSh {{humanize(data.required_amount)}}</h3>
-                                                        </div>
-                                                        <div class=" col-4 card-text" style="padding: 5px">
-                                                                <small class="text-muted">raised amount</small>                                                                
-                                                                <h3 class="text-success">KSh {{humanize(data.raised_amount)}}</h3>
-
-                                                        </div>
-                                                        <div class="col-4 card-text" style="padding: 5px">
-                                                                <small class="text-muted">percentage funded</small>                                                      
-                                                                <h3 class="text-danger">{{data.percentage_funded}} %</h3>
-                                                        </div>
-                                                </div>
-                                   </div>
-                                   <hr/>
-                                   <div class="row">
-                                        <p class="col-8">
-                                                found <span class="badge badge-pill badge-info">{{foundItems}}</span>
-                                        </p>                                                  
-                                    </div>                             
+                                <div class="row">
+                                <p class="col-8">
+                                        found <span class="badge badge-pill badge-info">{{foundItems}}</span>
+                                </p>                                                  
+                                </div>                             
                                     <table class="table">
                                         <thead>
                                             <tr>
                                                 <th>name</th>
                                                 <th>amount</th>
                                                 <th>date</th>
-                                                <th>recorded by</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr v-for = "data in contributions.response">
                                                 
                                                 <td v-if = "data.member != null">{{data.member.member.first_name}} {{data.member.member.last_name}}</td>
-                                                <td v-if = "data.names != ''"><span class="text-info">(N.M)</span> {{data.names}}</td>
-                                                <td><p class="text-success">{{humanize(data.amount)}}</p></td>
-                                                <td>{{data.recorded_at}}</td>
-                                                <td><p class="text-info">{{data.recorded_by.member.first_name}} {{data.recorded_by.member.last_name}}</p></td>
+                                                <td v-if = "data.names != ''"> {{data.names}}</td>
+                                                <td><p class="text-muted">{{humanize(data.amount)}}</p></td>
+                                                <td>{{data.recorded_at}}</td>                                               
                                             </tr>
                                         </tbody>
                                     </table>
@@ -76,25 +66,17 @@
                                 <div class="tab-pane fade" id="v-pills-pledges" role="tabpanel" aria-labelledby="v-pills-pledges-tab">
                                     <div v-if = "pledges_selected">
                                         <h3><span v-for = "data in context.response">{{data.name}} /</span> pledges</h3>
-                                        <hr/>
-                                        <div class="home-menu-item" style="text-align: center">
+                                        <div class="small text-muted" v-for = "data in context.response ">
+                                                <p>Total in pledges  |<span class="text-info">
+                                                        KSh {{humanize(data.total_in_pledges)}}</span>|
+                                                
+                                                total in settled pledges  |<span class="text-info">
+                                                        KSh {{humanize(data.total_in_settled_pledges)}}</span>|
 
-                                                        <div class="row" v-for = "data in context.response " >                                                        
-                                                                <div class=" col-4 card-text" style=" padding: 5px">
-                                                                        <small class="text-muted">total in pledges-</small>                                                                
-                                                                        <h3 class="text-info">KSh {{humanize(data.total_in_pledges)}}</h3>
-                                                                </div>
-                                                                <div class=" col-4 card-text" style="padding: 5px">
-                                                                        <small class="text-muted">total in settled pledges-</small>                                                                
-                                                                        <h3 class="text-success">KSh {{humanize(data.total_in_settled_pledges)}}</h3>
-        
-                                                                </div>
-                                                                <div class="col-4 card-text" style="padding: 5px">
-                                                                        <small class="text-muted">percentage of pledges settled</small>                                                      
-                                                                        <h3 class="text-danger">{{data.percentage_of_pledge_settled}} %</h3>
-                                                                </div>
-                                                        </div>
-                                           </div>
+                                                percentage settled  |<span class="text-info">
+                                                        {{data.percentage_of_pledge_settled}}</span>|
+                                                </p>
+                                        </div>                                         
                                            <hr/>
                                            <div class="row">
                                                 <p class="col-6">
@@ -114,11 +96,11 @@
                                                 <tbody>
                                                     <tr v-for = "data in pledges.response" v-if="selectedMember == '' || selectedMember == null || memberSearch == ''">                                                                                                                
                                                         <td v-if = "data.member != null">{{data.member.member.first_name}} {{data.member.member.last_name}}</td>
-                                                        <td v-if = "data.names != ''"><span class="text-info">(N.M)</span> {{data.names}}</td>
+                                                        <td v-if = "data.names != ''"> {{data.names}}</td>
                                                         <td>{{humanize(data.amount)}}</td>
-                                                        <td><p class="text-success">{{humanize(data.amount_so_far)}}</p></td>
+                                                        <td><p class="text-secondary">{{humanize(data.amount_so_far)}}</p></td>
                                                         <td><p class="text-danger">{{humanize(data.remaining_amount)}}</p></td>
-                                                        <td><span class="badge badge-pill badge-info">{{data.percentage_funded}}</span></td>
+                                                        <td>{{data.percentage_funded}}</td>
                                                         
                                                     </tr>
                                                 </tbody>

@@ -24,7 +24,15 @@
                                                 <h3>
                                                         <span v-for="data in income_type.response">{{data.type_name}}</span>
                                                 </h3>
-                                        </div>
+                                                <div class="small text-muted" v-for="data in income_type.response">
+                                                    <p>total this month  |<span class="text-info">
+                                                        KSh {{humanize(data.total_this_month)}}</span>|
+                                                    
+                                                        total this year  |<span class="text-info">
+                                                            KSh {{humanize(data.total_this_year)}}</span>|        
+                                                    </p>
+                                                </div>
+                                        </div>  
                                         <div class="col-4"></div>
                                         <div class="col-4">
                                                 <div class="btn-group" style="padding: 0px 0px 25px 10px" >
@@ -38,19 +46,6 @@
                                                         </button>                                                        
                                                 </div>
                                         </div>                                        
-                                    </div>
-                                    <div class="home-menu-item">
-                                                                    
-                                            <div class="row" v-for="data in income_type.response">
-                                                    <div class=" col-6 card-text" style=" padding: 5px">
-                                                            <small class="text-muted">total this month</small>                                                                
-                                                            <h3 class="text-info">KSh {{data.total_this_month}}</h3>
-                                                    </div>  
-                                                    <div class=" col-6 card-text" style=" padding: 5px">
-                                                            <small class="text-muted">total this year</small>                                                                
-                                                            <h3 class="text-info">KSh {{humanize(data.total_this_year)}}</h3>
-                                                    </div>                                                                  
-                                            </div>                                   
                                     </div>
                                     <hr/>
                                     <p class="col-8">

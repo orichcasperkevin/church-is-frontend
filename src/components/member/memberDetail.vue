@@ -27,15 +27,15 @@
                         <a class="nav-link active list-group-item list-group-item-action border-0" id="pill-detail-tab" data-toggle="pill" href="#pill-detail" role="tab" aria-controls="pill-detail" aria-selected="true">
                                 <img class="church-is-menu" src="@/assets/icons/icons8-user-groups-208.png"> detail
                         </a>
-                        <a class="nav-link list-group-item list-group-item-action border-0" id="pill-delete-tab" data-toggle="pill" href="#pill-delete" role="tab" aria-controls="pill-delete" aria-selected="false">
+                        <!-- <a class="nav-link list-group-item list-group-item-action border-0" id="pill-delete-tab" data-toggle="pill" href="#pill-delete" role="tab" aria-controls="pill-delete" aria-selected="false">
                                 <img class="church-is-menu" src="@/assets/icons/icons8-cancel-26.png"> family
-                        </a>                                            
+                        </a>                                             -->
                         <a class="nav-link list-group-item list-group-item-action border-0" id="pill-groups-tab" data-toggle="pill" href="#pill-groups" role="tab" aria-controls="pill-groups" aria-selected="false" v-on:click = "getMemberGroups()">
                                 <img class="church-is-menu" src="@/assets/icons/icons8-user-groups-filled-50.png"> groups
                         </a> 
-                        <a class="nav-link list-group-item list-group-item-action border-0" id="pill-dates-tab" data-toggle="pill" href="#pill-dates" role="tab" aria-controls="pill-dates" aria-selected="false">
+                        <!-- <a class="nav-link list-group-item list-group-item-action border-0" id="pill-dates-tab" data-toggle="pill" href="#pill-dates" role="tab" aria-controls="pill-dates" aria-selected="false">
                                 <img class="church-is-menu" src="@/assets/icons/icons8-donate-filled-50.png"> important dates
-                        </a>  
+                        </a>   -->
                         <a class="nav-link list-group-item list-group-item-action border-0" id="pill-contributions-tab" data-toggle="pill" href="#pill-contributions" role="tab" aria-controls="pill-contributions" aria-selected="false" v-on:click = "getMemberFinances()">
                                 <img class="church-is-menu" src="@/assets/icons/icons8-donate-filled-50.png"> finances
                         </a>                            
@@ -180,7 +180,7 @@
                         </div>
                         <div class="tab-pane fade" id="pill-groups" role="tabpanel" aria-labelledby="pill-groups-tab">                                                                                                 
                         
-                        <h3>Church groups</h3>
+                        <h3>church groups</h3>
                         <table class="table" v-if = "groups_selected == true">
                         <thead class=""  v-if = "church_groups.response.length > 0">
                                 <tr>
@@ -233,28 +233,26 @@
                                 </div>
                                 <div class="tab-content" id="pills-tabContent">
                                         <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" v-if="finances_selected">
-                                                        <h3 class="breadcrumb-item active">contributions</h3>
+                                                        <h3 >contributions</h3>                                                      
                                                         <table class="table">
                                                             <thead>
                                                                 <tr>
                                                                     <th>project</th>
                                                                     <th>amount</th>
-                                                                    <th>date</th>
-                                                                    <th>recorded by</th>
+                                                                    <th>date</th>                                                                    
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
                                                                 <tr v-for = "data in contribution_info.contribution">
                                                                     <td>{{data.project.name}}</td>
-                                                                    <td><p class="text-success">{{data.amount}}</p></td>
-                                                                    <td>{{data.recorded_at}}</td>
-                                                                    <td><p class="text-info">{{data.recorded_by.member.first_name}} {{data.recorded_by.member.last_name}}</p></td>
+                                                                    <td><p class="text-muted">{{humanize(data.amount)}}</p></td>
+                                                                    <td>{{data.recorded_at}}</td>                                                                    
                                                                 </tr>
                                                             </tbody>
                                                         </table>
                                         </div>
                                         <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" v-if="finances_selected">
-                                                        <h3 class="breadcrumb-item active">pledges</h3>
+                                                        <h3>pledges</h3>                                                      
                                                         <table class="table">
                                                         
                                                                 <thead>
@@ -269,23 +267,22 @@
                                                                 <tbody>
                                                                         <tr v-for = "data in pledges_info.pledges">
                                                                         <td>{{data.project.name}} </td>
-                                                                        <td>{{data.amount}}</td>
-                                                                        <td><p class="text-success">{{data.amount_so_far}}</p></td>
-                                                                        <td><p class="text-danger">{{data.remaining_amount}}</p></td>
-                                                                        <td><span class="badge badge-pill badge-info">{{data.percentage_funded}}</span></td>
+                                                                        <td>{{humanize(data.amount)}}</td>
+                                                                        <td><p class="text-muted">{{humanize(data.amount_so_far)}}</p></td>
+                                                                        <td><p  >{{humanize(data.remaining_amount)}}</p></td>
+                                                                        <td><span class="text-muted">{{data.percentage_funded}}</span></td>
                                                                         
                                                                         </tr>
                                                                 </tbody>
                                                         </table>
                                         </div>
                                         <div class="tab-pane fade" id="pills-tithes" role="tabpanel" aria-labelledby="pills-tithes-tab" v-if = "finances_selected">                                                        
-                                                        <h3 class="breadcrumb-item active">tithes </h3> 
+                                                        <h3>tithes</h3>                                                         
                                                         <div class="row" v-for = "data in tithe_stats.stats">
-                                                                <p class="card-text" style="padding: 5px"><small class="text-muted">total this month-</small> <span class="badge badge-pill badge-info">{{data.total_this_month}}</span></p>                                                                
-                                                        </div>
-                                                        <div class="row" v-for = "data in tithe_stats.stats">                                                               
-                                                                <p class="card-text" style="padding: 5px"><small class="text-muted">total this year-</small> <span class="badge badge-pill badge-success">{{data.total_this_year}}</span></p>
-                                                        </div>
+                                                                <p class="card-text" style="padding: 5px"><small class="text-muted">total this month |<span class="text-info">{{humanize(data.total_this_month)}}</span>|</small> </p>                                                                                     
+                                                                <p class="card-text" style="padding: 5px"><small class="text-muted">total this year |<span class="text-info">{{humanize(data.total_this_year)}}|</span></small> </p>
+                                                        </div>                                                                                                                                                                                     
+                                                        
                                                         <table class="table">
                                                             <thead>
                                                                 <tr>
@@ -296,19 +293,19 @@
                                                             </thead>
                                                             <tbody>
                                                                 <tr v-for = "data in tithe_info.tithes">                                                                    
-                                                                    <td><p class="text-success">{{data.amount}}</p></td>
-                                                                    <td> {{data.narration}}</td>
+                                                                    <td><p class="text-muted">{{humanize(data.amount)}}</p></td>
+                                                                    <td class="small"> {{data.narration}}</td>
                                                                     <td>{{data.date}}</td>                                                         
                                                                 </tr>
                                                             </tbody>
                                                         </table>
                                         </div>
-                                        <div class="tab-pane fade" id="pills-offerings" role="tabpanel" aria-labelledby="pills-offerings-tab" v-if = "finances_selected">
+                                        <div class="tab-pane fade" id="pills-offerings" role="tabpanel" aria-labelledby="pills-offerings-tab" v-if = "finances_selected">                                                      
+                                                        <h3>offerings </h3> 
                                                         <div class="row" v-for = "data in offering_stats.stats">
-                                                                        <p class="card-text" style="padding: 5px"><small class="text-muted">total this month-</small> <span class="badge badge-pill badge-info">{{data.total_this_month}}</span></p>
-                                                                        <p class="card-text" style="padding: 5px"><small class="text-muted">total this year-</small> <span class="badge badge-pill badge-success">{{data.total_this_year}}</span></p>
-                                                        </div>
-                                                        <h3 class="breadcrumb-item active">offerings </h3> 
+                                                                <p class="card-text" style="padding: 5px"><small class="text-muted">total this month |<span class="text-info">{{humanize(data.total_this_month)}}</span>|</small> </p>                                                                                     
+                                                                <p class="card-text" style="padding: 5px"><small class="text-muted">total this year |<span class="text-info">{{humanize(data.total_this_year)}}|</span></small> </p>
+                                                        </div> 
                                                         <table class="table">
                                                             <thead>
                                                                 <tr>
@@ -319,7 +316,7 @@
                                                             </thead>
                                                             <tbody>
                                                                 <tr v-for = "data in offering_info.offerings">                                                                    
-                                                                    <td><p class="text-success">{{data.amount}}</p></td>
+                                                                    <td><p class="text-muted">{{humanize(data.amount)}}</p></td>
                                                                     <td> {{data.narration}}</td>
                                                                     <td>{{data.date}}</td>                                                         
                                                                 </tr>
@@ -482,6 +479,9 @@ export default {
         '$route': 'fetchData'
     },
   methods: {
+        humanize: function(x) {
+                return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        },
         getMemberGroups: function(){                
                 this.groups_selected = true                
                 this.$http.get(this.$BASE_URL + '/api/groups/church-groups-for-a-member/'+this.$route.params.id+'/')

@@ -27,7 +27,7 @@
                 <td> 
                     <p> 
                         <small class="text-muted">members -</small>
-                        <span class="badge badge-pill badge-info">{{data.number_of_members}}</span>
+                        <span class="badge badge-pill badge-secondary">{{data.number_of_members}}</span>
                     </p>
                 </td>
                 </tr>             

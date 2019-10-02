@@ -51,19 +51,15 @@
                                       </div>                                                       
                                 <div class="tab-content" id="pills-tabContent">
                                     <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">                                          
-                                            <h3>tithes</h3>                                            
-                                            <div class="home-menu-item">
-                                                    <div class="row" v-if = "tithes_selected"> 
-                                                            <div class=" col-6 card-text" style=" padding: 5px">
-                                                                    <small class="text-muted">total this month-</small>                                                                
-                                                                    <h3 class="text-info">KSh {{humanize(tithe_stats.response.total_in_tithe_this_month)}}</h3>
-                                                            </div>    
-                                                            <div class=" col-6 card-text" style=" padding: 5px">
-                                                                    <small class="text-muted">total this year-</small>                                                                
-                                                                    <h3 class="text-info">KSh {{humanize(tithe_stats.response.total_in_tithe_this_year)}}</h3>
-                                                            </div>                                                                                                                 
-                                                    </div>                                  
-                                            </div> 
+                                            <h3>Tithes</h3>                                            
+                                            <div class="small text-muted" v-if="tithes_selected">
+                                                <p>Total this month  |<span class="text-info">
+                                                    Ksh {{humanize(tithe_stats.response.total_in_tithe_this_month)}} </span>|
+                                                
+                                                    Total this year  |<span class="text-info">
+                                                     Ksh   {{humanize(tithe_stats.response.total_in_tithe_this_year)}} </span>|
+                                                </p>
+                                            </div>
                                             <hr/>
                                             <p>
                                                 <span class="badge badge-pill badge-info">{{foundTithes}}</span> entries found
@@ -82,10 +78,10 @@
                                                     <tbody>
                                                         <tr v-for = "data in tithes.response">
                                                             <td>{{data.member.member.first_name}} {{data.member.member.last_name}}</td>
-                                                            <td><p class="text-success">{{humanize(data.amount)}}</p></td>
+                                                            <td><p class="text-secondary">{{humanize(data.amount)}}</p></td>
                                                             <td>{{data.date}}</td>
-                                                            <td><p class="text-info">{{humanize(data.total_this_month)}}</p></td>
-                                                            <td><p class="text-secondary">{{humanize(data.total_this_year)}}</p></td>                                                          
+                                                            <td><p class="text-secondary">{{humanize(data.total_this_month)}}</p></td>
+                                                            <td><p>{{humanize(data.total_this_year)}}</p></td>                                                          
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -93,20 +89,15 @@
                                     </div>
                                     <div class="tab-pane fade" id="pills-offerings" role="tabpanel" aria-labelledby="pills-offerings-tab">                                                                                  
                                             <div v-if = "offerings_selected">
-                                                <h3 >offerings</h3>
-                                                <div class="home-menu-item">
-
-                                                        <div class="row" v-if = "offerings_selected">
-                                                                <div class=" col-6 card-text" style=" padding: 5px">
-                                                                        <small class="text-muted">total this month-</small>                                                                
-                                                                        <h3 class="text-info">KSh {{humanize(offering_stats.response.total_in_offerings_this_month)}}</h3>
-                                                                </div>                                                                
-                                                                <div class=" col-6 card-text" style=" padding: 5px">
-                                                                        <small class="text-muted">total this year-</small>                                                                
-                                                                        <h3 class="text-info">KSh {{humanize(offering_stats.response.total_in_offerings_this_year)}}</h3>
-                                                                </div>
-                                                        </div>                                                                                      
-                                                </div>
+                                                <h3 >Offerings</h3>
+                                                <div class="small text-muted" v-if="offerings_selected">
+                                                        <p>Total this month  |<span class="text-info">
+                                                            Ksh {{humanize(offering_stats.response.total_in_offerings_this_month)}} </span>|
+                                                        
+                                                            Total this year  |<span class="text-info">
+                                                             Ksh   {{humanize(offering_stats.response.total_in_offerings_this_year)}} </span>|
+                                                        </p>
+                                                </div>                     
                                                 <hr/>
                                                 <p class="col-8">
                                                         <span class="badge badge-pill badge-info">{{foundOfferings}}</span> entries found
@@ -137,20 +128,15 @@
                                     </div>
                                     <div class="tab-pane fade" id="pills-anyOther" role="tabpanel" aria-labelledby="pills-anyOther-tab">                                        
                                             <div v-if = "any_other_selected">
-                                                    <h3 class="breadcrumb-item active">others</h3>
-                                                    <div class="home-menu-item">
-                                                        
-                                                            <div class="row" v-if = "any_other_selected">
-                                                                    <div class=" col-6 card-text" style=" padding: 5px">
-                                                                            <small class="text-muted">this month</small>                                                                
-                                                                            <h3 class="text-info">KSh {{humanize(income_stats.response.total_this_month)}}</h3>
-                                                                    </div>  
-                                                                    <div class=" col-6 card-text" style=" padding: 5px">
-                                                                            <small class="text-muted">total this year</small>                                                                
-                                                                            <h3 class="text-info">KSh {{humanize(income_stats.response.total_this_year)}}</h3>
-                                                                    </div>                                                                  
-                                                            </div>                                   
-                                                    </div>
+                                                    <h3>Others</h3>
+                                                    <div class="small text-muted" v-if="any_other_selected">
+                                                            <p>Total this month  |<span class="text-info">
+                                                                Ksh {{humanize(income_stats.response.total_this_month)}} </span>|
+                                                            
+                                                                Total this year  |<span class="text-info">
+                                                                 Ksh   {{humanize(income_stats.response.total_this_year)}} </span>|
+                                                            </p>
+                                                    </div>                                                    
                                                     <hr/>
                                                     <p class="col-8">
                                                             <span class="badge badge-pill badge-info">{{foundIncomes}}</span> types found
@@ -171,7 +157,7 @@
                                                                         {{data.type_name}}
                                                                     </router-link>
                                                                 </td>                                                               
-                                                                <td><p class="text-info">{{humanize(data.total_this_month)}}</p></td>
+                                                                <td><p>{{humanize(data.total_this_month)}}</p></td>
                                                                 <td><p class="text-secondary">{{humanize(data.total_this_year)}}</p></td>                                                          
                                                                 <td>
                                                                     <router-link class="text-muted" style="text-decoration: none;"  :to="`/income/`+ data.id + `/`">                                                         
@@ -187,20 +173,15 @@
                         </div>
                         <div class="tab-pane fade show " id="v-pills-expenditure" role="tabpanel" aria-labelledby="v-pills-expenditure-tab">
                             <div v-if = "expenditures_selected">
-                                <h3 >expenditures</h3>
-                                <hr/>
-                                <div class="home-menu-item">
-                                        <div class="row">
-                                            <div class=" col-6 card-text" style=" padding: 5px">
-                                                <small class="text-muted">total this month-</small>                                                                
-                                                <h3 class="text-info">KSh {{humanize(expenditure_stats.total_this_month)}}</h3>
-                                            </div>                                                                
-                                            <div class=" col-6 card-text" style=" padding: 5px">
-                                                    <small class="text-muted">total this year-</small>                                                                
-                                                    <h3 class="text-info">KSh {{humanize(expenditure_stats.total_this_year)}}</h3>
-                                            </div>
-                                        </div>                                                                                                                                                                                                             
-                                </div>
+                                <h3 >Expenditure</h3>
+                                <div class="small text-muted">
+                                        <p>Total this month  |<span class="text-info">
+                                            Ksh {{humanize(expenditure_stats.total_this_month)}} </span>|
+                                        
+                                            Total this year  |<span class="text-info">
+                                             Ksh   {{humanize(expenditure_stats.total_this_year)}} </span>|
+                                        </p>
+                                    </div>
                                 <hr/>
                                 <p class="col-8">
                                         <span class="badge badge-pill badge-info">{{found_expenditure_types}}</span> entries found
@@ -222,8 +203,8 @@
                                                 </router-link>
                                             </td>
                                             <td>{{data.description}}</td>
-                                            <td><p class="text-info">{{humanize(data.total_this_month)}}</p></td>
-                                            <td><p class="text-secondary">{{humanize(data.total_this_year)}}</p></td>                                                          
+                                            <td><p class="text-secondary">{{humanize(data.total_this_month)}}</p></td>
+                                            <td><p>{{humanize(data.total_this_year)}}</p></td>                                                          
                                             <td>
                                                 <router-link class="text-muted" style="text-decoration: none;"  :to="`/expenditure/`+ data.id + `/`">                                                         
                                                     >

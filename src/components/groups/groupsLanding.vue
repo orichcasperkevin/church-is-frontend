@@ -9,10 +9,8 @@
     <div class="container">
       <div class="row">
         <div class="col">
-            <h3 class="row">                                     
-              Groups    
-            </h3>
-            <p class="row">
+            <h3 class="row"><b>Groups</b></h3>
+            <p class="row small text-muted">
               folders |<b class="text-info">{{foundItems}}</b>|  groups |<b class="text-info">{{foundItems_independent}}</b>|
             </p>          
         </div>
@@ -21,28 +19,32 @@
     </div>
     <div class="container">      
       <div class="row">
-        <div class="col-sm-10 col-md-5 col-lg-3"> 
-              <b>folders  
-                |<a class="text-success" href="#" data-toggle="modal" data-target="#addModal" style="text-decoration: none" v-on:click="selectFolder()">
-                 + add 
-                </a>|
-              </b>
+        <div class="col-sm-10 col-md-5 col-lg-3">               
+                <b>folders </b>|
+                <a class="text-success " href="#" data-toggle="modal" data-target="#addModal" style="text-decoration: none" v-on:click="selectFolder()">
+                  + add
+                 </a>|                        
               <div class="list-group" v-for="data in groups.response">
-                <router-link :to="`/groupList/`+ data.id + `/` + data.name"class="list-group-item list-group-item-action border-0" >
-                  <img  class="church-is-menu" src="@/assets/icons/icons8-user-groups-40.png">
-                    {{data.name}} <span class="badge badge-pill badge-secondary">{{data.number_of_groups}}</span>  
+                <router-link :to="`/groupList/`+ data.id + `/` + data.name"class="row list-group-item list-group-item-action border-0" >
+                  <span class="col-10">
+                      <img  class="church-is-menu" src="@/assets/icons/icons8-user-groups-40.png">
+                      {{data.name}}
+                  </span>                                    
+                  <span class=" col-2  badge badge-pill badge-secondary">{{data.number_of_groups}}</span>  
                 </router-link>
               </div>  
               <hr>
-              <b>groups
+              <b>groups</b> 
                 |<a class="text-success" href="#" data-toggle="modal" data-target="#addModal" style="text-decoration: none">
                   + add 
-                </a>|
-              </b> 
+                </a>|              
               <div class="list-group" v-for="data in independent_groups.response">
                 <router-link  :to="`/groupDetail/`+ data.id" class="list-group-item list-group-item-action border-0" >
-                  {{data.name}} <span class="badge badge-pill badge-secondary">{{data.number_of_members}}</span>
-                </router-link>
+                <span class="col-10">                   
+                      {{data.name}}                   
+                </span>            
+                <span class=" col-2 badge badge-pill badge-secondary">{{data.number_of_members}}</span>                
+              </router-link>
               </div>            
         </div>
       <div class="col-sm-10 col-md-8 col-lg-9">

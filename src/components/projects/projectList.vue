@@ -23,7 +23,7 @@
             </div>
             <div class="tab-content col">
                     <div class="tab-pane fade show active" id="inProgress" role="tabpanel" aria-labelledby="profile-tab"></div>
-                    <h3> projects in progress</h3>
+                    <h3> Projects</h3>
                     <hr/>                    
                     <div class="col-8 center-div" v-if = "fetch_data_error.length > 0">
                         <div class = "center-div" >
@@ -34,36 +34,35 @@
                     <div v-if = "fetch_data_error.length == 0">
                     found <span class="badge badge-pill badge-info">{{foundItems}}</span>                    
                     <table class="table">                     
+                        <thead>
+                            <th></th>
+                            <th>name</th>
+                            <th>required</th>
+                            <th>percentage funded</th>
+                        </thead>
                         <tbody>
                             <tr  v-for = "data in projects.response ">                    
                             <td>
                                 <router-link class="text-secondary" style="text-decoration: none;"  :to="`/projectDetail/`+ data.id + `/`">
-                                        <img  src="@/assets/avatars/icons8-crowd-100.png" style="width: 60px; height: auto;" alt="...">
+                                    <img style="width: 60%; height: auto" src="@/assets/icons/icons8-group-of-projects-filled-50.png">
                                 </router-link>
                             </td>                                
                             <td>
                                 <router-link class="text-secondary" style="text-decoration: none;"  :to="`/projectDetail/`+ data.id + `/`">                                                         
                                     {{data.name}}
                                 </router-link>
-                            </td>
-                            <td></td>
+                            </td>                            
                             <td>
-                                <div > 
-                                    <small class="text-muted">required amount -</small><br/>
-                                    <span class="badge badge-pill badge-info">KSh {{humanize(data.required_amount)}}</span>
-                                </div>
+                                    KSh {{humanize(data.required_amount)}}
                             </td>
-                            <td> 
-                                <div> 
-                                    <small class="text-muted">percentage funded -</small><br/>
-                                    <span class="badge badge-pill badge-danger">{{data.percentage_funded}} %</span>
-                                </div>
+                            <td class="text-secondary"> 
+                                    {{data.percentage_funded}} %
                             </td>
                             <td>
-                                    <router-link class="text-muted" style="text-decoration: none;"  :to="`/projectDetail/`+ data.id + `/`">                                                         
-                                        >
-                                    </router-link>
-                                </td> 
+                                <router-link class="text-muted" style="text-decoration: none;"  :to="`/projectDetail/`+ data.id + `/`">                                                         
+                                    >
+                                </router-link>
+                            </td> 
                             </tr>             
                         </tbody>
                     </table>

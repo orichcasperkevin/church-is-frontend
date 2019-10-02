@@ -11,12 +11,10 @@
             <div class="container">
                 <div class="row">
                   <div class="col" v-for="data in group.response">
-                      <h3 class="row">                                     
-                        {{data.name}}
+                      <h3 class="row">                                                             
+                        <b>{{data.name}}</b>
                       </h3>
-                      <p class="row">
-                        members |<b class="text-info">{{foundItems}}</b>|
-                      </p>          
+                      <p class="row small">{{data.description}}  </p>                            
                   </div>
                 </div>
                 <hr>
@@ -45,8 +43,8 @@
                 <div>
                     <span aria-current="page" v-for="data in group.response">
                       <h3>
-                         members
-                    </h3>
+                         members <span>({{foundItems}})</span>
+                      </h3>
                     </span>
                     <hr/>
                   <p>
@@ -66,7 +64,7 @@
                               <span class = "text-secondary">{{data.member.member.first_name}} {{data.member.member.last_name}} </span>
                             </router-link>
                            </td>
-                           <td>
+                           <td class="text-muted">
                              {{data.role.role}}
                            </td>
                          

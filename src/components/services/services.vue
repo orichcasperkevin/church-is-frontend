@@ -220,7 +220,7 @@
                                     <form>                                            
                                             <div class="row form-group">
                                                     <label class="col-3"><b>name:</b></label>
-                                                    <input type="text" class=" col-8 form-control" placeholder="give the type a name" v-model="service_type_name">                                                    
+                                                    <input type="text" class=" col-8 form-control" v-model="service_type_name">                                                    
                                                     <p v-if="service_type_name_errors.length">
                                                         <ul>
                                                                 <small><li v-for="error in service_type_name_errors"><p class="text-danger">{{ error }}</p></li></small>
@@ -236,7 +236,7 @@
                             </div>
                             <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-success" v-on:click="addServiceType()"><b>+</b> add income type</button>
+                            <button type="button" class="btn btn-success" v-on:click="addServiceType()"><b>+</b> add service type</button>
                             </div>
                         </div>
                         </div>

@@ -410,20 +410,32 @@ export default {
       }
     },
     fetchData() {
+
       this.fetch_data_error = []
+      this.members = JSON.parse(localStorage.getItem('member_list'))
+      const currentVersion = this.$store.getters.member_list_version
+      var version  = localStorage.getItem('member_list_version')
+
+      if (!version || version < currentVersion) {
       this.$http.get(this.$BASE_URL + '/api/members/member-list/')
       .then(response => {
-        this.members = {"response": response.data } 
-        var array = this.members.response
-        this.foundItems = array.length
-        for (var data in this.members.response){
-          this.member_ids.push(this.members.response[data].member.id)
-      }
-        this.text_button_name = "Text All Members"
+        this.members = {"response": response.data }        
+        localStorage.setItem('member_list',JSON.stringify({"response": response.data }))        
+        this.$store.dispatch('incrementAction', 1)
+        localStorage.setItem('member_list_version', this.$store.getters.member_list_version)
+
+
       })
       .catch((err) => {
           this.fetch_data_error.push(err)
-      })  
+      }) 
+      }  
+      var array = this.members.response
+        this.foundItems = array.length
+        for (var data in this.members.response){
+          this.member_ids.push(this.members.response[data].member.id)
+        }
+        this.text_button_name = "Text All Members"     
     },
   // send message to selected members
     sendMessage: function (){
@@ -580,8 +592,9 @@ export default {
         }
       })
       .then(response => {
-          alert("data extracted succesfully")
           this.extract_data_button_text = "import data"
+          alert("data extracted succesfully")  
+          this.$store.dispatch('incrementAction', 1)                 
           this.fetchData()
       })
       .catch((err) => {     
