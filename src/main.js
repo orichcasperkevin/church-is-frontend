@@ -23,12 +23,6 @@ Vue.prototype.$store =  store
 Vue.prototype.$http = axios
 Vue.prototype.$BASE_URL = process.env.BASE_URL || 'http://app.church.nanocomputing.co.ke'
 
-Vue.prototype.$localStorageVersion = 0
-Vue.prototype.$updateLocalStorageVersion = function(new_version){
-  this.$localStorageVersion = new_version
-}
-
-
 
 /* eslint-disable no-new */
 new Vue({

@@ -60,20 +60,25 @@ export default {
   name: 'App',
   data () {
         return{
-          username: null, 
+          
         }
     },
   created(){
     this.username = this.$session.get("username") 
     this.checkLoggedIn()    
   },
+  computed: {
+    username(){
+      return this.$store.getters.logged_in_member
+    }
+  },
   methods: {
     checkLoggedIn() {      
       if (!this.$session.has("token")) {          
           router.push("/login")
           return false
-      }  
-      this.username = this.$session.get("username")       
+      }        
+      this.$store.dispatch('update_logged_in_member', this.$session.get("username")) 
       return true                 
     },
     logOut() {      

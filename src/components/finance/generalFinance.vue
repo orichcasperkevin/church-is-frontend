@@ -35,10 +35,10 @@
                                           <div class="col-8">
                                                 <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                                                         <li class="nav-item">
-                                                          <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true" v-on:click = "getTithes()">Tithes</a>
+                                                          <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" Tithe="true" v-on:click = "getTithes()">Tithe</a>
                                                         </li>
                                                         <li class="nav-item">
-                                                          <a class="nav-link" id="pills-offerings-tab" data-toggle="pill" href="#pills-offerings" role="tab" aria-controls="pills-offerings" aria-selected="false" v-on:click = "getOfferings()">Offerings</a>
+                                                          <a class="nav-link" id="pills-offerings-tab" data-toggle="pill" href="#pills-offerings" role="tab" aria-controls="pills-offerings" aria-selected="false" v-on:click = "getOfferings()">Offering</a>
                                                         </li>
                                                         <li class="nav-item">
                                                           <a class="nav-link" id="pills-anyOther-tab" data-toggle="pill" href="#pills-anyOther" role="tab" aria-controls="pills-anyOther" aria-selected="false" v-on:click = "getAnyOther()">Others</a>
@@ -51,7 +51,7 @@
                                       </div>                                                       
                                 <div class="tab-content" id="pills-tabContent">
                                     <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">                                          
-                                            <h3>Tithes</h3>                                            
+                                            <h3>Tithe</h3>                                            
                                             <div class="small text-muted" v-if="tithes_selected">
                                                 <p>Total this month  |<span class="text-info">
                                                     Ksh {{humanize(tithe_stats.response.total_in_tithe_this_month)}} </span>|
@@ -89,7 +89,7 @@
                                     </div>
                                     <div class="tab-pane fade" id="pills-offerings" role="tabpanel" aria-labelledby="pills-offerings-tab">                                                                                  
                                             <div v-if = "offerings_selected">
-                                                <h3 >Offerings</h3>
+                                                <h3 >Offering</h3>
                                                 <div class="small text-muted" v-if="offerings_selected">
                                                         <p>Total this month  |<span class="text-info">
                                                             Ksh {{humanize(offering_stats.response.total_in_offerings_this_month)}} </span>|
@@ -114,13 +114,13 @@
                                                     </thead>
                                                     <tbody>
                                                         <tr v-for = "data in offerings.response">
-                                                            <td v-if = "data.member != null">({{data.member.member.first_name}} {{data.member.member.last_name}})</td>
+                                                            <td v-if = "data.member != null">{{data.member.member.first_name}} {{data.member.member.last_name}}</td>
                                                             <td v-if = "data.service != null"> {{data.service.type.name}}</td>
-                                                            <td><p class="text-success">{{humanize(data.amount)}}</p></td>
+                                                            <td><p class="text-secondary">{{humanize(data.amount)}}</p></td>
                                                             <td v-if = "data.member != null">{{data.date}}</td>
                                                             <td v-if = "data.service != null"> {{data.service.date}}</td>
-                                                            <td><p class="text-info">{{humanize(data.total_this_month)}}</p></td>
-                                                            <td><p class="text-secondary">{{humanize(data.total_this_year)}}</p></td>                                                          
+                                                            <td><p class="text-secondary">{{humanize(data.total_this_month)}}</p></td>
+                                                            <td><p>{{humanize(data.total_this_year)}}</p></td>                                                          
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -272,7 +272,7 @@
                         <div class="modal-content">
                             <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalCenterTitle">add tithe for member</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <button type="button" class="close" data-dismiss="modal" v-on:click="fetchdata()" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                             </div>
@@ -283,7 +283,7 @@
                                                 tithe of amount {{data.amount}} added for {{data.member.member.first_name }}
                                             </span>
                                         </strong> 
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <button type="button" class="close" data-dismiss="alert" v-on:click="fetchdata()" aria-label="Close">
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>
@@ -783,29 +783,79 @@ export default {
         fetchdata () {
             this.tithes_selected = true
             this.fetch_data_error = []
-            this.$http.get(this.$BASE_URL + '/api/finance/tithe-by-members-this-month/')
-                .then(response => {
-                this.tithes = {"response": response.data } 
+            // try local storage
+            this.tithes = JSON.parse(localStorage.getItem('tithe_list'))
+            if (this.tithes){
                 var array = this.tithes.response
                 this.foundTithes = array.length
-                })
-                .catch((err) => {
-                    this.fetch_data_error.push(err)
-                })
-            this.$http.get(this.$BASE_URL + '/api/finance/tithe-stats/')
+            }            
+            this.tithe_stats = JSON.parse(localStorage.getItem('tithe_stats'))
+
+            const currentVersion = this.$store.getters.tithe_list_version
+            var version  = localStorage.getItem('tithe_list_version')
+
+            //else try network
+            if (!version || version < currentVersion) {
+                this.$http.get(this.$BASE_URL + '/api/finance/tithe-by-members-this-month/')
+                    .then(response => {
+                        this.tithes = {"response": response.data }   
+                        var array = this.tithes.response
+                        this.foundTithes = array.length                  
+                        
+                        localStorage.setItem('tithe_list',JSON.stringify({"response": response.data }))                
+                        localStorage.setItem('tithe_list_version', currentVersion) 
+                    })
+                    .catch((err) => {
+                        this.fetch_data_error.push(err)
+                    })
+                this.$http.get(this.$BASE_URL + '/api/finance/tithe-stats/')
+                    .then(response => {
+                        this.tithe_stats = {"response": response.data } 
+
+                        localStorage.setItem('tithe_stats',JSON.stringify({"response": response.data }))                          
+                    })
+                    .catch((err) => {
+                        this.fetch_data_error.push(err)
+                    })
+            }
+            this.getIncomeTypeList()
+        },
+        getIncomeTypeList: function(){
+            //try local storage
+            this.income_types = JSON.parse(localStorage.getItem('income_type_list'))
+            if (this.income_types){
+                var array = this.income_types.response
+                this.foundIncomes = array.length
+            }
+            this.income_stats = JSON.parse(localStorage.getItem('income_stats'))            
+
+            const currentVersion = this.$store.getters.income_type_list_version
+            var version  = localStorage.getItem('income_type_list_version')
+
+            // else try the network
+            if (!version || version < currentVersion) {
+                this.$http.get(this.$BASE_URL + '/api/finance/income-stats/')
                 .then(response => {
-                this.tithe_stats = {"response": response.data } 
+                   this.income_stats = {"response": response.data } 
+                   localStorage.setItem('income_stats',JSON.stringify({"response": response.data }) )
                 })
                 .catch((err) => {
                     this.fetch_data_error.push(err)
                 })
-            this.$http.get(this.$BASE_URL + '/api/finance/income-type-list/')
+
+                this.$http.get(this.$BASE_URL + '/api/finance/income-type-list/')
                 .then(response => {
-                this.income_types = {"response": response.data } 
+                    this.income_types = {"response": response.data } 
+
+                    localStorage.setItem('income_type_list',JSON.stringify({"response": response.data }))                
+                    localStorage.setItem('income_type_list_version', currentVersion)
+
+
                 })
                 .catch((err) => {
                     this.fetch_data_error.push(err)
                 })
+            }
         },
         checkForService: function(){            
             this.$http.get(this.$BASE_URL + '/api/services/service-on-date/' + this.offering_date +'/of-type/' + this.service_type + '/')
@@ -830,22 +880,41 @@ export default {
             this.expenditures_selected = false
             this.offerings_selected = true
 
-            this.$http.get(this.$BASE_URL + '/api/finance/offering-stats/')
-                .then(response => {
-                this.offering_stats = {"response": response.data }             
-                })
-                .catch((err) => {
-                    this.fetch_data_error.push(err)
-                })
-            this.$http.get(this.$BASE_URL + '/api/finance/offerings-by-members-this-month/')
-                .then(response => {
-                this.offerings = {"response": response.data } 
+            //try local storage
+            this.offering_stats = JSON.parse(localStorage.getItem('offering_stats')) 
+            this.offerings = JSON.parse(localStorage.getItem('offering_list'))
+            if (this.offerings){
                 var array = this.offerings.response
                 this.foundOfferings = array.length
-                })
-                .catch((err) => {
-                    this.fetch_data_error.push(err)
-                })
+            }
+
+            const currentVersion = this.$store.getters.offering_list_version
+            var version  = localStorage.getItem('offering_list_version')
+
+            // try the network
+            if (!version || version < currentVersion){
+                this.$http.get(this.$BASE_URL + '/api/finance/offering-stats/')
+                    .then(response => {
+                    this.offering_stats = {"response": response.data }                      
+                    localStorage.setItem('offering_stats',JSON.stringify({"response": response.data }))                
+                    })
+                    .catch((err) => {
+                        this.fetch_data_error.push(err)
+                    })
+
+                this.$http.get(this.$BASE_URL + '/api/finance/offerings-by-members-this-month/')
+                    .then(response => {
+                    this.offerings = {"response": response.data } 
+                    var array = this.offerings.response
+                    this.foundOfferings = array.length
+
+                    localStorage.setItem('offering_list',JSON.stringify({"response": response.data }))                
+                    localStorage.setItem('offering_list_version', currentVersion)
+                    })
+                    .catch((err) => {
+                        this.fetch_data_error.push(err)
+                    })
+            }
             
         },
         getAnyOther: function(){
@@ -853,22 +922,49 @@ export default {
             this.offerings_selected = false
             this.expenditures_selected = false
             this.any_other_selected = true
-            this.$http.get(this.$BASE_URL + '/api/finance/income-stats/')
-                .then(response => {
-                this.income_stats = {"response": response.data } 
-                })
-                .catch((err) => {
-                    this.fetch_data_error.push(err)
-                })
-            this.$http.get(this.$BASE_URL + '/api/finance/income-type-list/')
-                .then(response => {
-                this.incomes = {"response": response.data } 
+            
+            const currentVersion = this.$store.getters.income_type_list_version
+            var version  = localStorage.getItem('income_type_list_version')
+                        
+            //try local storage
+            this.incomes = JSON.parse(localStorage.getItem('income_type_list'))
+            if (this.incomes){
                 var array = this.incomes.response
                 this.foundIncomes = array.length
-                })
-                .catch((err) => {
-                    this.fetch_data_error.push(err)
-                })
+            }
+            else{
+                if (!version || version < currentVersion) {
+                    this.$http.get(this.$BASE_URL + '/api/finance/income-type-list/')
+                    .then(response => {
+                        this.incomes = {"response": response.data } 
+                        var array = this.incomes.response
+                        this.foundIncomes = array.length
+
+                        localStorage.setItem('income_type_list',JSON.stringify({"response": response.data }))                
+                        localStorage.setItem('income_type_list_version', currentVersion)
+                    })
+                    .catch((err) => {
+                        this.fetch_data_error.push(err)
+                    })
+                }
+            }
+            this.income_stats = JSON.parse(localStorage.getItem('income_stats'))                
+            if (this.income_stats){
+                pass
+            }
+            else{ 
+                if (!version || version < currentVersion) {
+                    this.$http.get(this.$BASE_URL + '/api/finance/income-stats/')
+                    .then(response => {
+                        this.income_stats = {"response": response.data } 
+                        localStorage.setItem('income_stats',JSON.stringify({"response": response.data }) )
+                    })
+                    .catch((err) => {
+                        this.fetch_data_error.push(err)
+                    })
+                }                       
+            }
+
         },
         getExpenditures: function(){
             this.tithes_selected = false            
@@ -876,23 +972,41 @@ export default {
             this.any_other_selected = false
             this.expenditures_selected = true
 
-            this.$http.get(this.$BASE_URL + '/api/finance/expenditure-stats/')
-                .then(response => {
-                this.expenditure_stats =  response.data
-                })
-                .catch((err) => {
-                    this.fetch_data_error.push(err)
-                })
-
-            this.$http.get(this.$BASE_URL + '/api/finance/expenditure-type-list/')
-                .then(response => {
-                this.expenditure_types = {"response": response.data } 
+            //try local storage
+            this.expenditure_stats = JSON.parse(localStorage.getItem('expenditure_stats'))
+            this.expenditure_types = JSON.parse(localStorage.getItem('expenditure_type_list'))
+            if (this.expenditure_types){
                 var array = this.expenditure_types.response
-                this.found_expenditure_types = array.length
-                })
-                .catch((err) => {
-                    this.fetch_data_error.push(err)
-                })
+                this.found_expenditure_types = array.length 
+            }
+
+            // else try the network
+            const currentVersion = this.$store.getters.expenditure_list_version
+            var version  = localStorage.getItem('expenditure_list_version')
+
+            if (!version || version < currentVersion) {
+                this.$http.get(this.$BASE_URL + '/api/finance/expenditure-stats/')
+                    .then(response => {
+                        this.expenditure_stats =  response.data
+                        localStorage.setItem('expenditure_stats',JSON.stringify(response.data) )
+                    })
+                    .catch((err) => {
+                        this.fetch_data_error.push(err)
+                    })
+
+                this.$http.get(this.$BASE_URL + '/api/finance/expenditure-type-list/')
+                    .then(response => {
+                        this.expenditure_types = {"response": response.data } 
+                        localStorage.setItem('expenditure_type_list',JSON.stringify({"response": response.data } ))
+                        localStorage.setItem('expenditure_list_version', currentVersion)
+
+                        var array = this.expenditure_types.response
+                        this.found_expenditure_types = array.length
+                    })
+                    .catch((err) => {
+                        this.fetch_data_error.push(err)
+                    })   
+            }
         },
         //get service types
         getServiceTypes: function(){
@@ -969,7 +1083,9 @@ export default {
                                this.tithe_amount = ''                        
                                this.enable_add_tithe_button = true
                                this.add_tithe_button_text = '+ add tithe '
-                               this.memberSearch = ''       
+                               this.memberSearch = '' 
+                               var new_version = parseInt(localStorage.getItem('tithe_list_version')) + 1
+                               this.$store.dispatch('update_tithe_list_version', new_version)        
                                alert("tithe of amount " + response.data.amount + "\n"
                                       + "added for " + response.data.member.member.first_name)                     
                         })
@@ -1043,6 +1159,9 @@ export default {
                                this.offering_amount = null
                                this.offering_narration = null
                                this.service_type = null
+                                                            
+                               var new_version = parseInt(localStorage.getItem('offering_list_version')) + 1                               
+                               this.$store.dispatch('update_offering_list_version', new_version)
                                alert("offering succesfully added ")          
                         })
                         .catch((err) => {
@@ -1068,7 +1187,11 @@ export default {
                                this.offering_narration = null
                                this.name_if_not_member = ''
                                this.offering_date = ''
-                               this.memberSearch = ''            
+                               this.memberSearch = ''   
+                               
+                               var new_version = parseInt(localStorage.getItem('offering_list_version')) + 1                               
+                               this.$store.dispatch('update_offering_list_version', new_version)
+
                                alert("offering succesfully added")          
                         })
                         .catch((err) => {
@@ -1104,6 +1227,9 @@ export default {
                                this.added_income_type.push(response.data)
                                this.income_type_name = '',
                                this.income_type_description = '' 
+                               var new_version = parseInt(localStorage.getItem('income_type_list_version')) + 1
+                               this.$store.dispatch('update_income_type_list_version', new_version) 
+
                                alert("income type succesfully added")  
                                this.getAnyOther()                    
                         })
@@ -1181,6 +1307,8 @@ export default {
                         }).then(response => {                              
                                this.expenditure_type_name = '',
                                this.expenditure_type_description = '' 
+                               var new_version = parseInt(localStorage.getItem('expenditure_list_version')) + 1
+                               this.$store.dispatch('update_expenditure_list_version', new_version)  
                                alert("expenditure type succesfully added")  
                                this.getExpenditures()                    
                         })

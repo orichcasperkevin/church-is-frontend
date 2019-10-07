@@ -11,10 +11,10 @@
         </nav>
         <div class = "container">  
             <div class="row">
-                    <div class="filters col-12 col-sm-8 col-md-8 col-lg-3" style="padding: 3px 3px 3px 3px">
+                    <div class="filters col-12 col-sm-8 col-md-8 col-lg-2" style="padding: 3px 3px 3px 3px">
                             <a href="#" v-on:click="goBack()" role="button" aria-expanded="false">
                                     <div class="moreButton">                                
-                                        <b> Back to finances</b>
+                                        <b> back</b>
                                     </div>
                                 </a>
                         </div>

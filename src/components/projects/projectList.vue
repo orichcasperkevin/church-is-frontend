@@ -83,7 +83,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalCenterTitle">add a project</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" class="close" data-dismiss="modal" v-on:click="fetchdata()" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                         </div>
@@ -127,7 +127,7 @@
                                 </form>
                         </div>
                         <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="fetchdata()">Close</button>
                         <button type="button" class="btn btn-success" disabled v-if="! enable_add_project_button"><b>+</b> add project</button>
                         <button type="button" class="btn btn-success" v-if="enable_add_project_button" v-on:click="addProject()"><b>+</b>{{add_project_button_text}}</button>
                         </div>
@@ -231,15 +231,32 @@ export default {
         },
         fetchdata () {
             this.fetch_data_error = []
-            this.$http.get(this.$BASE_URL + '/api/projects/project-list/')
-                .then(response => {
-                this.projects = {"response": response.data } 
+
+            // try local storage
+            this.projects = JSON.parse(localStorage.getItem('project_list'))
+            if (this.projects){
                 var array = this.projects.response
-                this.foundItems = array.length
+                this.foundItems = array.length 
+            }
+
+            const currentVersion = this.$store.getters.project_list_version
+            var version  = localStorage.getItem('project_list_version')
+
+            //else try the network
+            if (!version || version < currentVersion) {
+                this.$http.get(this.$BASE_URL + '/api/projects/project-list/')
+                .then(response => {
+                   this.projects = {"response": response.data } 
+                    var array = this.projects.response
+                    this.foundItems = array.length
+
+                    localStorage.setItem('project_list',JSON.stringify({"response": response.data }))                
+                    localStorage.setItem('project_list_version', currentVersion) 
                 })
                 .catch((err) => {
                     this.fetch_data_error.push(err)
                 })
+            }
         },
         addProject: function (){                
                 this.enable_add_project_button = false
@@ -262,6 +279,8 @@ export default {
                         this.start_date = ''
                         this.ending_date = ''                      
                         this.add_project_button_text = '+ add project'
+                        var new_version = parseInt(localStorage.getItem('project_list_version')) + 1
+                        this.$store.dispatch('update_project_list_version', new_version)
                         alert("project added succesfully")                    
                     })
                     .catch((err) => {

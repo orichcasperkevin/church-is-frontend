@@ -357,8 +357,9 @@ export default {
                 this.added_member.push(response.data )  
                 this.added_member_id = this.added_member[0].member.id  
                 alert("member added succesfully")  
-                this.$store.dispatch('incrementAction', 1)
-                                               
+                var new_version = parseInt(localStorage.getItem('member_list_version')) + 1
+                this.$store.dispatch('update_member_list_version', new_version)
+
                 this.addOthers()                
                 this.gender_male = false
                 this.gender_female = false

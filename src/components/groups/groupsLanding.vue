@@ -119,26 +119,52 @@ export default {
     },
     fetchData() {
       this.fetch_data_error = []
-      // get folders (group of groups)
-      this.$http.get(this.$BASE_URL + '/api/groups/group-of-church-groups-list')
-      .then(response => {
-          this.groups = {"response": response.data } 
-          var array = this.groups.response
-          this.foundItems = array.length
-      })
-      .catch((err) => {
-          this.fetch_data_error.push(err)
-      })
+      // try local storage
+      this.groups = JSON.parse(localStorage.getItem('group_list'))
+      if (this.groups){  
+        var array = this.groups.response 
+        this.foundItems = array.length
+      }
+
+      const currentVersion = this.$store.getters.group_list_version
+      var version  = localStorage.getItem('group_list_version')
+
+      //else try the network
+      if (!version || version < currentVersion) {        
+        this.$http.get(this.$BASE_URL + '/api/groups/group-of-church-groups-list')
+        .then(response => {
+            this.groups = {"response": response.data } 
+            var array = this.groups.response
+            this.foundItems = array.length
+
+            localStorage.setItem('group_list',JSON.stringify({"response": response.data }))                
+            localStorage.setItem('group_list_version', currentVersion)            
+        })
+        .catch((err) => {
+            this.fetch_data_error.push(err)
+        })
+      }
+
       // get independent groups
-      this.$http.get(this.$BASE_URL + '/api/groups/church-groups-not-in-group/')
-      .then(response => {
-          this.independent_groups = {"response": response.data } 
-          var array = this.independent_groups.response
-          this.foundItems_independent = array.length
-      })
-      .catch((err) => {
-          this.fetch_data_error.push(err)
-      })
+      this.independent_groups = JSON.parse(localStorage.getItem('group_list_independent')) 
+      if (this.independent_groups){
+        var array = this.independent_groups.response
+        this.foundItems_independent = array.length 
+      }
+      
+      if (!version || version < currentVersion) {
+        this.$http.get(this.$BASE_URL + '/api/groups/church-groups-not-in-group/')
+        .then(response => {
+            this.independent_groups = {"response": response.data } 
+            var array = this.independent_groups.response
+            this.foundItems_independent = array.length 
+            localStorage.setItem('group_list_independent',JSON.stringify({"response": response.data }))                
+            
+        })
+        .catch((err) => {
+            this.fetch_data_error.push(err)
+        }) 
+      }   
     },
     selectFolder: function(){
       this.group_type = 'folder'
@@ -175,6 +201,8 @@ export default {
             }
             if (this.group_type == 'group'){
               alert("group succesfully added")
+              var new_version = parseInt(localStorage.getItem('group_list_version')) + 1
+              this.$store.dispatch('update_group_list_version', new_version)  
             }            
         })
             .catch((err) => {
