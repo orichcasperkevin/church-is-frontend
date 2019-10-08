@@ -12,10 +12,7 @@
                 <div class="col" v-if="member_info != null">
                 <h3 class="row" v-for="data in member_info.member">                                     
                 {{data.member.first_name}} {{data.member.last_name}}
-                </h3>
-                <p class="row">
-                member <b class="text-info"></b>
-                </p>          
+                </h3>                
                 </div>
         </div>
         <hr>
@@ -180,36 +177,29 @@
                         </div>
                         <div class="tab-pane fade" id="pill-groups" role="tabpanel" aria-labelledby="pill-groups-tab">                                                                                                 
                         
-                        <h3>church groups</h3>
-                        <table class="table" v-if = "groups_selected == true">
-                        <thead class=""  v-if = "church_groups.response.length > 0">
-                                <tr>
-                                        <th>group</th>
-                                        <th>joined</th>
-                                        <th>role</th>
-                                </tr>
-                        </thead>
-                                <tr v-for = "data in church_groups.response">
-                                        <td>{{data.church_group.name}}</td>
-                                        <td>{{data.date_joined}}</td>
-                                        <td>{{data.role.role}}</td>
-                                </tr>
+                                <h3> Church Groups</h3>                                
+                                <table class="table" v-if = "groups_selected == true">
+                                <thead class=""  v-if = "church_groups.response.length > 0">
+                                        <tr>
+                                                <th>group</th>
+                                                <th>joined</th>
+                                                <th>role</th>
+                                        </tr>
+                                </thead>
+                                        <tr v-for = "data in church_groups.response">
+                                                <td>{{data.church_group.name}}</td>
+                                                <td>{{data.date_joined}}</td>
+                                                <td>{{data.role.role}}</td>
+                                        </tr>
 
-                        </table>
-                        <div v-if = "groups_selected == true">
-                        <div v-if = "church_groups.response.length == 0 ">
-                        <p class="text-info center-div">none</p> 
+                                </table>
+                                <div v-if = "groups_selected == true">
+                                        <div v-if = "church_groups.response.length == 0 ">
+                                                <p class="text-muted">member belongs to none. </p> 
+                                        </div>
+                                </div>
                         </div>
-                        </div>
-                        </div>
-                        <div class="tab-pane fade" id="pill-dates" role="tabpanel" aria-labelledby="pill-dates-tab">
-                                        <ul class="progressbar">
-                                                        <li class="active">login</li>
-                                                       <li class="active">choose interest</li>
-                                                        <li>add friends</li>
-                                                        <li>View map</li>
-                                        </ul> 
-                        </div>
+
                         <div class=" tab-pane fade" id="pill-contributions" role="tabpanel" aria-labelledby="pill-contributions-tab">
                                 <div class="row">
                                 <div class="col-2"></div>
@@ -233,7 +223,7 @@
                                 </div>
                                 <div class="tab-content" id="pills-tabContent">
                                         <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" v-if="finances_selected">
-                                                        <h3 >contributions</h3>                                                      
+                                                        <h3 >Contributions</h3>                                                      
                                                         <table class="table">
                                                             <thead>
                                                                 <tr>
@@ -249,10 +239,13 @@
                                                                     <td>{{data.recorded_at}}</td>                                                                    
                                                                 </tr>
                                                             </tbody>
-                                                        </table>
+                                                        </table>                                                    
+                                                        <p class="text-muted" v-if="! contribution_info.contribution.length">
+                                                                found no contributions by member
+                                                        </p>
                                         </div>
                                         <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" v-if="finances_selected">
-                                                        <h3>pledges</h3>                                                      
+                                                        <h3>Pledges</h3>                                                      
                                                         <table class="table">
                                                         
                                                                 <thead>
@@ -275,9 +268,12 @@
                                                                         </tr>
                                                                 </tbody>
                                                         </table>
+                                                        <p class="text-muted" v-if="! pledges_info.pledges.length">
+                                                                found no pledges by member.
+                                                        </p>
                                         </div>
                                         <div class="tab-pane fade" id="pills-tithes" role="tabpanel" aria-labelledby="pills-tithes-tab" v-if = "finances_selected">                                                        
-                                                        <h3>tithes</h3>                                                         
+                                                        <h3>Tithes</h3>                                                         
                                                         <div class="row" v-for = "data in tithe_stats.stats">
                                                                 <p class="card-text" style="padding: 5px"><small class="text-muted">total this month |<span class="text-info">{{humanize(data.total_this_month)}}</span>|</small> </p>                                                                                     
                                                                 <p class="card-text" style="padding: 5px"><small class="text-muted">total this year |<span class="text-info">{{humanize(data.total_this_year)}}|</span></small> </p>
@@ -299,9 +295,12 @@
                                                                 </tr>
                                                             </tbody>
                                                         </table>
+                                                        <p class="text-muted" v-if="!tithe_info.tithes.length">
+                                                          found no tithe by member this month.      
+                                                        </p>
                                         </div>
                                         <div class="tab-pane fade" id="pills-offerings" role="tabpanel" aria-labelledby="pills-offerings-tab" v-if = "finances_selected">                                                      
-                                                        <h3>offerings </h3> 
+                                                        <h3>Offerings </h3> 
                                                         <div class="row" v-for = "data in offering_stats.stats">
                                                                 <p class="card-text" style="padding: 5px"><small class="text-muted">total this month |<span class="text-info">{{humanize(data.total_this_month)}}</span>|</small> </p>                                                                                     
                                                                 <p class="card-text" style="padding: 5px"><small class="text-muted">total this year |<span class="text-info">{{humanize(data.total_this_year)}}|</span></small> </p>
@@ -322,6 +321,10 @@
                                                                 </tr>
                                                             </tbody>
                                                         </table>
+                                                        <p class="text-muted" v-if="!offering_info.offerings.length">
+                                                                found no offering by member.
+                                                        </p>
+
 
                                         </div>
                                 </div>                          
@@ -483,10 +486,11 @@ export default {
                 return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         },
         getMemberGroups: function(){                
-                this.groups_selected = true                
+                this.groups_selected = true                 
                 this.$http.get(this.$BASE_URL + '/api/groups/church-groups-for-a-member/'+this.$route.params.id+'/')
                 .then(response => {
                 this.church_groups = {"response": response.data }
+                this.groups_loading = false
                 })
                 .catch(error=> {
                 this.groups_errors.push(error)
@@ -494,7 +498,7 @@ export default {
         },
         getMemberFinances: function() {
 
-                this.finances_selected = true
+                this.finances_selected = true                
                 this.$http.get(this.$BASE_URL + '/api/projects/contributions-by-member/'+this.$route.params.id+'/')
                 .then(response => {
                 this.contribution_info = {"contribution": response.data }

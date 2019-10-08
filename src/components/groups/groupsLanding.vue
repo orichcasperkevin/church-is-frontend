@@ -2,14 +2,23 @@
     <div class="groupsLanding">
     <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><span class="backButton"><router-link style="text-decoration: none" :to="{name: 'Home'}">Home</router-link></span> 
+                <li class="breadcrumb-item"><span class="backButton">
+                  <router-link style="text-decoration: none" :to="{name: 'Home'}">
+                    <img style="width: 25px ;height: auto" src="@/assets/icons/icons8-church-96.png">
+                    Home
+                  </router-link></span> 
                 <li class="breadcrumb-item active" aria-current="page">groups</li>
             </ol>
     </nav>
     <div class="container">
       <div class="row">
         <div class="col">
-            <h3 class="row"><b>Groups</b></h3>
+            <h3 class="row">
+              <b>
+                  <img style="width: 48px ;height: auto" src="@/assets/icons/icons8-user-groups-48.png">
+                Groups
+              </b>
+            </h3>
             <p class="row small text-muted">
               folders |<b class="text-info">{{foundItems}}</b>|  groups |<b class="text-info">{{foundItems_independent}}</b>|
             </p>          
@@ -20,27 +29,32 @@
     <div class="container">      
       <div class="row">
         <div class="col-sm-10 col-md-5 col-lg-3">               
-                <b>folders </b>|
+                <b>
+                  folders 
+                </b>|
                 <a class="text-success " href="#" data-toggle="modal" data-target="#addModal" style="text-decoration: none" v-on:click="selectFolder()">
                   + add
                  </a>|                        
               <div class="list-group" v-for="data in groups.response">
                 <router-link :to="`/groupList/`+ data.id + `/` + data.name"class="row list-group-item list-group-item-action border-0" >
                   <span class="col-10">
-                      <img  class="church-is-menu" src="@/assets/icons/icons8-user-groups-40.png">
+                      <img style="width: 20px ;height: auto" src="@/assets/icons/icons8-folder-48.png">
                       {{data.name}}
                   </span>                                    
                   <span class=" col-2  badge badge-pill badge-secondary">{{data.number_of_groups}}</span>  
                 </router-link>
               </div>  
               <hr>
-              <b>groups</b> 
+              <b>                
+                groups
+              </b> 
                 |<a class="text-success" href="#" data-toggle="modal" data-target="#addModal" style="text-decoration: none">
                   + add 
                 </a>|              
               <div class="list-group" v-for="data in independent_groups.response">
                 <router-link  :to="`/groupDetail/`+ data.id" class="list-group-item list-group-item-action border-0" >
                 <span class="col-10">                   
+                      <img style="width: 30px ;height: auto" src="@/assets/icons/icons8-user-groups-48.png">
                       {{data.name}}                   
                 </span>            
                 <span class=" col-2 badge badge-pill badge-secondary">{{data.number_of_members}}</span>                

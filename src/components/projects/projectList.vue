@@ -233,7 +233,7 @@ export default {
             this.fetch_data_error = []
 
             // try local storage
-            this.projects = JSON.parse(localStorage.getItem('project_list'))
+            this.projects = JSON.parse(localStorage.getItem('project_list'))            
             if (this.projects){
                 var array = this.projects.response
                 this.foundItems = array.length 

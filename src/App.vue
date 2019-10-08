@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <router_link class="navbar-brand"  href="#" :to="{name: 'groupsLanding'}" >jumbo</router_link>
+      <router_link class="navbar-brand"  href="#" :to="{name: 'groupsLanding'}" >Easy Church</router_link>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
       </button>
@@ -9,18 +9,38 @@
 
           <ul class="navbar-nav mr-auto" style="padding: 10px 10px 10px 10px">
               <li class="nav-item">
-                  <router-link class="nav-link" :to="{name: 'memberList'}"><span class="navButton">members</span></router-link> 
+                  <router-link class="nav-link" :to="{name: 'memberList'}">                      
+                    <span class="navButton">
+                        <img style="width: 25px ;height: auto" src="@/assets/icons/icons8-people-48.png">
+                        members
+                    </span>
+                  </router-link> 
               </li>
 
               <li class="nav-item">
-                  <router-link class="nav-link" :to="{name: 'groupsLanding'}"><span class="navButton">groups</span></router-link> 
+                  <router-link class="nav-link" :to="{name: 'groupsLanding'}">
+                    <span class="navButton">
+                        <img style="width: 25px ;height: auto" src="@/assets/icons/icons8-user-groups-48.png">
+                      groups
+                    </span>
+                  </router-link> 
               </li>
 
               <li class="nav-item">
-                  <router-link class="nav-link" :to="{name: 'events'}"><span class="navButton">events</span></router-link> 
+                  <router-link class="nav-link" :to="{name: 'events'}">
+                    <span class="navButton">
+                        <img style="width: 25px ;height: auto" src="@/assets/icons/icons8-schedule-64.png">
+                      events
+                    </span>
+                  </router-link> 
               </li>
               <li class="nav-item">
-                <router-link class="nav-link" :to="{name: 'generalFinance'}"><span class="navButton">finances</span></router-link> 
+                <router-link class="nav-link" :to="{name: 'generalFinance'}">
+                  <span class="navButton">
+                      <img style="width: 25px ;height: auto" src="@/assets/icons/icons8-money-48.png">
+                    finances
+                  </span>
+                </router-link> 
             </li>
    
             <li class="nav-item dropdown">

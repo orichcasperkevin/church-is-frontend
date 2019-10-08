@@ -2,8 +2,14 @@
     <div class="memberList">
       <nav aria-label="breadcrumb" >
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><span class="backButton"><router-link style="text-decoration: none" :to="{name: 'Home'}">Home</router-link></span> 
-          <li class="breadcrumb-item active" aria-current="page">members</li>
+            <li class="breadcrumb-item"><span class="backButton">
+              <router-link style="text-decoration: none" :to="{name: 'Home'}">
+                  <img style="width: 25px ;height: auto" src="@/assets/icons/icons8-church-96.png">
+                Home
+            </router-link></span> 
+          <li class="breadcrumb-item active" aria-current="page">
+            members
+          </li>
         </ol>
       </nav>
       <body>
@@ -11,7 +17,12 @@
         <div class="row">
         <div class="filters col-12 col-sm-8 col-md-8 col-lg-2" style="padding: 3px 3px 3px 3px">
             <div class="form-group">
-                <label for="searchInput"><b>search by first name</b></label>
+                <label for="searchInput">
+                  <b>
+                  <img style="width: 20px ;height: auto" src="@/assets/icons/icons8-search-80.png">
+                  search by first name
+                  </b>
+                </label>
                 <input type="text" class="form-control"  aria-describedby="searchHelp" placeholder="e.g John,Brian etc" v-model="firstnamesearch" autofocus>
                 <div style="padding: 10px 10px 10px 10px" class="text-info">{{firstnamesearch_status}}</div>
                 <small id="searchHelp" class="form-text text-muted">search members by their first names</small>
@@ -75,7 +86,10 @@
             </div>
             <div v-if = "fetch_data_error.length == 0">
             <div>
-                <h3>Members</h3>
+                <h3>
+                  <img style="width: 48px ;height: auto" src="@/assets/icons/icons8-people-48.png">
+                  Members
+                </h3>
                 <hr/>
               <p>
               found <span class="badge badge-pill badge-info">{{foundItems}}</span>
