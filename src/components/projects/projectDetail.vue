@@ -671,36 +671,43 @@ export default {
         },
         fetchdata: function() {
             this.fetch_data_error = []
+            this.$store.dispatch('update_isLoading', true)
             this.$http.get(this.$BASE_URL +'/api/projects/project-with-id/' + this.$route.params.id + '/')
                 .then(response => {
                 this.context = {"response": response.data } 
+                this.$store.dispatch('update_isLoading', false)
                 })
                 .catch((err) => {
                     this.fetch_data_error.push(err)
+                    this.$store.dispatch('update_isLoading', false)
                 })
 
+            this.$store.dispatch('update_isLoading', true)
             this.$http.get(this.$BASE_URL +'/api/projects/contribution-for-project/'+ this.$route.params.id + '/')
                 .then(response => {
                 this.contributions = {"response": response.data } 
                 var array = this.contributions.response
                 this.foundItems = array.length
+                this.$store.dispatch('update_isLoading', false)
                 })
                 .catch((err) => {
-                    
+                this.$store.dispatch('update_isLoading', false)
                 })
         },
         getPledges: function(){
             this.memberSearch = ''
             this.tab = 'pledges'
             this.pledges_selected = true
+            this.$store.dispatch('update_isLoading', true)
             this.$http.get(this.$BASE_URL +'/api/projects/pledges-for-project/'+ this.$route.params.id + '/')
                 .then(response => {
                 this.pledges = {"response": response.data } 
                 var array = this.pledges.response
                 this.foundPledges = array.length
+                this.$store.dispatch('update_isLoading', false)
                 })
                 .catch((err) => {
-                    
+                this.$store.dispatch('update_isLoading', false)
                 })
         },
         getContributions: function(){

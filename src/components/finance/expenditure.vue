@@ -154,21 +154,28 @@ export default {
         //fetch data
         fetchdata () {
             this.fetch_data_error = []
+            this.$store.dispatch('update_isLoading', true)
             this.$http.get(this.$BASE_URL + '/api/finance/expenditure-type/' + this.$route.params.id + "/")
                 .then(response => {
                 this.expenditure_type = {"response": response.data } 
+                this.$store.dispatch('update_isLoading', false)
                 })
                 .catch((err) => {
                     this.fetch_data_error.push(err)
+                    this.$store.dispatch('update_isLoading', false)
                 })
+
+            this.$store.dispatch('update_isLoading', true)
             this.$http.get(this.$BASE_URL + '/api/finance/expenditures-of-type/' + this.$route.params.id + "/")
                 .then(response => {
                 this.expenditures = {"response": response.data } 
                 var array = this.expenditures.response
                 this.foundItems = array.length
+                this.$store.dispatch('update_isLoading', false)
                 })
                 .catch((err) => {
                     this.fetch_data_error.push(err)
+                    this.$store.dispatch('update_isLoading', false)
                 })
         },
         expenditureFormOkay: function(){

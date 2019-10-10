@@ -368,34 +368,43 @@ export default {
         this.message = ""
       },
       fetchData() {
+        this.$store.dispatch('update_isLoading', true)
         this.$http.get(this.$BASE_URL + '/api/members/role-list/')
         .then(response => {
           this.roles = {"response": response.data } 
+          this.$store.dispatch('update_isLoading', false)
         })
         .catch((err) => {
           this.fetch_data_error.push(err)
+          this.$store.dispatch('update_isLoading', false)
         })
                     
         this.fetch_data_error = []
+        this.$store.dispatch('update_isLoading', true)
         this.$http.get(this.$BASE_URL + '/api/groups/church-group/' + this.$route.params.id + '/')
         .then(response => {
           this.group = {"response": response.data } 
+          this.$store.dispatch('update_isLoading', false)
         })
         .catch((err) => {
           this.fetch_data_error.push(err)
+          this.$store.dispatch('update_isLoading', false)
         })
                   
+        this.$store.dispatch('update_isLoading', true)
         this.$http.get(this.$BASE_URL + '/api/groups/church-group-members/' + this.$route.params.id + '/')
         .then(response => {
           this.members = {"response": response.data } 
           var array = this.members.response
           this.foundItems = array.length
           for (var data in this.members.response){
-            this.member_ids.push(this.members.response[data].member.id)
+            this.member_ids.push(this.members.response[data].member.id)            
         }
+        this.$store.dispatch('update_isLoading', false)
         })
         .catch((err) => {
           this.fetch_data_error.push(err)
+          this.$store.dispatch('update_isLoading', false)
         })        
   }
 

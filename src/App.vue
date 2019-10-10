@@ -10,7 +10,7 @@
           <ul class="navbar-nav mr-auto" style="padding: 10px 10px 10px 10px">
               <li class="nav-item">
                   <router-link class="nav-link" :to="{name: 'memberList'}">                      
-                    <span class="navButton">
+                    <span class="navButton" v-on:click="doAJAX">
                         <img style="width: 25px ;height: auto" src="@/assets/icons/icons8-people-48.png">
                         members
                     </span>
@@ -19,7 +19,7 @@
 
               <li class="nav-item">
                   <router-link class="nav-link" :to="{name: 'groupsLanding'}">
-                    <span class="navButton">
+                    <span class="navButton" v-on:click="doAJAX">
                         <img style="width: 25px ;height: auto" src="@/assets/icons/icons8-user-groups-48.png">
                       groups
                     </span>
@@ -28,7 +28,7 @@
 
               <li class="nav-item">
                   <router-link class="nav-link" :to="{name: 'events'}">
-                    <span class="navButton">
+                      <span class="navButton" v-on:click="doAJAX">
                         <img style="width: 25px ;height: auto" src="@/assets/icons/icons8-schedule-64.png">
                       events
                     </span>
@@ -36,7 +36,7 @@
               </li>
               <li class="nav-item">
                 <router-link class="nav-link" :to="{name: 'generalFinance'}">
-                  <span class="navButton">
+                    <span class="navButton" v-on:click="doAJAX">
                       <img style="width: 25px ;height: auto" src="@/assets/icons/icons8-money-48.png">
                     finances
                   </span>
@@ -70,26 +70,43 @@
           </ul>
       </div>
   </nav>
-    <router-view/>
+  <div class="vld-parent">
+      <loading :active.sync="isLoading" 
+      :can-cancel="true" 
+      :on-cancel="onCancel"
+      :is-full-page="fullPage"></loading>
+      
+  </div>
+    <div>
+        <router-view/>
+    </div>    
   </div>
 </template>
 
 <script>
 import router from "./router";
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
 export default {
   name: 'App',
   data () {
-        return{
-          
+        return{          
+          fullPage: true,
         }
-    },
+  },
+  components: {
+      Loading
+  },
   created(){
     this.username = this.$session.get("username") 
     this.checkLoggedIn()    
   },
   computed: {
     username(){
-      return this.$store.getters.logged_in_member
+      return this.$store.getters.logged_in_member      
+    },
+    isLoading (){
+      return this.$store.getters.isLoading
     }
   },
   methods: {
@@ -104,6 +121,12 @@ export default {
     logOut() {      
       this.$session.destroy()
       router.push("/login")                 
+    },
+    onCancel() {
+      console.log('User cancelled the loader.')
+    },
+    doAJAX : function (){       
+      this.isLoading = true
     }
   }
 }

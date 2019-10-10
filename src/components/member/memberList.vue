@@ -80,6 +80,7 @@
 
         </div>
           <div class="col" >
+
             <div class = "center-div" v-if = "fetch_data_error.length > 0">
               <img style = "height: 64px "src="@/assets/icons/icons8-wi-fi-off-64.png">
               <p class="text-info">check your connection</p>
@@ -351,7 +352,6 @@
 
 <script>
 import router from "../../router";
-
 export default {
   name: 'memberList',
   data () {
@@ -424,7 +424,8 @@ export default {
       }
     },
     fetchData() {
-      this.fetch_data_error = []
+      this.fetch_data_error = []      
+      this.$store.dispatch('update_isLoading', true)      
       // try local storage
       this.members = JSON.parse(localStorage.getItem('member_list'))
       if (this.members){
@@ -434,6 +435,7 @@ export default {
           this.member_ids.push(this.members.response[data].member.id)
         }
         this.text_button_name = "Text Members" + "(" + this.foundItems + ")"  
+        this.$store.dispatch('update_isLoading', false)  
       }
 
       const currentVersion = this.$store.getters.member_list_version
@@ -453,11 +455,13 @@ export default {
 
         localStorage.setItem('member_list',JSON.stringify({"response": response.data }))                
         localStorage.setItem('member_list_version', currentVersion)
+        this.$store.dispatch('update_isLoading', false)  
       })
       .catch((err) => {
           this.fetch_data_error.push(err)
+          this.$store.dispatch('update_isLoading', false)  
       }) 
-      }     
+      }           
     },
   // send message to selected members
     sendMessage: function (){
@@ -486,18 +490,22 @@ export default {
       var vm = this
       if (this.firstnamesearch.length > 0){
         this.firstnamesearch_status = 'searching...'
+        this.$store.dispatch('update_isLoading', true)      
         this.$http.get(this.$BASE_URL + '/api/members/filter-by-first_name/' + this.firstnamesearch +'/')
           .then(function (response) {
             vm.members = {"response": response.data } 
             vm.firstnamesearch_status = ''
             var array = vm.members.response
-            vm.foundItems = array.length
+            vm.foundItems = array.length                       
+            vm.$store.dispatch('update_isLoading', false)     
           })
           .catch(function (error) {
+            this.$store.dispatch('update_isLoading', false)      
           })
         }
     },
     searchByGender() {
+      this.$store.dispatch('update_isLoading', true)
       this.$http.get(this.$BASE_URL + '/api/members/filter-by-gender/'+ this.gendersearch)
             .then(response => {
               this.members = {"response": response.data } 
@@ -512,12 +520,15 @@ export default {
                 else{
                   this.text_button_name = "text all Males"
                 }
+                this.$store.dispatch('update_isLoading', false)
             })
             .catch((err) => {                
+              this.$store.dispatch('update_isLoading', false)
             })
     },
     searchByAge() {
       if (this.min_age != '' && this.max_age != ''){
+      this.$store.dispatch('update_isLoading', true)
       this.$http.get(this.$BASE_URL + '/api/members/filter-by-age/'+ this.min_age +'/' + this.max_age + '/')
       .then(response => {        
         this.members = {"response": response.data }         
@@ -527,8 +538,10 @@ export default {
           this.member_ids.push(this.members.response[data].member.id)
          }
         this.text_button_name = "Text members between ages " + this.min_age + " and " + this.max_age
+        this.$store.dispatch('update_isLoading', false)
       })
       .catch((err) => {                
+        this.$store.dispatch('update_isLoading', false)
       })
       }
     },
@@ -537,7 +550,8 @@ export default {
     submitFile: function(){
           this.file_format_okay = false
           this.error_500 = []
-          this.test_csv_errors = []          
+          this.test_csv_errors = [] 
+          this.$store.dispatch('update_isLoading', true)         
           let formData = new FormData();
           formData.append('csv', this.file);
           this.$http.post( this.$BASE_URL + '/api/members/upload-csv/',
@@ -554,10 +568,12 @@ export default {
               this.uploaded_file = data.csv                              
               alert("file uploaded")
               this.previewCSV()
+              this.$store.dispatch('update_isLoading', false)
             }             
           })
           .catch((err) =>{
               this.error_500.push(err)              
+              this.$store.dispatch('update_isLoading', false)
           });
     },
   // handle the case that the file changes
@@ -566,15 +582,18 @@ export default {
     },
   //preview the csv file
     previewCSV: function(){
+      this.$store.dispatch('update_isLoading', true)
       this.get_data_status = 'setting up preview ...'
       var file_name = this.uploaded_file.split("/")[1]  
       this.$http.get(this.$BASE_URL + '/api/members/preview-csv/'+ file_name + '/')
       .then(response => {
         this.csv_data = response.data
         this.get_data_status = ''    
+        this.$store.dispatch('update_isLoading', false)
       })
       .catch((err) => {
         this.get_data_status = ''
+        this.$store.dispatch('update_isLoading', false)
       })  
     },
   // extract data from the csv file
@@ -582,6 +601,7 @@ export default {
     checkCSV: function(){  
       this.test_csv_errors = [] 
       this.file_format_okay = false      
+      this.$store.dispatch('update_isLoading', true)
       var file_name = this.uploaded_file.split("/")[1]         
       this.$http({ method: 'post', url: this.$BASE_URL + '/api/members/check-csv/',
       data: {
@@ -598,12 +618,15 @@ export default {
         else{
           this.test_csv_errors = data                
       }           
+      this.$store.dispatch('update_isLoading', false)
       })
       .catch((err) => {   
         this.error_500.push(err)             
+        this.$store.dispatch('update_isLoading', false)
       })       
     },
     extractData: function(){
+      this.$store.dispatch('update_isLoading', true)
       this.extract_data_button_text = "extracting..."
       var file_name = this.uploaded_file.split("/")[1]       
       this.$http({
@@ -619,10 +642,12 @@ export default {
           var new_version = parseInt(localStorage.getItem('member_list_version')) + 1
           this.$store.dispatch('update_member_list_version', new_version)                
           this.fetchData()
+          this.$store.dispatch('update_isLoading', false)
       })
       .catch((err) => {     
         alert("something went wrong while trying to extract data.\n Check the file and try again")   
         this.extract_data_button_text = "import data"    
+        this.$store.dispatch('update_isLoading', false)
       })
     }
 }

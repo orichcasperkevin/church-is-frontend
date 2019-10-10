@@ -485,19 +485,22 @@ export default {
         humanize: function(x) {
                 return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         },
-        getMemberGroups: function(){                
+        getMemberGroups: function(){           
+                this.$store.dispatch('update_isLoading', true)           
                 this.groups_selected = true                 
                 this.$http.get(this.$BASE_URL + '/api/groups/church-groups-for-a-member/'+this.$route.params.id+'/')
                 .then(response => {
-                this.church_groups = {"response": response.data }
-                this.groups_loading = false
+                        this.church_groups = {"response": response.data }
+                        this.groups_loading = false
+                        this.$store.dispatch('update_isLoading', false)      
                 })
                 .catch(error=> {
                 this.groups_errors.push(error)
+                this.$store.dispatch('update_isLoading', false)      
                 })            
         },
         getMemberFinances: function() {
-
+                this.$store.dispatch('update_isLoading', true)      
                 this.finances_selected = true                
                 this.$http.get(this.$BASE_URL + '/api/projects/contributions-by-member/'+this.$route.params.id+'/')
                 .then(response => {
@@ -538,13 +541,15 @@ export default {
                 this.$http.get(this.$BASE_URL + '/api/finance/offerings-by-member/'+this.$route.params.id+'/')
                 .then(response => {
                 this.offering_info = {"offerings": response.data }
+                this.$store.dispatch('update_isLoading', false)      
                 })
                 .catch(error=> {
-                
+                this.$store.dispatch('update_isLoading', false)      
                 }) 
 
         },
         fetchData() {
+                this.$store.dispatch('update_isLoading', true)                      
                 this.$http.get(this.$BASE_URL + '/api/members/member/'+this.$route.params.id+'/')
                 .then(response => {
                 this.member_info = {"member": response.data }
@@ -597,9 +602,11 @@ export default {
                 this.$http.get(this.$BASE_URL + '/api/members/family-tree-for-member/'+this.$route.params.id+'/')
                 .then(response => {
                 this.family_tree = {"tree": response.data }
+                this.$store.dispatch('update_isLoading', false)      
                 })
                 .catch(error=> {
                 this.family_errors.push(error)
+                this.$store.dispatch('update_isLoading', false)      
                 })
             
         }

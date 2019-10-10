@@ -112,6 +112,7 @@ export default {
             }
         },
         fetchData() {
+            this.$store.dispatch('update_isLoading', true)
             this.group_name = this.$route.params.group_name                                
             this.fetch_data_error = []
             this.$http.get(this.$BASE_URL + '/api/groups/church-groups-in-group/' + this.$route.params.id + '/')
@@ -119,9 +120,11 @@ export default {
                 this.groups = {"response": response.data } 
                 var array = this.groups.response
                 this.foundItems = array.length
+                this.$store.dispatch('update_isLoading', false)
             })
             .catch((err) => {
                 this.fetch_data_error.push(err)
+                this.$store.dispatch('update_isLoading', false)
             })
             
         },

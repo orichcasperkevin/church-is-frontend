@@ -133,11 +133,13 @@ export default {
     },
     fetchData() {
       this.fetch_data_error = []
+      this.$store.dispatch('update_isLoading', true)
       // try local storage
       this.groups = JSON.parse(localStorage.getItem('group_list'))
       if (this.groups){  
         var array = this.groups.response 
         this.foundItems = array.length
+        this.$store.dispatch('update_isLoading', false)
       }
 
       const currentVersion = this.$store.getters.group_list_version
@@ -153,17 +155,21 @@ export default {
 
             localStorage.setItem('group_list',JSON.stringify({"response": response.data }))                
             localStorage.setItem('group_list_version', currentVersion)            
+            this.$store.dispatch('update_isLoading', false)
         })
         .catch((err) => {
             this.fetch_data_error.push(err)
+            this.$store.dispatch('update_isLoading', false)
         })
       }
 
       // get independent groups
+      this.$store.dispatch('update_isLoading', true)
       this.independent_groups = JSON.parse(localStorage.getItem('group_list_independent')) 
       if (this.independent_groups){
         var array = this.independent_groups.response
         this.foundItems_independent = array.length 
+        this.$store.dispatch('update_isLoading', false)
       }
       
       if (!version || version < currentVersion) {
@@ -173,10 +179,12 @@ export default {
             var array = this.independent_groups.response
             this.foundItems_independent = array.length 
             localStorage.setItem('group_list_independent',JSON.stringify({"response": response.data }))                
+            this.$store.dispatch('update_isLoading', false)
             
         })
         .catch((err) => {
             this.fetch_data_error.push(err)
+            this.$store.dispatch('update_isLoading', false)
         }) 
       }   
     },

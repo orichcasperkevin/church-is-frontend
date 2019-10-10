@@ -5,6 +5,7 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
 state: {
+    isLoading: false,
     logged_in_member: '',
     member_list_version: 0,
     group_list_version: 0,
@@ -12,9 +13,12 @@ state: {
     income_type_list_version: 0,
     offering_list_version: 0,
     expenditure_list_version: 0,
-    project_list_version: 0
+    project_list_version: 0,    
 },
 mutations: {
+    isLoading(state, payload) {
+        state.isLoading = payload
+    },
     logged_in_member(state, payload) {
         state.logged_in_member = payload
     },
@@ -41,6 +45,9 @@ mutations: {
     }
 },
 actions: {
+    update_isLoading (context, payload){
+        context.commit('isLoading', payload)
+    },
     update_logged_in_member (context, payload) {
         context.commit('logged_in_member', payload)
     },
@@ -67,6 +74,9 @@ actions: {
     }
 },
 getters: {
+    isLoading (state) {
+        return state.isLoading
+    },
     logged_in_member (state) {
         return state.logged_in_member
     },

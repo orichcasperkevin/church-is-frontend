@@ -11,13 +11,11 @@ import VueSession from 'vue-session'
 import Vuex from 'vuex'
 import { store } from './store'
 
-Vue.use(Vuex)
 
+Vue.use(Vuex)
 const options = { name: 'lodash' }
 Vue.use(VueLodash, options)
-
 Vue.use(VueSession) 
-
 Vue.config.productionTip = false
 Vue.prototype.$store =  store 
 Vue.prototype.$http = axios

@@ -162,12 +162,15 @@
                 }
             },
             fetchData () {
+                this.$store.dispatch('update_isLoading', true)
                 this.$http.get(this.$BASE_URL + '/api/events/event-list/')
                 .then(response => {
-                    this.events = response.data                      
+                    this.events = response.data              
+                    this.$store.dispatch('update_isLoading', false)        
                 })
                 .catch((err) => {
                     this.fetch_data_error.push(err)
+                    this.$store.dispatch('update_isLoading', false)
                 })
             },
             //check if the add event form is okay

@@ -783,11 +783,13 @@ export default {
         fetchdata () {
             this.tithes_selected = true
             this.fetch_data_error = []
+            this.$store.dispatch('update_isLoading', true)
             // try local storage
             this.tithes = JSON.parse(localStorage.getItem('tithe_list'))
             if (this.tithes){
                 var array = this.tithes.response
                 this.foundTithes = array.length
+                this.$store.dispatch('update_isLoading', false)
             }            
             this.tithe_stats = JSON.parse(localStorage.getItem('tithe_stats'))
 
@@ -796,6 +798,7 @@ export default {
 
             //else try network
             if (!version || version < currentVersion) {
+                this.$store.dispatch('update_isLoading', true)
                 this.$http.get(this.$BASE_URL + '/api/finance/tithe-by-members-this-month/')
                     .then(response => {
                         this.tithes = {"response": response.data }   
@@ -804,18 +807,24 @@ export default {
                         
                         localStorage.setItem('tithe_list',JSON.stringify({"response": response.data }))                
                         localStorage.setItem('tithe_list_version', currentVersion) 
+                        this.$store.dispatch('update_isLoading', false)
                     })
                     .catch((err) => {
                         this.fetch_data_error.push(err)
+                        this.$store.dispatch('update_isLoading', false)
                     })
+
+                this.$store.dispatch('update_isLoading', true)
                 this.$http.get(this.$BASE_URL + '/api/finance/tithe-stats/')
                     .then(response => {
                         this.tithe_stats = {"response": response.data } 
 
                         localStorage.setItem('tithe_stats',JSON.stringify({"response": response.data }))                          
+                        this.$store.dispatch('update_isLoading', false)
                     })
                     .catch((err) => {
                         this.fetch_data_error.push(err)
+                        this.$store.dispatch('update_isLoading', false)
                     })
             }
             this.getIncomeTypeList()
@@ -834,37 +843,45 @@ export default {
 
             // else try the network
             if (!version || version < currentVersion) {
+                this.$store.dispatch('update_isLoading', true)
                 this.$http.get(this.$BASE_URL + '/api/finance/income-stats/')
                 .then(response => {
                    this.income_stats = {"response": response.data } 
+
                    localStorage.setItem('income_stats',JSON.stringify({"response": response.data }) )
+                   this.$store.dispatch('update_isLoading', false)
                 })
                 .catch((err) => {
                     this.fetch_data_error.push(err)
+                    this.$store.dispatch('update_isLoading', false)
                 })
 
+                this.$store.dispatch('update_isLoading', true)
                 this.$http.get(this.$BASE_URL + '/api/finance/income-type-list/')
                 .then(response => {
                     this.income_types = {"response": response.data } 
 
                     localStorage.setItem('income_type_list',JSON.stringify({"response": response.data }))                
                     localStorage.setItem('income_type_list_version', currentVersion)
-
-
+                    this.$store.dispatch('update_isLoading', false)
                 })
                 .catch((err) => {
                     this.fetch_data_error.push(err)
+                    this.$store.dispatch('update_isLoading', false)
                 })
             }
         },
-        checkForService: function(){            
+        checkForService: function(){  
+            this.$store.dispatch('update_isLoading', true)          
             this.$http.get(this.$BASE_URL + '/api/services/service-on-date/' + this.offering_date +'/of-type/' + this.service_type + '/')
                     .then(response => {                    
                     this.found_service = response.data                                  
                     this.searched_for_service = true
+                    this.$store.dispatch('update_isLoading', false)
                     })
                     .catch((err) => {
                         this.fetch_data_error.push(err)
+                        this.$store.dispatch('update_isLoading', false)
                     })
                     
         },
@@ -893,15 +910,19 @@ export default {
 
             // try the network
             if (!version || version < currentVersion){
+                this.$store.dispatch('update_isLoading', true)
                 this.$http.get(this.$BASE_URL + '/api/finance/offering-stats/')
                     .then(response => {
                     this.offering_stats = {"response": response.data }                      
                     localStorage.setItem('offering_stats',JSON.stringify({"response": response.data }))                
+                    this.$store.dispatch('update_isLoading', false)
                     })
                     .catch((err) => {
                         this.fetch_data_error.push(err)
+                        this.$store.dispatch('update_isLoading', false)
                     })
 
+                this.$store.dispatch('update_isLoading', true)
                 this.$http.get(this.$BASE_URL + '/api/finance/offerings-by-members-this-month/')
                     .then(response => {
                     this.offerings = {"response": response.data } 
@@ -910,9 +931,11 @@ export default {
 
                     localStorage.setItem('offering_list',JSON.stringify({"response": response.data }))                
                     localStorage.setItem('offering_list_version', currentVersion)
+                    this.$store.dispatch('update_isLoading', false)
                     })
                     .catch((err) => {
                         this.fetch_data_error.push(err)
+                        this.$store.dispatch('update_isLoading', false)
                     })
             }
             
@@ -934,6 +957,7 @@ export default {
             }
             else{
                 if (!version || version < currentVersion) {
+                    this.$store.dispatch('update_isLoading', true)
                     this.$http.get(this.$BASE_URL + '/api/finance/income-type-list/')
                     .then(response => {
                         this.incomes = {"response": response.data } 
@@ -942,9 +966,11 @@ export default {
 
                         localStorage.setItem('income_type_list',JSON.stringify({"response": response.data }))                
                         localStorage.setItem('income_type_list_version', currentVersion)
+                        this.$store.dispatch('update_isLoading', false)
                     })
                     .catch((err) => {
                         this.fetch_data_error.push(err)
+                        this.$store.dispatch('update_isLoading', false)
                     })
                 }
             }
@@ -954,13 +980,16 @@ export default {
             }
             else{ 
                 if (!version || version < currentVersion) {
+                    this.$store.dispatch('update_isLoading', true)
                     this.$http.get(this.$BASE_URL + '/api/finance/income-stats/')
                     .then(response => {
                         this.income_stats = {"response": response.data } 
                         localStorage.setItem('income_stats',JSON.stringify({"response": response.data }) )
+                        this.$store.dispatch('update_isLoading', false)
                     })
                     .catch((err) => {
                         this.fetch_data_error.push(err)
+                        this.$store.dispatch('update_isLoading', false)
                     })
                 }                       
             }
@@ -985,37 +1014,46 @@ export default {
             var version  = localStorage.getItem('expenditure_list_version')
 
             if (!version || version < currentVersion) {
+                this.$store.dispatch('update_isLoading', true)
                 this.$http.get(this.$BASE_URL + '/api/finance/expenditure-stats/')
                     .then(response => {
                         this.expenditure_stats =  response.data
                         localStorage.setItem('expenditure_stats',JSON.stringify(response.data) )
+                        this.$store.dispatch('update_isLoading', false)
                     })
                     .catch((err) => {
                         this.fetch_data_error.push(err)
+                        this.$store.dispatch('update_isLoading', false)
                     })
 
+                this.$store.dispatch('update_isLoading', true)
                 this.$http.get(this.$BASE_URL + '/api/finance/expenditure-type-list/')
                     .then(response => {
                         this.expenditure_types = {"response": response.data } 
                         localStorage.setItem('expenditure_type_list',JSON.stringify({"response": response.data } ))
-                        localStorage.setItem('expenditure_list_version', currentVersion)
+                        localStorage.setItem('expenditure_list_version', currentVersion)                        
 
                         var array = this.expenditure_types.response
                         this.found_expenditure_types = array.length
+                        this.$store.dispatch('update_isLoading', false)
                     })
                     .catch((err) => {
                         this.fetch_data_error.push(err)
+                        this.$store.dispatch('update_isLoading', false)
                     })   
             }
         },
         //get service types
         getServiceTypes: function(){
+            this.$store.dispatch('update_isLoading', true)
             this.$http.get(this.$BASE_URL + '/api/services/service-types/')
                 .then(response => {
                 this.service_types =  {"response":response.data}
+                this.$store.dispatch('update_isLoading', false)
                 })
                 .catch((err) => {
                     this.found_service = []
+                    this.$store.dispatch('update_isLoading', false)
                 })
         },
         //search for member

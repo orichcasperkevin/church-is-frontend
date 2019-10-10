@@ -166,21 +166,28 @@
             //fetch data
             fetchdata () {
                 this.fetch_data_error = []
+                this.$store.dispatch('update_isLoading', true)
                 this.$http.get(this.$BASE_URL + '/api/finance/income-type/' + this.$route.params.id + "/")
                     .then(response => {
                     this.income_type = {"response": response.data } 
+                    this.$store.dispatch('update_isLoading', false)
                     })
                     .catch((err) => {
                         this.fetch_data_error.push(err)
+                        this.$store.dispatch('update_isLoading', false)
                     })
+
+                this.$store.dispatch('update_isLoading', true)
                 this.$http.get(this.$BASE_URL + '/api/finance/income-of-type/' + this.$route.params.id + "/")
                     .then(response => {
                     this.incomes = {"response": response.data } 
                     var array = this.incomes.response
                     this.foundItems = array.length
+                    this.$store.dispatch('update_isLoading', false)
                     })
                     .catch((err) => {
                         this.fetch_data_error.push(err)
+                        this.$store.dispatch('update_isLoading', false)
                     })
             },
             incomeFormOK: function(){

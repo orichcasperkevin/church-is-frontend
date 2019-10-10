@@ -244,6 +244,7 @@ export default {
 
             //else try the network
             if (!version || version < currentVersion) {
+                this.$store.dispatch('update_isLoading', true)
                 this.$http.get(this.$BASE_URL + '/api/projects/project-list/')
                 .then(response => {
                    this.projects = {"response": response.data } 
@@ -252,9 +253,11 @@ export default {
 
                     localStorage.setItem('project_list',JSON.stringify({"response": response.data }))                
                     localStorage.setItem('project_list_version', currentVersion) 
+                    this.$store.dispatch('update_isLoading', false)
                 })
                 .catch((err) => {
                     this.fetch_data_error.push(err)
+                    this.$store.dispatch('update_isLoading', false)
                 })
             }
         },
