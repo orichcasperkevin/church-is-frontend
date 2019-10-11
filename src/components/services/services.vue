@@ -278,36 +278,45 @@
         methods: {
             fetchData () {
                 this.fetch_data_error = []
+                this.$store.dispatch('update_isLoading', true)
                 this.$http.get(this.$BASE_URL + '/api/services/services-today/')
                     .then(response => {
                     this.services_today = {"response": response.data }
                     if (this.services_today.response.length > 0){
                         this.services_available = true                        
                     }                                       
+                    this.$store.dispatch('update_isLoading', false)
                     })
                     .catch((err) => {
                         this.fetch_data_error.push(err)
+                        this.$store.dispatch('update_isLoading', false)
                     })
             this.getServiceTypes()
             },
             getServicesThisMonth: function () {
                 this.this_month_selected = true
+                this.$store.dispatch('update_isLoading', true)
                 this.$http.get(this.$BASE_URL + '/api/services/services-this-month/')
                     .then(response => {
                     this.services_this_month = {"response": response.data }
+                    this.$store.dispatch('update_isLoading', false)
                     })
                     .catch((err) => {
                         this.fetch_data_error.push(err)
+                        this.$store.dispatch('update_isLoading', false)
                     }) 
             },
             //get service types
             getServiceTypes: function(){
-                this.$http.get(this.$BASE_URL + '/api/services/service-types/')
+                this.$store.dispatch('update_isLoading', true)
+                this.$http.get(this.$BASE_URL + '/api/services/service-types/')                
                     .then(response => {
                     this.service_types =  {"response":response.data}
+                    this.$store.dispatch('update_isLoading', false)
                     })
                     .catch((err) => {
                         this.found_service = []
+                        this.$store.dispatch('update_isLoading', false)
                     })
             },
             //check if add service form is okay

@@ -70,6 +70,12 @@
         <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
+                <div class="vld-parent">
+                    <loading :active.sync="isLoading" 
+                    :can-cancel="false"                   
+                    :is-full-page="false"></loading>
+                    
+                </div>
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalCenterTitle">add group / folder</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close" v-on:click="fetchData()">
@@ -105,10 +111,13 @@
 
 <script>
 import router from "../../router";
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
 export default {
   name: 'groupsLanding',
   data () {
-    return {
+    return {      
+      isLoading : false,
       groups: null,independent_groups: null,
       foundItems: null,foundItems_independent: null,
       fetch_data_error: [],
@@ -192,6 +201,7 @@ export default {
       this.group_type = 'folder'
     },
     addGroup: function(){
+        
         var url = ''
         this.name_errors = [],
         this.description_errors = []
@@ -208,6 +218,7 @@ export default {
         if (this.group_type == 'group'){
           url = '/api/groups/add-group/'
         }           
+        this.isLoading = true
         this.$http({ method: 'post', url: this.$BASE_URL + url,
         data: {
             group_of_groups_id: null,

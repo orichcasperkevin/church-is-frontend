@@ -72,7 +72,7 @@
   </nav>
   <div class="vld-parent">
       <loading :active.sync="isLoading" 
-      :can-cancel="true" 
+      :can-cancel="false" 
       :on-cancel="onCancel"
       :is-full-page="fullPage"></loading>
       
@@ -90,7 +90,7 @@ import 'vue-loading-overlay/dist/vue-loading.css';
 export default {
   name: 'App',
   data () {
-        return{          
+        return{                    
           fullPage: true,
         }
   },
@@ -115,7 +115,7 @@ export default {
           router.push("/login")
           return false
       }        
-      this.$store.dispatch('update_logged_in_member', this.$session.get("username")) 
+      this.$store.dispatch('update_logged_in_member', this.$session.get("username"))       
       return true                 
     },
     logOut() {      
