@@ -10,9 +10,9 @@
     <div class="container">
         <div class="row">
                 <div class="col" v-if="member_info != null">
-                <h3 class="row" v-for="data in member_info.member">                                     
+                <h3 class="row" v-for="data in member_info.member">
                 {{data.member.first_name}} {{data.member.last_name}}
-                </h3>                
+                </h3>
                 </div>
         </div>
         <hr>
@@ -29,18 +29,18 @@
                         </a>                                             -->
                         <a class="nav-link list-group-item list-group-item-action border-0" id="pill-groups-tab" data-toggle="pill" href="#pill-groups" role="tab" aria-controls="pill-groups" aria-selected="false" v-on:click = "getMemberGroups()">
                                 <img class="church-is-menu" src="@/assets/icons/icons8-user-groups-filled-50.png"> groups
-                        </a> 
+                        </a>
                         <!-- <a class="nav-link list-group-item list-group-item-action border-0" id="pill-dates-tab" data-toggle="pill" href="#pill-dates" role="tab" aria-controls="pill-dates" aria-selected="false">
                                 <img class="church-is-menu" src="@/assets/icons/icons8-donate-filled-50.png"> important dates
                         </a>   -->
                         <a class="nav-link list-group-item list-group-item-action border-0" id="pill-contributions-tab" data-toggle="pill" href="#pill-contributions" role="tab" aria-controls="pill-contributions" aria-selected="false" v-on:click = "getMemberFinances()">
                                 <img class="church-is-menu" src="@/assets/icons/icons8-donate-filled-50.png"> finances
-                        </a>                            
-                    </div> 
+                        </a>
+                    </div>
               </div>
               <div class="col-9">
                 <div class="tab-content" id="v-pills-tabContent">
-                        <div class="tab-pane fade show active" id="pill-detail" role="tabpanel" aria-labelledby="pill-detail-tab">                                
+                        <div class="tab-pane fade show active" id="pill-detail" role="tabpanel" aria-labelledby="pill-detail-tab">
                                 <div style="padding: 10px 10px 10px 10px">
                                 </div>
                                 <div class="mx-auto" style="width: 200px;">
@@ -55,7 +55,7 @@
                                                         <span v-for = "data in data">
                                                         <div class=" row mx-auto"><b>name :</b> {{data.member.first_name}}  {{data.member.last_name}}</div>
                                                         </span>
-                                                </span>                                                 
+                                                </span>
                                         </div>
                                 </div>
                                 </div>
@@ -123,7 +123,7 @@
                                                                 </span>
                                                         </span>
                                                 </div>
-                                        </div>                                       
+                                        </div>
                                 </div>
                                 <div class="col">
                                         <div class="card border-0" style="max-width: 18rem;">
@@ -140,7 +140,7 @@
                                                                         <div v-if = "data.member.email != ''"><b>email :</b> {{data.member.email}}</div>
                                                                         </span>
                                                                 </span>
-                                                        </span>                               
+                                                        </span>
                                                 </div>
                                         </div>
                                         <div class="card border-0" style="max-width: 18rem;">
@@ -158,26 +158,26 @@
                                                                                 <img v-if = "data.gender == 'M'" style = "height: 32px "src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
                                                                                 <img v-if = "data.gender == 'F'" style = "height: 32px "src="@/assets/avatars/icons8-user-female-skin-type-4-40.png">
                                                                                 <img v-if = "data.gender == 'R'" style = "height: 32px "src="@/assets/avatars/icons8-contacts-96.png">
-                                                                        
+
                                                                         <span class="text-secondary">{{data.member.first_name}} {{data.member.last_name}}</span>
-                                                        
+
                                                                         </td>
                                                                         </div>
                                                                         </span>
-                                                                
-                                                                
-                                                                
+
+
+
                                                                 </tr>
                                                                 </tbody>
                                                         </table>
                                                 </div>
                                         </div>
                                 </div>
-                                </div>                             
+                                </div>
                         </div>
-                        <div class="tab-pane fade" id="pill-groups" role="tabpanel" aria-labelledby="pill-groups-tab">                                                                                                 
-                        
-                                <h3> Church Groups</h3>                                
+                        <div class="tab-pane fade" id="pill-groups" role="tabpanel" aria-labelledby="pill-groups-tab">
+
+                                <h3> Church Groups</h3>
                                 <table class="table" v-if = "groups_selected == true">
                                 <thead class=""  v-if = "church_groups.response.length > 0">
                                         <tr>
@@ -195,7 +195,7 @@
                                 </table>
                                 <div v-if = "groups_selected == true">
                                         <div v-if = "church_groups.response.length == 0 ">
-                                                <p class="text-muted">member belongs to none. </p> 
+                                                <p class="text-muted">member belongs to none. </p>
                                         </div>
                                 </div>
                         </div>
@@ -223,31 +223,31 @@
                                 </div>
                                 <div class="tab-content" id="pills-tabContent">
                                         <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" v-if="finances_selected">
-                                                        <h3 >Contributions</h3>                                                      
+                                                        <h3 >Contributions</h3>
                                                         <table class="table">
                                                             <thead>
                                                                 <tr>
                                                                     <th>project</th>
                                                                     <th>amount</th>
-                                                                    <th>date</th>                                                                    
+                                                                    <th>date</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
                                                                 <tr v-for = "data in contribution_info.contribution">
                                                                     <td>{{data.project.name}}</td>
                                                                     <td><p class="text-muted">{{humanize(data.amount)}}</p></td>
-                                                                    <td>{{data.recorded_at}}</td>                                                                    
+                                                                    <td>{{data.recorded_at}}</td>
                                                                 </tr>
                                                             </tbody>
-                                                        </table>                                                    
+                                                        </table>
                                                         <p class="text-muted" v-if="! contribution_info.contribution.length">
                                                                 found no contributions by member
                                                         </p>
                                         </div>
                                         <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" v-if="finances_selected">
-                                                        <h3>Pledges</h3>                                                      
+                                                        <h3>Pledges</h3>
                                                         <table class="table">
-                                                        
+
                                                                 <thead>
                                                                         <tr>
                                                                         <th>project</th>
@@ -264,7 +264,7 @@
                                                                         <td><p class="text-muted">{{humanize(data.amount_so_far)}}</p></td>
                                                                         <td><p  >{{humanize(data.remaining_amount)}}</p></td>
                                                                         <td><span class="text-muted">{{data.percentage_funded}}</span></td>
-                                                                        
+
                                                                         </tr>
                                                                 </tbody>
                                                         </table>
@@ -272,52 +272,52 @@
                                                                 found no pledges by member.
                                                         </p>
                                         </div>
-                                        <div class="tab-pane fade" id="pills-tithes" role="tabpanel" aria-labelledby="pills-tithes-tab" v-if = "finances_selected">                                                        
-                                                        <h3>Tithes</h3>                                                         
+                                        <div class="tab-pane fade" id="pills-tithes" role="tabpanel" aria-labelledby="pills-tithes-tab" v-if = "finances_selected">
+                                                        <h3>Tithes</h3>
                                                         <div class="row" v-for = "data in tithe_stats.stats">
-                                                                <p class="card-text" style="padding: 5px"><small class="text-muted">total this month |<span class="text-info">{{humanize(data.total_this_month)}}</span>|</small> </p>                                                                                     
+                                                                <p class="card-text" style="padding: 5px"><small class="text-muted">total this month |<span class="text-info">{{humanize(data.total_this_month)}}</span>|</small> </p>
                                                                 <p class="card-text" style="padding: 5px"><small class="text-muted">total this year |<span class="text-info">{{humanize(data.total_this_year)}}|</span></small> </p>
-                                                        </div>                                                                                                                                                                                     
-                                                        
+                                                        </div>
+
                                                         <table class="table">
                                                             <thead>
                                                                 <tr>
                                                                     <th>amount</th>
-                                                                    <th>narration</th>                                                                    
+                                                                    <th>narration</th>
                                                                     <th>date</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                <tr v-for = "data in tithe_info.tithes">                                                                    
+                                                                <tr v-for = "data in tithe_info.tithes">
                                                                     <td><p class="text-muted">{{humanize(data.amount)}}</p></td>
                                                                     <td class="small"> {{data.narration}}</td>
-                                                                    <td>{{data.date}}</td>                                                         
+                                                                    <td>{{data.date}}</td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>
                                                         <p class="text-muted" v-if="!tithe_info.tithes.length">
-                                                          found no tithe by member this month.      
+                                                          found no tithe by member this month.
                                                         </p>
                                         </div>
-                                        <div class="tab-pane fade" id="pills-offerings" role="tabpanel" aria-labelledby="pills-offerings-tab" v-if = "finances_selected">                                                      
-                                                        <h3>Offerings </h3> 
+                                        <div class="tab-pane fade" id="pills-offerings" role="tabpanel" aria-labelledby="pills-offerings-tab" v-if = "finances_selected">
+                                                        <h3>Offerings </h3>
                                                         <div class="row" v-for = "data in offering_stats.stats">
-                                                                <p class="card-text" style="padding: 5px"><small class="text-muted">total this month |<span class="text-info">{{humanize(data.total_this_month)}}</span>|</small> </p>                                                                                     
+                                                                <p class="card-text" style="padding: 5px"><small class="text-muted">total this month |<span class="text-info">{{humanize(data.total_this_month)}}</span>|</small> </p>
                                                                 <p class="card-text" style="padding: 5px"><small class="text-muted">total this year |<span class="text-info">{{humanize(data.total_this_year)}}|</span></small> </p>
-                                                        </div> 
+                                                        </div>
                                                         <table class="table">
                                                             <thead>
                                                                 <tr>
                                                                     <th>amount</th>
-                                                                    <th>narration</th>                                        
+                                                                    <th>narration</th>
                                                                     <th>date</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                <tr v-for = "data in offering_info.offerings">                                                                    
+                                                                <tr v-for = "data in offering_info.offerings">
                                                                     <td><p class="text-muted">{{humanize(data.amount)}}</p></td>
                                                                     <td> {{data.narration}}</td>
-                                                                    <td>{{data.date}}</td>                                                         
+                                                                    <td>{{data.date}}</td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>
@@ -327,9 +327,9 @@
 
 
                                         </div>
-                                </div>                          
+                                </div>
                         </div>
-                        <div class="tab-pane fade" id="pill-delete" role="tabpanel" aria-labelledby="pill-delete-tab">                                                                             
+                        <div class="tab-pane fade" id="pill-delete" role="tabpanel" aria-labelledby="pill-delete-tab">
                                 <div class="tree">
                                         <ul>
                                         <li>
@@ -380,7 +380,7 @@
                                                           <div class="person child male">
                                                             <div class="name">Me</div>
                                                           </div>
-                                                        </li>                                                        
+                                                        </li>
                                                         <li>
                                                           <div class="person child female">
                                                             <div class="name">Sister</div>
@@ -400,7 +400,7 @@
                                         </ul>
                                         </div>
                                         <div class="tree">
-                                                {{family_tree}} 
+                                                {{family_tree}}
                                                 <ul >
                                                 <li v-for="data in family_tree.tree" v-if="data.member.level == 0">
                                                         <div class="person child male">
@@ -414,14 +414,14 @@
                                                                         <div class="name" v-if="data.member.spouse == null">
                                                                                 no spouse
                                                                         </div>
-                                                                </div>                                                                                                        
+                                                                </div>
                                                         </div>
                                                         <ul>
-                                                        <span v-for="child in data.member.children">                                                                
+                                                        <span v-for="child in data.member.children">
                                                                 <li v-for="data in family_tree.tree" v-if="data.member.level == 1 && data.member.member == child">
                                                                         <div class="person child male">
                                                                                 <div class="name">{{data.member.member}}</div>
-                                                                        </div>  
+                                                                        </div>
                                                                         <div class="parent">
                                                                                 <div class="person female">
                                                                                         <div class="name" v-if="data.member.spouse != null">
@@ -433,19 +433,19 @@
                                                                                 </div>
                                                                         </div>
                                                                         <ul>
-                                                                                <span v-for="child in data.member.children">       
+                                                                                <span v-for="child in data.member.children">
                                                                                         <li  v-for="data in family_tree.tree" v-if="data.member.level == 2 && data.member.member == child">
                                                                                                 <div class="person child male">
                                                                                                         <div class="name">{{data.member.member}}</div>
-                                                                                                </div>  
+                                                                                                </div>
                                                                                         </li>
                                                                                 </span>
-                                                                        </ul>                                                                  
-                                                                </li>                                                             
+                                                                        </ul>
+                                                                </li>
                                                         </span>
-                                                        </ul>                                                        
+                                                        </ul>
                                                 </li>
-                                                </ul>                                        
+                                                </ul>
                                         </div>
                         </div>
 
@@ -471,7 +471,7 @@ export default {
         church_groups: null,
         finances_selected: false, contribution_info:null, pledges_info: null,
         offering_info: null,tithe_info: null,tithe_stats: null,offering_stats: null,
-        family_tree: null      
+        family_tree: null
     }
   },
   created() {
@@ -485,71 +485,71 @@ export default {
         humanize: function(x) {
                 return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         },
-        getMemberGroups: function(){           
-                this.$store.dispatch('update_isLoading', true)           
-                this.groups_selected = true                 
+        getMemberGroups: function(){
+                this.$store.dispatch('update_isLoading', true)
+                this.groups_selected = true
                 this.$http.get(this.$BASE_URL + '/api/groups/church-groups-for-a-member/'+this.$route.params.id+'/')
                 .then(response => {
                         this.church_groups = {"response": response.data }
                         this.groups_loading = false
-                        this.$store.dispatch('update_isLoading', false)      
+                        this.$store.dispatch('update_isLoading', false)
                 })
                 .catch(error=> {
                 this.groups_errors.push(error)
-                this.$store.dispatch('update_isLoading', false)      
-                })            
+                this.$store.dispatch('update_isLoading', false)
+                })
         },
         getMemberFinances: function() {
-                this.$store.dispatch('update_isLoading', true)      
-                this.finances_selected = true                
+                this.$store.dispatch('update_isLoading', true)
+                this.finances_selected = true
                 this.$http.get(this.$BASE_URL + '/api/projects/contributions-by-member/'+this.$route.params.id+'/')
                 .then(response => {
                 this.contribution_info = {"contribution": response.data }
-                
+
                 })
                 .catch(error=> {
-                
-                })       
+
+                })
                 this.$http.get(this.$BASE_URL + '/api/projects/pledges-by-member/'+this.$route.params.id+'/')
                 .then(response => {
                 this.pledges_info = {"pledges": response.data }
                 })
                 .catch(error=> {
-                
-                })  
+
+                })
                 this.$http.get(this.$BASE_URL + '/api/finance/tithe-stats-for-member/'+this.$route.params.id+'/')
                 .then(response => {
                 this.tithe_stats = {"stats": response.data }
                 })
                 .catch(error=> {
-                
-                }) 
+
+                })
                 this.$http.get(this.$BASE_URL + '/api/finance/tithe-for-member/'+this.$route.params.id+'/')
                 .then(response => {
                 this.tithe_info = {"tithes": response.data }
                 })
                 .catch(error=> {
-                
-                }) 
+
+                })
                 this.$http.get(this.$BASE_URL + '/api/finance/offering-stats-for-member/'+this.$route.params.id+'/')
                 .then(response => {
                 this.offering_stats = {"stats": response.data }
                 })
                 .catch(error=> {
-                
-                }) 
+
+                })
                 this.$http.get(this.$BASE_URL + '/api/finance/offerings-by-member/'+this.$route.params.id+'/')
                 .then(response => {
                 this.offering_info = {"offerings": response.data }
-                this.$store.dispatch('update_isLoading', false)      
+                this.$store.dispatch('update_isLoading', false)
                 })
                 .catch(error=> {
-                this.$store.dispatch('update_isLoading', false)      
-                }) 
+                this.$store.dispatch('update_isLoading', false)
+                })
 
         },
         fetchData() {
-                this.$store.dispatch('update_isLoading', true)                      
+                this.$store.dispatch('update_isLoading', true)
                 this.$http.get(this.$BASE_URL + '/api/members/member/'+this.$route.params.id+'/')
                 .then(response => {
                 this.member_info = {"member": response.data }
@@ -602,15 +602,15 @@ export default {
                 this.$http.get(this.$BASE_URL + '/api/members/family-tree-for-member/'+this.$route.params.id+'/')
                 .then(response => {
                 this.family_tree = {"tree": response.data }
-                this.$store.dispatch('update_isLoading', false)      
+                this.$store.dispatch('update_isLoading', false)
                 })
                 .catch(error=> {
                 this.family_errors.push(error)
-                this.$store.dispatch('update_isLoading', false)      
+                this.$store.dispatch('update_isLoading', false)
                 })
-            
+
         }
-      
+
     }
 
 }

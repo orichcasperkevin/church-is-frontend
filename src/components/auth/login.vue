@@ -3,11 +3,12 @@
     <div class="container">
       <div class="row">
         <div class="col"></div>
-        <div class="col-12 col-sm-10 col-md-8 col-lg-1"></div>
+        
         <div style="padding: 10px">
-          <div class="card" style="background-color: ghostwhite">
-            <div class="card-header">
-              <p>Nano Computing ChMs login</p>
+          <div class="card w-400" style="background-color: ghostwhite">
+            <div class="card-header text-center">
+              <img class="mr-0 " style="width: 50px ;height: auto" src="@/assets/app_logo.png">
+              <p>church admin login</p>
             </div>
             <div class="card-body">
               <form>
@@ -100,14 +101,14 @@
           .catch((err) => {
             this.login_info = []
             this.login_error = []
-            this.login_error.push("LOGIN ERROR. check your username password combination")
+            this.login_error.push("invalid credentials!")
 
           })
       },
       getLoggedInMemberData: function(){
         this.$http.get(this.$BASE_URL + '/api/members/member/' + this.$session.get('username') + '/')
-            .then(response => {              
-              this.$session.set('member_id', response.data[0].member.id)                
+            .then(response => {
+              this.$session.set('member_id', response.data[0].member.id)
             })
             .catch((err) => {
               this.fetch_data_error.push(err)

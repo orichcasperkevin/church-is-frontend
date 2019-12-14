@@ -6,7 +6,7 @@
               <router-link style="text-decoration: none" :to="{name: 'Home'}">
                   <img style="width: 25px ;height: auto" src="@/assets/icons/icons8-church-96.png">
                 Home
-            </router-link></span> 
+            </router-link></span>
           <li class="breadcrumb-item active" aria-current="page">
             members
           </li>
@@ -35,7 +35,7 @@
                 </div>
               </a>
           </p>
-          
+
           <div class="collapse"  id="collapseMoreFilters">
               <div id="container row" >
                   <div class="accordion">
@@ -56,7 +56,7 @@
                         </div>
                       </div>
                   </div>
-                  
+
                   <div class="accordion">
                     <label for="tn" class="accordionitem"><b>gender</b> <span class="arrow">&raquo;</span></label>
                     <input type="checkbox" id="tn"/>
@@ -74,9 +74,9 @@
                     </div>
                   </div>
 
-                </div>  
+                </div>
           </div>
-        
+
 
         </div>
           <div class="col" >
@@ -97,27 +97,36 @@
               </p>
             </div>
               <table class="table" v-if = "(min_age == 0 || min_age == '') && (max_age == 150 || max_age  == '')">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th ><input multiple class="form-check-input" type="checkbox" :value=true v-model="all_members">all</th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                </thead>
                   <tbody>
                     <tr v-for="data in members.response">
                       <th scope="row"></th>
+                      <td>  <input multiple class="form-check-input" type="checkbox" :value=data.member.id v-model="member_ids"></td>
                       <td ><img v-if = "data.gender == 'M'" style = "height: 32px "src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
                            <img v-if = "data.gender == 'F'" style = "height: 32px "src="@/assets/avatars/icons8-user-female-skin-type-4-40.png">
                            <img v-if = "data.gender == 'R'" style = "height: 32px "src="@/assets/avatars/icons8-contacts-96.png">
-                           
+
                         <router-link :to="`/memberDetail/`+ data.member.id">
                           <span class = "text-secondary">{{data.member.first_name}} {{data.member.last_name}}</span>
                         </router-link>
                        </td>
-                     
-                   
+
+
                     </tr>
                   </tbody>
                 </table>
-                
+
                 </div>
-                <table class="table" v-if = "min_age > 0  || max_age != 150 ">                  
+                <table class="table" v-if = "min_age > 0  || max_age != 150 ">
                   <tbody>
-                    <tr v-for="data in members.response">                     
+                    <tr v-for="data in members.response">
                       <th scope="row"></th>
                       <td ><img v-if = "data.member.gender == 'M'" style = "height: 32px "src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
                            <img v-if = "data.member.gender == 'F'" style = "height: 32px "src="@/assets/avatars/icons8-user-female-skin-type-4-40.png">
@@ -125,7 +134,7 @@
                         <router-link :to="`/memberDetail/`+ data.member.member.id">
                           <span class = "text-secondary">{{data.member.member.first_name}} {{data.member.member.last_name}}</span>
                         </router-link>
-                       </td>                                                            
+                       </td>
                     </tr>
                   </tbody>
                 </table>
@@ -141,41 +150,49 @@
                 <span class="sr-only">Toggle Dropdown</span>
               </button>
               <div class="dropdown-menu border-success" aria-labelledby="dropdownMenuReference">
-                  <a class="dropdown-item" href="#" data-toggle="modal" data-target="#importCSV"><b>+</b> import from csv</a> 
-                  <div class="dropdown-divider"></div> 
-                  <router-link class="dropdown-item" :to="{name: 'adminRoles'}"> assign roles</router-link>                                                                                                  
+                  <a class="dropdown-item" href="#" data-toggle="modal" data-target="#importCSV"><b>+</b> import from csv</a>
+                  <div class="dropdown-divider"></div>
+                  <router-link class="dropdown-item" :to="{name: 'adminRoles'}"> assign roles</router-link>
               </div>
             </div>
-              <div class="list-group ">
-                  <button type="button" class="action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#emailModatCenter" ><img src="@/assets/icons/icons8-email-64.png">email all members</button>
-                  <button type="button" class="list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#textModalCenter"><img src="@/assets/icons/icons8-comments-64.png">{{text_button_name}}</button>
-                  <button type="button" class="list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#assignModalCenter"><img src="@/assets/icons/icons8-add-user-group-man-man-64.png">assign group</button>
-              </div>  
-          <!-- Modal email -->
-          <div class="modal fade" id="emailModatCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-              <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalCenterTitle">email people</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                      <div class="form-group">
-                          <p class = "text-info"> !! this feature is still under development</p>
-                          <label for="exampleFormControlTextarea1">message</label>
-                          <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                        </div>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-success">Send email</button>
+              <div class="list-group font-weight-bold">
+                  <button type="button" class="action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#anvilModal" >
+                    <img src="@/assets/app_logo.png" style="width: 55px; height:auto">. Anvil message
+                  </button>
+                  <button type="button" class="d-none action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#emailModatCenter" ><img src="@/assets/icons/icons8-email-64.png">
+                    email
+                  </button>
+                  <button type="button" class="list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#textModalCenter"><img src="@/assets/icons/icons8-comments-64.png">
+                    {{text_button_name}}
+                  </button>
+                  <button type="button" class="d-none list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#assignModalCenter"><img src="@/assets/icons/icons8-add-user-group-man-man-64.png">
+                    assign group
+                  </button>
+              </div>
+            <!-- Modal email -->
+            <div class="modal fade " id="anvilModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalCenterTitle">new anvil message</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            <label for="exampleFormControlTextarea1">message</label>
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model="message"></textarea>
+                          </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">close</button>
+                      <button type="button" class="btn btn-success" v-on:click="sendAnvilMessage()">Send message</button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div> 
-            <!-- Modal text people --> 
+            </div>
+            <!-- Modal text people -->
             <div class="modal fade" id="textModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                   <div class="modal-content">
@@ -190,7 +207,7 @@
                             <label for="exampleFormControlTextarea1">message</label>
                             <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model = "message"></textarea>
                           </div>
-                          <div v-if="sms_status.length > 0">                            
+                          <div v-if="sms_status.length > 0">
                             <p class="text-info"> The members will receive your message.</p>
                             <p> check sms status later as it may take a while</p>
                             </div>
@@ -201,148 +218,145 @@
                     </div>
                   </div>
                 </div>
-              </div> 
-              <!-- Modal assign group -->
-              <div class="modal fade" id="assignModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                  <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalCenterTitle">assign groups</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-                      <div class="modal-body">
-                        <p class="text-info">!! this feature is under development</p>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-success">assign</button>
-                      </div>
+            </div>
+            <!-- Modal assign group -->
+            <div class="modal fade" id="assignModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalCenterTitle">assign groups</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-success">assign</button>
                     </div>
                   </div>
-                </div>   
-                <!-- Modal import CSV -->
-                <div class="modal fade bd-example-modal-xl" id="importCSV" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title" id="exampleModalCenterTitle">import from CSV</h5>
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                          </button>
-                        </div>
-                        <div class="modal-body">
-                          <h3 class="text-muted">demo</h3>
-                            <div class="container">
-                                <table class="table">
-                                    <thead>
-                                      <tr>                                        
-                                        <th scope="col">names</th>
-                                        <th scope="col">gender</th>
-                                        <th scope="col">date of birth <br/>(YYYY-MM-DD)</th>
-                                        <th scope="col">phone number</th>
-                                        <th scope="col">email</th>
-                                        <th scope="col">marital status</th>                                      
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      <tr>                                        
-                                        <td>John The Baptist</td>
-                                        <td>M</td>
-                                        <td>1997-07-17</td>
-                                        <td>07********</td>
-                                        <td>example@nano.com</td>
-                                        <td>M</td>
-                                      </tr>
-                                      <tr>                                        
-                                        <td>Mark Laboso</td>
-                                        <td>M</td>
-                                        <td>1990-12-03</td>
-                                        <td>07********</td>
-                                        <td>example@nano.com</td>
-                                        <td>S</td>
-                                      </tr>
-                                      <tr>                                        
-                                        <td>Martha Kari</td>
-                                        <td>F</td>
-                                        <td>1984-02-20</td>
-                                        <td>07********</td>
-                                        <td>example@nano.com</td>
-                                        <td>D</td>
-                                      </tr>
-                                      <td>Maria Desa malibo</td>
-                                        <td>F</td>
-                                        <td>1990-07-29</td>
-                                        <td>07********</td>
-                                        <td>example@nano.com</td>
-                                        <td>W</td>
-                                      </tr>
-                                    </tbody>
-                                  </table>
-                                <hr/>                                                              
-                                <h3 class="text-muted">your csv :</h3>
-                                <h3 class="text-muted">{{get_data_status}}</h3> 
-                                <small  v-if="this.csv_data.length < 0">showing only the first 5 lines</small>                               
-
-                                <table class="table">
-                                  <thead>
-                                    <tr v-for="data in csv_data.slice(0,1)">                                        
-                                      <th scope="col" v-for="(value,key) in data">
-                                        {{key}}                                                                                
-                                        <select class="form-control"  v-model='csv_columns[key]'>
-                                            <option selected disabled>import as ...</option>
-                                            <option >names</option>
-                                            <option>gender</option>
-                                            <option>date of birth</option>
-                                            <option>phone number</option>
-                                            <option>email</option>
-                                            <option>marital status</option>
-                                          </select> 
-                                      </th>                                                                                                                                                 
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <tr v-for="data in csv_data">                                                                            
-                                      <td v-for="(value,key) in data">{{value}}</td>
-                                    </tr>
-                                  </tbody>                                  
-                                </table>
-
-                                <div class="large-12 medium-12 small-12 cell">
-                                  <label><b>file: </b>
-                                    <input type="file" id="file" ref="file" v-on:change="handleFileUpload()"/>
-                                  </label>                                
-                                </div>
-                                <p v-if="test_csv_errors.length">
-                                  <ul>
-                                          <small><li v-for="error in test_csv_errors"><p class="text-danger">{{error}}</p></li></small>
-                                  </ul>
-                                </p>
-                                <p class="text-success" v-if="file_format_okay">file okay, proceed to import</p>
-                                <p v-if="error_500.length">
-                                    <ul>
-                                            <small><li v-for="error in error_500">
-                                              <p class="text-danger">unexpected data format in your file, make sure your CSV or EXCEL file matches the demo</p>
-                                              <p class="text-danger">select how you want to import your csv above</p>
-                                            </li></small>
-                                    </ul>
-                                </p>  
-                                <hr>
-
-                                <p class="text-muted">gender: <b>M</b> => male, <b>F</b> => female</p>
-                                <p class="text-muted">marital status: <b>M</b> => married, <b>S</b> => single, <b>D</b> => divorced, <b>W</b> => widowed</p>                                                                                                                         
-                              </div>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                          <button type="button" class="btn btn-success" v-on:click="submitFile()">{{test_import_button_text}}</button>
-                          <button type="button" class="btn btn-success" v-if="this.uploaded_file.length != 0" v-on:click="checkCSV()">check csv</button>
-                          <button type="button" class="btn btn-success" v-if="file_format_okay" v-on:click="extractData()">{{extract_data_button_text}}</button>
-                        </div>
-                      </div>
+                </div>
+            </div>
+            <!-- Modal import CSV -->
+            <div class="modal fade bd-example-modal-xl" id="importCSV" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalCenterTitle">import from CSV</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
                     </div>
-                  </div> 
+                    <div class="modal-body">
+                      <h3 class="text-muted">demo</h3>
+                        <div class="container">
+                            <table class="table">
+                                <thead>
+                                  <tr>
+                                    <th scope="col">names</th>
+                                    <th scope="col">gender</th>
+                                    <th scope="col">date of birth <br/>(YYYY-MM-DD)</th>
+                                    <th scope="col">phone number</th>
+                                    <th scope="col">email</th>
+                                    <th scope="col">marital status</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr>
+                                    <td>John The Baptist</td>
+                                    <td>M</td>
+                                    <td>1997-07-17</td>
+                                    <td>07********</td>
+                                    <td>example@nano.com</td>
+                                    <td>M</td>
+                                  </tr>
+                                  <tr>
+                                    <td>Mark Laboso</td>
+                                    <td>M</td>
+                                    <td>1990-12-03</td>
+                                    <td>07********</td>
+                                    <td>example@nano.com</td>
+                                    <td>S</td>
+                                  </tr>
+                                  <tr>
+                                    <td>Martha Kari</td>
+                                    <td>F</td>
+                                    <td>1984-02-20</td>
+                                    <td>07********</td>
+                                    <td>example@nano.com</td>
+                                    <td>D</td>
+                                  </tr>
+                                  <td>Maria Desa malibo</td>
+                                    <td>F</td>
+                                    <td>1990-07-29</td>
+                                    <td>07********</td>
+                                    <td>example@nano.com</td>
+                                    <td>W</td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            <hr/>
+                            <h3 class="text-muted">your csv :</h3>
+                            <h3 class="text-muted">{{get_data_status}}</h3>
+                            <small  v-if="this.csv_data.length < 0">showing only the first 5 lines</small>
+
+                            <table class="table">
+                              <thead>
+                                <tr v-for="data in csv_data.slice(0,1)">
+                                  <th scope="col" v-for="(value,key) in data">
+                                    {{key}}
+                                    <select class="form-control"  v-model='csv_columns[key]'>
+                                        <option selected disabled>import as ...</option>
+                                        <option >names</option>
+                                        <option>gender</option>
+                                        <option>date of birth</option>
+                                        <option>phone number</option>
+                                        <option>email</option>
+                                        <option>marital status</option>
+                                      </select>
+                                  </th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr v-for="data in csv_data">
+                                  <td v-for="(value,key) in data">{{value}}</td>
+                                </tr>
+                              </tbody>
+                            </table>
+
+                            <div class="large-12 medium-12 small-12 cell">
+                              <label><b>file: </b>
+                                <input type="file" id="file" ref="file" v-on:change="handleFileUpload()"/>
+                              </label>
+                            </div>
+                            <p v-if="test_csv_errors.length">
+                              <ul>
+                                      <small><li v-for="error in test_csv_errors"><p class="text-danger">{{error}}</p></li></small>
+                              </ul>
+                            </p>
+                            <p class="text-success" v-if="file_format_okay">file okay, proceed to import</p>
+                            <p v-if="error_500.length">
+                                <ul>
+                                        <small><li v-for="error in error_500">
+                                          <p class="text-danger">unexpected data format in your file, make sure your CSV or EXCEL file matches the demo</p>
+                                          <p class="text-danger">select how you want to import your csv above</p>
+                                        </li></small>
+                                </ul>
+                            </p>
+                            <hr>
+
+                            <p class="text-muted">gender: <b>M</b> => male, <b>F</b> => female</p>
+                            <p class="text-muted">marital status: <b>M</b> => married, <b>S</b> => single, <b>D</b> => divorced, <b>W</b> => widowed</p>
+                          </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-success" v-on:click="submitFile()">{{test_import_button_text}}</button>
+                      <button type="button" class="btn btn-success" v-if="this.uploaded_file.length != 0" v-on:click="checkCSV()">check csv</button>
+                      <button type="button" class="btn btn-success" v-if="file_format_okay" v-on:click="extractData()">{{extract_data_button_text}}</button>
+                    </div>
+                  </div>
+                </div>
+            </div>
           </div>
         </div>
         </div>
@@ -357,6 +371,8 @@ export default {
   data () {
     return {
       fetch_data_error: [],
+      all_members: true,
+      all_member_ids: [],
       members: null,
       foundItems: null,
       //search for member
@@ -385,6 +401,14 @@ export default {
   },
   watch: {
   //search for member
+    all_members: function(){
+      if (this.all_members != true){
+        this.member_ids = []
+      }
+      else{
+        this.member_ids = this.all_member_ids
+      }
+    },
     firstnamesearch: function () {
       if (this.firstnamesearch.length > 0){
         this.firstnamesearch_status = 'typing...'
@@ -424,8 +448,8 @@ export default {
       }
     },
     fetchData() {
-      this.fetch_data_error = []      
-      this.$store.dispatch('update_isLoading', true)      
+      this.fetch_data_error = []
+      this.$store.dispatch('update_isLoading', true)
       // try local storage
       this.members = JSON.parse(localStorage.getItem('member_list'))
       if (this.members){
@@ -433,9 +457,10 @@ export default {
         this.foundItems = array.length
         for (var data in this.members.response){
           this.member_ids.push(this.members.response[data].member.id)
+          this.all_member_ids = this.member_ids
         }
-        this.text_button_name = "Text Members" + "(" + this.foundItems + ")"  
-        this.$store.dispatch('update_isLoading', false)  
+        this.text_button_name = "Text Members" + "(" + this.foundItems + ")"
+        this.$store.dispatch('update_isLoading', false)
       }
 
       const currentVersion = this.$store.getters.member_list_version
@@ -445,23 +470,23 @@ export default {
       if (!version || version < currentVersion) {
       this.$http.get(this.$BASE_URL + '/api/members/member-list/')
       .then(response => {
-        this.members = {"response": response.data } 
+        this.members = {"response": response.data }
         var array = this.members.response
         this.foundItems = array.length
         for (var data in this.members.response){
           this.member_ids.push(this.members.response[data].member.id)
         }
-        this.text_button_name = "Text Members" + "(" + this.foundItems + ")"  
+        this.text_button_name = "Text Members" + "(" + this.foundItems + ")"
 
-        localStorage.setItem('member_list',JSON.stringify({"response": response.data }))                
+        localStorage.setItem('member_list',JSON.stringify({"response": response.data }))
         localStorage.setItem('member_list_version', currentVersion)
-        this.$store.dispatch('update_isLoading', false)  
+        this.$store.dispatch('update_isLoading', false)
       })
       .catch((err) => {
           this.fetch_data_error.push(err)
-          this.$store.dispatch('update_isLoading', false)  
-      }) 
-      }           
+          this.$store.dispatch('update_isLoading', false)
+      })
+      }
     },
   // send message to selected members
     sendMessage: function (){
@@ -481,6 +506,22 @@ export default {
         .catch((err) => {
         })
     },
+    sendAnvilMessage: function(){
+      alert(this.message)
+      this.$http({
+        method: 'post',
+        url: this.$BASE_URL + '/api/social/add-peer-to-peer-bulk/',
+        data: {
+          sender_id: this.$session.get('member_id'),
+          message: this.message,
+          receiver_ids: this.member_ids
+        }
+        }).then(response => {
+          alert("messages sent succesfuly")
+        })
+        .catch((err) => {
+        })
+    },
     closeSmsModal: function (){
       this.sms_status = []
       this.message = ""
@@ -490,17 +531,17 @@ export default {
       var vm = this
       if (this.firstnamesearch.length > 0){
         this.firstnamesearch_status = 'searching...'
-        this.$store.dispatch('update_isLoading', true)      
+        this.$store.dispatch('update_isLoading', true)
         this.$http.get(this.$BASE_URL + '/api/members/filter-by-first_name/' + this.firstnamesearch +'/')
           .then(function (response) {
-            vm.members = {"response": response.data } 
+            vm.members = {"response": response.data }
             vm.firstnamesearch_status = ''
             var array = vm.members.response
-            vm.foundItems = array.length                       
-            vm.$store.dispatch('update_isLoading', false)     
+            vm.foundItems = array.length
+            vm.$store.dispatch('update_isLoading', false)
           })
           .catch(function (error) {
-            this.$store.dispatch('update_isLoading', false)      
+            this.$store.dispatch('update_isLoading', false)
           })
         }
     },
@@ -508,8 +549,8 @@ export default {
       this.$store.dispatch('update_isLoading', true)
       this.$http.get(this.$BASE_URL + '/api/members/filter-by-gender/'+ this.gendersearch)
             .then(response => {
-              this.members = {"response": response.data } 
-              var array = this.members.response              
+              this.members = {"response": response.data }
+              var array = this.members.response
               this.foundItems = array.length
               for (var data in this.members.response){
                 this.member_ids.push(this.members.response[data].member.id)
@@ -522,7 +563,7 @@ export default {
                 }
                 this.$store.dispatch('update_isLoading', false)
             })
-            .catch((err) => {                
+            .catch((err) => {
               this.$store.dispatch('update_isLoading', false)
             })
     },
@@ -530,8 +571,8 @@ export default {
       if (this.min_age != '' && this.max_age != ''){
       this.$store.dispatch('update_isLoading', true)
       this.$http.get(this.$BASE_URL + '/api/members/filter-by-age/'+ this.min_age +'/' + this.max_age + '/')
-      .then(response => {        
-        this.members = {"response": response.data }         
+      .then(response => {
+        this.members = {"response": response.data }
         var array = this.members.response
         this.foundItems = array.length
         for (var data in this.members.response){
@@ -540,18 +581,18 @@ export default {
         this.text_button_name = "Text members between ages " + this.min_age + " and " + this.max_age
         this.$store.dispatch('update_isLoading', false)
       })
-      .catch((err) => {                
+      .catch((err) => {
         this.$store.dispatch('update_isLoading', false)
       })
       }
     },
-        
-  //Submits the file to the server      
+
+  //Submits the file to the server
     submitFile: function(){
           this.file_format_okay = false
           this.error_500 = []
-          this.test_csv_errors = [] 
-          this.$store.dispatch('update_isLoading', true)         
+          this.test_csv_errors = []
+          this.$store.dispatch('update_isLoading', true)
           let formData = new FormData();
           formData.append('csv', this.file);
           this.$http.post( this.$BASE_URL + '/api/members/upload-csv/',
@@ -561,18 +602,18 @@ export default {
                   'Content-Type': 'multipart/form-data'
               }
           })
-          .then(response =>{            
-            var data = response.data   
-            //if data is not array there are no errors             
+          .then(response =>{
+            var data = response.data
+            //if data is not array there are no errors
             if (! data.length){
-              this.uploaded_file = data.csv                              
+              this.uploaded_file = data.csv
               alert("file uploaded")
               this.previewCSV()
               this.$store.dispatch('update_isLoading', false)
-            }             
+            }
           })
           .catch((err) =>{
-              this.error_500.push(err)              
+              this.error_500.push(err)
               this.$store.dispatch('update_isLoading', false)
           });
     },
@@ -584,25 +625,25 @@ export default {
     previewCSV: function(){
       this.$store.dispatch('update_isLoading', true)
       this.get_data_status = 'setting up preview ...'
-      var file_name = this.uploaded_file.split("/")[1]  
+      var file_name = this.uploaded_file.split("/")[1]
       this.$http.get(this.$BASE_URL + '/api/members/preview-csv/'+ file_name + '/')
       .then(response => {
         this.csv_data = response.data
-        this.get_data_status = ''    
+        this.get_data_status = ''
         this.$store.dispatch('update_isLoading', false)
       })
       .catch((err) => {
         this.get_data_status = ''
         this.$store.dispatch('update_isLoading', false)
-      })  
+      })
     },
   // extract data from the csv file
   // check that the csv file is of the required format
-    checkCSV: function(){  
-      this.test_csv_errors = [] 
-      this.file_format_okay = false      
+    checkCSV: function(){
+      this.test_csv_errors = []
+      this.file_format_okay = false
       this.$store.dispatch('update_isLoading', true)
-      var file_name = this.uploaded_file.split("/")[1]         
+      var file_name = this.uploaded_file.split("/")[1]
       this.$http({ method: 'post', url: this.$BASE_URL + '/api/members/check-csv/',
       data: {
         file_name: file_name,
@@ -610,43 +651,43 @@ export default {
       },
       })
       .then(response => {
-        var data = response.data   
-        //if data is not array there are no errors             
-        if (! data.length){         
-          this.file_format_okay = true                         
+        var data = response.data
+        //if data is not array there are no errors
+        if (! data.length){
+          this.file_format_okay = true
         }
         else{
-          this.test_csv_errors = data                
-      }           
+          this.test_csv_errors = data
+      }
       this.$store.dispatch('update_isLoading', false)
       })
-      .catch((err) => {   
-        this.error_500.push(err)             
+      .catch((err) => {
+        this.error_500.push(err)
         this.$store.dispatch('update_isLoading', false)
-      })       
+      })
     },
     extractData: function(){
       this.$store.dispatch('update_isLoading', true)
       this.extract_data_button_text = "extracting..."
-      var file_name = this.uploaded_file.split("/")[1]       
+      var file_name = this.uploaded_file.split("/")[1]
       this.$http({
         method: 'post',
         url: this.$BASE_URL + '/api/members/import-data-from-csv/',
         data: {
-          file_name: file_name,                                 
+          file_name: file_name,
         }
       })
       .then(response => {
           this.extract_data_button_text = "import data"
-          alert("data extracted succesfully")  
+          alert("data extracted succesfully")
           var new_version = parseInt(localStorage.getItem('member_list_version')) + 1
-          this.$store.dispatch('update_member_list_version', new_version)                
+          this.$store.dispatch('update_member_list_version', new_version)
           this.fetchData()
           this.$store.dispatch('update_isLoading', false)
       })
-      .catch((err) => {     
-        alert("something went wrong while trying to extract data.\n Check the file and try again")   
-        this.extract_data_button_text = "import data"    
+      .catch((err) => {
+        alert("something went wrong while trying to extract data.\n Check the file and try again")
+        this.extract_data_button_text = "import data"
         this.$store.dispatch('update_isLoading', false)
       })
     }

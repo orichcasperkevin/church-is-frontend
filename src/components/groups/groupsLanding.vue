@@ -6,7 +6,7 @@
                   <router-link style="text-decoration: none" :to="{name: 'Home'}">
                     <img style="width: 25px ;height: auto" src="@/assets/icons/icons8-church-96.png">
                     Home
-                  </router-link></span> 
+                  </router-link></span>
                 <li class="breadcrumb-item active" aria-current="page">groups</li>
             </ol>
     </nav>
@@ -21,45 +21,45 @@
             </h3>
             <p class="row small text-muted">
               folders |<b class="text-info">{{foundItems}}</b>|  groups |<b class="text-info">{{foundItems_independent}}</b>|
-            </p>          
+            </p>
         </div>
       </div>
       <hr>
     </div>
-    <div class="container">      
+    <div class="container">
       <div class="row">
-        <div class="col-sm-10 col-md-5 col-lg-3">               
+        <div class="col-sm-10 col-md-5 col-lg-3">
                 <b>
-                  folders 
+                  folders
                 </b>|
                 <a class="text-success " href="#" data-toggle="modal" data-target="#addModal" style="text-decoration: none" v-on:click="selectFolder()">
                   + add
-                 </a>|                        
+                 </a>|
               <div class="list-group" v-for="data in groups.response">
                 <router-link :to="`/groupList/`+ data.id + `/` + data.name"class="row list-group-item list-group-item-action border-0" >
-                  <span class="col-10">
+                  <span>
                       <img style="width: 20px ;height: auto" src="@/assets/icons/icons8-folder-48.png">
                       {{data.name}}
-                  </span>                                    
-                  <span class=" col-2  badge badge-pill badge-secondary">{{data.number_of_groups}}</span>  
+                      <span class="badge badge-pill badge-secondary">{{data.number_of_groups}}</span>
+                  </span>
                 </router-link>
-              </div>  
+              </div>
               <hr>
-              <b>                
+              <b>
                 groups
-              </b> 
+              </b>
                 |<a class="text-success" href="#" data-toggle="modal" data-target="#addModal" style="text-decoration: none">
-                  + add 
-                </a>|              
+                  + add
+                </a>|
               <div class="list-group" v-for="data in independent_groups.response">
                 <router-link  :to="`/groupDetail/`+ data.id" class="list-group-item list-group-item-action border-0" >
-                <span class="col-10">                   
+                <span>
                       <img style="width: 30px ;height: auto" src="@/assets/icons/icons8-user-groups-48.png">
-                      {{data.name}}                   
-                </span>            
-                <span class=" col-2 badge badge-pill badge-secondary">{{data.number_of_members}}</span>                
+                      {{data.name}}
+                      <span class="badge badge-pill badge-secondary">{{data.number_of_members}}</span>
+                </span>
               </router-link>
-              </div>            
+              </div>
         </div>
       <div class="col-sm-10 col-md-8 col-lg-9">
           <router-view >
@@ -71,10 +71,10 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">
                 <div class="vld-parent">
-                    <loading :active.sync="isLoading" 
-                    :can-cancel="false"                   
+                    <loading :active.sync="isLoading"
+                    :can-cancel="false"
                     :is-full-page="false"></loading>
-                    
+
                 </div>
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalCenterTitle">add group / folder</h5>
@@ -82,7 +82,7 @@
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <div class="modal-body">                    
+                <div class="modal-body">
                     <div class="form-group">
                             <label for="addGroup"> name</label>
                             <input type="text" class="form-control" id="addGroup" autofocus v-model="name"></input>
@@ -116,7 +116,7 @@ import 'vue-loading-overlay/dist/vue-loading.css';
 export default {
   name: 'groupsLanding',
   data () {
-    return {      
+    return {
       isLoading : false,
       groups: null,independent_groups: null,
       foundItems: null,foundItems_independent: null,
@@ -127,8 +127,8 @@ export default {
       add_group_error: null
     }
   },
-  created() {        
-        this.checkLoggedIn()       
+  created() {
+        this.checkLoggedIn()
         this.fetchData()
     },
   watch: {
@@ -145,8 +145,8 @@ export default {
       this.$store.dispatch('update_isLoading', true)
       // try local storage
       this.groups = JSON.parse(localStorage.getItem('group_list'))
-      if (this.groups){  
-        var array = this.groups.response 
+      if (this.groups){
+        var array = this.groups.response
         this.foundItems = array.length
         this.$store.dispatch('update_isLoading', false)
       }
@@ -155,15 +155,15 @@ export default {
       var version  = localStorage.getItem('group_list_version')
 
       //else try the network
-      if (!version || version < currentVersion) {        
+      if (!version || version < currentVersion) {
         this.$http.get(this.$BASE_URL + '/api/groups/group-of-church-groups-list')
         .then(response => {
-            this.groups = {"response": response.data } 
+            this.groups = {"response": response.data }
             var array = this.groups.response
             this.foundItems = array.length
 
-            localStorage.setItem('group_list',JSON.stringify({"response": response.data }))                
-            localStorage.setItem('group_list_version', currentVersion)            
+            localStorage.setItem('group_list',JSON.stringify({"response": response.data }))
+            localStorage.setItem('group_list_version', currentVersion)
             this.$store.dispatch('update_isLoading', false)
         })
         .catch((err) => {
@@ -174,34 +174,34 @@ export default {
 
       // get independent groups
       this.$store.dispatch('update_isLoading', true)
-      this.independent_groups = JSON.parse(localStorage.getItem('group_list_independent')) 
+      this.independent_groups = JSON.parse(localStorage.getItem('group_list_independent'))
       if (this.independent_groups){
         var array = this.independent_groups.response
-        this.foundItems_independent = array.length 
+        this.foundItems_independent = array.length
         this.$store.dispatch('update_isLoading', false)
       }
-      
+
       if (!version || version < currentVersion) {
         this.$http.get(this.$BASE_URL + '/api/groups/church-groups-not-in-group/')
         .then(response => {
-            this.independent_groups = {"response": response.data } 
+            this.independent_groups = {"response": response.data }
             var array = this.independent_groups.response
-            this.foundItems_independent = array.length 
-            localStorage.setItem('group_list_independent',JSON.stringify({"response": response.data }))                
+            this.foundItems_independent = array.length
+            localStorage.setItem('group_list_independent',JSON.stringify({"response": response.data }))
             this.$store.dispatch('update_isLoading', false)
-            
+
         })
         .catch((err) => {
             this.fetch_data_error.push(err)
             this.$store.dispatch('update_isLoading', false)
-        }) 
-      }   
+        })
+      }
     },
     selectFolder: function(){
       this.group_type = 'folder'
     },
     addGroup: function(){
-        
+
         var url = ''
         this.name_errors = [],
         this.description_errors = []
@@ -214,10 +214,10 @@ export default {
         }
         if (this.group_type == 'folder'){
           url = '/api/groups/group-of-church-groups-list/'
-        } 
+        }
         if (this.group_type == 'group'){
           url = '/api/groups/add-group/'
-        }           
+        }
         this.isLoading = true
         this.$http({ method: 'post', url: this.$BASE_URL + url,
         data: {
@@ -225,7 +225,7 @@ export default {
             name: this.name,
             description: this.description
         }
-        }).then(response => {                 
+        }).then(response => {
             this.name = ''
             this.description = ''
             this.group_type = 'group'
@@ -235,15 +235,15 @@ export default {
             if (this.group_type == 'group'){
               alert("group succesfully added")
               var new_version = parseInt(localStorage.getItem('group_list_version')) + 1
-              this.$store.dispatch('update_group_list_version', new_version)  
-            }            
+              this.$store.dispatch('update_group_list_version', new_version)
+            }
         })
             .catch((err) => {
             this.group_type = 'group'
             this.add_group_error.push(err)
-        })            
+        })
     }
-      
+
   }
 }
 </script>

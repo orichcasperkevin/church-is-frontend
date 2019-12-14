@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <router_link class="navbar-brand"  href="#" :to="{name: 'groupsLanding'}" >Easy Church</router_link>
+      <router_link class="navbar-brand text-success"  href="#" :to="{name: 'groupsLanding'}" >
+        <img class="mr-0" style="width: 150px ;height: auto" src="@/assets/full_logo.png">|admin
+      </router_link>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
       </button>

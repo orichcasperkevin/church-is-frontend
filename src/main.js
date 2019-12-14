@@ -10,7 +10,10 @@ import VueLodash from 'vue-lodash'
 import VueSession from 'vue-session'
 import Vuex from 'vuex'
 import { store } from './store'
+import TimeAgo from 'javascript-time-ago'
+import en from 'javascript-time-ago/locale/en'
 
+TimeAgo.addLocale(en)
 
 Vue.use(Vuex)
 const options = { name: 'lodash' }
@@ -19,7 +22,10 @@ Vue.use(VueSession)
 Vue.config.productionTip = false
 Vue.prototype.$store =  store 
 Vue.prototype.$http = axios
-Vue.prototype.$BASE_URL = process.env.BASE_URL || 'http://app.church.nanocomputing.co.ke'
+Vue.prototype.$humanizeDate = function(date_time){return this.$timeAgo.format(new Date(date_time), 'twitter')},
+
+// Vue.prototype.$BASE_URL = process.env.BASE_URL || 'http://app.church.nanocomputing.co.ke'
+Vue.prototype.$BASE_URL = 'http://tenant.my-domain.com:8000'
 
 
 /* eslint-disable no-new */
