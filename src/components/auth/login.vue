@@ -28,6 +28,12 @@
 
                 </div>
                 <div class="form-group">
+                  <label for="exampleInputEmail1">church code</label>
+                  <input @keyup.enter="getToken()"
+                         type="number" class="form-control"                         
+                         placeholder="000" v-model="church_code">
+                </div>
+                <div class="form-group">
                   <label for="exampleInputEmail1">username</label>
                   <input @keyup.enter="getToken()"
                          type="text" class="form-control"
@@ -40,11 +46,7 @@
                          type="password" class="form-control"
                          id="exampleInputPassword1" placeholder="Password"
                          v-model="password">
-                </div>
-                <div class="form-group form-check">
-                  <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                  <label class="form-check-label" for="exampleCheck1">stay logged in</label>
-                </div>
+                </div>               
                 <a href=# v-on:click="getToken()" style="text-decoration: none">
                   <div class="add-button">
                     <span>login</span>
@@ -68,6 +70,7 @@
     name: 'login',
     data() {
       return {
+        church_code: null,
         username: null,
         password: null,
         login_error: [],
@@ -75,8 +78,26 @@
 
       }
     },
+    watch: {
+      church_code:function(){ 
+        this.login_info = []
+        this.login_error = []             
+        if (this.church_code.toString().length == 3){                  
+          var church_id = parseInt(this.church_code)
+          this.$http.get(this.$DOMAIN.value + '/api/clients/client/' + church_id + '/')
+            .then(response => {
+              var data = response.data              
+              this.$BASE_URL.value = "http://"+ data[0].domain_url +":8000"                  
+            
+            })
+            .catch((err) => {
+              this.login_error.push("church code not set")        
+            })
+        }
+      }
+    },
     methods: {
-      getToken: function () {
+      getToken: function () {      
         this.login_info = []
         this.login_error = []
         this.login_info.push("authenticating...")

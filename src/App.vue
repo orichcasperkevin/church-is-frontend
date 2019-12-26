@@ -51,8 +51,8 @@
                 </a>
                 <div class="dropdown-menu" style="padding: 5px 5px" aria-labelledby="navbarDropdownMenuLink">
                     
-                    <router-link class="dropdown-item" :to="{name: 'dailyVerse'}">daily verses</router-link>
-                    <router-link class="dropdown-item" :to="{name: 'sermons'}">sermons</router-link>                            
+                    <router-link class="d-none dropdown-item" :to="{name: 'dailyVerse'}">daily verses</router-link>
+                    <router-link class="d-none dropdown-item" :to="{name: 'sermons'}">sermons</router-link>                            
                     <router-link class="dropdown-item" :to="{name: 'services'}">services</router-link>                  
                 </div>
             </li>

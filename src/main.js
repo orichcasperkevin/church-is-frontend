@@ -25,7 +25,11 @@ Vue.prototype.$http = axios
 Vue.prototype.$humanizeDate = function(date_time){return this.$timeAgo.format(new Date(date_time), 'twitter')},
 
 // Vue.prototype.$BASE_URL = process.env.BASE_URL || 'http://app.church.nanocomputing.co.ke'
-Vue.prototype.$BASE_URL = 'http://tenant.my-domain.com:8000'
+// Vue.prototype.$HOST_NAME = 'my-domain.com'
+Vue.prototype.$DOMAIN = { value :'http://my-domain.com:8000'}
+Vue.prototype.$BASE_URL = { value :'',
+                            toString:function(){return this.value}}
+
 
 
 /* eslint-disable no-new */
