@@ -87,7 +87,7 @@
           this.$http.get(this.$DOMAIN.value + '/api/clients/client/' + church_id + '/')
             .then(response => {
               var data = response.data              
-              this.$BASE_URL.value = "http://"+ data[0].domain_url +":8000"                  
+              this.$BASE_URL.value = "http://"+ data[0].domain_url                  
               localStorage.setItem('church_id', church_id )
             })
             .catch((err) => {
