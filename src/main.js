@@ -24,7 +24,7 @@ Vue.prototype.$store =  store
 Vue.prototype.$http = axios
 Vue.prototype.$humanizeDate = function(date_time){return this.$timeAgo.format(new Date(date_time), 'twitter')},
 
-Vue.prototype.$DOMAIN = { value :'http://my-domain.com:8000'}
+Vue.prototype.$DOMAIN = { value :'http://app.anvilchurch.com/'}
 Vue.prototype.$BASE_URL = { value :'',
                             toString:function(){return this.value}}
 
