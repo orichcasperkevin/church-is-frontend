@@ -88,7 +88,7 @@
             .then(response => {
               var data = response.data              
               this.$BASE_URL.value = "http://"+ data[0].domain_url +":8000"                  
-            
+              localStorage.setItem('church_id', church_id )
             })
             .catch((err) => {
               this.login_error.push("church code not set")        
