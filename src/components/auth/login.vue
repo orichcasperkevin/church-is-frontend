@@ -28,10 +28,10 @@
 
                 </div>
                 <div class="form-group">
-                  <label for="exampleInputEmail1">church code</label>
+                  <label for="exampleInputEmail1" v-if="! church_code_set">church code</label>
                   <input @keyup.enter="getToken()"
                          type="number" class="form-control"                         
-                         placeholder="000" v-model="church_code">
+                         placeholder="000" v-model="church_code" v-if="! church_code_set">
                 </div>
                 <div class="form-group">
                   <label for="exampleInputEmail1">username</label>
@@ -70,12 +70,18 @@
     name: 'login',
     data() {
       return {
-        church_code: null,
+        church_code: localStorage.getItem('church_id'),
+        church_code_set : false,
         username: null,
         password: null,
         login_error: [],
         login_info: []
 
+      }
+    },
+    created(){
+      if (this.church_code){
+        this.church_code_set = true
       }
     },
     watch: {
@@ -87,7 +93,8 @@
           this.$http.get(this.$DOMAIN.value + '/api/clients/client/' + church_id + '/')
             .then(response => {
               var data = response.data              
-              this.$BASE_URL.value = "http://"+ data[0].domain_url                  
+              this.$BASE_URL.value = "http://"+ data[0].domain_url + ":8000"                 
+              localStorage.setItem('base_url_value',this.$BASE_URL.value)
               localStorage.setItem('church_id', church_id )
             })
             .catch((err) => {
