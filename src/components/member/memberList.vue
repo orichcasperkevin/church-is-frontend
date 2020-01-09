@@ -350,9 +350,32 @@
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                      <button type="button" class="btn btn-success" v-on:click="submitFile()">{{test_import_button_text}}</button>
-                      <button type="button" class="btn btn-success" v-if="this.uploaded_file.length != 0" v-on:click="checkCSV()">check csv</button>
-                      <button type="button" class="btn btn-success" v-if="file_format_okay" v-on:click="extractData()">{{extract_data_button_text}}</button>
+                      <button type="button" class="btn btn-success" 
+                              v-on:click="submitFile()">
+                              submit file
+                              <span v-if="submitting_file"
+                                    class="spinner-border spinner-border-sm" 
+                                    role="status" 
+                                    aria-hidden="true"></span>
+                      </button>
+                      <button type="button" class="btn btn-success" 
+                              v-if="this.uploaded_file.length != 0" 
+                              v-on:click="checkCSV()">
+                              check CSV file
+                              <span v-if = "checking_csv"                            
+                                    class="spinner-border spinner-border-sm" 
+                                    role="status" 
+                                    aria-hidden="true"></span>
+                      </button>
+                      <button type="button" class="btn btn-success" 
+                              v-if="file_format_okay" 
+                              v-on:click="extractData()">
+                              {{extract_data_button_text}}
+                              <span v-if = "extracting_data"
+                                    class="spinner-border spinner-border-sm" 
+                                    role="status" 
+                                    aria-hidden="true"></span>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -386,8 +409,10 @@ export default {
       text_button_name: "",
       message: " ",
       sms_status: [],
-      // csv file upload
-      test_import_button_text: "submit file",
+      // csv file upload    
+      submitting_file: false,
+      checking_csv: false,
+      extracting_data: false,
       extract_data_button_text: "import data",
       file: '',
       error_500: [],
@@ -591,10 +616,11 @@ export default {
     submitFile: function(){
           this.file_format_okay = false
           this.error_500 = []
-          this.test_csv_errors = []
-          this.$store.dispatch('update_isLoading', true)
+          this.test_csv_errors = []          
           let formData = new FormData();
           formData.append('csv', this.file);
+
+          this.submitting_file = true
           this.$http.post( this.$BASE_URL + '/api/members/upload-csv/',
               formData,
               {
@@ -608,13 +634,13 @@ export default {
             if (! data.length){
               this.uploaded_file = data.csv
               alert("file uploaded")
-              this.previewCSV()
-              this.$store.dispatch('update_isLoading', false)
+              this.previewCSV()      
+              this.submitting_file = false                      
             }
           })
           .catch((err) =>{
               this.error_500.push(err)
-              this.$store.dispatch('update_isLoading', false)
+              this.submitting_file = false
           });
     },
   // handle the case that the file changes
@@ -622,28 +648,26 @@ export default {
       this.file = this.$refs.file.files[0];
     },
   //preview the csv file
-    previewCSV: function(){
-      this.$store.dispatch('update_isLoading', true)
+    previewCSV: function(){    
       this.get_data_status = 'setting up preview ...'
       var file_name = this.uploaded_file.split("/")[1]
       this.$http.get(this.$BASE_URL + '/api/members/preview-csv/'+ file_name + '/')
       .then(response => {
         this.csv_data = response.data
-        this.get_data_status = ''
-        this.$store.dispatch('update_isLoading', false)
+        this.get_data_status = ''      
       })
       .catch((err) => {
-        this.get_data_status = ''
-        this.$store.dispatch('update_isLoading', false)
+        this.get_data_status = ''      
       })
     },
   // extract data from the csv file
   // check that the csv file is of the required format
     checkCSV: function(){
       this.test_csv_errors = []
-      this.file_format_okay = false
-      this.$store.dispatch('update_isLoading', true)
+      this.file_format_okay = false      
       var file_name = this.uploaded_file.split("/")[1]
+
+      this.checking_csv = true
       this.$http({ method: 'post', url: this.$BASE_URL + '/api/members/check-csv/',
       data: {
         file_name: file_name,
@@ -659,17 +683,18 @@ export default {
         else{
           this.test_csv_errors = data
       }
-      this.$store.dispatch('update_isLoading', false)
+      this.checking_csv = false
       })
       .catch((err) => {
         this.error_500.push(err)
-        this.$store.dispatch('update_isLoading', false)
+        this.checking_csv = false
       })
     },
-    extractData: function(){
-      this.$store.dispatch('update_isLoading', true)
+    extractData: function(){      
       this.extract_data_button_text = "extracting..."
       var file_name = this.uploaded_file.split("/")[1]
+
+      this.extracting_data = true
       this.$http({
         method: 'post',
         url: this.$BASE_URL + '/api/members/import-data-from-csv/',
@@ -678,17 +703,17 @@ export default {
         }
       })
       .then(response => {
-          this.extract_data_button_text = "import data"
-          alert("data extracted succesfully")
+          this.extract_data_button_text = "import data"          
           var new_version = parseInt(localStorage.getItem('member_list_version')) + 1
           this.$store.dispatch('update_member_list_version', new_version)
           this.fetchData()
-          this.$store.dispatch('update_isLoading', false)
+          this.extracting_data = false
+          alert("data extracted succesfully")
       })
       .catch((err) => {
         alert("something went wrong while trying to extract data.\n Check the file and try again")
         this.extract_data_button_text = "import data"
-        this.$store.dispatch('update_isLoading', false)
+        this.extracting_data = false
       })
     }
 }

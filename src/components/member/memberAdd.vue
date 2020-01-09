@@ -196,8 +196,12 @@
                         <hr v-if = "residence_field == true">
                     <div style="padding: 0px 0px 25px 0px">
                             <a href="#add-member" v-on:click = "addMember()" style="text-decoration: none" >
-                                <div class="add-button">
+                                <div class="add-button">                                       
                                     {{add_member_button_text}}
+                                    <span v-if="adding_member"
+                                          class="spinner-border spinner-border-sm" 
+                                          role="status" 
+                                          aria-hidden="true"></span>
                                 </div>
                             </a>
                     </div>
@@ -257,7 +261,9 @@ export default {
         home_town: '', road: '', street: '',
         estate: '', description: '',
         //marital status
-        marital_status: ''        
+        marital_status: '',
+        //add member
+        adding_member: false        
     }
   },
   created() {
@@ -325,7 +331,7 @@ export default {
         this.gender_errors = []
 
         if (! this.first_name){
-                this.first_name_errors.push('you must have a first name')
+                this.first_name_errors.push('you must enter the first name')
                 return false;
         }
         if (this.first_name.split(' ').length > 1){
@@ -333,7 +339,7 @@ export default {
                 return false;
         }
         if(! this.last_name){
-                this.last_name_errors.push('you must have a last name')
+                this.last_name_errors.push('you must enter a last name')
                 return false;
         }
         if (this.last_name.split(' ').length > 1){
@@ -344,6 +350,7 @@ export default {
                 this.gender_errors.push('select gender')
                 return false;
         }
+        this.adding_member = true
         this.$http({
                 method: 'post',
                 url: this.$BASE_URL + '/api/members/add-member/',
@@ -360,12 +367,13 @@ export default {
                 var new_version = parseInt(localStorage.getItem('member_list_version')) + 1
                 this.$store.dispatch('update_member_list_version', new_version)
 
-                this.addOthers()                
+                this.addOtherDetails()                
                 this.gender_male = false
                 this.gender_female = false
                 this.last_name = ''
                 this.first_name = ''   
                 this.added_member_id = null                                            
+                this.adding_member = false
                 })
                 .catch((err) => {
                  this.add_member_error.push(err)
@@ -417,7 +425,7 @@ export default {
                 }
         }) 
     },
-    addOthers: function(){
+    addOtherDetails: function(){
         if (this.phone_number_OK.length > 0){
                 this.addContact()                
         } 
