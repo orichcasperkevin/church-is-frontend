@@ -140,15 +140,7 @@
                             <span aria-hidden="true">&times;</span>
                           </button>
                         </div>
-                        <div class="modal-body">
-                            <div v-if="added_member.length > 0 ">
-                                <div class="alert alert-success alert-dismissible fade show" role="alert" v-for = "data in added_member">
-                                        <strong>{{data.member.member.first_name}} {{data.member.member.last_name}}</strong> added successfully.
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                </div>
-                            </div>
+                        <div class="modal-body">                            
                             <div class="form-group">
                                 <label><b>member :</b></label>
                                 <input type = "text" class="form-control" placeholder="search" v-model="memberSearch" autofocus></input>
@@ -318,9 +310,9 @@ export default {
           var group_id
           var obj = this.group.response
           group_id = obj["0"].id
+  
           this.$http({ method: 'post', url: this.$BASE_URL + '/api/groups/add-member-to-group/',
-          data: {
-            group_type: this.$route.params.group_type ,
+          data: {           
             group_id: group_id,
             member_id: this.selectedMember,
             role_id: this.role
@@ -329,7 +321,7 @@ export default {
             this.added_member.push(response.data )
             this.memberSearch = ''
             this.role = ''
-          alert("member successfully added")
+            alert("member successfully added")
           })
           .catch((err) => {
             alert("an error occered while attempting to add member, check your data and try again")

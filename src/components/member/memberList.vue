@@ -165,11 +165,11 @@
                   <button type="button" class="list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#textModalCenter"><img src="@/assets/icons/icons8-comments-64.png">
                     {{text_button_name}}
                   </button>
-                  <button type="button" class="d-none list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#assignModalCenter"><img src="@/assets/icons/icons8-add-user-group-man-man-64.png">
+                  <button type="button" class="list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#assignModalCenter"><img src="@/assets/icons/icons8-add-user-group-man-man-64.png">
                     assign group
                   </button>
               </div>
-            <!-- Modal email -->
+            <!-- Modal send anvil message -->
             <div class="modal fade " id="anvilModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                   <div class="modal-content">
@@ -187,7 +187,13 @@
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-dismiss="modal">close</button>
-                      <button type="button" class="btn btn-success" v-on:click="sendAnvilMessage()">Send message</button>
+                      <button type="button" class="btn btn-success" v-on:click="sendAnvilMessage()">
+                        Send message
+                        <span v-if="sending_anvil_message"
+                            class="spinner-border spinner-border-sm" 
+                            role="status" aria-hidden="true">
+                        </span>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -214,7 +220,16 @@
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="closeSmsModal()">Close</button>
-                      <span v-if = "message.length > 5 && sms_status.length == 0"><button type="button" class="btn btn-success" v-on:click=sendMessage()>send text</button></span>
+                      <span v-if = "sms_status.length == 0">
+                        <button type="button" class="btn btn-success" 
+                                v-on:click=sendMessage()>
+                                send text
+                                <span v-if="sending_message"
+                                      class="spinner-border spinner-border-sm" 
+                                      role="status" aria-hidden="true">
+                                </span>
+                        </button>
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -224,14 +239,25 @@
                 <div class="modal-dialog modal-dialog-centered" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title" id="exampleModalCenterTitle">assign groups</h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <h5 class="modal-title" id="exampleModalCenterTitle">assign group</h5>
+                      <button type="button" class="close" v-on:click="setAssignGroupButtonText('assign group')" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
                     </div>
+                    <div class="container ">                      
+                      <label><b>select group :</b></label>
+                      <select class=" form-control" v-model="group_id" >
+                          <option v-for="data in groups.response" :value="data.id" >{{data.name}}</option>
+                      </select>
+                    </div>
                     <div class="modal-footer">
-                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                      <button type="button" class="btn btn-success">assign</button>
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="setAssignGroupButtonText('assign group')">Close</button>
+                      <button type="button" class="btn btn-success" v-on:click="assignGroup()">
+                        {{assign_group_button_text}}
+                        <span v-if="adding_members_to_group"
+                              class="spinner-border spinner-border-sm" 
+                              role="status" aria-hidden="true"></span>
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -398,6 +424,8 @@ export default {
       all_member_ids: [],
       members: null,
       foundItems: null,
+      groups:null,
+      group_id:null,    
       //search for member
       firstnamesearch: null,
       firstnamesearch_status: null,
@@ -409,6 +437,8 @@ export default {
       text_button_name: "",
       message: " ",
       sms_status: [],
+      sending_message: false,
+      sending_anvil_message:false,
       // csv file upload    
       submitting_file: false,
       checking_csv: false,
@@ -420,7 +450,9 @@ export default {
       uploaded_file: '',
       csv_data: [],get_data_status: '',
       file_format_okay: false,
-      csv_columns: {}
+      csv_columns: {},
+      adding_members_to_group: false,
+      setAssignGroupButtonText: "assign group"
 
     }
   },
@@ -464,6 +496,7 @@ export default {
   created(){
     this.checkLoggedIn()
     this.fetchData()
+    this.getGroups()
     this.debouncedGetAnswer = _.debounce(this.getAnswer, 1000)
   },
   methods: {
@@ -515,6 +548,7 @@ export default {
     },
   // send message to selected members
     sendMessage: function (){
+      this.sending_message = true
       this.$http({
         method: 'post',
         url: this.$BASE_URL + '/api/sms/add-sms/',
@@ -525,16 +559,19 @@ export default {
           website: true,
           receipient_member_ids: this.member_ids
         }
-        }).then(response => {
+        }).then(response => {        
           this.sms_status.push(response.data)
+          this.sending_message = false
         })
         .catch((err) => {
+          alert("an error occured when attempting to deliver to one of the members, this may be due to an invalid phone number")
+          this.sending_message = false
         })
     },
-    sendAnvilMessage: function(){
-      alert(this.message)
+    sendAnvilMessage: function(){   
+      this.sending_anvil_message = true 
       this.$http({
-        method: 'post',
+        method: 'post',    
         url: this.$BASE_URL + '/api/social/add-peer-to-peer-bulk/',
         data: {
           sender_id: this.$session.get('member_id'),
@@ -542,10 +579,41 @@ export default {
           receiver_ids: this.member_ids
         }
         }).then(response => {
+          this.sending_anvil_message = false
           alert("messages sent succesfuly")
         })
         .catch((err) => {
+          this.sending_anvil_message = false
         })
+    },
+  //assign groups
+    assignGroup: function(){      
+      var group_id = this.group_id
+      var member_ids = this.member_ids 
+      this.assign_group_button_text = "assigning group ..."     
+      this.adding_members_to_group = true
+      for (var member_id in this.member_ids){                       
+          this.$http({ method: 'post', url: this.$BASE_URL + '/api/groups/add-member-to-group/',
+          data: {        
+            group_id: group_id,
+            member_id: this.member_ids[member_id],
+            role_id: null            
+          }
+          }).then(response => {            
+            this.adding_members_to_group = false
+            this.assign_group_button_text = "done"     
+            console.log("member added to group")
+          })
+          .catch((err) => {                        
+            console.log("error on adding member to group")  
+            this.assign_group_button_text = "error"
+            this.adding_members_to_group = false                     
+                     
+          })
+        }                
+    },
+    setAssignGroupButtonText: function(text){
+      this.assign_group_button_text = text
     },
     closeSmsModal: function (){
       this.sms_status = []
@@ -648,7 +716,7 @@ export default {
       this.file = this.$refs.file.files[0];
     },
   //preview the csv file
-    previewCSV: function(){    
+    previewCSV: function(){
       this.get_data_status = 'setting up preview ...'
       var file_name = this.uploaded_file.split("/")[1]
       this.$http.get(this.$BASE_URL + '/api/members/preview-csv/'+ file_name + '/')
@@ -690,7 +758,7 @@ export default {
         this.checking_csv = false
       })
     },
-    extractData: function(){      
+    extractData: function(){       
       this.extract_data_button_text = "extracting..."
       var file_name = this.uploaded_file.split("/")[1]
 
@@ -715,6 +783,32 @@ export default {
         this.extract_data_button_text = "import data"
         this.extracting_data = false
       })
+    },
+    getGroups: function(){
+      // get  groups
+      const currentVersion = this.$store.getters.group_list_version
+      var version  = localStorage.getItem('group_list_version')
+
+      this.$store.dispatch('update_isLoading', true)
+      this.groups = JSON.parse(localStorage.getItem('group_list_all'))
+      if (this.groups){      
+        this.$store.dispatch('update_isLoading', false)
+      }
+      this.$store.dispatch('update_isLoading', false)
+
+      if (!version || version < currentVersion) {
+        this.$http.get(this.$BASE_URL + '/api/groups/church-group-list/')
+        .then(response => {
+            this.groups = {"response": response.data }            
+            localStorage.setItem('group_list_all',JSON.stringify({"response": response.data }))
+            this.$store.dispatch('update_isLoading', false)
+
+        })
+        .catch((err) => {
+            this.fetch_data_error.push(err)
+            this.$store.dispatch('update_isLoading', false)
+        })
+      }
     }
 }
 
