@@ -201,7 +201,12 @@
                             </div>
                             <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal" >Close</button>
-                            <button type="button" class="btn btn-success" v-on:click="addService()"><b>+</b> add service</button>
+                            <button type="button" class="btn btn-success" v-on:click="addService()">
+                                <b>+</b> add service
+                                <span v-if="adding_service"
+                                        class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                                </span>
+                            </button>
                             </div>
                         </div>
                         </div>
@@ -236,7 +241,12 @@
                             </div>
                             <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-success" v-on:click="addServiceType()"><b>+</b> add service type</button>
+                            <button type="button" class="btn btn-success" v-on:click="addServiceType()">
+                                <b>+</b> add service type
+                                <span v-if="adding_service"
+                                        class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                                </span>
+                            </button>
                             </div>
                         </div>
                         </div>
@@ -257,7 +267,8 @@
                 service_items: null,
                 services_this_month: null,
                 service_types: null,
-            //add service 
+            //add service
+                adding_service: false,
                 service_type: 0,service_type_errors: [],
                 service_venue: null,service_venue_errors: [],
                 service_date: null,service_date_errors: [],
@@ -375,30 +386,34 @@
             //add service 
             addService: function(){
                 if (this.checkAddServiceForm()){
+                    this.adding_service = true
                     this.$http({                        
                         method: 'post',
                         url: this.$BASE_URL + '/api/services/add-service/',
                         data: {
-                                service_type_id: this.service_type,                                                                                               
-                                venue: this.service_venue,                                
-                                date: this.service_date,                        
-                                start: this.service_start + ':00',
-                                end: this.service_end   + ':00'                                                                
+                            service_type_id: this.service_type,                                                                                               
+                            venue: this.service_venue,                                
+                            date: this.service_date,                        
+                            start: this.service_start + ':00',
+                            end: this.service_end   + ':00'                                                                
                         }
-                        }).then(response => {                              
-                               this.service_venue = null
-                               this.service_date = null
-                               this.service_start = null
-                               this.service_end = null                                                              
-                               alert("service succesfully added ")                     
-                               this.addServiceItem(response.data.id)                    
+                        }).then(response => { 
+                            this.adding_service = false                             
+                            this.service_venue = null
+                            this.service_date = null
+                            this.service_start = null
+                            this.service_end = null                                                              
+                            alert("service succesfully added ")                     
+                            this.addServiceItem(response.data.id)                    
                         })
                         .catch((err) => {
-                                
+                            this.adding_service = false
+                            alert("error, try again later")
                         }) 
                 }
             },
             addServiceItem: function(service_id){
+                this.adding_service = true
                 this.$http({                        
                         method: 'post',
                         url: this.$BASE_URL + '/api/services/add-service-item/',
@@ -408,13 +423,15 @@
                                 value: this.service_value                                                                                    
                         }
                         }).then(response => {                                                         
+                            this.adding_service = false
                             this.fetchData()
                             this.getServicesThisMonth()
                             this.service_action = null
                             this.service_value = null
                         })
                         .catch((err) => {
-                                
+                            this.adding_service = false
+                            alert("error, try again later")
                         })
             },
             serviceTypeFormOkay: function(){  
@@ -433,6 +450,7 @@
         },
         addServiceType: function(){        
             if (this.serviceTypeFormOkay()){
+                this.adding_service = true
                 this.$http({                        
                         method: 'post',
                         url: this.$BASE_URL + '/api/services/service-types/',
@@ -440,14 +458,16 @@
                                 name: this.service_type_name,                                
                                 description: this.service_type_description                                                                                            
                         }
-                        }).then(response => {                              
-                               this.service_type_name = '',
+                        }).then(response => {              
+                               this.adding_service = false                
+                               this.service_type_name = '',                               
                                this.service_type_description = '' 
                                alert("service type succesfully added")  
                                this.getServiceTypes()                    
                         })
                         .catch((err) => {
-                                
+                            this.adding_service = false
+                            alert("error, try again later") 
                         }) 
             }
         }

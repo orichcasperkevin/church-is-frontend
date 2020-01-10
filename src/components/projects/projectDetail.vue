@@ -223,15 +223,7 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                             </div>
-                            <div class="modal-body">
-                                        <div class="alert alert-warning alert-dismissible fade show" role="alert" v-if="added_contribution.length > 0">
-                                                <strong>
-                                                        <span v-for="data in added_contribution">contribution by {{data.member.member.username}} amount {{humanize(data.amount)}} was successfully added</span>
-                                                </strong> 
-                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                                        <span aria-hidden="true">&times;</span>
-                                                </button>
-                                        </div>
+                            <div class="modal-body">                                        
                                     <form>
                                             <div class="row checkbox">
                                                     <div class="col-3"></div>
@@ -310,8 +302,18 @@
                             </div>
                             <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="fetchdata()">Close</button>
-                            <button type="button" class="btn btn-success" disabled v-if="! enable_add_button"><b>+</b> add contribution</button>
-                            <button type="button" class="btn btn-success" v-if="enable_add_button" v-on:click="addContribution()">{{add_contribution_button_text}}</button>
+                            <button type="button" class="btn btn-success" disabled v-if="! enable_add_button">
+                                    + add contribution
+                                    <span v-if="adding_to_project"
+                                         class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                                   </span>
+                            </button>
+                            <button type="button" class="btn btn-success" v-if="enable_add_button" v-on:click="addContribution()">
+                                    {{add_contribution_button_text}}
+                                    <span v-if="adding_to_project"
+                                         class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                                   </span>
+                            </button>
                             </div>
                         </div>
                         </div>
@@ -440,8 +442,18 @@
                             </div>
                             <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="getPledges()">Close</button>
-                            <button type="button" class="btn btn-success" disabled v-if="! enable_add_pledge_button"><b>+</b> add pledge</button>
-                            <button type="button" class="btn btn-success" v-if="enable_add_pledge_button" v-on:click="addPledge()">{{add_pledge_button_text}}</button>
+                            <button type="button" class="btn btn-success" disabled v-if="! enable_add_pledge_button">
+                                    <b>+</b> add pledge
+                                    <span v-if="adding_to_project"
+                                         class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                                   </span>
+                            </button>
+                            <button type="button" class="btn btn-success" v-if="enable_add_pledge_button" v-on:click="addPledge()">
+                                    {{add_pledge_button_text}}
+                                    <span v-if="adding_to_project"
+                                        class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                                    </span>
+                            </button>
                             </div>
                         </div>
                         </div>
@@ -545,7 +557,12 @@
                             </div>
                             <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="fetchdata();getPledges()">Close</button>
-                            <button type="button" class="btn btn-success" v-on:click="settlePledge()"> settle pledge</button>
+                            <button type="button" class="btn btn-success" v-on:click="settlePledge()">
+                                settle pledge
+                                <span v-if="adding_to_project"
+                                        class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                                </span>
+                            </button>
                             </div>
                         </div>
                         </div>
@@ -577,6 +594,7 @@ export default {
             showMemberInput: false,
             member_ids: [],
         //add contribution
+            adding_to_project: false,    
             non_member: false,
             add_contribution_button_text: '+ add contribution',
             contribution_amount: null,
@@ -739,7 +757,8 @@ export default {
         addContribution: function(){
                 if (this.non_member){
                         this.enable_add_project_button = false
-                        this.add_contribution_button_text = '+ add contribution'            
+                        this.adding_to_project = true
+                        this.add_contribution_button_text = '+ adding contribution...'                                    
                         this.$http({
                         method: 'post',
                         url: this.$BASE_URL + '/api/projects/add-non-member-contribution-to-project/',
@@ -751,7 +770,9 @@ export default {
                                 anonymous: true,
                                 amount: this.contribution_amount                                      
                         }
-                        }).then(response => {                                
+                        }).then(response => {        
+                               this.adding_to_project = false
+                               this.enable_add_project_button = true
                                this.memberSearch = ''    
                                this.name_if_not_member = ''
                                this.phone_number = ''
@@ -762,11 +783,15 @@ export default {
 
                         })
                         .catch((err) => {
-                                alert("an error has occured")
+                                this.adding_to_project = false
+                                this.enable_add_project_button = true
+                                this.add_contribution_button_text = '+ add contribution'                                   
+                                alert("an error has occured, try again later")
                         })
                 }
                 if (! this.non_member){                   
                         this.enable_add_project_button = false
+                        this.adding_to_project = true
                         this.add_contribution_button_text = 'adding contribution...'            
                         this.$http({
                         method: 'post',
@@ -778,16 +803,20 @@ export default {
                                 anonymous: false,
                                 amount: this.contribution_amount                                      
                         }
-                        }).then(response => {                                
+                        }).then(response => { 
+                               this.adding_to_project = false                               
                                this.memberSearch = ''
                                this.contribution_amount = null
                                this.added_contribution.push(response.data)                                 
                                this.add_contribution_button_text = '+ add contribution'
-                               this.enable_add_button = false  
+                               this.enable_add_button = true  
                                alert("contribution succesfully added")
                         })
                         .catch((err) => {
-                                alert("an error has occured.")
+                                this.adding_to_project = false
+                                this.enable_add_project_button = true
+                                this.add_contribution_button_text = '+ add contribution'                                   
+                                alert("an error has occured, try agin later")
                         })    
                 }
         },
@@ -844,6 +873,7 @@ export default {
         addPledge: function(){
                 if (this.pledgeFormOkay()){
                         if (! this.non_member){
+                                this.adding_to_project = true
                                 this.$http({
                                         method: 'post',
                                         url: this.$BASE_URL + '/api/projects/add-pledge-to-project/',
@@ -857,18 +887,21 @@ export default {
                                         }).then(response => {                                                                                                                                                                     
                                                 this.selectedMember = null                                              
                                                 this.pledge_amount = null                        
+                                                this.adding_to_project = false
                                                 this.enable_add_pledge_button = true                                                
                                                 this.memberSearch = ''       
                                                 alert("pledge of amount " + response.data.amount + "\n"
                                                         + "added for " + response.data.member.member.first_name)                     
                                         })
                                         .catch((err) => {
+                                                this.adding_to_project = false
                                                 alert("an error occured while attempting to add pledge. \n"
                                                         + "check your connection and try again")
                                                                         
                                         })
                         }
                         if (this.non_member){
+                                this.adding_to_project = true
                                 this.$http({
                                         method: 'post',
                                         url: this.$BASE_URL + '/api/projects/add-anonymous-pledge-to-project/',
@@ -880,7 +913,8 @@ export default {
                                                 amount: this.pledge_amount,
                                                 date: this.pledge_due_date                                      
                                         }
-                                        }).then(response => {                                                                                                                                                                     
+                                        }).then(response => {
+                                                this.adding_to_project = false                                                                                                                                                                     
                                                 this.selectedMember = null
                                                 this.name_if_not_member = null 
                                                 this.phone_number = null 
@@ -892,6 +926,7 @@ export default {
                                                         + "added for " + response.data.names)                     
                                         })
                                         .catch((err) => {
+                                                this.adding_to_project = false
                                                 alert("an error occured while attempting to add pledge. \n"
                                                         + "check your connection and try again")
                                                                         
@@ -943,8 +978,7 @@ export default {
         settlePledge: function(){                
                 if (this.settlePledgeFormOkay()){
                         if (! this.non_member){
-                                console.log(this.selectedMember)
-                                console.log(this.project_id)
+                                this.adding_to_project = true
                                 this.$http({
                                         method: 'post',
                                         url: this.$BASE_URL + '/api/projects/service-pledge/',
@@ -957,6 +991,7 @@ export default {
                                         }).then(response => {                                                                                                                                                                     
                                                 this.selectedMember = null                                              
                                                 this.pledge_amount = null                        
+                                                this.adding_to_project = false
                                                 this.enable_add_pledge_button = true                                                
                                                 this.memberSearch = ''       
                                                 alert("amount " + response.data.payment_amount+ " "
@@ -966,8 +1001,8 @@ export default {
                                                         + response.data.pledge.percentage_funded )                     
                                         })
                                         .catch((err) => {
-                                                alert("an error occured while attempting to add pledge. \n"
-                                                        + "check your connection and try again")
+                                                this.adding_to_project = false
+                                                alert("error, this may be because the member you selected has not pledged for this project")
                                                                         
                                         })
                         }

@@ -127,7 +127,7 @@
                   <div class="list-group ">
                       <button type="button" class="action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#emailModatCenter" ><img src="@/assets/app_logo.png" style="width: 55px; height:auto">. anvil channels</button>
                       <button type="button" class="d-none action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#emailModatCenter" ><img src="@/assets/icons/icons8-email-64.png">email</button>
-                      <button type="button" class="list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#textModalCenter"><img src="@/assets/icons/icons8-comments-64.png">text</button>
+                      <button type="button" class="list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#textModalCenter"><img src="@/assets/icons/icons8-comments-64.png">text members</button>
 
                   </div>
                 <!-- Modal add member to group -->
@@ -175,7 +175,12 @@
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="fetchData()">Close</button>
-                          <button type="button" class="btn btn-success " v-on:click="addMemberToGroup()"><b>+</b> add</button>
+                          <button type="button" class="btn btn-success " v-on:click="addMemberToGroup()">
+                            <b>+</b> add member
+                            <span v-if="adding_member"
+                                class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                            </span>
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -198,7 +203,12 @@
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                          <button type="button" class="btn btn-success" v-on:click="addChannelNotification()">send</button>
+                          <button type="button" class="btn btn-success" v-on:click="addChannelNotification()">
+                            send
+                            <span v-if="sending_message"
+                                class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                            </span>
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -219,14 +229,19 @@
                                 <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model = "message"></textarea>
                               </div>
                               <div v-if="sms_status.length > 0">
-                                <p class="text-info">!! </p>
+                                <p class="text-success">successful</p>
                                 <p class="text-info"> The members will receive your message.</p>
                                 <p> check sms status later as it may take a while</p>
                                 </div>
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="closeSmsModal()">Close</button>
-                          <span v-if = "message.length > 5 && sms_status.length == 0"><button type="button" class="btn btn-primary" v-on:click=sendMessage()>send text</button></span>
+                          <span v-if = "sms_status.length == 0">
+                            <button type="button" class="btn btn-success" v-on:click=sendMessage()>send text</button>
+                            <span v-if="sending_message"
+                                class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                            </span>
+                          </span>
                         </div>
                       </div>
                     </div>
@@ -258,7 +273,9 @@ export default {
       added_member: [],
       member_ids: [],
       message: "",
-      sms_status: []
+      sms_status: [],
+      sending_message:false,
+      adding_member:false
     }
   },
   created() {
@@ -310,7 +327,8 @@ export default {
           var group_id
           var obj = this.group.response
           group_id = obj["0"].id
-  
+          
+          this.adding_member = true
           this.$http({ method: 'post', url: this.$BASE_URL + '/api/groups/add-member-to-group/',
           data: {           
             group_id: group_id,
@@ -318,14 +336,14 @@ export default {
             role_id: this.role
           }
           }).then(response => {
-            this.added_member.push(response.data )
+            this.adding_member = false            
             this.memberSearch = ''
             this.role = ''
             alert("member successfully added")
           })
           .catch((err) => {
-            alert("an error occered while attempting to add member, check your data and try again")
-            this.add_group_error.push(err)
+            this.adding_member = false
+            alert("an error occered while attempting to add member, check your data and try again" + err)            
           })
         }
       },
@@ -341,6 +359,7 @@ export default {
         })
       },
       sendMessage: function (){
+        this.sending_message = true
         this.$http({ method: 'post', url: this.$BASE_URL + '/api/sms/add-sms/',
         data: {
           sending_member_id: this.$session.get('member_id'),
@@ -350,12 +369,15 @@ export default {
           receipient_member_ids: this.member_ids
         }
         }).then(response => {
+          this.sending_message = false
           this.sms_status.push(response.data)
         })
         .catch((err) => {
+          this.sending_message = false
         })
       },
       addChannelNotification: function(){
+        this.sending_message = true
         this.$http({ method: 'post', url: this.$BASE_URL + '/api/social/add-channel-notification/',
         data: {
           sender_id: this.$session.get('member_id'),
@@ -364,9 +386,11 @@ export default {
           website: true,
         }
         }).then(response => {
+          this.sending_message = false
            alert("notification sent succesfully")
         })
         .catch((err) => {
+          this.sending_message = false
           alert(err)
         })
       },

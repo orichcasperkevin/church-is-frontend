@@ -99,7 +99,12 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="fetchData()">Close</button>
-                    <button type="button" class="btn btn-success" v-on:click="addGroup()"><b>+</b> add </button>
+                    <button type="button" class="btn btn-success" v-on:click="addGroup()">
+                      <b>+</b> add 
+                      <span v-if="adding_group"
+                            class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                      </span>
+                    </button>
                 </div>
                 </div>
             </div>
@@ -122,6 +127,7 @@ export default {
       foundItems: null,foundItems_independent: null,
       fetch_data_error: [],
       //add group
+      adding_group: false,
       group_type: 'group',
       name: '',name_errors: [],description: '',
       add_group_error: null
@@ -219,6 +225,7 @@ export default {
           url = '/api/groups/add-group/'
         }
         this.isLoading = true
+        this.adding_group = true
         this.$http({ method: 'post', url: this.$BASE_URL + url,
         data: {
             group_of_groups_id: null,
@@ -233,14 +240,16 @@ export default {
               alert("folder succesfully added")
             }
             if (this.group_type == 'group'){
+              this.adding_group = false
               alert("group succesfully added")
               var new_version = parseInt(localStorage.getItem('group_list_version')) + 1
               this.$store.dispatch('update_group_list_version', new_version)
             }
         })
             .catch((err) => {
+            this.adding_group=false
             this.group_type = 'group'
-            this.add_group_error.push(err)
+            alert("an error occured while trying to add group")
         })
     }
 

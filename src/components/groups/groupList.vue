@@ -75,7 +75,12 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="fetchData()">Close</button>
-                    <button type="button" class="btn btn-success" v-on:click="addGroup()"><b>+</b> add group</button>
+                    <button type="button" class="btn btn-success" v-on:click="addGroup()">
+                        <b>+</b> add group
+                        <span v-if="adding_group"
+                            class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                        </span>
+                    </button>
                 </div>
                 </div>
             </div>
@@ -94,7 +99,8 @@ export default {
         foundItems: null,
         fetch_data_error: [],
         name: '',name_errors: [],description: '',
-        add_group_error: null
+        add_group_error: null,
+        adding_group:false
     }
   },
   created() {
@@ -138,6 +144,7 @@ export default {
             if (! this.description){
                 this.description = 'none given'
             }            
+            this.adding_group = true
             this.$http({ method: 'post', url: this.$BASE_URL + '/api/groups/add-group/',
             data: {
                 group_of_groups_id: this.$route.params.id,
@@ -147,10 +154,12 @@ export default {
             }).then(response => {                 
                 this.name = ''
                 this.description = ''
+                this.adding_group = false
                 alert("group succesfully added")
             })
-                .catch((err) => {
-                this.add_group_error.push(err)
+            .catch((err) => {
+                this.adding_group = false
+                alert("error occured while trying to add group" + err)
             })            
         }
       

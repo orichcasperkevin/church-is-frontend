@@ -160,10 +160,10 @@
                     <img src="@/assets/app_logo.png" style="width: 55px; height:auto">. Anvil message
                   </button>
                   <button type="button" class="d-none action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#emailModatCenter" ><img src="@/assets/icons/icons8-email-64.png">
-                    email
+                    email ({{foundItems}})
                   </button>
                   <button type="button" class="list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#textModalCenter"><img src="@/assets/icons/icons8-comments-64.png">
-                    {{text_button_name}}
+                    text members
                   </button>
                   <button type="button" class="list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#assignModalCenter"><img src="@/assets/icons/icons8-add-user-group-man-man-64.png">
                     assign group
@@ -174,7 +174,7 @@
                 <div class="modal-dialog modal-dialog-centered" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title" id="exampleModalCenterTitle">new anvil message</h5>
+                      <h5 class="modal-title" id="exampleModalCenterTitle">send anvil message</h5>
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
@@ -203,7 +203,7 @@
                 <div class="modal-dialog modal-dialog-centered" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title" >{{text_button_name}}</h5>
+                      <h5 class="modal-title" >send message to selected members</h5>
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
@@ -239,12 +239,12 @@
                 <div class="modal-dialog modal-dialog-centered" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <h5 class="modal-title" id="exampleModalCenterTitle">assign group</h5>
+                      <h5 class="modal-title" id="exampleModalCenterTitle">assign selected members to group</h5>
                       <button type="button" class="close" v-on:click="setAssignGroupButtonText('assign group')" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                       </button>
                     </div>
-                    <div class="container ">                      
+                    <div class="container mt-5 mb-5">                      
                       <label><b>select group :</b></label>
                       <select class=" form-control" v-model="group_id" >
                           <option v-for="data in groups.response" :value="data.id" >{{data.name}}</option>
@@ -452,7 +452,7 @@ export default {
       file_format_okay: false,
       csv_columns: {},
       adding_members_to_group: false,
-      setAssignGroupButtonText: "assign group"
+      assign_group_button_text: "assign group"
 
     }
   },
@@ -590,7 +590,7 @@ export default {
     assignGroup: function(){      
       var group_id = this.group_id
       var member_ids = this.member_ids 
-      this.assign_group_button_text = "assigning group ..."     
+      this.assign_group_button_text = "assigning to group ..."     
       this.adding_members_to_group = true
       for (var member_id in this.member_ids){                       
           this.$http({ method: 'post', url: this.$BASE_URL + '/api/groups/add-member-to-group/',

@@ -110,7 +110,12 @@
                         </div>
                         <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="fetchData()">Close</button>                       
-                        <button type="button" class="btn btn-success" v-on:click="addEvent()">{{add_event_button_text}}</button>
+                        <button type="button" class="btn btn-success" v-on:click="addEvent()">
+                            {{add_event_button_text}}
+                            <span v-if="adding_event"
+                                class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                            </span>
+                        </button>
                         </div>
                     </div>
                     </div>
@@ -142,6 +147,7 @@
                 start_date: '',start_time:'',start_date_errors:[], start_time_errors:[],
                 end_date: '',end_time:'',end_time_errors:[], end_date_errors:[],
                 added_event: [],
+                adding_event:false,
                 //events
                 events: []
 
@@ -222,6 +228,7 @@
             },
             addEvent: function (){                
                 if (this.addEventFormOkay()){
+                    this.adding_event = true
                     this.$http({                        
                         method: 'post',
                         url: this.$BASE_URL + '/api/events/add-event/',
@@ -242,10 +249,12 @@
                                this.start_time = ''
                                this.end_date = ''
                                this.end_time = ''                                                                                            
+                               this.adding_event = false
                                alert("event succesfully added ")                                                    
                         })
                         .catch((err) => {
-                                alert("an error occurred when trying to add event, check your form and try again")
+                            this.adding_event = false
+                            alert("an error occurred when trying to add event, check your form and try again")
                         }) 
                 }                       
             }

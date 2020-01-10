@@ -276,17 +276,7 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                             </div>
-                            <div class="modal-body">                                   
-                                    <div class="alert alert-success alert-dismissible fade show" role="alert" v-if="added_tithe.length > 0">
-                                        <strong>
-                                            <span v-for="data in added_tithe">
-                                                tithe of amount {{data.amount}} added for {{data.member.member.first_name }}
-                                            </span>
-                                        </strong> 
-                                        <button type="button" class="close" data-dismiss="alert" v-on:click="fetchdata()" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
+                            <div class="modal-body">                                                                       
                                     <div v-if="add_tithe_errors.length > 0">
                                         <ul>
                                                 <small>
@@ -358,7 +348,12 @@
                             <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="fetchdata()">Close</button>
                             <button type="button" class="btn btn-success" disabled v-if= "! enable_add_tithe_button && add_tithe_button_text != 'adding tithe...'">{{add_tithe_button_text}}</button>
-                            <button type="button" class="btn btn-success" v-on:click="addTithe()">{{add_tithe_button_text}}</button>
+                            <button type="button" class="btn btn-success" v-on:click="addTithe()">
+                                {{add_tithe_button_text}}
+                                <span v-if="adding_to_finance"
+                                    class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                                </span>
+                            </button>
                             </div>
                         </div>
                         </div>
@@ -484,7 +479,12 @@
                             </div>
                             <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="getOfferings()">Close</button>
-                            <button type="button" class="btn btn-success" v-on:click="addOffering()"><b>+</b> add offering</button>
+                            <button type="button" class="btn btn-success" v-on:click="addOffering()">
+                                <b>+</b> add offering
+                                <span v-if="adding_to_finance"
+                                    class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                                </span>
+                            </button>
                             </div>
                         </div>
                         </div>
@@ -494,22 +494,12 @@
                     <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalCenterTitle">add income</h5>
+                        <h5 class="modal-title" id="exampleModalCenterTitle">add income type</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                         </div>
-                        <div class="modal-body"> 
-                                <div class="alert alert-warning alert-dismissible fade show" role="alert" v-if ="added_income.length > 0">
-                                        <strong>
-                                            <span v-for="data in added_income">
-                                                income of type {{data.type.type_name}} and amount {{humanize(data.amount)}} succesfuly added
-                                            </span>
-                                        </strong> 
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                          <span aria-hidden="true">&times;</span>
-                                        </button>
-                                      </div>                               
+                        <div class="modal-body">                                                               
                                 <form>                                            
                                         <div class=" row form-group">
                                             <label class="col-3"><b>type:</b></label>                                                                                                                                   
@@ -542,7 +532,12 @@
                         </div>
                         <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-success" v-on:click="addIncome()"><b>+</b> add income</button>
+                        <button type="button" class="btn btn-success" v-on:click="addIncome()">
+                            <b>+</b> add income
+                            <span v-if="adding_to_finance"
+                                class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                            </span>
+                        </button>
                         </div>
                     </div>
                     </div>
@@ -557,15 +552,7 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                     </div>
-                    <div class="modal-body">
-                            <div class="alert alert-warning alert-dismissible fade show" role="alert" v-if="added_income_type.length">
-                                <strong>
-                                    <span v-for="data in added_income_type">income of type {{data.type_name}} was added sucessfully</span>
-                                </strong> 
-                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
+                    <div class="modal-body">  
                             <form>                                            
                                     <div class="row form-group">
                                             <label class="col-3"><b>name:</b></label>
@@ -584,8 +571,13 @@
                             </form>
                     </div>
                     <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-success" v-on:click="addIncomeType()"><b>+</b> add income type</button>
+                    <button type="button" class="btn btn-secondary" v-on:click="getAnyOther()" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success" v-on:click="addIncomeType()">
+                        <b>+</b> add income type
+                        <span v-if="adding_to_finance"
+                                class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                        </span>
+                    </button>
                     </div>
                 </div>
                 </div>
@@ -620,7 +612,12 @@
                         </div>
                         <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-success" v-on:click="addExpenditureType()"><b>+</b> add expenditure type</button>
+                        <button type="button" class="btn btn-success" v-on:click="addExpenditureType()">
+                            <b>+</b> add expenditure type
+                            <span v-if="adding_to_finance"
+                                class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                            </span>
+                        </button>
                         </div>
                     </div>
                     </div>
@@ -666,6 +663,7 @@ export default {
             memberSearch_status: '',selectedMember: null,
             showMemberInput: false,  
         //add_tithe
+            adding_to_finance:false,
             add_tithe_button_text: '+ add tithe',
             enable_add_tithe_button: true,
             tithe_amount: null,
@@ -976,7 +974,7 @@ export default {
             }
             this.income_stats = JSON.parse(localStorage.getItem('income_stats'))                
             if (this.income_stats){
-                pass
+                
             }
             else{ 
                 if (!version || version < currentVersion) {
@@ -1104,7 +1102,8 @@ export default {
         addTithe: function(){
             if (this.addTitheFormOK()){
                 this.enable_add_tithe_button = false
-                this.add_tithe_button_text = 'adding tithe...'                
+                this.add_tithe_button_text = 'adding tithe...'  
+                this.adding_to_finance = true              
                 this.$http({
                         method: 'post',
                         url: this.$BASE_URL + '/api/finance/add-tithe-for-member/',
@@ -1114,8 +1113,8 @@ export default {
                                 recording_member_id: this.$session.get('member_id'),                             
                                 amount: this.tithe_amount                                      
                         }
-                        }).then(response => {                             
-                               this.added_tithe.push(response.data)                                                                                                
+                        }).then(response => {
+                               this.adding_to_finance = false                                                                                                                                                            
                                this.selectedMember = null,
                                this.tithe_narration = '',
                                this.tithe_amount = ''                        
@@ -1128,7 +1127,8 @@ export default {
                                       + "added for " + response.data.member.member.first_name)                     
                         })
                         .catch((err) => {
-                               this.add_tithe_errors.push('oops, an error occured \n you may be disconnected ,check your connection and try again')
+                            this.adding_to_finance = false
+                            this.add_tithe_errors.push('oops, an error occured \n you may be disconnected ,check your connection and try again')
                                                             
                         })
             }
@@ -1183,30 +1183,34 @@ export default {
         addOffering: function(){           
             if (this.addOfferingFormOK()){                                
                 if (this.non_member){
+                    this.adding_to_finance = true
                     this.$http({                        
                         method: 'post',
                         url: this.$BASE_URL + '/api/finance/add-service-offering/',
                         data: {
-                                service_type_id: this.service_type,                                
-                                recording_member_id: this.$session.get('member_id'),                                 
-                                date: this.offering_date,                                
-                                narration: this.offering_narration,                        
-                                amount: this.offering_amount                                                                   
+                            service_type_id: this.service_type,                                
+                            recording_member_id: this.$session.get('member_id'),                                 
+                            date: this.offering_date,                                
+                            narration: this.offering_narration,                        
+                            amount: this.offering_amount                                                                   
                         }
-                        }).then(response => {                              
-                               this.offering_amount = null
-                               this.offering_narration = null
-                               this.service_type = null
-                                                            
-                               var new_version = parseInt(localStorage.getItem('offering_list_version')) + 1                               
-                               this.$store.dispatch('update_offering_list_version', new_version)
-                               alert("offering succesfully added ")          
+                        }).then(response => {    
+                            this.adding_to_finance = false                           
+                            this.offering_amount = null
+                            this.offering_narration = null
+                            this.service_type = null
+                                                        
+                            var new_version = parseInt(localStorage.getItem('offering_list_version')) + 1                               
+                            this.$store.dispatch('update_offering_list_version', new_version)
+                            alert("offering succesfully added ")          
                         })
                         .catch((err) => {
-                                
+                            this.adding_to_finance = false
+                            alert("an error occured, please try again later")
                         })               
                 }
                 if (! this.non_member){
+                    this.adding_to_finance = true
                     this.$http({                        
                         method: 'post',
                         url: this.$BASE_URL + '/api/finance/add-offering/',
@@ -1220,7 +1224,9 @@ export default {
                                 amount: this.offering_amount                                                                   
                         }
                         }).then(response => {
+                                
                                this.added_offering.push(response.data)
+                               this.adding_to_finance = false
                                this.offering_amount = null
                                this.offering_narration = null
                                this.name_if_not_member = ''
@@ -1233,7 +1239,8 @@ export default {
                                alert("offering succesfully added")          
                         })
                         .catch((err) => {
-                                
+                                alert("an error occured, please try again later")
+                                this.adding_to_finance = false
                         })
                 }  
             }
@@ -1254,25 +1261,26 @@ export default {
         },
         addIncomeType: function(){        
             if (this.incomeTypeFormOK()){
+                this.adding_to_finance = true
                 this.$http({                        
                         method: 'post',
                         url: this.$BASE_URL + '/api/finance/income-type-list/',
                         data: {
-                                type_name: this.income_type_name,                                
-                                description: this.income_type_description                                                                                            
+                            type_name: this.income_type_name,                                
+                            description: this.income_type_description                                                                                            
                         }
                         }).then(response => {
-                               this.added_income_type.push(response.data)
-                               this.income_type_name = '',
-                               this.income_type_description = '' 
-                               var new_version = parseInt(localStorage.getItem('income_type_list_version')) + 1
-                               this.$store.dispatch('update_income_type_list_version', new_version) 
-
-                               alert("income type succesfully added")  
-                               this.getAnyOther()                    
+                            this.adding_to_finance = false                            
+                            this.income_type_name = '',
+                            this.income_type_description = '' 
+                            var new_version = parseInt(localStorage.getItem('income_type_list_version')) + 1
+                            this.$store.dispatch('update_income_type_list_version', new_version) 
+                            
+                            alert("income type succesfully added")                                                
                         })
                         .catch((err) => {
-                                
+                            this.adding_to_finance = false          
+                            alert("an error occured, try again later")                  
                         }) 
             }
         },
@@ -1297,6 +1305,7 @@ export default {
         },
         addIncome: function(){           
             if (this.incomeFormOK()){
+                this.adding_to_finance = true
                 this.$http({                        
                         method: 'post',
                         url: this.$BASE_URL + '/api/finance/add-income/',
@@ -1307,15 +1316,16 @@ export default {
                                 amount: this.income_amount                                    
                         }
                         }).then(response => {
+                            this.adding_to_finance = false
                             this.added_income.push(response.data)
                             this.income_type = null,
                             this.income_amount = null,
                             this.income_narration = ''
-                            alert("income successfully added")   
-                            this.getAnyOther()               
+                            alert("income successfully added")                                             
                         })
                         .catch((err) => {
-                                
+                            this.adding_to_finance = false
+                            alert("an error occured, try again later")
                         })
             }
         },
@@ -1335,23 +1345,26 @@ export default {
         },
         addExpenditureType: function(){        
             if (this.expenditureTypeFormOK()){
+                this.adding_to_finance = true
                 this.$http({                        
                         method: 'post',
                         url: this.$BASE_URL + '/api/finance/expenditure-type-list/',
                         data: {
-                                type_name: this.expenditure_type_name,                                
-                                description: this.description_type_description                                                                                            
+                            type_name: this.expenditure_type_name,                                
+                            description: this.description_type_description                                                                                            
                         }
-                        }).then(response => {                              
-                               this.expenditure_type_name = '',
-                               this.expenditure_type_description = '' 
-                               var new_version = parseInt(localStorage.getItem('expenditure_list_version')) + 1
-                               this.$store.dispatch('update_expenditure_list_version', new_version)  
-                               alert("expenditure type succesfully added")  
-                               this.getExpenditures()                    
+                        }).then(response => {     
+                            this.adding_to_finance = false                         
+                            this.expenditure_type_name = '',
+                            this.expenditure_type_description = '' 
+                            var new_version = parseInt(localStorage.getItem('expenditure_list_version')) + 1
+                            this.$store.dispatch('update_expenditure_list_version', new_version)  
+                            alert("expenditure type succesfully added")  
+                            this.getExpenditures()                    
                         })
                         .catch((err) => {
-                                
+                            this.adding_to_finance = false
+                            alert("an error occured, try again later")
                         }) 
             }
         },        

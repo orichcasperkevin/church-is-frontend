@@ -120,16 +120,20 @@
                                         </div>
                                         <hr/>
                                         <div class="row form-group">
-                                                <label class="col-3"><b>amount:</b></label>
+                                                <label class="col-3"><b>required amount:</b></label>
                                                 <input type="number" class=" col-3 form-control" placeholder="amount" v-model="amount">
                                                 <div class="col-6 text-success" v-if ="amount > 0"><h3>KSh {{humanize(amount)}}</h3></div>                                                   
                                         </div>                                                                                   
                                 </form>
                         </div>
                         <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="fetchdata()">Close</button>
-                        <button type="button" class="btn btn-success" disabled v-if="! enable_add_project_button"><b>+</b> add project</button>
-                        <button type="button" class="btn btn-success" v-if="enable_add_project_button" v-on:click="addProject()"><b>+</b>{{add_project_button_text}}</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="fetchdata()">Close</button>                       
+                        <button type="button" class="btn btn-success" v-on:click="addProject()">
+                            <b>+</b>{{add_project_button_text}}
+                            <span v-if="adding_project"
+                                class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                            </span>
+                        </button>
                         </div>
                     </div>
                     </div>
@@ -159,7 +163,8 @@ export default {
             start_date: '',
             ending_year: '',ending_month: '',ending_day: '',
             ending_date: '',
-            added_project: []
+            added_project: [],
+            adding_project: false
 
 
         }
@@ -169,7 +174,7 @@ export default {
         this.fetchdata()
     },
     watch: {
-            project_name: function(){                
+            project_name: function(){  
                 if ( this.project_name.length > 0                   
                      && this.project_description.length > 0
                      && this.start_date.length > 0
@@ -179,7 +184,7 @@ export default {
                     this.enable_add_project_button = true
                 }                
             },
-            project_description: function(){                
+            project_description: function(){ 
                 if (this.project_name.length > 0                   
                      && this.project_description.length > 0 
                      && this.start_date.length > 0
@@ -189,7 +194,7 @@ export default {
                     this.enable_add_project_button = true
                 }                
             },
-            start_date: function(){                                      
+            start_date: function(){ 
                 if (this.project_name.length > 0                    
                      && this.project_description.length > 0
                      && this.start_date.length > 0
@@ -199,7 +204,7 @@ export default {
                     this.enable_add_project_button = true
                 }                
             },
-            amount: function(){                      
+            amount: function(){ 
                 if (this.project_name.length > 0                    
                      && this.project_description.length > 0
                      && this.start_date.length > 0
@@ -209,7 +214,7 @@ export default {
                     this.enable_add_project_button = true
                 }                
             },
-            ending_date: function(){                                  
+            ending_date: function(){
                 if (this.project_name.length > 0                    
                      && this.project_description.length > 0
                      && this.start_date.length > 0
@@ -261,9 +266,9 @@ export default {
                 })
             }
         },
-        addProject: function (){                
-                this.enable_add_project_button = false
-                this.add_project_button_text = 'adding project...'            
+        addProject: function (){                                
+                this.add_project_button_text = 'adding project...'
+                this.adding_project = true            
                 this.$http({
                     method: 'post',
                     url: this.$BASE_URL + '/api/projects/project-list/',
@@ -275,7 +280,7 @@ export default {
                         stop: this.ending_date                                      
                     }
                 }).then(response => {
-                        this.added_project.push(response.data)                    
+                        this.adding_project = false
                         this.project_name = ''
                         this.project_description = ''
                         this.amount = ''                        
@@ -287,7 +292,8 @@ export default {
                         alert("project added succesfully")                    
                     })
                     .catch((err) => {
-                        this.add_project_button_text = 'failed, check date'
+                        this.adding_project = false
+                        alert('failed, check date')
                     })                        
             }
     }
