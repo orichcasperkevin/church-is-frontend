@@ -86,21 +86,73 @@
               <p class="text-info">check your connection</p>
             </div>
             <div v-if = "fetch_data_error.length == 0">
-            <div>
+            <div>              
                 <h3>
                   <img style="width: 48px ;height: auto" src="@/assets/icons/icons8-people-48.png">
-                  Members
+                  Members                  
                 </h3>
                 <hr/>
-              <p>
-              found <span class="badge badge-pill badge-info">{{foundItems}}</span>
-              </p>
+              <div class="mb-2 row">
+                <p class="ml-2 mr-5">
+                  found <span class="badge badge-pill badge-info">{{foundItems}}</span>
+                </p>
+                <div class="btn-group d-sm-block d-md-none ">
+                    <router-link :to="{name: 'memberAdd'}" style="text-decoration: none">
+                        <div class="add-button">
+                          + Add member
+                        </div>
+                    </router-link>
+                    <button type="button" class="btn btn-sm btn-success dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
+                      <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <div class="dropdown-menu border-success" aria-labelledby="dropdownMenuReference">
+                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#importCSV"><b>+</b> import from csv</a>
+                        <div class="dropdown-divider"></div>
+                        <router-link class="dropdown-item" :to="{name: 'adminRoles'}"> assign roles</router-link>
+                    </div>
+                  </div>
+
+              </div>
+              
             </div>
               <table class="table" v-if = "(min_age == 0 || min_age == '') && (max_age == 150 || max_age  == '')">
                 <thead>
                   <tr>
                     <th></th>
-                    <th ><input multiple class="form-check-input" type="checkbox" :value=true v-model="all_members">all</th>
+                    <th class="row ml-1">
+                      <input multiple class="form-check-input" 
+                             type="checkbox" :value=true v-model="all_members">
+                            all
+                      <div class="btn-group d-sm-block d-md-none ml-2">
+                          <a href="#" style="text-decoration: none">
+                              <div class="btn btn-light">
+                                actions
+                              </div>
+                            </a>
+                          <button type="button" class="btn btn-sm btn-light dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
+                            <span class="sr-only">Toggle Dropdown</span>
+                          </button>
+                          <div class="dropdown-menu border-light" aria-labelledby="dropdownMenuReference">
+                            <!-- when device is a phone -->
+                              <div class="list-group font-weight-bold">
+                                  <button type="button" class="action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#anvilModal" >
+                                    <img src="@/assets/app_logo.png" style="width: 25px; height:auto">. Anvil message
+                                  </button>
+                                  <button type="button" class="d-none action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#emailModatCenter" ><img src="@/assets/icons/icons8-email-64.png">
+                                    email ({{foundItems}})
+                                  </button>
+                                  <button type="button" class="list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#textModalCenter">
+                                    <img style="width: 25px; height:auto" src="@/assets/icons/icons8-comments-64.png">
+                                    text members
+                                  </button>
+                                  <button type="button" class="list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#assignModalCenter">
+                                    <img style="width: 25px; height:auto" src="@/assets/icons/icons8-add-user-group-man-man-64.png">
+                                    assign group
+                                  </button>
+                              </div>                            
+                          </div>
+                        </div>
+                    </th>
                     <th></th>
                     <th></th>
                   </tr>
