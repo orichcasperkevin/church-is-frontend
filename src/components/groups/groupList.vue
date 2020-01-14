@@ -42,7 +42,7 @@
             <div style="padding: 0px 0px 25px 0px">
                     <a href="#" data-toggle="modal" data-target="#addGroup" style="text-decoration: none">
                         <div class="add-button">
-                            <b>+</b> to {{group_name}}
+                            <b>+</b> add to {{group_name}}
                         </div>
                     </a>
             </div>

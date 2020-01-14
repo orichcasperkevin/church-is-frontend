@@ -22,7 +22,7 @@
             <div class="container">
             <div class="row">
 
-            <div class="filters  col-sm-10 col-md-8 col-lg-2" style="padding: 0px 0px 0px 0px">
+            <div class="col-sm-10 col-md-8 col-lg-2" style="padding: 0px 0px 0px 0px">
                 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                   <a class="action-list list-group-item list-group-item-action border-0"  data-toggle="pill" href="#member" role="tab" aria-controls="members" aria-selected="true">
                     <img  style="width: 30px; height: auto; " src="@/assets/icons/icons8-user-groups-40.png"> members
@@ -33,23 +33,64 @@
                 </div>
             </div>
 
-            <div class="tab-content col" style="padding: 5px 60px 60px 60px">
+            <div class="tab-content col" >
               <div class="tab-pane fade show active" id="member" role="tabpanel" aria-labelledby="profile-tab">
                 <div class = "center-div" v-if = "fetch_data_error.length > 0">
                   <img style = "height: 64px "src="@/assets/icons/icons8-wi-fi-off-64.png">
                   <p class="text-info">check your connection</p>
                 </div>
                 <div v-if = "fetch_data_error.length == 0">
-                <div>
+                <div class="">
                     <span aria-current="page" v-for="data in group.response">
                       <h3>
                          members <span>({{foundItems}})</span>
                       </h3>
                     </span>
+                    <!-- on small devices -->
+                    <div class="btn-group  d-sm-block d-md-none" style="padding: 0px 0px 25px 0px">
+                        <a href="#" data-toggle="modal" data-target="#addMemberToGroup" style="text-decoration: none">
+                            <div class="add-button">
+                            <span> <b>+</b> Add member to group</span>
+                            </div>
+                        </a>
+                        <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
+                          <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <div class="dropdown-menu border-success" aria-labelledby="dropdownMenuReference">
+                            <a class="d-none dropdown-item" href="#" data-toggle="modal" data-target="#importCSV"><b>+</b> import from csv</a>
+                        </div>
+                      </div>
                     <hr/>
-                  <p>
-                  found <span class="badge badge-pill badge-info">{{foundItems}}</span>
-                  </p>
+                  <div class="row mb-1">
+                      <p>
+                      found <span class="badge badge-pill badge-info">{{foundItems}}</span>
+                      </p>
+                      <div class="btn-group d-sm-block d-md-none ml-2">
+                          <a href="#" style="text-decoration: none">
+                              <div class="btn btn-light">
+                                actions
+                              </div>
+                            </a>
+                          <button type="button" class="btn btn-sm btn-light dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
+                            <span class="sr-only">Toggle Dropdown</span>
+                          </button>
+                          <div class="dropdown-menu border-light" aria-labelledby="dropdownMenuReference">
+                            <!-- when device is a phone -->
+                            <div class="list-group ">
+                                <button type="button" class="action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#emailModatCenter" >
+                                  <img src="@/assets/app_logo.png" style="width: 25px; height:auto">
+                                  . anvil channels
+                                </button>
+                                <button type="button" class="d-none action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#emailModatCenter" ><img src="@/assets/icons/icons8-email-64.png">email</button>
+                                <button type="button" class="list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#textModalCenter">
+                                  <img src="@/assets/icons/icons8-comments-64.png" style="width: 25px; height:auto">
+                                  text members
+                                </button>
+          
+                            </div>                           
+                          </div>
+                      </div>
+                  </div>                  
                 </div>
                 </div>
                     <table class="table">
@@ -82,7 +123,7 @@
                         <p class="text-info">check your connection</p>
                       </div>
                       <div v-if = "fetch_group_activity_data_error.length == 0">
-                      <div>
+                      <div >
                           <h3  v-for="data in group.response">
                               activity
                           </h3>
@@ -114,14 +155,14 @@
                 <div class="btn-group" style="padding: 0px 0px 25px 0px">
                   <a href="#" data-toggle="modal" data-target="#addMemberToGroup" style="text-decoration: none">
                       <div class="add-button">
-                      <span> <b>+</b> Add member</span>
+                      <span> <b>+</b> Add member to group</span>
                       </div>
                   </a>
                   <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
                   <div class="dropdown-menu border-success" aria-labelledby="dropdownMenuReference">
-                      <a class="dropdown-item" href="#" data-toggle="modal" data-target="#importCSV"><b>+</b> import from csv</a>
+                      <a class="d-none dropdown-item" href="#" data-toggle="modal" data-target="#importCSV"><b>+</b> import from csv</a>
                   </div>
                 </div>
                   <div class="list-group ">
@@ -176,7 +217,7 @@
                         <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="fetchData()">Close</button>
                           <button type="button" class="btn btn-success " v-on:click="addMemberToGroup()">
-                            <b>+</b> add member
+                            <b>+</b> add member to group
                             <span v-if="adding_member"
                                 class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
                             </span>

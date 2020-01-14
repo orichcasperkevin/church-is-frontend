@@ -30,7 +30,7 @@
                         </div>                      
                     </div>  
               </div>
-              <div class="col">
+              <div class="col-12 col-sm-12 col-lg-8">
                 <hr/>
                 <div v-if="add_member_error.length > 0 " class="alert alert-warning alert-dismissible fade show" role="alert">
                         <div class="col">
@@ -135,11 +135,11 @@
                                         </div>
                                         <div class="form-group">                
                                                 <div class="row">
-                                                        <span class="col">
-                                                                <label><b>country code :</b></label>
+                                                        <span class="col-4">
+                                                                <label><b>code :</b></label>
                                                                 <input class="form-control" type="text" placeholder="+254" v-model = "country_code">
                                                         </span>
-                                                        <span class="col">
+                                                        <span class="col-8">
                                                                 <label><b>phone number :</b></label>
                                                                 <input type="text" class="form-control"  placeholder="712345678" v-model = "phone_number">
                                                         </span>
@@ -206,25 +206,6 @@
                             </a>
                     </div>
               </div>
-              <div class = "col-3">
-              <div class="card border-0" style="max-width: 18rem;">
-                        <div class="card-header border-0">recents</div>
-                        <div class="card-body">
-                                <div v-if = "added_member.length">
-                                <div class="alert alert-primary" role="alert" v-for = "data in added_member">
-                                        <div >
-                                                {{data.member.first_name}} {{data.member.last_name}} -- added
-                                        </div>
-                                </div>
-                                </div>
-                                <div class="alert alert-primary" role="alert" v-if = "! added_member.length">
-                                        <div >
-                                                None added
-                                        </div>
-                                </div>
-                        </div>
-                </div>
-                </div>
             </div>
           </div>
     </div>
