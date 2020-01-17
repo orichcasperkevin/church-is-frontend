@@ -19,7 +19,7 @@
     </div>
     <div class="container">
             <div class="row">
-              <div class="col-12 col-sm-8 col-md-8 col-lg-3">
+              <div class="col-sm-12 col-md-8 col-lg-3">
                     <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                         <a class="nav-link active list-group-item list-group-item-action border-0" id="pill-detail-tab" data-toggle="pill" href="#pill-detail" role="tab" aria-controls="pill-detail" aria-selected="true">
                                 <img class="church-is-menu" src="@/assets/icons/icons8-user-groups-208.png"> detail
@@ -38,11 +38,9 @@
                         </a>
                     </div>
               </div>
-              <div class="col-9">
+              <div class="col">
                 <div class="tab-content" id="v-pills-tabContent">
-                        <div class="tab-pane fade show active" id="pill-detail" role="tabpanel" aria-labelledby="pill-detail-tab">
-                                <div style="padding: 10px 10px 10px 10px">
-                                </div>
+                        <div class="tab-pane fade show active" id="pill-detail" role="tabpanel" aria-labelledby="pill-detail-tab">                                
                                 <div class="mx-auto" style="width: 200px;">
                                 <div class="row">
                                         <div class="col border " style=" height: 100px ;border-radius: 15px">
@@ -144,33 +142,30 @@
                                                 </div>
                                         </div>
                                         <div class="card border-0" style="max-width: 18rem;">
-                                                <div class="card-header border-0">Family</div>
-                                                <div class="card-body">
-                                                        <p v-if = "family_info.family.length == 0 "> none given </p>
+                                        <div class="card-header border-0">Family</div>
+                                        <div class="card-body">
+                                                <p v-if = "family_info.family.length == 0 "> none given </p>
 
-                                                        <table class="table" v-if = "min_age > 0  || max_age != 150 ">
-                                                                <tbody>
-                                                                <tr v-for="data in family_info.family">
-                                                                <span  v-for = "data in data" >
-                                                                        <span  >{{data.name}}</span>
-                                                                        <div v-for = "data in data.members">
-                                                                        <td>
-                                                                                <img v-if = "data.gender == 'M'" style = "height: 32px "src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
-                                                                                <img v-if = "data.gender == 'F'" style = "height: 32px "src="@/assets/avatars/icons8-user-female-skin-type-4-40.png">
-                                                                                <img v-if = "data.gender == 'R'" style = "height: 32px "src="@/assets/avatars/icons8-contacts-96.png">
+                                                <table class="table" v-if = "min_age > 0  || max_age != 150 ">
+                                                        <tbody>
+                                                        <tr v-for="data in family_info.family">
+                                                        <span  v-for = "data in data" >
+                                                                <span  >{{data.name}}</span>
+                                                                <div v-for = "data in data.members">
+                                                                <td>
+                                                                        <img v-if = "data.gender == 'M'" style = "height: 32px "src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
+                                                                        <img v-if = "data.gender == 'F'" style = "height: 32px "src="@/assets/avatars/icons8-user-female-skin-type-4-40.png">
+                                                                        <img v-if = "data.gender == 'R'" style = "height: 32px "src="@/assets/avatars/icons8-contacts-96.png">
 
-                                                                        <span class="text-secondary">{{data.member.first_name}} {{data.member.last_name}}</span>
+                                                                <span class="text-secondary">{{data.member.first_name}} {{data.member.last_name}}</span>
 
-                                                                        </td>
-                                                                        </div>
-                                                                        </span>
-
-
-
-                                                                </tr>
-                                                                </tbody>
-                                                        </table>
-                                                </div>
+                                                                </td>
+                                                                </div>
+                                                        </span>
+                                                        </tr>
+                                                        </tbody>
+                                                </table>
+                                        </div>
                                         </div>
                                 </div>
                                 </div>
@@ -204,7 +199,7 @@
                                 <div class="row">
                                 <div class="col-2"></div>
                                 <div class="col-8">
-                                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                                <ul class="nav nav-pills mb-3 mt-3" id="pills-tab" role="tablist">
                                         <li class="nav-item">
                                                 <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">contributions</a>
                                         </li>
@@ -225,20 +220,20 @@
                                         <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" v-if="finances_selected">
                                                         <h3 >Contributions</h3>
                                                         <table class="table">
-                                                            <thead>
+                                                                <thead>
                                                                 <tr>
-                                                                    <th>project</th>
-                                                                    <th>amount</th>
-                                                                    <th>date</th>
+                                                                        <th>project</th>
+                                                                        <th>amount</th>
+                                                                        <th>date</th>
                                                                 </tr>
-                                                            </thead>
-                                                            <tbody>
+                                                                </thead>
+                                                                <tbody>
                                                                 <tr v-for = "data in contribution_info.contribution">
-                                                                    <td>{{data.project.name}}</td>
-                                                                    <td><p class="text-muted">{{humanize(data.amount)}}</p></td>
-                                                                    <td>{{data.recorded_at}}</td>
+                                                                        <td>{{data.project.name}}</td>
+                                                                        <td><p class="text-muted">{{humanize(data.amount)}}</p></td>
+                                                                        <td>{{data.recorded_at}}</td>
                                                                 </tr>
-                                                            </tbody>
+                                                                </tbody>
                                                         </table>
                                                         <p class="text-muted" v-if="! contribution_info.contribution.length">
                                                                 found no contributions by member
@@ -280,23 +275,23 @@
                                                         </div>
 
                                                         <table class="table">
-                                                            <thead>
+                                                                <thead>
                                                                 <tr>
-                                                                    <th>amount</th>
-                                                                    <th>narration</th>
-                                                                    <th>date</th>
+                                                                        <th>amount</th>
+                                                                        <th>narration</th>
+                                                                        <th>date</th>
                                                                 </tr>
-                                                            </thead>
-                                                            <tbody>
+                                                                </thead>
+                                                                <tbody>
                                                                 <tr v-for = "data in tithe_info.tithes">
-                                                                    <td><p class="text-muted">{{humanize(data.amount)}}</p></td>
-                                                                    <td class="small"> {{data.narration}}</td>
-                                                                    <td>{{data.date}}</td>
+                                                                        <td><p class="text-muted">{{humanize(data.amount)}}</p></td>
+                                                                        <td class="small"> {{data.narration}}</td>
+                                                                        <td>{{data.date}}</td>
                                                                 </tr>
-                                                            </tbody>
+                                                                </tbody>
                                                         </table>
                                                         <p class="text-muted" v-if="!tithe_info.tithes.length">
-                                                          found no tithe by member this month.
+                                                                found no tithe by member this month.
                                                         </p>
                                         </div>
                                         <div class="tab-pane fade" id="pills-offerings" role="tabpanel" aria-labelledby="pills-offerings-tab" v-if = "finances_selected">
@@ -306,20 +301,20 @@
                                                                 <p class="card-text" style="padding: 5px"><small class="text-muted">total this year |<span class="text-info">{{humanize(data.total_this_year)}}|</span></small> </p>
                                                         </div>
                                                         <table class="table">
-                                                            <thead>
+                                                                <thead>
                                                                 <tr>
-                                                                    <th>amount</th>
-                                                                    <th>narration</th>
-                                                                    <th>date</th>
+                                                                        <th>amount</th>
+                                                                        <th>narration</th>
+                                                                        <th>date</th>
                                                                 </tr>
-                                                            </thead>
-                                                            <tbody>
+                                                                </thead>
+                                                                <tbody>
                                                                 <tr v-for = "data in offering_info.offerings">
-                                                                    <td><p class="text-muted">{{humanize(data.amount)}}</p></td>
-                                                                    <td> {{data.narration}}</td>
-                                                                    <td>{{data.date}}</td>
+                                                                        <td><p class="text-muted">{{humanize(data.amount)}}</p></td>
+                                                                        <td> {{data.narration}}</td>
+                                                                        <td>{{data.date}}</td>
                                                                 </tr>
-                                                            </tbody>
+                                                                </tbody>
                                                         </table>
                                                         <p class="text-muted" v-if="!offering_info.offerings.length">
                                                                 found no offering by member.
@@ -337,64 +332,64 @@
                                                 <div class="person child male">
                                                         <div class="name">Grandfather</div>
                                                 </div>
-                                            <div class="parent">
-                                              <div class="person female">
+                                                <div class="parent">
+                                                <div class="person female">
                                                 <div class="name">Grandmother</div>
-                                              </div>
-                                              <ul>
+                                                </div>
+                                                <ul>
                                                 <li>
-                                                  <div class="family" style="width: 172px">
-                                                    <div class="person child male">
-                                                      <div class="name">Uncle</div>
-                                                    </div>
-                                                    <div class="parent">
-                                                      <div class="person female">
+                                                        <div class="family" style="width: 172px">
+                                                        <div class="person child male">
+                                                        <div class="name">Uncle</div>
+                                                        </div>
+                                                        <div class="parent">
+                                                        <div class="person female">
                                                         <div class="name">Wife of Uncle</div>
-                                                      </div>
-                                                    </div>
-                                                  </div>
+                                                        </div>
+                                                        </div>
+                                                        </div>
                                                 </li>
                                                 <li>
-                                                  <div class="family" style="width: 172px">
-                                                    <div class="person child female">
-                                                      <div class="name">Aunt</div>
-                                                    </div>
-                                                    <div class="parent">
-                                                      <div class="person male">
+                                                        <div class="family" style="width: 172px">
+                                                        <div class="person child female">
+                                                        <div class="name">Aunt</div>
+                                                        </div>
+                                                        <div class="parent">
+                                                        <div class="person male">
                                                         <div class="name">Husband of Aunt</div>
-                                                      </div>
-                                                    </div>
-                                                  </div>
+                                                        </div>
+                                                        </div>
+                                                        </div>
                                                 </li>
                                                 <li>
-                                                  <div class="family" style="width: 344px">
-                                                    <div class="person child female">
-                                                      <div class="name">Mother</div>
-                                                    </div>
-                                                    <div class="parent">
-                                                      <div class="person male">
+                                                        <div class="family" style="width: 344px">
+                                                        <div class="person child female">
+                                                        <div class="name">Mother</div>
+                                                        </div>
+                                                        <div class="parent">
+                                                        <div class="person male">
                                                         <div class="name">Father</div>
-                                                      </div>
-                                                      <ul>
+                                                        </div>
+                                                        <ul>
                                                         <li>
-                                                          <div class="person child male">
-                                                            <div class="name">Me</div>
-                                                          </div>
+                                                                <div class="person child male">
+                                                                <div class="name">Me</div>
+                                                                </div>
                                                         </li>
                                                         <li>
-                                                          <div class="person child female">
-                                                            <div class="name">Sister</div>
-                                                          </div>
+                                                                <div class="person child female">
+                                                                <div class="name">Sister</div>
+                                                                </div>
                                                         </li>
-                                                      </ul>
-                                                    </div>
-                                                    <div class="person spouse male">
-                                                      <div class="name">Spouse</div>
-                                                    </div>
-                                                  </div>
+                                                        </ul>
+                                                        </div>
+                                                        <div class="person spouse male">
+                                                        <div class="name">Spouse</div>
+                                                        </div>
+                                                        </div>
                                                 </li>
-                                              </ul>
-                                            </div>
+                                                </ul>
+                                                </div>
                                                 </div>
                                         </li>
                                         </ul>
@@ -448,11 +443,10 @@
                                                 </ul>
                                         </div>
                         </div>
-
                 </div>
               </div>
             </div>
-          </div>
+    </div>
     </div>
   </template>
 
