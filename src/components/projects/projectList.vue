@@ -24,6 +24,13 @@
             <div class="tab-content col">
                     <div class="tab-pane fade show active" id="inProgress" role="tabpanel" aria-labelledby="profile-tab"></div>
                     <h3> Projects</h3>
+                    <div class="d-sm-block d-md-none">
+                            <a href="#" data-toggle="modal" data-target="#addProject" style="text-decoration: none">
+                                <div class="btn btn-success add-button">
+                                    <b>+</b> add project
+                                </div>
+                            </a>
+                    </div>
                     <hr/>                    
                     <div class="col-8 center-div" v-if = "fetch_data_error.length > 0">
                         <div class = "center-div" >
@@ -68,10 +75,10 @@
                     </table>
                 </div>
             </div>
-            <div class="col-12 col-sm-10 col-md-8 col-lg-3">
+            <div class="col-12 col-sm-10 col-md-8 col-lg-2">
                     <div style="padding: 0px 0px 25px 10px">
                             <a href="#" data-toggle="modal" data-target="#addProject" style="text-decoration: none">
-                                <div class="add-button">
+                                <div class="btn btn-success add-button">
                                     <b>+</b> add project
                                 </div>
                             </a>

@@ -8,18 +8,18 @@
         </nav>
         <div class = "container">
             <div class = "row">
-                <div class="filters col-12 col-sm-8 col-md-8 col-lg-2" style="padding: 3px 3px 3px 3px">
+                <div class="filters col-sm-12 col-md-8 col-lg-2" >
                         <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                                 <a class="action-list list-group-item list-group-item-action border-0 active" id="v-pills-income-tab" data-toggle="pill" href="#v-pills-income" role="tab" aria-controls="v-pills-income" aria-selected="true">
-                                        <img style="width: 20%; height: auto" src="@/assets/icons/icons8-request-money-filled-50.png">
+                                        <img class="d-none d-lg-block d-xl-block" style="width: 20%; height: auto" src="@/assets/icons/icons8-request-money-filled-50.png">
                                         income
                                 </a>
                                 <a class="action-list list-group-item list-group-item-action border-0" id="v-pills-expenditure-tab" data-toggle="pill" href="#v-pills-expenditure" role="tab" aria-controls="v-pills-expenditure" aria-selected="false" v-on:click="getExpenditures()">
-                                        <img style="width: 20%; height: auto" src="@/assets/icons/icons8-receipt-filled-50.png">
+                                        <img class="d-none d-lg-block d-xl-block" style="width: 20%; height: auto" src="@/assets/icons/icons8-receipt-filled-50.png">
                                         expenditure  
                                 </a>  
                                 <router-link class="action-list list-group-item list-group-item-action border-0" id="v-pills-expenditure-tab" :to="{name: 'projectList'}">
-                                    <img style="width: 20%; height: auto" src="@/assets/icons/icons8-group-of-projects-filled-50.png">
+                                    <img class="d-none d-lg-block d-xl-block" style="width: 20%; height: auto" src="@/assets/icons/icons8-group-of-projects-filled-50.png">
                                     projects  
                                 </router-link>
                             </div>
@@ -32,7 +32,7 @@
                                         <div class="row">
                                           <div class="col-2">                                            
                                           </div>
-                                          <div class="col-8">
+                                          <div class="col-sm-12 col-lg-8">
                                                 <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                                                         <li class="nav-item">
                                                           <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" Tithe="true" v-on:click = "getTithes()">Tithe</a>
@@ -50,8 +50,22 @@
                                         </div>
                                       </div>                                                       
                                 <div class="tab-content" id="pills-tabContent">
+                                    <!-- when on a small device -->
                                     <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">                                          
-                                            <h3>Tithe</h3>                                            
+                                            <h3>Tithe</h3>
+                                            <div class="d-sm-block d-lg-none btn-group" style="padding: 0px 0px 25px 10px" v-if = "tithes_selected">
+                                                <a href="#" data-toggle="modal" data-target="#addTithe" style="text-decoration: none">
+                                                    <div class="add-button" style="text-align: center">
+                                                        <b>+</b> add tithe 
+                                                    </div>                                
+                                                </a>
+                                                <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
+                                                    <span class="sr-only">Toggle Dropdown</span>
+                                                </button>
+                                                <div class="dropdown-menu border-success" aria-labelledby="dropdownMenuReference">
+                                                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addOffering" v-on:click="getServiceTypes()"><b>+</b> add offering</a>
+                                                </div>
+                                            </div>                                            
                                             <div class="small text-muted" v-if="tithes_selected">
                                                 <p>Total this month  |<span class="text-info">
                                                     Ksh {{humanize(tithe_stats.response.total_in_tithe_this_month)}} </span>|
@@ -90,6 +104,20 @@
                                     <div class="tab-pane fade" id="pills-offerings" role="tabpanel" aria-labelledby="pills-offerings-tab">                                                                                  
                                             <div v-if = "offerings_selected">
                                                 <h3 >Offering</h3>
+                                                <!-- what to show on small devices -->
+                                                <div class="d-sm-block d-md-none d-lg-none btn-group" v-if = "offerings_selected">
+                                                        <a href="#" data-toggle="modal" data-target="#addOffering" style="text-decoration: none" v-on:click="getServiceTypes()">
+                                                            <div class="add-button">
+                                                                <b>+</b> add offering
+                                                            </div>
+                                                        </a>
+                                                        <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
+                                                                <span class="sr-only">Toggle Dropdown</span>
+                                                        </button>
+                                                        <div class="dropdown-menu border-success" aria-labelledby="dropdownMenuReference">
+                                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addTithe"><b>+</b> add tithe</a>
+                                                        </div>
+                                                </div>
                                                 <div class="small text-muted" v-if="offerings_selected">
                                                         <p>Total this month  |<span class="text-info">
                                                             Ksh {{humanize(offering_stats.response.total_in_offerings_this_month)}} </span>|
@@ -129,6 +157,20 @@
                                     <div class="tab-pane fade" id="pills-anyOther" role="tabpanel" aria-labelledby="pills-anyOther-tab">                                        
                                             <div v-if = "any_other_selected">
                                                     <h3>Others</h3>
+                                                    <!-- what to show on small devices -->
+                                                    <div class="d-sm-block d-md-none d-lg-none btn-group" v-if = "any_other_selected">
+                                                            <a href="#" data-toggle="modal" data-target="#addIncomeType" style="text-decoration: none">
+                                                                <div class="add-button">
+                                                                    <b>+</b> add income type
+                                                                </div>
+                                                            </a>
+                                                            <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
+                                                                    <span class="sr-only">Toggle Dropdown</span>
+                                                            </button>
+                                                            <div class="dropdown-menu border-success" aria-labelledby="dropdownMenuReference">                            
+                                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addIncome"><b>+</b> add income</a>                                                                
+                                                            </div>
+                                                    </div>
                                                     <div class="small text-muted" v-if="any_other_selected">
                                                             <p>Total this month  |<span class="text-info">
                                                                 Ksh {{humanize(income_stats.response.total_this_month)}} </span>|
@@ -169,11 +211,19 @@
                                                     </table>
                                                 </div>
                                     </div>
-                                </div>
+                            </div>
                         </div>
                         <div class="tab-pane fade show " id="v-pills-expenditure" role="tabpanel" aria-labelledby="v-pills-expenditure-tab">
                             <div v-if = "expenditures_selected">
-                                <h3 >Expenditure</h3>
+                                <h3 >Expenditure</h3> 
+                                <!-- what to show on small devices -->
+                                <div class="d-sm-block d-md-none d-lg-none btn-group"  v-if = "expenditures_selected">
+                                        <a href="#" data-toggle="modal" data-target="#addExpenditureType" style="text-decoration: none">
+                                            <div class="add-button">
+                                                <b>+</b> add expenditure
+                                            </div>
+                                        </a>                     
+                                </div>                               
                                 <div class="small text-muted">
                                         <p>Total this month  |<span class="text-info">
                                             Ksh {{humanize(expenditure_stats.total_this_month)}} </span>|
@@ -263,7 +313,7 @@
                                 <b>+</b> add expenditure
                             </div>
                         </a>                     
-                </div>
+                    </div>
                 </div>
             </div>
                 <!-- add tithe modal -->

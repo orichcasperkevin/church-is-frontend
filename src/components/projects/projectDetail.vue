@@ -13,11 +13,11 @@
                 <div class="col-12 col-sm-10 col-md-8 col-lg-2">
                         <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                                 <a class="action-list list-group-item list-group-item-action border-0 active" id="v-pills-contributions-tab" data-toggle="pill" href="#v-pills-contributions" role="tab" aria-controls="v-pills-contributions" aria-selected="true" v-on:click="getContributions()">
-                                        <img style="width: 20%; height: auto" src="@/assets/icons/icons8-request-money-filled-50.png">
+                                        <img class="d-none d-lg-block d-xl-block" style="width: 20%; height: auto" src="@/assets/icons/icons8-request-money-filled-50.png">
                                         contributions
                                 </a>
                                 <a class="action-list list-group-item list-group-item-action border-0" id="v-pills-pledges-tab" data-toggle="pill" href="#v-pills-pledges" role="tab" aria-controls="v-pills-pledges" aria-selected="false" v-on:click="getPledges()">
-                                        <img style="width: 20%; height: auto" src="@/assets/icons/icons8-promise-filled-50.png">
+                                        <img class="d-none d-lg-block d-xl-block" style="width: 20%; height: auto" src="@/assets/icons/icons8-promise-filled-50.png">
                                         pledges
                                 </a>
                             
@@ -26,7 +26,24 @@
                 <div class="col">
                         <div class="tab-content" id="v-pills-tabContent">
                                 <div class="tab-pane fade show active" id="v-pills-contributions" role="tabpanel" aria-labelledby="v-pills-contributions-tab">
-                                <h3 ><span v-for = "data in context.response">{{data.name}} /</span> contributions</h3>
+                                <h3 >
+                                        <span v-for = "data in context.response">{{data.name}} /</span> contributions                                        
+                                </h3>
+                                <!-- what to show on small devices -->
+                                <div class="d-sm-block d-md-none btn-group" style="padding: 0px 0px 25px 10px" v-if=" tab == 'contributions'">
+                                        <a href="#" data-toggle="modal" data-target="#addContribution" style="text-decoration: none">
+                                                <div class="add-button" >
+                                                <b>+</b> add contribution
+                                                </div>
+                                        </a>
+                                        <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
+                                                <span class="sr-only">Toggle Dropdown</span>
+                                        </button>
+                                        <div class="dropdown-menu border-success" aria-labelledby="dropdownMenuReference">
+                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addPledge"><b>+</b> add pledge</a>                                        
+                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#settlePledge"><b>+</b> settle pledge</a>                                                                                                                
+                                        </div>
+                                </div>
                                 <div class="small text-muted" v-for = "data in context.response ">
                                         <p>Required amount  |<span class="text-info">
                                                         KSh {{humanize(data.required_amount)}}</span>|
@@ -65,7 +82,26 @@
                                 </div>
                                 <div class="tab-pane fade" id="v-pills-pledges" role="tabpanel" aria-labelledby="v-pills-pledges-tab">
                                     <div v-if = "pledges_selected">
-                                        <h3><span v-for = "data in context.response">{{data.name}} /</span> pledges</h3>
+                                        <h3>
+                                                <span v-for = "data in context.response">{{data.name}} /</span> pledges
+
+                                        </h3>
+                                        <!-- what to show on small devices -->
+                                        <div class="d-sm-block d-md-none btn-group" style="padding: 0px 0px 25px 10px" v-if=" tab == 'pledges'">
+                                                <a href="#" data-toggle="modal" data-target="#addPledge" style="text-decoration: none">
+                                                        <div class="add-button" >
+                                                        <b>+</b> add pledge
+                                                        </div>
+                                                </a>
+                                                <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
+                                                        <span class="sr-only">Toggle Dropdown</span>
+                                                </button>
+                                                <div class="dropdown-menu border-success" aria-labelledby="dropdownMenuReference">
+                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#settlePledge"><b>+</b> settle pledge</a>
+                                                        <div class="dropdown-divider"></div>
+                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addContribution"><b>+</b> add contribution</a>                                                                                                                
+                                                </div>
+                                        </div>
                                         <div class="small text-muted" v-for = "data in context.response ">
                                                 <p>Total in pledges  |<span class="text-info">
                                                         KSh {{humanize(data.total_in_pledges)}}</span>|
@@ -142,8 +178,8 @@
                         </div>
                       
                 </div>
-                  <!-- Modal email -->
-          <div class="modal fade" id="emailModatCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <!-- Modal email -->
+                <div class="modal fade" id="emailModatCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                           <div class="modal-content">
                             <div class="modal-header">
@@ -165,54 +201,54 @@
                             </div>
                           </div>
                         </div>
-                      </div> 
-                      <!-- Modal text people --> 
-                      <div class="modal fade" id="textModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                          <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                              <div class="modal-header">
-                                <h5 class="modal-title" >text contributors</h5>
+                </div> 
+                <!-- Modal text people --> 
+                <div class="modal fade" id="textModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" >text contributors</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+                        <div class="modal-body">
+                                <div class="form-group">
+                                <label for="exampleFormControlTextarea1">message</label>
+                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model = "message"></textarea>
+                                </div>
+                                <div >                            
+                                <p class="text-info"> The members will receive your message.</p>
+                                <p> check sms status later as it may take a while</p>
+                                </div>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="closeSmsModal()">Close</button>
+                        <span ><button type="button" class="btn btn-success" v-on:click=sendMessage()>send text</button></span>
+                        </div>
+                        </div>
+                        </div>
+                </div> 
+                <!-- Modal assign group -->
+                <div class="modal fade" id="assignModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalCenterTitle">assign groups</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                  <span aria-hidden="true">&times;</span>
+                                <span aria-hidden="true">&times;</span>
                                 </button>
-                              </div>
-                              <div class="modal-body">
-                                  <div class="form-group">
-                                      <label for="exampleFormControlTextarea1">message</label>
-                                      <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model = "message"></textarea>
-                                    </div>
-                                    <div >                            
-                                      <p class="text-info"> The members will receive your message.</p>
-                                      <p> check sms status later as it may take a while</p>
-                                      </div>
-                              </div>
-                              <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="closeSmsModal()">Close</button>
-                                <span ><button type="button" class="btn btn-success" v-on:click=sendMessage()>send text</button></span>
-                              </div>
-                            </div>
-                          </div>
-                        </div> 
-                        <!-- Modal assign group -->
-                        <div class="modal fade" id="assignModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                              <div class="modal-content">
-                                <div class="modal-header">
-                                  <h5 class="modal-title" id="exampleModalCenterTitle">assign groups</h5>
-                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                  </button>
-                                </div>
-                                <div class="modal-body">
-                                  <p class="text-info">!! this feature is under development</p>
-                                </div>
-                                <div class="modal-footer">
-                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                  <button type="button" class="btn btn-primary">assign</button>
-                                </div>
-                              </div>
-                            </div>
-                          </div>   
+                        </div>
+                        <div class="modal-body">
+                                <p class="text-info">!! this feature is under development</p>
+                        </div>
+                        <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">assign</button>
+                        </div>
+                        </div>
+                        </div>
+                </div>   
                 <!-- add contribution Modal -->
                 <div class="modal fade" id="addContribution" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
