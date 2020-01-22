@@ -61,14 +61,27 @@
                       <div class="card-body" v-if="client_details.length">
                         <h5 class="card-title">
                           {{client_details[0].client.name}}
-                           <span class="badge badge-success">{{client_details[0].number_of_members}} members</span>
-                           <span class="badge badge-secondary">{{client_details[0].number_of_sms}} sms this month</span>
+                           <span class="badge badge-light">{{client_details[0].number_of_members}} members</span>
+                           <span class="badge badge-light">{{client_details[0].number_of_sms}} sms since last credit</span>
                          </h5>
-                        <h6 class="card-subtitle mb-2">{{client_details[0].first_name}} {{client_details[0].last_name}} <span class="text-info">{{client_details[0].phone_number}}</span></h6>
-                        <h6 class="card-subtitle mb-2">church code<span class="text-info"> {{client_details[0].church_code}}</span></h6>
+                       
+                        <h6 class="card-subtitle mb-2">
+                          church code
+                          <span class="badge badge-light text-info">
+                            <h5>{{client_details[0].church_code}}</h5></span>                       
+                        </h6>
               
-                        <p class="card-text">{{client_details[0].city_or_town}},{{client_details[0].road_or_street}} {{client_details[0].location_description}}</p>
-                        <p class="card-text">{{client_details[0].website}}</p>                                                                     
+                        <p class="card-text">{{client_details[0].city_or_town | }},{{client_details[0].road_or_street}} {{client_details[0].location_description}}</p>
+                        <p class="card-text">website: {{client_details[0].website | none given}}</p>  
+                        <div >
+                            <button disabled type="button" class="btn btn-success">
+                                credit <span class="badge badge-light">
+                                   {{client_details[0].credit}}
+                                </span>
+                            </button>
+
+                             <p><i> apprx {{client_details[0].apprx_number_of_days_left}} days left</i></p>
+                        </div>                       
                                             
                       </div>
                     </div>

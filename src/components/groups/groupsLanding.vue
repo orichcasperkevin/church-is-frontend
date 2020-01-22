@@ -39,8 +39,7 @@
                 <router-link :to="`/groupList/`+ data.id + `/` + data.name"class="row list-group-item list-group-item-action border-0" >
                   <span>
                       <img style="width: 20px ;height: auto" src="@/assets/icons/icons8-folder-48.png">
-                      {{data.name}}
-                      <span class="badge badge-pill badge-secondary">{{data.number_of_groups}}</span>
+                      {{data.name}}                      
                   </span>
                 </router-link>
               </div>
@@ -55,8 +54,7 @@
                 <router-link  :to="`/groupDetail/`+ data.id" class="list-group-item list-group-item-action border-0" >
                 <span>
                       <img style="width: 30px ;height: auto" src="@/assets/icons/icons8-user-groups-48.png">
-                      {{data.name}}
-                      <span class="badge badge-pill badge-secondary">{{data.number_of_members}}</span>
+                      {{data.name}}                      
                 </span>
               </router-link>
               </div>

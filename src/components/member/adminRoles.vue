@@ -146,15 +146,7 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                             </div>
-                            <div class="modal-body">
-                                    <div class="alert alert-warning alert-dismissible fade show" role="alert" v-if="added_role.length > 0">                                    
-                                        <span v-for="data in added_role">
-                                        <strong >{{data.role}} added </strong> {{data.description}}
-                                        </span>
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>
+                            <div class="modal-body">                                   
                                     <form >
                                             <div class=" row form-group">
                                             <label class="col-3"><b>name:</b></label>

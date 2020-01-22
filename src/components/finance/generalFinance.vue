@@ -220,7 +220,7 @@
                                 <div class="d-sm-block d-md-none d-lg-none btn-group"  v-if = "expenditures_selected">
                                         <a href="#" data-toggle="modal" data-target="#addExpenditureType" style="text-decoration: none">
                                             <div class="add-button">
-                                                <b>+</b> add expenditure
+                                                <b>+</b> add expenditure type
                                             </div>
                                         </a>                     
                                 </div>                               
@@ -310,7 +310,7 @@
                     <div class="btn-group" style="padding: 0px 0px 25px 10px" v-if = "expenditures_selected">
                         <a href="#" data-toggle="modal" data-target="#addExpenditureType" style="text-decoration: none">
                             <div class="add-button">
-                                <b>+</b> add expenditure
+                                <b>+</b> add expenditure type
                             </div>
                         </a>                     
                     </div>

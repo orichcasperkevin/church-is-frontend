@@ -11,16 +11,16 @@
         </nav>
         <div class = "container">  
             <div class="row">
-                    <div class="filters col-12 col-sm-8 col-md-8 col-lg-2" style="padding: 3px 3px 3px 3px">
+                    <div class="filters col-sm-8 col-md-8 col-lg-2" style="padding: 3px 3px 3px 3px">
                             <a href="#" v-on:click="goBack()" role="button" aria-expanded="false">
                                     <div class="moreButton">                                
                                         <b> back</b>
                                     </div>
                                 </a>
                         </div>
-                        <div class="col-9">
+                        <div class="col-sm-12 col-lg-9">
                                 <div class="row">
-                                    <div class="col-4">
+                                    <div class="col-lg-4 col-sm-12">
                                         <h3>
                                             <span v-for="data in expenditure_type.response">{{data.type_name}}</span>
                                         </h3>
@@ -33,8 +33,8 @@
                                             </p>
                                         </div>
                                     </div>
-                                    <div class="col-4"></div>
-                                    <div class="col-4">
+                                    
+                                    <div class="col-lg-4 col-sm-12 ">
                                             <div class="btn-group" style="padding: 0px 0px 25px 10px" >
                                                     <a href="#" data-toggle="modal" data-target="#addExpenditure" style="text-decoration: none">
                                                         <div class="add-button">

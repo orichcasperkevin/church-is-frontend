@@ -209,9 +209,14 @@
                                     </table>
                                 </div>
                                 <label><b>role :</b></label>
-                                <select class=" form-control" v-model="role" >
-                                    <option v-for="data in roles.response" :value="data.id" >{{data.role}}</option>
-                                </select>
+                                <div class="container row">
+                                    <select class="col-8 form-control" v-model="role" >
+                                        <option v-for="data in roles.response" :value="data.id" >{{data.role}}</option>
+                                    </select>
+                                    <button class="ml-2 col-3 btn btn-outline-success" data-toggle="modal" data-target="#addRole">
+                                      + add role
+                                    </button>
+                                </div>                                
                               </div>
                         </div>
                         <div class="modal-footer">
@@ -226,6 +231,61 @@
                       </div>
                     </div>
                   </div>
+                <!-- add role Modal -->
+                <div class="modal fade" id="addRole" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">add a role</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+                        <div class="modal-body">                                
+                                <form >
+                                        <div class=" row form-group">
+                                        <label class="col-3"><b>name:</b></label>
+                                        <input type="text" class="col-8 form-control" placeholder="enter name of the role" v-model="role_name">                                        
+                                        </div>
+                                        <div class="row form-group">
+                                                <label class="col-3"><b>description:</b></label>
+                                                <textarea type="text" class="col-8 form-control" rows='3' v-model="role_description"></textarea>                                                   
+                                        </div>  
+                                        <hr/>
+                                        <div class="form-check form-check-inline">
+                                             <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value=true v-model="member_admin">
+                                             <label class="form-check-label" for="inlineCheckbox1">member admin</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                              <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value=true v-model="site_admin">
+                                              <label class="form-check-label" for="inlineCheckbox2">website admin</label>
+                                        </div>  
+                                        <div class="form-check form-check-inline">
+                                             <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value=true v-model="group_admin">
+                                              <label class="form-check-label" for="inlineCheckbox2">group admin</label>
+                                        </div> 
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value=true v-model="events_admin">
+                                            <label class="form-check-label" for="inlineCheckbox1">events admin</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value=true v-model="projects_admin">
+                                                <label class="form-check-label" for="inlineCheckbox2">projects admin</label>
+                                        </div>  
+                                        <div class="form-check form-check-inline">
+                                            <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value=true v-model="finance_admin">
+                                                <label class="form-check-label" for="inlineCheckbox2">finance admin</label>
+                                        </div>                                                                                                                                                                  
+                                </form>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-success" disabled v-if="! enable_role_button"><b>+</b> add role </button>
+                        <button type="button" class="btn btn-success" v-if="enable_role_button" v-on:click="addRole()"> {{add_role_button_text}} </button>
+                        </div>
+                    </div>
+                    </div>
+                </div>
                 <!-- Modal email -->
                 <div class="modal fade" id="emailModatCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -316,7 +376,13 @@ export default {
       message: "",
       sms_status: [],
       sending_message:false,
-      adding_member:false
+      adding_member:false,
+      //add role
+      role_name: null,
+      role_description: null,
+      enable_role_button: false,
+      add_role_button_text: '+ add role',
+      added_role: []
     }
   },
   created() {
@@ -336,6 +402,16 @@ export default {
           this.found_members = []
           this.fetchData()
       }
+    },
+    role_name: function (){
+        if (this.role_name.length > 0 && this.role_description.length > 0){
+            this.enable_role_button = true
+        }
+    },
+    role_description: function (){
+        if (this.role_description.length > 0 && this.role_name.length > 0){
+            this.enable_role_button = true
+        }
     }
   },
   methods: {
@@ -439,6 +515,46 @@ export default {
         this.sms_status = []
         this.message = ""
       },
+      //add role        
+      addRole: function() {
+        this.enable_role_button = false
+        this.add_role_button_text = 'adding role...'            
+        this.$http({ method: 'post', url: this.$BASE_URL + '/api/members/role-list/',
+            data: {
+              role: this.role_name,
+              description: this.role_description,  
+              member_admin: this.member_admin,
+              site_admin: this.site_admin,
+              group_admin: this.group_admin,
+              event_admin: this.event_admin,
+              projects_admin: this.projects_admin,
+              finance_admin: this.finance_admin               
+            }
+          }).then(response => {
+            this.getRoles()
+            this.added_role.push(response.data)                    
+            this.role_name = ''
+            this.role_description = '' 
+            this.add_role_button_text = '+ add role'
+            this.enable_role_button = true
+            alert("role succesfuly added")                                 
+            })
+            .catch((err) => {
+              this.enable_role_button = true 
+            })                
+    },
+    getRoles: function(){
+      this.$store.dispatch('update_isLoading', true)
+        this.$http.get(this.$BASE_URL + '/api/members/role-list/')
+        .then(response => {
+          this.roles = {"response": response.data }
+          this.$store.dispatch('update_isLoading', false)
+        })
+        .catch((err) => {
+          this.fetch_data_error.push(err)
+          this.$store.dispatch('update_isLoading', false)
+        })
+    },
       fetchData() {
         this.$store.dispatch('update_isLoading', true)
         this.$http.get(this.$BASE_URL + '/api/members/role-list/')
