@@ -217,7 +217,11 @@
                   <button type="button" class="list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#textModalCenter"><img src="@/assets/icons/icons8-comments-64.png">
                     text members
                   </button>
-                  <button type="button" class="list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#assignModalCenter"><img src="@/assets/icons/icons8-add-user-group-man-man-64.png">
+                  <button 
+                    type="button" class="list-group-item list-group-item-action border-0"  
+                    data-toggle="modal" data-target="#assignModalCenter"
+                    v-on:click="getGroups()">
+                    <img src="@/assets/icons/icons8-add-user-group-man-man-64.png">
                     assign group
                   </button>
               </div>
@@ -613,6 +617,8 @@ export default {
         }
         }).then(response => {        
           this.sms_status.push(response.data)
+          console.log("here")
+          console.log(this.sms_status)
           this.sending_message = false
         })
         .catch((err) => {
@@ -837,30 +843,15 @@ export default {
       })
     },
     getGroups: function(){
-      // get  groups
-      const currentVersion = this.$store.getters.group_list_version
-      var version  = localStorage.getItem('group_list_version')
-
-      this.$store.dispatch('update_isLoading', true)
-      this.groups = JSON.parse(localStorage.getItem('group_list_all'))
-      if (this.groups){      
-        this.$store.dispatch('update_isLoading', false)
-      }
-      this.$store.dispatch('update_isLoading', false)
-
-      if (!version || version < currentVersion) {
-        this.$http.get(this.$BASE_URL + '/api/groups/church-group-list/')
-        .then(response => {
-            this.groups = {"response": response.data }            
-            localStorage.setItem('group_list_all',JSON.stringify({"response": response.data }))
-            this.$store.dispatch('update_isLoading', false)
-
-        })
-        .catch((err) => {
-            this.fetch_data_error.push(err)
-            this.$store.dispatch('update_isLoading', false)
-        })
-      }
+      // get  groups            
+      this.$http.get(this.$BASE_URL + '/api/groups/church-group-list/')
+      .then(response => {
+          this.groups = {"response": response.data }                            
+      })
+      .catch((err) => {
+          this.fetch_data_error.push(err)          
+      })
+      
     }
 }
 

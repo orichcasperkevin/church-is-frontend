@@ -1,452 +1,477 @@
 <template>
     <div class="memberDetail">
-    <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><span class="backButton"><router-link style="text-decoration: none" :to="{name: 'Home'}">Home</router-link></span>
-                <li class="breadcrumb-item"><span class="backButton"><router-link style="text-decoration: none" :to="{name: 'memberList'}">members</router-link> </span>
-                <li class="breadcrumb-item active" aria-current="page">member detail</li>
-            </ol>
-    </nav>
-    <div class="container">
-        <div class="row">
-                <div class="col" v-if="member_info != null">
-                <h3 class="row" v-for="data in member_info.member">
-                {{data.member.first_name}} {{data.member.last_name}}
-                </h3>
+        <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><span class="backButton"><router-link style="text-decoration: none" :to="{name: 'Home'}">Home</router-link></span>
+                        <li class="breadcrumb-item"><span class="backButton"><router-link style="text-decoration: none" :to="{name: 'memberList'}">members</router-link> </span>
+                        <li class="breadcrumb-item active" aria-current="page">member detail</li>
+                </ol>
+        </nav>
+        <div class="container">
+                <div class="row">
+                        <div class="col" v-if="member_info != null">
+                        <h3 class="row" v-for="data in member_info.member">
+                        {{data.member.first_name}} {{data.member.last_name}}
+                        </h3>
+                        </div>
                 </div>
+                <hr>
         </div>
-        <hr>
-    </div>
-    <div class="container">
-            <div class="row">
-              <div class="col-sm-12 col-md-8 col-lg-3">
-                    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                        <a class="nav-link active list-group-item list-group-item-action border-0" id="pill-detail-tab" data-toggle="pill" href="#pill-detail" role="tab" aria-controls="pill-detail" aria-selected="true">
-                                <img class="church-is-menu" src="@/assets/icons/icons8-user-groups-208.png"> detail
-                        </a>
-                        <!-- <a class="nav-link list-group-item list-group-item-action border-0" id="pill-delete-tab" data-toggle="pill" href="#pill-delete" role="tab" aria-controls="pill-delete" aria-selected="false">
-                                <img class="church-is-menu" src="@/assets/icons/icons8-cancel-26.png"> family
-                        </a>                                             -->
-                        <a class="nav-link list-group-item list-group-item-action border-0" id="pill-groups-tab" data-toggle="pill" href="#pill-groups" role="tab" aria-controls="pill-groups" aria-selected="false" v-on:click = "getMemberGroups()">
-                                <img class="church-is-menu" src="@/assets/icons/icons8-user-groups-filled-50.png"> groups
-                        </a>
-                        <!-- <a class="nav-link list-group-item list-group-item-action border-0" id="pill-dates-tab" data-toggle="pill" href="#pill-dates" role="tab" aria-controls="pill-dates" aria-selected="false">
-                                <img class="church-is-menu" src="@/assets/icons/icons8-donate-filled-50.png"> important dates
-                        </a>   -->
-                        <a class="nav-link list-group-item list-group-item-action border-0" id="pill-contributions-tab" data-toggle="pill" href="#pill-contributions" role="tab" aria-controls="pill-contributions" aria-selected="false" v-on:click = "getMemberFinances()">
-                                <img class="church-is-menu" src="@/assets/icons/icons8-donate-filled-50.png"> finances
-                        </a>
-                    </div>
-              </div>
-              <div class="col">
-                <div class="tab-content" id="v-pills-tabContent">
-                        <div class="tab-pane fade show active" id="pill-detail" role="tabpanel" aria-labelledby="pill-detail-tab">                                
-                                <div class="mx-auto" style="width: 200px;">
-                                <div class="row">
-                                        <div class="col border " style=" height: 100px ;border-radius: 15px">
-                                                <div style="padding: 25px 25px 25px 25px">
-                                                <img src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
+        <div class="container">
+                <div class="row">
+                <div class="col-sm-12 col-md-8 col-lg-3">
+                        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                                <a class="nav-link active list-group-item list-group-item-action border-0" id="pill-detail-tab" data-toggle="pill" href="#pill-detail" role="tab" aria-controls="pill-detail" aria-selected="true">
+                                        <img class="church-is-menu" src="@/assets/icons/icons8-user-groups-208.png"> detail
+                                </a>
+                                <!-- <a class="nav-link list-group-item list-group-item-action border-0" id="pill-delete-tab" data-toggle="pill" href="#pill-delete" role="tab" aria-controls="pill-delete" aria-selected="false">
+                                        <img class="church-is-menu" src="@/assets/icons/icons8-cancel-26.png"> family
+                                </a>                                             -->
+                                <a class="nav-link list-group-item list-group-item-action border-0" id="pill-groups-tab" data-toggle="pill" href="#pill-groups" role="tab" aria-controls="pill-groups" aria-selected="false" v-on:click = "getMemberGroups()">
+                                        <img class="church-is-menu" src="@/assets/icons/icons8-user-groups-filled-50.png"> groups
+                                </a>                        
+                                <a class="nav-link list-group-item list-group-item-action border-0" id="pill-contributions-tab" data-toggle="pill" href="#pill-contributions" role="tab" aria-controls="pill-contributions" aria-selected="false" v-on:click = "getMemberFinances()">
+                                        <img class="church-is-menu" src="@/assets/icons/icons8-donate-filled-50.png"> finances
+                                </a>
+                                <a class="nav-link list-group-item list-group-item-action border-0" id="pill-roles-tab" data-toggle="pill" href="#pill-roles" 
+                                   role="tab" aria-controls="pill-roles" aria-selected="false"
+                                   >
+                                        <img class="church-is-menu" src="@/assets/icons/icons8-admin-settings-male-30.png"> roles
+                                </a> 
+                        </div>
+                </div>
+                <div class="col">
+                        <div class="tab-content" id="v-pills-tabContent">
+                                <!-- member detail -->
+                                <div class="tab-pane fade show active" id="pill-detail" role="tabpanel" aria-labelledby="pill-detail-tab">                                
+                                        <div class="mx-auto" style="width: 200px;">
+                                        <div class="row">
+                                                <div class="col border " style=" height: 100px ;border-radius: 15px">
+                                                        <div style="padding: 25px 25px 25px 25px">
+                                                        <img src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
+                                                        </div>
+                                                </div>
+                                                <div style="padding : 10px">
+                                                        <span v-for = "data in member_info">
+                                                                <span v-for = "data in data">
+                                                                <div class=" row mx-auto"><b>name :</b> {{data.member.first_name}}  {{data.member.last_name}}</div>
+                                                                </span>
+                                                        </span>
                                                 </div>
                                         </div>
-                                        <div style="padding : 10px">
-                                                <span v-for = "data in member_info">
-                                                        <span v-for = "data in data">
-                                                        <div class=" row mx-auto"><b>name :</b> {{data.member.first_name}}  {{data.member.last_name}}</div>
-                                                        </span>
-                                                </span>
                                         </div>
-                                </div>
-                                </div>
-                                <hr/>
-                                <div class="row" style="padding: 25px 25px 25px 25px">
-                                <div class="col">
-                                        <div class="card border-0" style="max-width: 18rem;">
-                                                <div class="card-header border-0">personal</div>
-                                                <div class="card-body">
-                                                <span v-for = "data in member_info">
-                                                <span v-for = "data in data">
-                                                        <p><b>username:</b> {{data.member.username}}</p>
-                                                </span>
-                                                </span>
-                                                <span v-for = "data in member_info">
+                                        <hr/>
+                                        <div class="row" style="padding: 25px 25px 25px 25px">
+                                        <div class="col">
+                                                <div class="card border-0" style="max-width: 18rem;">
+                                                        <div class="card-header border-0">personal</div>
+                                                        <div class="card-body">
+                                                        <span v-for = "data in member_info">
                                                         <span v-for = "data in data">
-                                                        <p v-if = "data.gender == 'M'"><b>gender :</b> male </p>
-                                                        <p v-if = "data.gender == 'F'"><b>gender :</b> female </p>
+                                                                <p><b>username:</b> {{data.member.username}}</p>
                                                         </span>
-                                                </span>
-                                                <p v-if = "marital_status_info.marital_status.length == 0"><b>marital status :</b> none given</p>
-                                                <span v-for = "data in marital_status_info" >
-                                                        <span v-for = "data in data">
-                                                        <p v-if = "data.status == 'M'"><b>marital status :</b> married </p>
-                                                        <p v-if = "data.status == 'S'"><b>marital status :</b> single </p>
-                                                        <p v-if = "data.status == 'D'"><b>marital status :</b> divorced </p>
-                                                        <p v-if = "data.status == 'W'"><b>marital status :</b> widowed </p>
                                                         </span>
-                                                </span>
-                                                </span>
-                                                <p v-if = "age_errors.length > 0"><b>age :</b> none given</p>
+                                                        <span v-for = "data in member_info">
+                                                                <span v-for = "data in data">
+                                                                <p v-if = "data.gender == 'M'"><b>gender :</b> male </p>
+                                                                <p v-if = "data.gender == 'F'"><b>gender :</b> female </p>
+                                                                </span>
+                                                        </span>
+                                                        <p v-if = "marital_status_info.marital_status.length == 0"><b>marital status :</b> none given</p>
+                                                        <span v-for = "data in marital_status_info" >
+                                                                <span v-for = "data in data">
+                                                                <p v-if = "data.status == 'M'"><b>marital status :</b> married </p>
+                                                                <p v-if = "data.status == 'S'"><b>marital status :</b> single </p>
+                                                                <p v-if = "data.status == 'D'"><b>marital status :</b> divorced </p>
+                                                                <p v-if = "data.status == 'W'"><b>marital status :</b> widowed </p>
+                                                                </span>
+                                                        </span>
+                                                        </span>
+                                                        <p v-if = "age_errors.length > 0"><b>age :</b> none given</p>
 
-                                                <span v-for = "data in age_info">
-                                                        <p><b>age :</b> {{data.age}}  <small class="text-info">({{data.d_o_b}})</small></p>
-                                                </span>
+                                                        <span v-for = "data in age_info">
+                                                                <p><b>age :</b> {{data.age}}  <small class="text-info">({{data.d_o_b}})</small></p>
+                                                        </span>
+                                                        </div>
                                                 </div>
-                                        </div>
-                                        <div class="card border-0" style="max-width: 18rem;">
-                                                <div class="card-header border-0">residence </div>
-                                                <div class="card-body">
-                                                <p v-if = "residence_info.residence.length == 0 "> none given </p>
-                                                        <span v-for = "data in residence_info">
-                                                        <span v-for = "data in data">
-                                                                <p><b>town:</b> {{data.town}}</p>
-                                                        </span>
-                                                        </span>
-                                                        <span v-for = "data in residence_info">
+                                                <div class="card border-0" style="max-width: 18rem;">
+                                                        <div class="card-header border-0">residence </div>
+                                                        <div class="card-body">
+                                                        <p v-if = "residence_info.residence.length == 0 "> none given </p>
+                                                                <span v-for = "data in residence_info">
                                                                 <span v-for = "data in data">
-                                                                        <p><b>road:</b> {{data.road}}</p>
+                                                                        <p><b>town:</b> {{data.town}}</p>
                                                                 </span>
-                                                        </span>
-                                                        <span v-for = "data in residence_info">
-                                                                <span v-for = "data in data">
-                                                                        <p><b>street / drive:</b> {{data.street}}</p>
                                                                 </span>
-                                                        </span>
-                                                        <span v-for = "data in residence_info">
-                                                                <span v-for = "data in data">
-                                                                        <p><b>area name:</b> {{data.village_estate}}</p>
-                                                                </span>
-                                                        </span>
-                                                        <span v-for = "data in residence_info">
-                                                                <span v-for = "data in data">
-                                                                        <p><b>description:</b> {{data.description}}</p>
-                                                                </span>
-                                                        </span>
-                                                </div>
-                                        </div>
-                                </div>
-                                <div class="col">
-                                        <div class="card border-0" style="max-width: 18rem;">
-                                                <div class="card-header border-0"> contact </div>
-                                                <div class="card-body">
-                                                        <p v-if = "contact_info.contact.length == 0 "> none given </p>
-                                                        <span v-for = "data in contact_info">
-                                                                <span v-for = "data in data">
-                                                                        <p><b>phone number:</b> {{data.phone}}</p>
-                                                                </span>
-                                                                <span v-for = "data in member_info">
+                                                                <span v-for = "data in residence_info">
                                                                         <span v-for = "data in data">
-                                                                        <div v-if = "data.member.email == ''"><b>email :</b> none given</div>
-                                                                        <div v-if = "data.member.email != ''"><b>email :</b> {{data.member.email}}</div>
+                                                                                <p><b>road:</b> {{data.road}}</p>
                                                                         </span>
                                                                 </span>
-                                                        </span>
+                                                                <span v-for = "data in residence_info">
+                                                                        <span v-for = "data in data">
+                                                                                <p><b>street / drive:</b> {{data.street}}</p>
+                                                                        </span>
+                                                                </span>
+                                                                <span v-for = "data in residence_info">
+                                                                        <span v-for = "data in data">
+                                                                                <p><b>area name:</b> {{data.village_estate}}</p>
+                                                                        </span>
+                                                                </span>
+                                                                <span v-for = "data in residence_info">
+                                                                        <span v-for = "data in data">
+                                                                                <p><b>description:</b> {{data.description}}</p>
+                                                                        </span>
+                                                                </span>
+                                                        </div>
                                                 </div>
                                         </div>
-                                        <div class="card border-0" style="max-width: 18rem;">
-                                        <div class="card-header border-0">Family</div>
-                                        <div class="card-body">
-                                                <p v-if = "family_info.family.length == 0 "> none given </p>
-
-                                                <table class="table" v-if = "min_age > 0  || max_age != 150 ">
-                                                        <tbody>
-                                                        <tr v-for="data in family_info.family">
-                                                        <span  v-for = "data in data" >
-                                                                <span  >{{data.name}}</span>
-                                                                <div v-for = "data in data.members">
-                                                                <td>
-                                                                        <img v-if = "data.gender == 'M'" style = "height: 32px "src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
-                                                                        <img v-if = "data.gender == 'F'" style = "height: 32px "src="@/assets/avatars/icons8-user-female-skin-type-4-40.png">
-                                                                        <img v-if = "data.gender == 'R'" style = "height: 32px "src="@/assets/avatars/icons8-contacts-96.png">
-
-                                                                <span class="text-secondary">{{data.member.first_name}} {{data.member.last_name}}</span>
-
-                                                                </td>
-                                                                </div>
-                                                        </span>
-                                                        </tr>
-                                                        </tbody>
-                                                </table>
-                                        </div>
-                                        </div>
-                                </div>
-                                </div>
-                        </div>
-                        <div class="tab-pane fade" id="pill-groups" role="tabpanel" aria-labelledby="pill-groups-tab">
-
-                                <h3> Church Groups</h3>
-                                <table class="table" v-if = "groups_selected == true">
-                                <thead class=""  v-if = "church_groups.response.length > 0">
-                                        <tr>
-                                                <th>group</th>
-                                                <th>joined</th>
-                                                <th>role</th>
-                                        </tr>
-                                </thead>
-                                        <tr v-for = "data in church_groups.response">
-                                                <td>{{data.church_group.name}}</td>
-                                                <td>{{data.date_joined}}</td>
-                                                <td>{{data.role.role}}</td>
-                                        </tr>
-
-                                </table>
-                                <div v-if = "groups_selected == true">
-                                        <div v-if = "church_groups.response.length == 0 ">
-                                                <p class="text-muted">member belongs to none. </p>
-                                        </div>
-                                </div>
-                        </div>
-
-                        <div class=" tab-pane fade" id="pill-contributions" role="tabpanel" aria-labelledby="pill-contributions-tab">
-                                <div class="row">
-                                <div class="col-2"></div>
-                                <div class="col-8">
-                                <ul class="nav nav-pills mb-3 mt-3" id="pills-tab" role="tablist">
-                                        <li class="nav-item">
-                                                <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">contributions</a>
-                                        </li>
-                                        <li class="nav-item">
-                                                <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Pledges</a>
-                                        </li>
-                                        <li class="nav-item">
-                                                <a class="nav-link" id="pills-tithes-tab" data-toggle="pill" href="#pills-tithes" role="tab" aria-controls="pills-tithes" aria-selected="false">Tithes</a>
-                                        </li>
-                                        <li class="nav-item">
-                                                <a class="nav-link" id="pills-offerings-tab" data-toggle="pill" href="#pills-offerings" role="tab" aria-controls="pills-offerings" aria-selected="false">Offerings</a>
-                                        </li>
-                                </ul>
-                                </div>
-                                <div class="col-2"></div>
-                                </div>
-                                <div class="tab-content" id="pills-tabContent">
-                                        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" v-if="finances_selected">
-                                                        <h3 >Contributions</h3>
-                                                        <table class="table">
-                                                                <thead>
-                                                                <tr>
-                                                                        <th>project</th>
-                                                                        <th>amount</th>
-                                                                        <th>date</th>
-                                                                </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                <tr v-for = "data in contribution_info.contribution">
-                                                                        <td>{{data.project.name}}</td>
-                                                                        <td><p class="text-muted">{{humanize(data.amount)}}</p></td>
-                                                                        <td>{{data.recorded_at}}</td>
-                                                                </tr>
-                                                                </tbody>
-                                                        </table>
-                                                        <p class="text-muted" v-if="! contribution_info.contribution.length">
-                                                                found no contributions by member
-                                                        </p>
-                                        </div>
-                                        <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" v-if="finances_selected">
-                                                        <h3>Pledges</h3>
-                                                        <table class="table">
-
-                                                                <thead>
-                                                                        <tr>
-                                                                        <th>project</th>
-                                                                        <th>amount pledged</th>
-                                                                        <th>amount raised</th>
-                                                                        <th>amount remaining</th>
-                                                                        <th>percentage funded</th>
-                                                                        </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                        <tr v-for = "data in pledges_info.pledges">
-                                                                        <td>{{data.project.name}} </td>
-                                                                        <td>{{humanize(data.amount)}}</td>
-                                                                        <td><p class="text-muted">{{humanize(data.amount_so_far)}}</p></td>
-                                                                        <td><p  >{{humanize(data.remaining_amount)}}</p></td>
-                                                                        <td><span class="text-muted">{{data.percentage_funded}}</span></td>
-
-                                                                        </tr>
-                                                                </tbody>
-                                                        </table>
-                                                        <p class="text-muted" v-if="! pledges_info.pledges.length">
-                                                                found no pledges by member.
-                                                        </p>
-                                        </div>
-                                        <div class="tab-pane fade" id="pills-tithes" role="tabpanel" aria-labelledby="pills-tithes-tab" v-if = "finances_selected">
-                                                        <h3>Tithes</h3>
-                                                        <div class="row" v-for = "data in tithe_stats.stats">
-                                                                <p class="card-text" style="padding: 5px"><small class="text-muted">total this month |<span class="text-info">{{humanize(data.total_this_month)}}</span>|</small> </p>
-                                                                <p class="card-text" style="padding: 5px"><small class="text-muted">total this year |<span class="text-info">{{humanize(data.total_this_year)}}|</span></small> </p>
+                                        <div class="col">
+                                                <div class="card border-0" style="max-width: 18rem;">
+                                                        <div class="card-header border-0"> contact </div>
+                                                        <div class="card-body">
+                                                                <p v-if = "contact_info.contact.length == 0 "> none given </p>
+                                                                <span v-for = "data in contact_info">
+                                                                        <span v-for = "data in data">
+                                                                                <p><b>phone number:</b> {{data.phone}}</p>
+                                                                        </span>
+                                                                        <span v-for = "data in member_info">
+                                                                                <span v-for = "data in data">
+                                                                                <div v-if = "data.member.email == ''"><b>email :</b> none given</div>
+                                                                                <div v-if = "data.member.email != ''"><b>email :</b> {{data.member.email}}</div>
+                                                                                </span>
+                                                                        </span>
+                                                                </span>
                                                         </div>
-
-                                                        <table class="table">
-                                                                <thead>
-                                                                <tr>
-                                                                        <th>amount</th>
-                                                                        <th>narration</th>
-                                                                        <th>date</th>
-                                                                </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                <tr v-for = "data in tithe_info.tithes">
-                                                                        <td><p class="text-muted">{{humanize(data.amount)}}</p></td>
-                                                                        <td class="small"> {{data.narration}}</td>
-                                                                        <td>{{data.date}}</td>
-                                                                </tr>
-                                                                </tbody>
-                                                        </table>
-                                                        <p class="text-muted" v-if="!tithe_info.tithes.length">
-                                                                found no tithe by member this month.
-                                                        </p>
-                                        </div>
-                                        <div class="tab-pane fade" id="pills-offerings" role="tabpanel" aria-labelledby="pills-offerings-tab" v-if = "finances_selected">
-                                                        <h3>Offerings </h3>
-                                                        <div class="row" v-for = "data in offering_stats.stats">
-                                                                <p class="card-text" style="padding: 5px"><small class="text-muted">total this month |<span class="text-info">{{humanize(data.total_this_month)}}</span>|</small> </p>
-                                                                <p class="card-text" style="padding: 5px"><small class="text-muted">total this year |<span class="text-info">{{humanize(data.total_this_year)}}|</span></small> </p>
-                                                        </div>
-                                                        <table class="table">
-                                                                <thead>
-                                                                <tr>
-                                                                        <th>amount</th>
-                                                                        <th>narration</th>
-                                                                        <th>date</th>
-                                                                </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                <tr v-for = "data in offering_info.offerings">
-                                                                        <td><p class="text-muted">{{humanize(data.amount)}}</p></td>
-                                                                        <td> {{data.narration}}</td>
-                                                                        <td>{{data.date}}</td>
-                                                                </tr>
-                                                                </tbody>
-                                                        </table>
-                                                        <p class="text-muted" v-if="!offering_info.offerings.length">
-                                                                found no offering by member.
-                                                        </p>
-
-
-                                        </div>
-                                </div>
-                        </div>
-                        <div class="tab-pane fade" id="pill-delete" role="tabpanel" aria-labelledby="pill-delete-tab">
-                                <div class="tree">
-                                        <ul>
-                                        <li>
-                                        <div class="family">
-                                                <div class="person child male">
-                                                        <div class="name">Grandfather</div>
                                                 </div>
-                                                <div class="parent">
-                                                <div class="person female">
-                                                <div class="name">Grandmother</div>
+                                                <div class="card border-0" style="max-width: 18rem;">
+                                                <div class="card-header border-0">Family</div>
+                                                <div class="card-body">
+                                                        <p v-if = "family_info.family.length == 0 "> none given </p>
+
+                                                        <table class="table" v-if = "min_age > 0  || max_age != 150 ">
+                                                                <tbody>
+                                                                <tr v-for="data in family_info.family">
+                                                                <span  v-for = "data in data" >
+                                                                        <span  >{{data.name}}</span>
+                                                                        <div v-for = "data in data.members">
+                                                                        <td>
+                                                                                <img v-if = "data.gender == 'M'" style = "height: 32px "src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
+                                                                                <img v-if = "data.gender == 'F'" style = "height: 32px "src="@/assets/avatars/icons8-user-female-skin-type-4-40.png">
+                                                                                <img v-if = "data.gender == 'R'" style = "height: 32px "src="@/assets/avatars/icons8-contacts-96.png">
+
+                                                                        <span class="text-secondary">{{data.member.first_name}} {{data.member.last_name}}</span>
+
+                                                                        </td>
+                                                                        </div>
+                                                                </span>
+                                                                </tr>
+                                                                </tbody>
+                                                        </table>
                                                 </div>
-                                                <ul>
-                                                <li>
-                                                        <div class="family" style="width: 172px">
-                                                        <div class="person child male">
-                                                        <div class="name">Uncle</div>
-                                                        </div>
-                                                        <div class="parent">
-                                                        <div class="person female">
-                                                        <div class="name">Wife of Uncle</div>
-                                                        </div>
-                                                        </div>
-                                                        </div>
+                                                </div>
+                                        </div>
+                                        </div>
+                                </div>
+                                <!-- member groups -->
+                                <div class="tab-pane fade" id="pill-groups" role="tabpanel" aria-labelledby="pill-groups-tab">
+
+                                        <h3> Church Groups</h3>
+                                        <table class="table" v-if = "groups_selected == true">
+                                        <thead class=""  v-if = "church_groups.response.length > 0">
+                                                <tr>
+                                                        <th>group</th>
+                                                        <th>joined</th>
+                                                        <th>role</th>
+                                                </tr>
+                                        </thead>
+                                                <tr v-for = "data in church_groups.response">
+                                                        <td>{{data.church_group.name}}</td>
+                                                        <td>{{data.date_joined}}</td>
+                                                        <td>{{data.role.role}}</td>
+                                                </tr>
+
+                                        </table>
+                                        <div v-if = "groups_selected == true">
+                                                <div v-if = "church_groups.response.length == 0 ">
+                                                        <p class="text-muted">member belongs to none. </p>
+                                                </div>
+                                        </div>
+                                </div>
+                                <!-- member finances -->
+                                <div class=" tab-pane fade" id="pill-contributions" role="tabpanel" aria-labelledby="pill-contributions-tab">
+                                        <div class="row">
+                                        <div class="col-2"></div>
+                                        <div class="col-8">
+                                        <ul class="nav nav-pills mb-3 mt-3" id="pills-tab" role="tablist">
+                                                <li class="nav-item">
+                                                        <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">contributions</a>
                                                 </li>
-                                                <li>
-                                                        <div class="family" style="width: 172px">
-                                                        <div class="person child female">
-                                                        <div class="name">Aunt</div>
-                                                        </div>
-                                                        <div class="parent">
-                                                        <div class="person male">
-                                                        <div class="name">Husband of Aunt</div>
-                                                        </div>
-                                                        </div>
-                                                        </div>
+                                                <li class="nav-item">
+                                                        <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Pledges</a>
                                                 </li>
-                                                <li>
-                                                        <div class="family" style="width: 344px">
-                                                        <div class="person child female">
-                                                        <div class="name">Mother</div>
-                                                        </div>
-                                                        <div class="parent">
-                                                        <div class="person male">
-                                                        <div class="name">Father</div>
-                                                        </div>
-                                                        <ul>
-                                                        <li>
-                                                                <div class="person child male">
-                                                                <div class="name">Me</div>
-                                                                </div>
-                                                        </li>
-                                                        <li>
-                                                                <div class="person child female">
-                                                                <div class="name">Sister</div>
-                                                                </div>
-                                                        </li>
-                                                        </ul>
-                                                        </div>
-                                                        <div class="person spouse male">
-                                                        <div class="name">Spouse</div>
-                                                        </div>
-                                                        </div>
+                                                <li class="nav-item">
+                                                        <a class="nav-link" id="pills-tithes-tab" data-toggle="pill" href="#pills-tithes" role="tab" aria-controls="pills-tithes" aria-selected="false">Tithes</a>
                                                 </li>
-                                                </ul>
-                                                </div>
-                                                </div>
-                                        </li>
+                                                <li class="nav-item">
+                                                        <a class="nav-link" id="pills-offerings-tab" data-toggle="pill" href="#pills-offerings" role="tab" aria-controls="pills-offerings" aria-selected="false">Offerings</a>
+                                                </li>
                                         </ul>
                                         </div>
-                                        <div class="tree">
-                                                {{family_tree}}
-                                                <ul >
-                                                <li v-for="data in family_tree.tree" v-if="data.member.level == 0">
-                                                        <div class="person child male">
-                                                                <div class="name">{{data.member.member}}</div>
-                                                        </div>
-                                                        <div class="parent">
-                                                                <div class="person female">
-                                                                        <div class="name" v-if="data.member.spouse != null">
-                                                                                {{data.member.spouse}}
-                                                                        </div>
-                                                                        <div class="name" v-if="data.member.spouse == null">
-                                                                                no spouse
-                                                                        </div>
-                                                                </div>
-                                                        </div>
-                                                        <ul>
-                                                        <span v-for="child in data.member.children">
-                                                                <li v-for="data in family_tree.tree" v-if="data.member.level == 1 && data.member.member == child">
-                                                                        <div class="person child male">
-                                                                                <div class="name">{{data.member.member}}</div>
-                                                                        </div>
-                                                                        <div class="parent">
-                                                                                <div class="person female">
-                                                                                        <div class="name" v-if="data.member.spouse != null">
-                                                                                                {{data.member.spouse}}
-                                                                                        </div>
-                                                                                        <div class="name" v-if="data.member.spouse == null">
-                                                                                                no spouse
-                                                                                        </div>
-                                                                                </div>
-                                                                        </div>
-                                                                        <ul>
-                                                                                <span v-for="child in data.member.children">
-                                                                                        <li  v-for="data in family_tree.tree" v-if="data.member.level == 2 && data.member.member == child">
-                                                                                                <div class="person child male">
-                                                                                                        <div class="name">{{data.member.member}}</div>
-                                                                                                </div>
-                                                                                        </li>
-                                                                                </span>
-                                                                        </ul>
-                                                                </li>
-                                                        </span>
-                                                        </ul>
-                                                </li>
-                                                </ul>
+                                        <div class="col-2"></div>
                                         </div>
+                                        <div class="tab-content" id="pills-tabContent">
+                                                <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" v-if="finances_selected">
+                                                                <h3 >Contributions</h3>
+                                                                <table class="table">
+                                                                        <thead>
+                                                                        <tr>
+                                                                                <th>project</th>
+                                                                                <th>amount</th>
+                                                                                <th>date</th>
+                                                                        </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                        <tr v-for = "data in contribution_info.contribution">
+                                                                                <td>{{data.project.name}}</td>
+                                                                                <td><p class="text-muted">{{humanize(data.amount)}}</p></td>
+                                                                                <td>{{data.recorded_at}}</td>
+                                                                        </tr>
+                                                                        </tbody>
+                                                                </table>
+                                                                <p class="text-muted" v-if="! contribution_info.contribution.length">
+                                                                        found no contributions by member
+                                                                </p>
+                                                </div>
+                                                <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" v-if="finances_selected">
+                                                                <h3>Pledges</h3>
+                                                                <table class="table">
+
+                                                                        <thead>
+                                                                                <tr>
+                                                                                <th>project</th>
+                                                                                <th>amount pledged</th>
+                                                                                <th>amount raised</th>
+                                                                                <th>amount remaining</th>
+                                                                                <th>percentage funded</th>
+                                                                                </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                                <tr v-for = "data in pledges_info.pledges">
+                                                                                <td>{{data.project.name}} </td>
+                                                                                <td>{{humanize(data.amount)}}</td>
+                                                                                <td><p class="text-muted">{{humanize(data.amount_so_far)}}</p></td>
+                                                                                <td><p  >{{humanize(data.remaining_amount)}}</p></td>
+                                                                                <td><span class="text-muted">{{data.percentage_funded}}</span></td>
+
+                                                                                </tr>
+                                                                        </tbody>
+                                                                </table>
+                                                                <p class="text-muted" v-if="! pledges_info.pledges.length">
+                                                                        found no pledges by member.
+                                                                </p>
+                                                </div>
+                                                <div class="tab-pane fade" id="pills-tithes" role="tabpanel" aria-labelledby="pills-tithes-tab" v-if = "finances_selected">
+                                                                <h3>Tithes</h3>
+                                                                <div class="row" v-for = "data in tithe_stats.stats">
+                                                                        <p class="card-text" style="padding: 5px"><small class="text-muted">total this month |<span class="text-info">{{humanize(data.total_this_month)}}</span>|</small> </p>
+                                                                        <p class="card-text" style="padding: 5px"><small class="text-muted">total this year |<span class="text-info">{{humanize(data.total_this_year)}}|</span></small> </p>
+                                                                </div>
+
+                                                                <table class="table">
+                                                                        <thead>
+                                                                        <tr>
+                                                                                <th>amount</th>
+                                                                                <th>narration</th>
+                                                                                <th>date</th>
+                                                                        </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                        <tr v-for = "data in tithe_info.tithes">
+                                                                                <td><p class="text-muted">{{humanize(data.amount)}}</p></td>
+                                                                                <td class="small"> {{data.narration}}</td>
+                                                                                <td>{{data.date}}</td>
+                                                                        </tr>
+                                                                        </tbody>
+                                                                </table>
+                                                                <p class="text-muted" v-if="!tithe_info.tithes.length">
+                                                                        found no tithe by member this month.
+                                                                </p>
+                                                </div>
+                                                <div class="tab-pane fade" id="pills-offerings" role="tabpanel" aria-labelledby="pills-offerings-tab" v-if = "finances_selected">
+                                                                <h3>Offerings </h3>
+                                                                <div class="row" v-for = "data in offering_stats.stats">
+                                                                        <p class="card-text" style="padding: 5px"><small class="text-muted">total this month |<span class="text-info">{{humanize(data.total_this_month)}}</span>|</small> </p>
+                                                                        <p class="card-text" style="padding: 5px"><small class="text-muted">total this year |<span class="text-info">{{humanize(data.total_this_year)}}|</span></small> </p>
+                                                                </div>
+                                                                <table class="table">
+                                                                        <thead>
+                                                                        <tr>
+                                                                                <th>amount</th>
+                                                                                <th>narration</th>
+                                                                                <th>date</th>
+                                                                        </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                        <tr v-for = "data in offering_info.offerings">
+                                                                                <td><p class="text-muted">{{humanize(data.amount)}}</p></td>
+                                                                                <td> {{data.narration}}</td>
+                                                                                <td>{{data.date}}</td>
+                                                                        </tr>
+                                                                        </tbody>
+                                                                </table>
+                                                                <p class="text-muted" v-if="!offering_info.offerings.length">
+                                                                        found no offering by member.
+                                                                </p>
+
+
+                                                </div>
+                                        </div>
+                                </div>
+                                <!-- member roles -->
+                                <div class="tab-pane fade" id="pill-roles" role="tabpanel" 
+                                     aria-labelledby="pill-role-tab"
+                                     v-if="roles && roles_for_member">
+                                        <div class="col">            
+                                                <div>   
+                                                        <div>
+                                                          <h3> member roles </h3>
+                                                        </div> 
+                                                        ({{roles_for_member.response[0].role.role}})  
+                                                        <!-- content -->
+                                                        <div class="row">
+                                                                <div style="padding: 10px">                                                              
+                                                                        <div class=" row">   
+                                                                                <div class="alert alert-warning alert-dismissible fade show" role="alert" v-if="assigned_roles.length > 0">                                    
+                                                                                        <p v-for="data in assigned_roles">
+                                                                                        <strong >role :{{data.role.role}}</strong> {{data.role.description}}
+                                                                                        added for this member
+                                                                                        </p>
+                                                                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                                                        <span aria-hidden="true">&times;</span>
+                                                                                        </button>
+                                                                                </div>                                    
+                                                                                <table class="table">
+                                                                                        <thead>
+                                                                                        <tr> </tr>
+                                                                                        <tr></tr>
+                                                                                        <tr></tr>
+                                                                                        </thead>
+                                                                                        <tbody>
+                                                                                        <tr>
+                                                                                                <th></th>
+                                                                                                <th> role</th>                                                
+                                                                                                <th><small> member admin</small></th>
+                                                                                                <th><small> group admin</small></th>
+                                                                                                <th><small> event admin</small></th>
+                                                                                                <th><small> projects admin</small></th>
+                                                                                                <th><small> finance admin</small></th>
+                                                                                                <th><small> site admin</small></th>
+                                                                                        </tr>                                             
+                                                                                        <tr v-for="data in roles.response">
+                                                                                                <td>
+                                                                                                <span v-for="data2 in roles_for_member.response">                                                                                                                                                            
+                                                                                                <span v-if =" data2.role.role == data.role">
+                                                                                                        <input  multiple class="form-check-input" 
+                                                                                                                type="checkbox" :value=data.id v-model="selected_role" disabled >
+                                                                                                </span>
+                                                                                                <span v-else>
+                                                                                                        <input multiple class="form-check-input" type="checkbox" :value=data.id v-model="selected_role">
+                                                                                                </span>
+                                                                                                </span>
+                                                                                                <span v-if = "! member_has_roles">
+                                                                                                        <input multiple class="form-check-input" type="checkbox" :value=data.id v-model="selected_role"> 
+                                                                                                </span>
+                                                                                                </td>                                                                                           
+                                                                                                <td>{{data.role}}</td>                                                
+                                                                                                <td v-if="data.member_admin"><span class="badge badge-pill badge-success"> yes</span> </td>
+                                                                                                <td v-else><span class="badge badge-pill badge-danger">no</span></td>
+                                                                                                <td v-if="data.member_admin"><span class="badge badge-pill badge-success"> yes</span> </td>
+                                                                                                <td v-else><span class="badge badge-pill badge-danger">no</span></td>
+                                                                                                <td v-if="data.event_admin"><span class="badge badge-pill badge-success"> yes</span> </td>
+                                                                                                <td v-else><span class="badge badge-pill badge-danger">no</span></td>
+                                                                                                <td v-if="data.projects_admin"><span class="badge badge-pill badge-success"> yes</span> </td>
+                                                                                                <td v-else><span class="badge badge-pill badge-danger">no</span></td>
+                                                                                                <td v-if="data.finance_admin"><span class="badge badge-pill badge-success"> yes</span> </td>                                                
+                                                                                                <td v-else><span class="badge badge-pill badge-danger">no</span></td>
+                                                                                                <td v-if="data.site_admin"><span class="badge badge-pill badge-success"> yes</span> </td>
+                                                                                                <td v-else><span class="badge badge-pill badge-danger">no</span></td>
+                                                                                        </tr>                                                                               
+                                                                                        </tbody>
+                                                                                </table>
+                                                                        </div>                                                           
+                                                                </div>                                                        
+                                                        </div>                            
+                                                </div>
+                                        </div>          
+                                        <hr/>          
+                                        <div style="padding: 0px 0px 25px 0px" >
+                                                <a href="#" v-on:click = "assignRoles()" style="text-decoration: none" aria-disabled="true">
+                                                        <div class="add-button">
+                                                        {{assign_button_text}}
+                                                        </div>
+                                                </a>
+                                        </div>     
+                                </div>
                         </div>
                 </div>
-              </div>
-            </div>
-    </div>
+                </div>
+        </div>        
+        <!-- add role Modal -->
+        <div class="modal fade" id="addRole" tabindex="-1" role="dialog" aria-labelledby="addRoleModal" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalCenterTitle">add a role</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                            <div class="modal-body">                                   
+                                    <form >
+                                            <div class=" row form-group">
+                                            <label class="col-3"><b>name:</b></label>
+                                            <input type="text" class="col-8 form-control" placeholder="enter name of the role" v-model="role_name">                                        
+                                            </div>
+                                            <div class="row form-group">
+                                                    <label class="col-3"><b>description:</b></label>
+                                                    <textarea type="text" class="col-8 form-control" rows='3' v-model="role_description"></textarea>                                                   
+                                            </div>  
+                                            <hr/>
+                                            <div class="form-check form-check-inline">
+                                                 <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value=true v-model="member_admin">
+                                                 <label class="form-check-label" for="inlineCheckbox1">member admin</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                  <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value=true v-model="site_admin">
+                                                  <label class="form-check-label" for="inlineCheckbox2">website admin</label>
+                                            </div>  
+                                            <div class="form-check form-check-inline">
+                                                 <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value=true v-model="group_admin">
+                                                  <label class="form-check-label" for="inlineCheckbox2">group admin</label>
+                                            </div> 
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value=true v-model="events_admin">
+                                                <label class="form-check-label" for="inlineCheckbox1">events admin</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value=true v-model="projects_admin">
+                                                    <label class="form-check-label" for="inlineCheckbox2">projects admin</label>
+                                            </div>  
+                                            <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value=true v-model="finance_admin">
+                                                    <label class="form-check-label" for="inlineCheckbox2">finance admin</label>
+                                            </div>                                                                                                                                                                  
+                                    </form>
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-success" disabled v-if="! enable_role_button"><b>+</b> add role </button>
+                            <button type="button" class="btn btn-success" v-if="enable_role_button" v-on:click="addRole()"> {{add_role_button_text}} </button>
+                            </div>
+                        </div>
+                        </div>
+        </div>
     </div>
   </template>
 
@@ -465,15 +490,47 @@ export default {
         church_groups: null,
         finances_selected: false, contribution_info:null, pledges_info: null,
         offering_info: null,tithe_info: null,tithe_stats: null,offering_stats: null,
-        family_tree: null
+        family_tree: null,
+        // roles
+        //fetching data
+        fetch_data_error: [],
+        roles: null,            
+        roles_for_member: null, 
+        //add role
+        role_name: null,
+        role_description: null,
+        enable_role_button: false,
+        add_role_button_text: '+ add role',
+        added_role: [],
+        //assign roles 
+        selected_role: [],
+        assign_button_text: 'assign role(s)',
+        member_admin: false,
+        site_admin: false,
+        group_admin: false,
+        event_admin: false,
+        projects_admin: false,
+        finance_admin: false,
+        assigned_roles: [] 
     }
   },
   created() {
         this.fetchData()
+        this.getRoles()
+        this.getRoleForMember()
     },
 
   watch: {
-        '$route': 'fetchData'
+        role_name: function (){
+                if (this.role_name.length > 0 && this.role_description.length > 0){
+                        this.enable_role_button = true
+                }
+        },
+        role_description: function (){
+                if (this.role_description.length > 0 && this.role_name.length > 0){
+                this.enable_role_button = true
+                }
+        }
     },
   methods: {
         humanize: function(x) {
@@ -603,6 +660,84 @@ export default {
                 this.$store.dispatch('update_isLoading', false)
                 })
 
+        },
+        // roles
+        getRoles: function () {
+            this.fetch_data_error = []
+            this.$http.get(this.$BASE_URL +'/api/members/role-list/')
+                .then(response => {
+                this.roles = {"response": response.data } 
+                })
+                .catch((err) => {
+                    this.fetch_data_error.push(err)
+                })                  
+            
+        },
+        getRoleForMember: function (){  
+            this.$http.get(this.$BASE_URL +'/api/members/roles-for-member/'+ this.$route.params.id + '/')
+                .then(response => {
+                this.roles_for_member = {"response": response.data } 
+                var count = 0
+                for (var data in this.roles_for_member.response){
+                    count = count + 1                    
+                }
+                if (count > 0){
+                    this.member_has_roles = true
+                }                
+                })
+                .catch((err) => {                    
+                    this.fetch_data_error.push(err)
+                })
+        },
+        //add role        
+        addRole: function() {
+            this.enable_role_button = false
+            this.add_role_button_text = 'adding role...'            
+            this.$http({ method: 'post', url: this.$BASE_URL + '/api/members/role-list/',
+                data: {
+                  role: this.role_name,
+                  description: this.role_description,  
+                  member_admin: this.member_admin,
+                  site_admin: this.site_admin,
+                  group_admin: this.group_admin,
+                  event_admin: this.event_admin,
+                  projects_admin: this.projects_admin,
+                  finance_admin: this.finance_admin               
+                }
+              }).then(response => {
+
+                this.added_role.push(response.data)                    
+                this.role_name = ''
+                this.role_description = '' 
+                this.add_role_button_text = '+ add role'
+                alert("role succesfuly added")
+                this.fetchdata()                    
+                })
+                .catch((err) => {
+                    
+                })                
+        },
+        // assign roles
+        assignRoles: function(){            
+            for (var id in this.selected_role){                
+            this.assign_button_text = "assigning roles..."
+            this.$http({
+                method: 'post',
+                url: this.$BASE_URL + '/api/members/add-role-for-member/',
+                data: {
+                   member_id: this.$route.params.id,
+                   role_id: this.selected_role[id]                  
+                }
+              }).then(response => {
+                    this.assigned_roles.push(response.data)
+                    this.assign_button_text = "assign role(s)"
+                    this.selected_role = []                    
+                    alert("successfully assigned roles")
+                    this.fetchdata()
+                })
+                .catch((err) => {                    
+                }) 
+            }
         }
 
     }
