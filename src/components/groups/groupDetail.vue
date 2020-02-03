@@ -338,10 +338,11 @@
                         <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="closeSmsModal()">Close</button>
                           <span v-if = "sms_status.length == 0">
-                            <button type="button" class="btn btn-success" v-on:click=sendMessage()>send text</button>
-                            <span v-if="sending_message"
+                            <button type="button" class="btn btn-success" v-on:click=sendMessage()>send text
+                              <span v-if="sending_message"
                                 class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
                             </span>
+                            </button>                            
                           </span>
                         </div>
                       </div>
@@ -480,7 +481,7 @@ export default {
         this.$http({ method: 'post', url: this.$BASE_URL + '/api/sms/add-sms/',
         data: {
           sending_member_id: this.$session.get('member_id'),
-          app: "members-admin",
+          app: this.group.response[0].name,
           message: this.message,
           website: true,
           receipient_member_ids: this.member_ids

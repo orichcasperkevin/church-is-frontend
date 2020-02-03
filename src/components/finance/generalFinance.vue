@@ -8,6 +8,7 @@
         </nav>
         <div class = "container">
             <div class = "row">
+                <!-- NAVIGATIONS -->                
                 <div class="filters col-sm-12 col-md-8 col-lg-2" >
                         <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                                 <a class="action-list list-group-item list-group-item-action border-0 active" id="v-pills-income-tab" data-toggle="pill" href="#v-pills-income" role="tab" aria-controls="v-pills-income" aria-selected="true">
@@ -24,6 +25,7 @@
                                 </router-link>
                             </div>
                 </div>
+                <!-- CONTENT -->
                 <div class = "col">
                     <div class="tab-content" id="v-pills-tabContent">
                        
@@ -32,6 +34,7 @@
                                         <div class="row">
                                           <div class="col-2">                                            
                                           </div>
+                                          <!-- nav pills for offerings,tithes and others -->
                                           <div class="col-sm-12 col-lg-8">
                                                 <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                                                         <li class="nav-item">
@@ -48,11 +51,12 @@
                                           <div class="col-2">                                            
                                           </div>
                                         </div>
-                                      </div>                                                       
-                                <div class="tab-content" id="pills-tabContent">
-                                    <!-- when on a small device -->
+                                      </div>                                   
+                                 <!-- tithes -->                    
+                                <div class="tab-content" id="pills-tabContent">                                                                      
                                     <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">                                          
-                                            <h3>Tithe</h3>
+                                            <h3>Tithes </h3>
+                                            <!-- when on a small device show this button --> 
                                             <div class="d-sm-block d-lg-none btn-group" style="padding: 0px 0px 25px 10px" v-if = "tithes_selected">
                                                 <a href="#" data-toggle="modal" data-target="#addTithe" style="text-decoration: none">
                                                     <div class="add-button" style="text-align: center">
@@ -65,14 +69,25 @@
                                                 <div class="dropdown-menu border-success" aria-labelledby="dropdownMenuReference">
                                                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addOffering" v-on:click="getServiceTypes()"><b>+</b> add offering</a>
                                                 </div>
-                                            </div>                                            
-                                            <div class="small text-muted" v-if="tithes_selected">
+                                            </div>        
+                                            <!-- tithe stats                                     -->
+                                            <div class="text-muted" v-if="tithes_selected">
                                                 <p>Total this month  |<span class="text-info">
                                                     Ksh {{humanize(tithe_stats.response.total_in_tithe_this_month)}} </span>|
                                                 
                                                     Total this year  |<span class="text-info">
-                                                     Ksh   {{humanize(tithe_stats.response.total_in_tithe_this_year)}} </span>|
+                                                     Ksh   {{humanize(tithe_stats.response.total_in_tithe_this_year)}} </span>|                                                     
                                                 </p>
+                                                <p>
+                                                    <a class="btn btn-sm btn-outline-info dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
+                                                        more stats
+                                                    </a>
+                                                </p>
+                                                <div class="collapse" id="statsTab">
+                                                    <div class="card card-body outline-0">
+                                                        <tithestats msg="tithe stats"/>
+                                                    </div>
+                                                </div>
                                             </div>
                                             <hr/>
                                             <p>
@@ -267,6 +282,7 @@
                         </div>
                     </div>
                 </div>
+                <!-- ACTION BUTTONS -->
                 <div class = "col-12 col-sm-10 col-md-8 col-lg-3">
                     <div class="btn-group" style="padding: 0px 0px 25px 10px" v-if = "tithes_selected">
                             <a href="#" data-toggle="modal" data-target="#addTithe" style="text-decoration: none">
@@ -678,8 +694,13 @@
 
 <script>
 import router from "../../router";
+import tithestats from '@/subcomponents/statistics/tithestats.vue'
 export default {
     name: 'generalFinance',
+    components: {
+        tithestats
+    } ,
+
     data () {
         return{
         //get data

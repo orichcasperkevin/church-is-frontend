@@ -125,7 +125,12 @@ export default new Router({
       path: '/services/',
       name: 'services',
       component: services
-    }
+    },
+    {
+      path: '/sms-analytics/',
+      name: 'smsAnalytics',
+      component:  () => import('@/components/sms/smsAnalytics.vue')
+    }    
 
   ]
 })

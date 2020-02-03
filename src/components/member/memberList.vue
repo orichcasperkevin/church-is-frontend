@@ -610,15 +610,13 @@ export default {
         url: this.$BASE_URL + '/api/sms/add-sms/',
         data: {
           sending_member_id: this.$session.get('member_id'),
-          app: "members-admin",
+          app: "GENERAL CHURCH",
           message: this.message,
           website: true,
           receipient_member_ids: this.member_ids
         }
         }).then(response => {        
-          this.sms_status.push(response.data)
-          console.log("here")
-          console.log(this.sms_status)
+          this.sms_status.push(response.data)          
           this.sending_message = false
         })
         .catch((err) => {
