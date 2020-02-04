@@ -52,8 +52,9 @@
                                           </div>
                                         </div>
                                       </div>                                   
-                                 <!-- tithes -->                    
+                                <!-- INCOME           -->
                                 <div class="tab-content" id="pills-tabContent">                                                                      
+                                    <!-- tithes -->
                                     <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">                                          
                                             <h3>Tithes </h3>
                                             <!-- when on a small device show this button --> 
@@ -116,59 +117,71 @@
                                                 </table>
                                             </div>
                                     </div>
+                                    <!-- offerings -->
                                     <div class="tab-pane fade" id="pills-offerings" role="tabpanel" aria-labelledby="pills-offerings-tab">                                                                                  
-                                            <div v-if = "offerings_selected">
-                                                <h3 >Offering</h3>
-                                                <!-- what to show on small devices -->
-                                                <div class="d-sm-block d-md-none d-lg-none btn-group" v-if = "offerings_selected">
-                                                        <a href="#" data-toggle="modal" data-target="#addOffering" style="text-decoration: none" v-on:click="getServiceTypes()">
-                                                            <div class="add-button">
-                                                                <b>+</b> add offering
-                                                            </div>
-                                                        </a>
-                                                        <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                                                                <span class="sr-only">Toggle Dropdown</span>
-                                                        </button>
-                                                        <div class="dropdown-menu border-success" aria-labelledby="dropdownMenuReference">
-                                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addTithe"><b>+</b> add tithe</a>
+                                        <div v-if = "offerings_selected">
+                                            <!-- offerings -->
+                                            <h3 >Offering</h3>
+                                            <!-- what to show on small devices -->
+                                            <div class="d-sm-block d-md-none d-lg-none btn-group" v-if = "offerings_selected">
+                                                    <a href="#" data-toggle="modal" data-target="#addOffering" style="text-decoration: none" v-on:click="getServiceTypes()">
+                                                        <div class="add-button">
+                                                            <b>+</b> add offering
                                                         </div>
-                                                </div>
-                                                <div class="small text-muted" v-if="offerings_selected">
-                                                        <p>Total this month  |<span class="text-info">
-                                                            Ksh {{humanize(offering_stats.response.total_in_offerings_this_month)}} </span>|
-                                                        
-                                                            Total this year  |<span class="text-info">
-                                                             Ksh   {{humanize(offering_stats.response.total_in_offerings_this_year)}} </span>|
-                                                        </p>
-                                                </div>                     
-                                                <hr/>
-                                                <p class="col-8">
-                                                        <span class="badge badge-pill badge-info">{{foundOfferings}}</span> entries found
-                                                </p>
-                                                <table class="table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>name</th>
-                                                            <th>amount</th>
-                                                            <th>date</th>
-                                                            <th>this month</th>
-                                                            <th>this year</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr v-for = "data in offerings.response">
-                                                            <td v-if = "data.member != null">{{data.member.member.first_name}} {{data.member.member.last_name}}</td>
-                                                            <td v-if = "data.service != null"> {{data.service.type.name}}</td>
-                                                            <td><p class="text-secondary">{{humanize(data.amount)}}</p></td>
-                                                            <td v-if = "data.member != null">{{data.date}}</td>
-                                                            <td v-if = "data.service != null"> {{data.service.date}}</td>
-                                                            <td><p class="text-secondary">{{humanize(data.total_this_month)}}</p></td>
-                                                            <td><p>{{humanize(data.total_this_year)}}</p></td>                                                          
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
+                                                    </a>
+                                                    <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
+                                                            <span class="sr-only">Toggle Dropdown</span>
+                                                    </button>
+                                                    <div class="dropdown-menu border-success" aria-labelledby="dropdownMenuReference">
+                                                        <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addTithe"><b>+</b> add tithe</a>
+                                                    </div>
                                             </div>
+                                            <div class="text-muted" v-if="offerings_selected">
+                                                    <p>Total this month  |<span class="text-info">
+                                                        Ksh {{humanize(offering_stats.response.total_in_offerings_this_month)}} </span>|
+                                                    
+                                                        Total this year  |<span class="text-info">
+                                                            Ksh   {{humanize(offering_stats.response.total_in_offerings_this_year)}} </span>|
+                                                    </p>
+                                                    <a class="btn btn-sm btn-outline-info dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
+                                                            more stats
+                                                    </a>
+                                                    </p>
+                                                    <div class="collapse" id="statsTab">
+                                                        <div class="card card-body outline-0">
+                                                            <offeringstats msg="offering stats"/>
+                                                        </div>
+                                                    </div>
+                                            </div>                     
+                                            <hr/>
+                                            <p class="col-8">
+                                                    <span class="badge badge-pill badge-info">{{foundOfferings}}</span> entries found
+                                            </p>
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>name</th>
+                                                        <th>amount</th>
+                                                        <th>date</th>
+                                                        <th>this month</th>
+                                                        <th>this year</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr v-for = "data in offerings.response">
+                                                        <td v-if = "data.member != null">{{data.member.member.first_name}} {{data.member.member.last_name}}</td>
+                                                        <td v-if = "data.service != null"> {{data.service.type.name}}</td>
+                                                        <td><p class="text-secondary">{{humanize(data.amount)}}</p></td>
+                                                        <td v-if = "data.member != null">{{data.date}}</td>
+                                                        <td v-if = "data.service != null"> {{data.service.date}}</td>
+                                                        <td><p class="text-secondary">{{humanize(data.total_this_month)}}</p></td>
+                                                        <td><p>{{humanize(data.total_this_year)}}</p></td>                                                          
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
+                                    <!-- others -->
                                     <div class="tab-pane fade" id="pills-anyOther" role="tabpanel" aria-labelledby="pills-anyOther-tab">                                        
                                             <div v-if = "any_other_selected">
                                                     <h3>Others</h3>
@@ -193,6 +206,15 @@
                                                                 Total this year  |<span class="text-info">
                                                                  Ksh   {{humanize(income_stats.response.total_this_year)}} </span>|
                                                             </p>
+                                                            <a class="btn btn-sm btn-outline-info dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
+                                                                    more stats
+                                                            </a>
+                                                            </p>
+                                                            <div class="collapse" id="statsTab">
+                                                                <div class="card card-body outline-0">
+                                                                    <incomestats msg="income stats"/>
+                                                                </div>
+                                                            </div>
                                                     </div>                                                    
                                                     <hr/>
                                                     <p class="col-8">
@@ -226,8 +248,9 @@
                                                     </table>
                                                 </div>
                                     </div>
-                            </div>
+                                </div>
                         </div>
+                        <!-- EXPENDITURE -->
                         <div class="tab-pane fade show " id="v-pills-expenditure" role="tabpanel" aria-labelledby="v-pills-expenditure-tab">
                             <div v-if = "expenditures_selected">
                                 <h3 >Expenditure</h3> 
@@ -695,10 +718,14 @@
 <script>
 import router from "../../router";
 import tithestats from '@/subcomponents/statistics/tithestats.vue'
+import offeringstats from '@/subcomponents/statistics/offeringstats.vue'
+import incomestats from '@/subcomponents/statistics/incomestats.vue'
 export default {
     name: 'generalFinance',
     components: {
-        tithestats
+        tithestats,
+        offeringstats,
+        incomestats
     } ,
 
     data () {
