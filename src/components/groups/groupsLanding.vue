@@ -19,8 +19,13 @@
                 Groups
               </b>
             </h3>
-            <p class="row small text-muted">
-              folders |<b class="text-info">{{foundItems}}</b>|  groups |<b class="text-info">{{foundItems_independent}}</b>|
+            <p class=" text-muted">
+              folders |<b class="text-info"> {{foundItems}} </b>|  groups |
+              <b class="text-info"> {{foundItems_independent}} </b>|
+
+              <a class="btn btn-sm btn-outline-info text-secondary dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
+                  more stats
+              </a>
             </p>
         </div>
       </div>
@@ -28,13 +33,14 @@
     </div>
     <div class="container">
       <div class="row">
+        <!-- NAVIGATION ON THE LEFT -->
         <div class="col-sm-10 col-md-5 col-lg-3">
                 <b>
                   folders
-                </b>|
-                <a class="text-success " href="#" data-toggle="modal" data-target="#addModal" style="text-decoration: none" v-on:click="selectFolder()">
-                  + add
-                 </a>|
+                </b>
+                <a class="btn btn-sm btn-success " href="#" data-toggle="modal" data-target="#addModal" style="text-decoration: none" v-on:click="selectFolder()">
+                  + Add folder
+                 </a>
               <div class="list-group" v-for="data in groups.response">
                 <router-link :to="`/groupList/`+ data.id + `/` + data.name"class="row list-group-item list-group-item-action border-0" >
                   <span>
@@ -47,9 +53,9 @@
               <b>
                 groups
               </b>
-                |<a class="text-success" href="#" data-toggle="modal" data-target="#addModal" style="text-decoration: none">
-                  + add
-                </a>|
+                <a class="btn btn-sm btn-success" href="#" data-toggle="modal" data-target="#addModal" style="text-decoration: none">
+                  + Add group
+                </a>
               <div class="list-group" v-for="data in independent_groups.response">
                 <router-link  :to="`/groupDetail/`+ data.id" class="list-group-item list-group-item-action border-0" >
                 <span>
@@ -59,11 +65,17 @@
               </router-link>
               </div>
         </div>
-      <div class="col-sm-10 col-md-8 col-lg-9">
-          <router-view >
+        <!-- CONTENT IN THE MIDDLE -->
+        <div class="col-sm-10 col-md-8 col-lg-9">
+            <div class="collapse" id="statsTab" style="max-width: 500px">
+                <div class="card card-body outline-0">
+                    <groupstats msg="expenditure stats"/>
+                </div>
+            </div>
+            <router-view >
 
-          </router-view>
-      </div>
+            </router-view>
+        </div>
         <!-- Modal add group -->
         <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
@@ -114,10 +126,10 @@
 
 <script>
 import router from "../../router";
-import Loading from 'vue-loading-overlay';
-import 'vue-loading-overlay/dist/vue-loading.css';
+import groupstats from '@/subcomponents/statistics/groupstats.vue'
 export default {
   name: 'groupsLanding',
+  components: { groupstats },
   data () {
     return {
       isLoading : false,

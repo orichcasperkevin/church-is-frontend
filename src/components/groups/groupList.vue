@@ -1,11 +1,11 @@
 <template>
-    <div>
+    <div>           
         <div class="row">
         <div class="col">
         <h3 >
             <img style="width: 30px ;height: auto" src="@/assets/icons/icons8-folder-48.png">
             {{group_name}} / groups
-        </h3>
+        </h3>        
         <hr/>
         <div class="col-8 center-div" v-if = "fetch_data_error.length > 0">
             <div class = "center-div" >

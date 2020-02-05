@@ -95,10 +95,10 @@
                 data2: {
                     labels: [],
                     datasets: [
-                    {
-                        backgroundColor: [],
-                        data: []
-                    }
+                        {
+                            backgroundColor: [],
+                            data: []
+                        }
                     ]                  
                 },       
             }
