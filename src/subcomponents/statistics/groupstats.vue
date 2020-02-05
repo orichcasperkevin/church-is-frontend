@@ -2,7 +2,7 @@
         <div class="member-stats" >              
             <!-- age distribution -->
             <div v-if="group_data.datasets.length">
-                <h3>Group distribution</h3>                                            
+                <h3>Member distribution</h3>                                            
                 <doughnutchart :data='group_data'/>
             </div>
             

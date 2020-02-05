@@ -146,7 +146,9 @@
                                
                         </div>
                 </div>
+                <!-- ACTIONS ON THE RIGHT -->
                 <div class="col-12 col-sm-10 col-md-8 col-lg-3">
+                        <!-- add contribution button when tab is contributions -->
                         <div class="btn-group" style="padding: 0px 0px 25px 10px" v-if=" tab == 'contributions'">
                                 <a href="#" data-toggle="modal" data-target="#addContribution" style="text-decoration: none">
                                     <div class="add-button" >
@@ -161,6 +163,7 @@
                                         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#settlePledge"><b>+</b> settle pledge</a>                                                                                                                
                                 </div>
                         </div>
+                        <!-- add pledge button when tab is pladges -->
                         <div class="btn-group" style="padding: 0px 0px 25px 10px" v-if=" tab == 'pledges'">
                                 <a href="#" data-toggle="modal" data-target="#addPledge" style="text-decoration: none">
                                     <div class="add-button" >
@@ -176,7 +179,50 @@
                                         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addContribution"><b>+</b> add contribution</a>                                                                                                                
                                 </div>
                         </div>
+
+                        <!-- more actions -->
+                        <div class="list-group font-weight-bold">
+                                <button type="button" class="action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#exportToCSV" >
+                                        <img src="@/assets/icons/icons8-export-csv-30.png" style="width: 35px; height:auto"> export to CSV
+                                </button>                            
+                        </div>
                       
+                </div>
+                <!-- export to csv modal -->
+                <div class="modal fade" id="exportToCSV" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalCenterTitle">export data to CSV</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                            <div class="modal-body">
+                                    <form>                                                                         
+                                            <div class="form-group">                                                                                                   
+                                                    <div class="row">                                                        
+                                                            <label class="col-3 "><b></b></label>
+                                                            <div class="input-group form-group col-5" style="padding: 0px" >                                                                                                                                                                                     
+                                                                    <small>2 files will be downloaded, one for contributions,another for pledge settlements</small>  
+                                                            </div>
+                                                                                                                    
+                                                    </div>
+                                            </div>
+                                                                                                                             
+                                    </form>
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>                       
+                            <button type="button" class="btn btn-success" v-on:click="exportData()">
+                                download CSVs
+                                <span v-if="exporting_data"
+                                    class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                                </span>
+                            </button>
+                            </div>
+                        </div>
+                        </div>
                 </div>
                 <!-- Modal email -->
                 <div class="modal fade" id="emailModatCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -647,7 +693,9 @@ export default {
             pledge_due_date: '',
             pledge_amount_errors: [],
             selected_member_errors: [],name_if_not_member_errors: [],
-            pledge_date_errors: []
+            pledge_date_errors: [],
+        //download csv            
+            exporting_data:false
 
         }
     },
@@ -722,6 +770,34 @@ export default {
     methods: {
         humanize: function(x) {
                 return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        },
+        exportData: function(){
+            const FileDownload = require('js-file-download');
+            //export contributions to csv
+            this.exporting_data = true
+            var project_name = this.context.response[0].name.split(" ").join("")
+            this.$http.get(this.$BASE_URL + '/api/projects/get-project-contributions-as-csv/' + this.$route.params.id +'/' )
+            .then(response => {
+                FileDownload(response.data, project_name + "_contributions.csv");
+               this.exporting_data = false                 
+            })
+            .catch((error) => {
+                this.exporting_data = false
+                alert('error while downloading csv')
+            })
+
+            //export pledge settlements to csv
+            this.exporting_data = true
+            var project_name = this.context.response[0].name.split(" ").join("")
+            this.$http.get(this.$BASE_URL + '/api/projects/get-pledge-payments-as-csv/' + this.$route.params.id +'/' )
+            .then(response => {
+                FileDownload(response.data, project_name + "_pledges.csv");
+               this.exporting_data = false                 
+            })
+            .catch((error) => {
+                this.exporting_data = false
+                alert('error while downloading csv')
+            })
         },
         fetchdata: function() {
             this.fetch_data_error = []

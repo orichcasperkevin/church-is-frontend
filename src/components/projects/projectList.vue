@@ -7,8 +7,9 @@
                     <li class="breadcrumb-item active" aria-current="page">projects</li>
                 </ol>
         </nav>
-        <div class="container">
+        <div class="container">        
         <div class="row">
+            <!-- NAVIGATION ON THE LEFT -->
             <div class="col-12 col-sm-10 col-md-8 col-lg-2">
                     <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                             <a class="action-list list-group-item list-group-item-action border-0"  data-toggle="pill" href="#inProgress" role="tab" aria-controls="members" aria-selected="true">
@@ -21,6 +22,7 @@
                             </a>
                     </div>
             </div>
+            <!-- CONTENT AT CENTER -->
             <div class="tab-content col">
                     <div class="tab-pane fade show active" id="inProgress" role="tabpanel" aria-labelledby="profile-tab"></div>
                     <h3> Projects</h3>
@@ -85,7 +87,9 @@
                     </table>
                 </div>
             </div>
-            <div class="col-12 col-sm-10 col-md-8 col-lg-2">
+            <!-- ACTIONS ON THE RIGHT -->
+            <div class="col-12 col-sm-10 col-md-5 col-lg-3">
+                    <!-- add button top left -->
                     <div style="padding: 0px 0px 25px 10px">
                             <a href="#" data-toggle="modal" data-target="#addProject" style="text-decoration: none">
                                 <div class="btn btn-success add-button">
@@ -93,7 +97,17 @@
                                 </div>
                             </a>
                     </div>
+
+                    <!-- more actions  -->
+                    <div class="list-group font-weight-bold">
+                            <button type="button" class="action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#exportToCSV" >
+                              <img src="@/assets/icons/icons8-export-csv-30.png" style="width: 35px; height:auto"> export to CSV
+                            </button>                            
+                    </div>
+
+
             </div>
+            <!-- MODALS -->
             <!-- add project Modal -->
             <div class="modal fade" id="addProject" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -155,6 +169,50 @@
                     </div>
                     </div>
             </div>
+            <!-- export to csv format -->
+            <div class="modal fade" id="exportToCSV" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">export projects data to CSV</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+                        <div class="modal-body">
+                                <form>                                                                         
+                                        <div class="form-group">                                                
+                                                <div class="row">                                                        
+                                                        <label class="col-3 "><b>date</b></label>
+                                                        <div class="input-group form-group col-5" style="padding: 0px" >
+                                                            <input type="date" name="bday" max="3000-12-31" 
+                                                                   min="1000-01-01" class="form-control" v-model="csv_date">                                                                                                                      
+                                                        </div>
+                                                                                                                
+                                                </div>
+                                                <div class="row">                                                        
+                                                        <label class="col-3 "><b></b></label>
+                                                        <div class="input-group form-group col-5" style="padding: 0px" >
+                                                                <small>export data is from selected date's month</small>                                                                                                                     
+                                                        </div>
+                                                                                                                
+                                                </div>
+                                        </div>
+                                                                                                                         
+                                </form>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>                       
+                        <button type="button" class="btn btn-success" v-on:click="exportData()">
+                            download CSV
+                            <span v-if="exporting_data"
+                                class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                            </span>
+                        </button>
+                        </div>
+                    </div>
+                    </div>
+            </div>
 
         </div>
         </div>
@@ -183,7 +241,10 @@ export default {
             ending_year: '',ending_month: '',ending_day: '',
             ending_date: '',
             added_project: [],
-            adding_project: false
+            adding_project: false,
+            // exporting data
+            csv_date: '',
+            exporting_data:false
 
 
         }
@@ -285,7 +346,21 @@ export default {
                 })
             }
         },
-        addProject: function (){                                
+        exportData: function(){
+            const FileDownload = require('js-file-download');
+            //export to csv
+            this.exporting_data = true
+            this.$http.get(this.$BASE_URL + '/api/projects/get-project-general-stats-as-csv/' + this.csv_date +'/' )
+            .then(response => {
+                FileDownload(response.data,"projectsReport.csv");
+               this.exporting_data = false                 
+            })
+            .catch((error) => {
+                this.exporting_data = false
+                alert('error while downloading csv')
+            })
+        },
+        addProject: function (){ 
                 this.add_project_button_text = 'adding project...'
                 this.adding_project = true            
                 this.$http({
