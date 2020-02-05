@@ -24,6 +24,16 @@
             <div class="tab-content col">
                     <div class="tab-pane fade show active" id="inProgress" role="tabpanel" aria-labelledby="profile-tab"></div>
                     <h3> Projects</h3>
+                    <p>
+                        <a class="btn btn-sm btn-outline-info text-secondary dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
+                                stats
+                        </a>
+                    </p>
+                    <div class="collapse" id="statsTab">
+                            <div class="card card-body outline-0">
+                                <projectstats msg="expenditure stats"/>
+                            </div>
+                    </div>
                     <div class="d-sm-block d-md-none">
                             <a href="#" data-toggle="modal" data-target="#addProject" style="text-decoration: none">
                                 <div class="btn btn-success add-button">
@@ -153,8 +163,10 @@
 
 <script>
 import router from "../../router";
+import projectstats from '@/subcomponents/statistics/projectstats.vue'
 export default {
     name : 'projectList',
+    components: { projectstats },
     data () {
         return {
             projects: null,

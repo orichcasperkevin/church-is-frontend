@@ -30,7 +30,7 @@ export default {
                 }  
                 var totals = {
                     label: "total for month",
-                    backgroundColor: 'green',
+                    backgroundColor: "#"+((1<<24)*Math.random()|0).toString(16),
                     data: totals
                 }                
                 this.data.datasets.push(totals)              
@@ -44,7 +44,7 @@ export default {
                 }  
                 var averages = {
                     label: "average per member",
-                    backgroundColor: 'blue',
+                    backgroundColor: "#"+((1<<24)*Math.random()|0).toString(16),
                     data: averages
                 }                
                 this.data.datasets.push(averages)                 
