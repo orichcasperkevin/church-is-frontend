@@ -93,7 +93,7 @@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-success" v-on:click="addExpenditureType()">
                         <b>+</b> add expenditure type
-                        <span v-if="adding_to_finance"
+                        <span v-if="adding_expenditure"
                             class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
                         </span>
                     </button>
@@ -163,6 +163,7 @@ export default {
     data(){
         return{
             fetch_data_error: [],
+            adding_expenditure: false,
             //get expenditure
             found_expenditure_types: 0,
             expenditure_types: null,
@@ -243,7 +244,7 @@ export default {
         },
         addExpenditureType: function(){        
             if (this.expenditureTypeFormOK()){
-                this.adding_to_finance = true
+                this.adding_expenditure = true
                 this.$http({ 
                     method: 'post',
                     url: this.$BASE_URL + '/api/finance/expenditure-type-list/',
@@ -253,7 +254,7 @@ export default {
                     }
                 })
                 .then(response => {     
-                    this.adding_to_finance = false                         
+                    this.adding_expenditure = false                         
                     this.expenditure_type_name = '',
                     this.expenditure_type_description = '' 
                     var new_version = parseInt(localStorage.getItem('expenditure_list_version')) + 1
@@ -262,7 +263,7 @@ export default {
                     this.getExpenditures()                    
                 })
                 .catch((err) => {
-                    this.adding_to_finance = false
+                    this.adding_expenditure = false
                     alert("an error occured, try again later")
                 }) 
             }

@@ -11,7 +11,8 @@
                 <!-- NAVIGATIONS -->                
                 <div class="filters col-sm-12 col-md-8 col-lg-2" >
                         <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                <a class="action-list list-group-item list-group-item-action border-0 active" id="v-pills-income-tab" data-toggle="pill" href="#v-pills-income" role="tab" aria-controls="v-pills-income" aria-selected="true">
+                                <a class="action-list list-group-item list-group-item-action border-0 active" id="v-pills-income-tab" data-toggle="pill" href="#v-pills-income" role="tab" aria-controls="v-pills-income" aria-selected="true" 
+                                    v-on:click="tithes_selected = true; expenditures_selected=false">
                                         <img class="d-none d-lg-block d-xl-block" style="width: 20%; height: auto" src="@/assets/icons/icons8-request-money-filled-50.png">
                                         income
                                 </a>
@@ -257,6 +258,11 @@
                     <!-- actions on list  -->
                     <div class="list-group font-weight-bold"  v-if = "expenditures_selected">
                             <button type="button" class="action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#exportEpenditureToCSV" >
+                              <img src="@/assets/icons/icons8-export-csv-30.png" style="width: 35px; height:auto"> export to CSV
+                            </button>                            
+                    </div>
+                    <div class="list-group font-weight-bold"  v-if = "tithes_selected">
+                            <button type="button" class="action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#exportTithesToCSV" >
                               <img src="@/assets/icons/icons8-export-csv-30.png" style="width: 35px; height:auto"> export to CSV
                             </button>                            
                     </div>

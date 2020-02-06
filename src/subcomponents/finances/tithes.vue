@@ -129,14 +129,58 @@
                         <button type="button" class="btn btn-success" disabled v-if= "! enable_add_tithe_button && add_tithe_button_text != 'adding tithe...'">{{add_tithe_button_text}}</button>
                         <button type="button" class="btn btn-success" v-on:click="addTithe()">
                             {{add_tithe_button_text}}
-                            <span v-if="adding_to_finance"
+                            <span v-if="adding_tithe"
                                 class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
                             </span>
                         </button>
                         </div>
                     </div>
                     </div>
-            </div>                            
+            </div>   
+            <!-- export to csv format -->
+            <div class="modal fade" id="exportTithesToCSV" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">export tithe data to CSV</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+                        <div class="modal-body">
+                                <form>                                                                         
+                                        <div class="form-group">                                                
+                                                <div class="row">                                                        
+                                                        <label class="col-3 "><b>date</b></label>
+                                                        <div class="input-group form-group col-5" style="padding: 0px" >
+                                                            <input type="date" name="bday" max="3000-12-31" 
+                                                                min="1000-01-01" class="form-control" v-model="csv_date">                                                                                                                      
+                                                        </div>
+                                                                                                                
+                                                </div>
+                                                <div class="row">                                                        
+                                                        <label class="col-3 "><b></b></label>
+                                                        <div class="input-group form-group col-5" style="padding: 0px" >
+                                                                <small>export data is from selected date's month</small>                                                                                                                     
+                                                        </div>
+                                                                                                                
+                                                </div>
+                                        </div>
+                                                                                                                        
+                                </form>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>                       
+                        <button type="button" class="btn btn-success" v-on:click="exportData()">
+                            download CSV
+                            <span v-if="exporting_data"
+                                class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                            </span>
+                        </button>
+                        </div>
+                    </div>
+                    </div>
+            </div>                         
         </div>
       </template>
       <script>
@@ -163,6 +207,9 @@
             tithe_narration: '',
             tithe_amount_error: [], tithe_member_error: [],
             added_tithe: [],add_tithe_errors: [],
+            // exporting data
+            csv_date: '',
+            exporting_data:false
           }
         },
         name: 'about',
@@ -279,6 +326,21 @@
                                                         
                     })
             }
+        },
+        //export data to csv
+        exportData: function(){            
+            //export to csv
+            this.exporting_data = true
+            this.$http.get(this.$BASE_URL + '/api/finance/get-tithes-as-csv/' + this.csv_date +'/' )
+            .then(response => {                
+                this.$fileDownload(response.data,"tithes_" + this.csv_date + ".csv");
+                this.exporting_data = false                 
+                alert("download successful")
+            })
+            .catch((error) => {
+                this.exporting_data = false
+                alert('error while downloading tithes csv')
+            })
         },
         }
       }
