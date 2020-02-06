@@ -57,67 +57,7 @@
                                 <!-- tithes -->
                                 <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">                                          
                                         <h3>Tithes </h3>
-                                        <tithes/>
-                                        <!-- when on a small device show this button --> 
-                                        <div class="d-sm-block d-lg-none btn-group" style="padding: 0px 0px 25px 10px" v-if = "tithes_selected">
-                                            <a href="#" data-toggle="modal" data-target="#addTithe" style="text-decoration: none">
-                                                <div class="add-button" style="text-align: center">
-                                                    <b>+</b> add tithe 
-                                                </div>                                
-                                            </a>
-                                            <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                                                <span class="sr-only">Toggle Dropdown</span>
-                                            </button>
-                                            <div class="dropdown-menu border-success" aria-labelledby="dropdownMenuReference">
-                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addOffering" v-on:click="getServiceTypes()"><b>+</b> add offering</a>
-                                            </div>
-                                        </div>        
-                                        <!-- tithe stats                                     -->
-                                        <div class="text-muted" v-if="tithes_selected">
-                                            <p>Total this month  |<span class="text-info">
-                                                Ksh {{humanize(tithe_stats.response.total_in_tithe_this_month)}} </span>|
-                                            
-                                                Total this year  |<span class="text-info">
-                                                    Ksh   {{humanize(tithe_stats.response.total_in_tithe_this_year)}} </span>|                                                     
-
-                                                    <a class="btn btn-sm btn-outline-info text-secondary dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
-                                                        more stats
-                                                    </a>
-                                            </p>
-                                            <p>                                                    
-                                            </p>
-                                            <div class="collapse" id="statsTab">
-                                                <div class="card card-body outline-0">
-                                                    <tithestats msg="tithe stats"/>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <hr/>
-                                        <p>
-                                            <span class="badge badge-pill badge-info">{{foundTithes}}</span> entries found
-                                        </p>                             
-                                        <div>                                                
-                                            <table class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th>name</th>
-                                                        <th>amount</th>
-                                                        <th>date</th>
-                                                        <th>this month</th>
-                                                        <th>this year</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr v-for = "data in tithes.response">
-                                                        <td>{{data.member.member.first_name}} {{data.member.member.last_name}}</td>
-                                                        <td><p class="text-secondary">{{humanize(data.amount)}}</p></td>
-                                                        <td>{{data.date}}</td>
-                                                        <td><p class="text-secondary">{{humanize(data.total_this_month)}}</p></td>
-                                                        <td><p>{{humanize(data.total_this_year)}}</p></td>                                                          
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
+                                        <tithes/>                                    
                                 </div>
                                 <!-- offerings -->
                                 <div class="tab-pane fade" id="pills-offerings" role="tabpanel" aria-labelledby="pills-offerings-tab">                                                                                  
@@ -321,99 +261,7 @@
                             </button>                            
                     </div>
                 </div>
-            </div>
-                <!-- add tithe modal -->
-                <div class="modal fade" id="addTithe" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalCenterTitle">add tithe for member</h5>
-                            <button type="button" class="close" data-dismiss="modal" v-on:click="fetchdata()" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            </div>
-                            <div class="modal-body">                                                                       
-                                    <div v-if="add_tithe_errors.length > 0">
-                                        <ul>
-                                                <small>
-                                                    <li v-for="error in add_tithe_errors">
-                                                        <p class="text-danger">{{ error }}</p>
-                                                    </li>
-                                                </small>
-                                        </ul>
-                                    </div>                                    
-                                    <form>                                                                                       
-                                            <div class=" row form-group">
-                                                <label class="col-3"><b>member:</b></label>
-                                                <div class="col-8">
-                                                    <input type="text" class=" form-control" placeholder="type to search member" v-model="memberSearch" autofocus>   
-                                                    <div style="padding: 10px 10px 10px 10px" class="text-info" >{{memberSearch_status}}</div>                                                                                                       
-                                                    <div class="pre-scrollable searchedItemsDiv border " style="  max-height: 185px; overflow-y: scroll;" v-if="showMemberInput">
-                                                            <table class="table border-0" >
-                                                                <tbody>
-                                                                <tr class="searchedItem border-0" v-for="data in found_members.response">
-                                                                    <a href="#" style="text-decoration: none" v-on:click="selectMember(data.member.id,data.member.first_name,data.member.last_name)"> 
-                                                                    <td class="border-0">
-                                                                    
-                                                                        <img v-if = "data.gender == 'M'" style = "height: 32px "src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
-                                                                        <img v-if = "data.gender == 'F'" style = "height: 32px "src="@/assets/avatars/icons8-user-female-skin-type-4-40.png">
-                                                                        <img v-if = "data.gender == 'R'" style = "height: 32px "src="@/assets/avatars/icons8-contacts-96.png">
-                                                                        
-                                                                        <span class = "text-secondary">{{data.member.first_name}} {{data.member.last_name}}</span>                                                                      
-                                                                    </td>
-                                                                    </a>                                                                                                                                  
-                                                                </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div> 
-                                                        <div v-if="tithe_member_error.length > 0">
-                                                            <ul>
-                                                                    <small>
-                                                                        <li v-for="error in tithe_member_error">
-                                                                            <p class="text-danger">{{ error }}</p>
-                                                                        </li>
-                                                                    </small>
-                                                            </ul>
-                                                        </div>                                                   
-                                                </div>                                           
-                                                
-                                            </div>
-                                                                                  
-                                            <hr/>
-                                            <div class="row form-group">
-                                                    <label class="col-3"><b>amount:</b></label>
-                                                    <input type="number" class=" col-3 form-control" placeholder="amount" v-model="tithe_amount">
-                                                    <div class="col-6 text-success" v-if ="tithe_amount > 0"><h3>KSh {{humanize(tithe_amount)}}</h3></div>                                                                               
-                                            </div>  
-                                            <div v-if="tithe_amount_error.length > 0">
-                                                <ul>
-                                                        <small>
-                                                            <li v-for="error in tithe_amount_error">
-                                                                <p class="text-danger">{{ error }}</p>
-                                                            </li>
-                                                        </small>
-                                                </ul>
-                                            </div> 
-                                            <hr/>
-                                            <div class="row form-group">
-                                                    <label class="col-3"><b>narration:</b></label>
-                                                    <textarea type="text" class="col-8 form-control" rows='3' v-model="tithe_narration"></textarea>                                                   
-                                            </div>                                                                                
-                                    </form>
-                            </div>
-                            <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="fetchdata()">Close</button>
-                            <button type="button" class="btn btn-success" disabled v-if= "! enable_add_tithe_button && add_tithe_button_text != 'adding tithe...'">{{add_tithe_button_text}}</button>
-                            <button type="button" class="btn btn-success" v-on:click="addTithe()">
-                                {{add_tithe_button_text}}
-                                <span v-if="adding_to_finance"
-                                    class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
-                                </span>
-                            </button>
-                            </div>
-                        </div>
-                        </div>
-                </div>
+            </div>                
                 <!-- add offering -->
                 <div class="modal fade" id="addOffering" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -665,9 +513,7 @@ export default {
 
     data () {
         return{
-        //get data
-            tithe_stats: null,    
-            tithes: null,
+        //get data            
             non_member: false,
             group: false,
             fetch_data_error: [],
@@ -692,14 +538,6 @@ export default {
             memberSearch: '',found_members:[],
             memberSearch_status: '',selectedMember: null,
             showMemberInput: false,  
-        //add_tithe
-            adding_to_finance:false,
-            add_tithe_button_text: '+ add tithe',
-            enable_add_tithe_button: true,
-            tithe_amount: null,
-            tithe_narration: '',
-            tithe_amount_error: [], tithe_member_error: [],
-            added_tithe: [],add_tithe_errors: [],
         //add offering
             offering_amount: null,
             name_if_not_member: ''        ,
@@ -806,51 +644,6 @@ export default {
         //fetch data
         fetchdata () {
             this.tithes_selected = true
-            this.fetch_data_error = []
-            this.$store.dispatch('update_isLoading', true)
-            // try local storage for tithes
-            this.tithes = JSON.parse(localStorage.getItem('tithe_list'))
-            if (this.tithes){
-                var array = this.tithes.response
-                this.foundTithes = array.length
-                this.$store.dispatch('update_isLoading', false)
-            }            
-            this.tithe_stats = JSON.parse(localStorage.getItem('tithe_stats'))
-
-            const currentVersion = this.$store.getters.tithe_list_version
-            var version  = localStorage.getItem('tithe_list_version')
-
-            //else try network for tithes
-            if (!version || version < currentVersion) {
-                this.$store.dispatch('update_isLoading', true)
-                this.$http.get(this.$BASE_URL + '/api/finance/tithe-by-members-this-month/')
-                    .then(response => {
-                        this.tithes = {"response": response.data }   
-                        var array = this.tithes.response
-                        this.foundTithes = array.length                  
-                        
-                        localStorage.setItem('tithe_list',JSON.stringify({"response": response.data }))                
-                        localStorage.setItem('tithe_list_version', currentVersion) 
-                        this.$store.dispatch('update_isLoading', false)
-                    })
-                    .catch((err) => {
-                        this.fetch_data_error.push(err)
-                        this.$store.dispatch('update_isLoading', false)
-                    })
-                // get tithe stats 
-                this.$store.dispatch('update_isLoading', true)
-                this.$http.get(this.$BASE_URL + '/api/finance/tithe-stats/')
-                    .then(response => {
-                        this.tithe_stats = {"response": response.data } 
-
-                        localStorage.setItem('tithe_stats',JSON.stringify({"response": response.data }))                          
-                        this.$store.dispatch('update_isLoading', false)
-                    })
-                    .catch((err) => {
-                        this.fetch_data_error.push(err)
-                        this.$store.dispatch('update_isLoading', false)
-                    })
-            }
             this.getIncomeTypeList()
         },
         //get the list of income types
@@ -1039,85 +832,6 @@ export default {
                     this.found_service = []
                     this.$store.dispatch('update_isLoading', false)
                 })
-        },
-        //search for member
-        getAnswer: function () {
-          var vm = this
-          if (this.memberSearch.length > 0){
-            this.found_members = []
-            this.memberSearch_status = 'searching...'
-            this.$http.get(this.$BASE_URL + '/api/members/filter-by-first_name/' + this.memberSearch +'/')
-              .then(function (response) {
-                vm.found_members = {"response": response.data } 
-                vm.memberSearch_status = ''                
-              })
-              .catch(function (error) {
-                  vm.memberSearch_status = ''  
-                  vm.showMemberInput = false
-              })
-            }
-        },
-        selectMember: function(id,first_name,last_name) {
-        
-          this.selectedMember = id          
-          this.memberSearch =  first_name + ' ' + last_name 
-          this.memberSearch_status = ''
-          this.showMemberInput = false
-        },
-        //check if add tithe form is correct
-        addTitheFormOK: function(){
-            this.added_tithe = []
-            this.tithe_member_error = []
-            this.tithe_amount_error = []
-            if (this.tithe_narration.length < 1){                    
-                    this.tithe_narration = "none given"
-            }   
-            if (this.selectedMember == null){                
-                this.tithe_member_error.push("No member selected, select one")
-                return false
-            }
-            if (this.tithe_amount < 1){
-                this.tithe_amount_error.push(" enter an amount")
-                return false
-            }
-            if (this.selectedMember > 0
-                && this.tithe_amount > 0){                    
-                    return true
-                }
-        },
-        addTithe: function(){
-            if (this.addTitheFormOK()){
-                this.enable_add_tithe_button = false
-                this.add_tithe_button_text = 'adding tithe...'  
-                this.adding_to_finance = true              
-                this.$http({
-                        method: 'post',
-                        url: this.$BASE_URL + '/api/finance/add-tithe-for-member/',
-                        data: {
-                                member_id: this.selectedMember,
-                                narration: this.tithe_narration,
-                                recording_member_id: this.$session.get('member_id'),                             
-                                amount: this.tithe_amount                                      
-                        }
-                        }).then(response => {
-                               this.adding_to_finance = false                                                                                                                                                            
-                               this.selectedMember = null,
-                               this.tithe_narration = '',
-                               this.tithe_amount = ''                        
-                               this.enable_add_tithe_button = true
-                               this.add_tithe_button_text = '+ add tithe '
-                               this.memberSearch = '' 
-                               var new_version = parseInt(localStorage.getItem('tithe_list_version')) + 1
-                               this.$store.dispatch('update_tithe_list_version', new_version)        
-                               alert("tithe of amount " + response.data.amount + "\n"
-                                      + "added for " + response.data.member.member.first_name)                     
-                        })
-                        .catch((err) => {
-                            this.adding_to_finance = false
-                            this.add_tithe_errors.push('oops, an error occured \n you may be disconnected ,check your connection and try again')
-                                                            
-                        })
-            }
         },
         //validate offering form
         addOfferingFormOK: function(){                     
