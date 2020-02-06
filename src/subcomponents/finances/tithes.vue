@@ -18,7 +18,7 @@
                         </div>
                     </div>        
                     <!-- tithe stats                                     -->
-                    <div class="text-muted" v-if="tithes_selected">
+                    <div class="text-muted">
                         <p>Total this month  |<span class="text-info">
                             Ksh {{humanize(tithe_stats.response.total_in_tithe_this_month)}} </span>|
                         
@@ -54,7 +54,11 @@
                             </thead>
                             <tbody>
                                 <tr v-for = "data in tithes.response">
-                                    <td>{{data.member.member.first_name}} {{data.member.member.last_name}}</td>
+                                    <td>                                     
+                                        <router-link :to="`/memberDetail/`+ data.member.member.id">
+                                            <span class = "text-secondary">{{data.member.member.first_name}} {{data.member.member.last_name}}</span>
+                                        </router-link>
+                                    </td>
                                     <td><p class="text-secondary">{{humanize(data.amount)}}</p></td>
                                     <td>{{data.date}}</td>
                                     <td><p class="text-secondary">{{humanize(data.total_this_month)}}</p></td>
@@ -185,6 +189,7 @@
       </template>
       <script>
       import searchmember from '@/subcomponents/searchmember.vue'
+      import tithestats from '@/subcomponents/statistics/tithestats.vue'
       export default {
         created () {
             this.getTithes()
@@ -213,7 +218,7 @@
           }
         },
         name: 'about',
-        components: { searchmember },
+        components: { searchmember,tithestats },
         methods: {
            humanize: function(x) {return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");},
           // Triggered when `memberSelected` event is emitted by the child.
