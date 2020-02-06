@@ -23,10 +23,10 @@ Vue.config.productionTip = false
 Vue.prototype.$store =  store 
 Vue.prototype.$http = axios
 Vue.prototype.$humanizeDate = function(date_time){return this.$timeAgo.format(new Date(date_time), 'twitter')},
+Vue.prototype.$fileDownload = require('js-file-download');
 
 Vue.prototype.$DOMAIN = { value :'http://my-domain.com:8000'}
-Vue.prototype.$BASE_URL = { value :localStorage.getItem('base_url_value'),
-                            toString:function(){return this.value}}
+Vue.prototype.$BASE_URL = { value :localStorage.getItem('base_url_value'),toString:function(){return this.value}}
 
 /* eslint-disable no-new */
 new Vue({

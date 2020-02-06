@@ -12,11 +12,11 @@
             <div class="row">
                 <div class="col-12 col-sm-10 col-md-8 col-lg-2">
                         <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                <a class="action-list list-group-item list-group-item-action border-0 active" id="v-pills-contributions-tab" data-toggle="pill" href="#v-pills-contributions" role="tab" aria-controls="v-pills-contributions" aria-selected="true" v-on:click="getContributions()">
+                                <a class="action-list list-group-item list-group-item-action border-0 active" id="v-pills-contributions-tab" data-toggle="pill" href="#v-pills-contributions" role="tab" aria-controls="v-pills-contributions" aria-selected="true" v-on:click="getContributionsTab()">
                                         <img class="d-none d-lg-block d-xl-block" style="width: 20%; height: auto" src="@/assets/icons/icons8-request-money-filled-50.png">
                                         contributions
                                 </a>
-                                <a class="action-list list-group-item list-group-item-action border-0" id="v-pills-pledges-tab" data-toggle="pill" href="#v-pills-pledges" role="tab" aria-controls="v-pills-pledges" aria-selected="false" v-on:click="getPledges()">
+                                <a class="action-list list-group-item list-group-item-action border-0" id="v-pills-pledges-tab" data-toggle="pill" href="#v-pills-pledges" role="tab" aria-controls="v-pills-pledges" aria-selected="false" v-on:click="getPledgesTab()">
                                         <img class="d-none d-lg-block d-xl-block" style="width: 20%; height: auto" src="@/assets/icons/icons8-promise-filled-50.png">
                                         pledges
                                 </a>
@@ -25,6 +25,7 @@
                 </div>
                 <div class="col">
                         <div class="tab-content" id="v-pills-tabContent">
+                                <!-- contributions tab -->
                                 <div class="tab-pane fade show active" id="v-pills-contributions" role="tabpanel" aria-labelledby="v-pills-contributions-tab">
                                 <h3 >
                                         <span v-for = "data in context.response">{{data.name}} /</span> contributions                                        
@@ -64,6 +65,11 @@
                                     <table class="table">
                                         <thead>
                                             <tr>
+                                                <th>
+                                                        <input multiple class="form-check-input" 
+                                                        type="checkbox" :value=true v-model="all_members">
+                                                        all
+                                                </th>
                                                 <th>name</th>
                                                 <th>amount</th>
                                                 <th>date</th>
@@ -71,8 +77,15 @@
                                         </thead>
                                         <tbody>
                                             <tr v-for = "data in contributions.response">
-                                                
-                                                <td v-if = "data.member != null">{{data.member.member.first_name}} {{data.member.member.last_name}}</td>
+                                                <td v-if = "data.member != null">  
+                                                        <input multiple class="form-check-input" type="checkbox" :value=data.member.member.id v-model="member_ids">
+                                                </td>
+                                                <td v-else></td>
+                                                <td v-if = "data.member != null">
+                                                        <router-link :to="`/memberDetail/`+ data.member.member.id">
+                                                                <span class = "text-secondary">{{data.member.member.first_name}} {{data.member.member.last_name}}</span>
+                                                        </router-link>
+                                                </td>
                                                 <td v-if = "data.names != ''"> {{data.names}}</td>
                                                 <td><p class="text-muted">{{humanize(data.amount)}}</p></td>
                                                 <td>{{data.recorded_at}}</td>                                               
@@ -80,6 +93,7 @@
                                         </tbody>
                                     </table>
                                 </div>
+                                <!-- pledges tab -->
                                 <div class="tab-pane fade" id="v-pills-pledges" role="tabpanel" aria-labelledby="v-pills-pledges-tab">
                                     <div v-if = "pledges_selected">
                                         <h3>
@@ -102,6 +116,7 @@
                                                         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addContribution"><b>+</b> add contribution</a>                                                                                                                
                                                 </div>
                                         </div>
+                                        <!-- pledges -->
                                         <div class="small text-muted" v-for = "data in context.response ">
                                                 <p>Total in pledges  |<span class="text-info">
                                                         KSh {{humanize(data.total_in_pledges)}}</span>|
@@ -122,16 +137,29 @@
                                         <table class="table">
                                                 <thead>
                                                     <tr>
+                                                        <th>
+                                                                <input multiple class="form-check-input" 
+                                                                type="checkbox" :value=true v-model="all_members">
+                                                                all
+                                                        </th>
                                                         <th>name</th>
-                                                        <th>amount pledged</th>
-                                                        <th>amount raised</th>
-                                                        <th>amount remaining</th>
-                                                        <th>percentage funded</th>
+                                                        <th>pledged</th>
+                                                        <th>raised</th>
+                                                        <th>remaining</th>
+                                                        <th>funded</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <tr v-for = "data in pledges.response" v-if="selectedMember == '' || selectedMember == null || memberSearch == ''">                                                                                                                
-                                                        <td v-if = "data.member != null">{{data.member.member.first_name}} {{data.member.member.last_name}}</td>
+                                                        <td v-if = "data.member != null"> 
+                                                                <input multiple class="form-check-input" type="checkbox" :value=data.member.member.id v-model="member_ids">
+                                                        </td>    
+                                                        <td v-else></td>                                                        
+                                                        <td v-if = "data.member != null">
+                                                                <router-link :to="`/memberDetail/`+ data.member.member.id">
+                                                                        <span class = "text-secondary">{{data.member.member.first_name}} {{data.member.member.last_name}}</span>
+                                                                </router-link>
+                                                        </td>                                                        
                                                         <td v-if = "data.names != ''"> {{data.names}}</td>
                                                         <td>{{humanize(data.amount)}}</td>
                                                         <td><p class="text-secondary">{{humanize(data.amount_so_far)}}</p></td>
@@ -182,6 +210,9 @@
 
                         <!-- more actions -->
                         <div class="list-group font-weight-bold">
+                                <button type="button" class="list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#textModalCenter"><img src="@/assets/icons/icons8-comments-64.png">
+                                        text people
+                                </button>
                                 <button type="button" class="action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#exportToCSV" >
                                         <img src="@/assets/icons/icons8-export-csv-30.png" style="width: 35px; height:auto"> export to CSV
                                 </button>                            
@@ -248,33 +279,42 @@
                           </div>
                         </div>
                 </div> 
-                <!-- Modal text people --> 
+                <!-- Modal text people -->
                 <div class="modal fade" id="textModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                        <div class="modal-header">
-                        <h5 class="modal-title" >text contributors</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" >send message to selected members</h5>
+                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
-                        </button>
+                              </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group" v-if="sms_status.length == 0">
+                                    <label for="exampleFormControlTextarea1">message</label>
+                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model = "message"></textarea>
+                                  </div>
+                                  <div v-if="sms_status.length > 0">
+                                    <p class="text-info"> The members will receive your message.</p>
+                                    <p> check sms status later as it may take a while</p>
+                                    </div>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="closeSmsModal()">Close</button>
+                              <span v-if = "sms_status.length == 0">
+                                <button type="button" class="btn btn-success" 
+                                        v-on:click=sendMessage()>
+                                        send text
+                                        <span v-if="sending_message"
+                                              class="spinner-border spinner-border-sm" 
+                                              role="status" aria-hidden="true">
+                                        </span>
+                                </button>
+                              </span>
+                            </div>
+                          </div>
                         </div>
-                        <div class="modal-body">
-                                <div class="form-group">
-                                <label for="exampleFormControlTextarea1">message</label>
-                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model = "message"></textarea>
-                                </div>
-                                <div >                            
-                                <p class="text-info"> The members will receive your message.</p>
-                                <p> check sms status later as it may take a while</p>
-                                </div>
-                        </div>
-                        <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="closeSmsModal()">Close</button>
-                        <span ><button type="button" class="btn btn-success" v-on:click=sendMessage()>send text</button></span>
-                        </div>
-                        </div>
-                        </div>
-                </div> 
+                </div>
                 <!-- Modal assign group -->
                 <div class="modal fade" id="assignModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -660,42 +700,50 @@ export default {
     data () {
         return {
         //get data
-            foundItems: 0,
-            foundPledges: 0,
-            logged_in_member_id: null,    
-            context: null,
-            tab: 'contributions',            
-            contributions: null,
-            pledges: null,
-            pledges_selected: false,
-            foundItems: null,
-            fetch_data_error: [],
+        foundItems: 0,
+        foundPledges: 0,
+        logged_in_member_id: null,    
+        context: null,
+        tab: 'contributions',            
+        contributions: null,
+        pledges: null,
+        pledges_selected: false,
+        foundItems: null,
+        fetch_data_error: [],
         //search for member
-            memberSearch: '',found_members:[],
-            memberSearch_status: '',selectedMember: 0,
-            showMemberInput: false,
-            member_ids: [],
+        memberSearch: '',found_members:[],
+        memberSearch_status: '',selectedMember: 0,
+        showMemberInput: false,
+        member_ids: [],
         //add contribution
-            adding_to_project: false,    
-            non_member: false,
-            add_contribution_button_text: '+ add contribution',
-            contribution_amount: null,
-            name_if_not_member: '',
-            phone_number: '',
-            country_code: '+254',
-            enable_add_button: false,
-            phone_number_errors: [], phone_number_OK: [],
-            added_contribution: [],
+        adding_to_project: false,    
+        non_member: false,
+        add_contribution_button_text: '+ add contribution',
+        contribution_amount: null,
+        name_if_not_member: '',
+        phone_number: '',
+        country_code: '+254',
+        enable_add_button: false,
+        phone_number_errors: [], phone_number_OK: [],
+        added_contribution: [],
         //add pledge 
-            add_pledge_button_text: '+ addd pledge',
-            enable_add_pledge_button: true,
-            pledge_amount: null,        
-            pledge_due_date: '',
-            pledge_amount_errors: [],
-            selected_member_errors: [],name_if_not_member_errors: [],
-            pledge_date_errors: [],
+        add_pledge_button_text: '+ addd pledge',
+        enable_add_pledge_button: true,
+        pledge_amount: null,        
+        pledge_due_date: '',
+        pledge_amount_errors: [],
+        selected_member_errors: [],name_if_not_member_errors: [],
+        pledge_date_errors: [],
         //download csv            
-            exporting_data:false
+        exporting_data:false,
+        //member ids
+        all_members: true,
+        member_ids: [],
+        all_member_ids: [],
+        //sending message
+        message: " ",
+        sms_status: [],
+        sending_message: false,
 
         }
     },
@@ -705,6 +753,14 @@ export default {
     },
     watch: {
         '$route': 'fetchdata',
+        all_members: function(){
+                if (this.all_members != true){
+                        this.member_ids = []
+                }
+                else{
+                        this.member_ids = this.all_member_ids
+                }
+        },
     // search for member
         memberSearch: function () {
             var array = this.memberSearch.split(" ")
@@ -771,6 +827,28 @@ export default {
         humanize: function(x) {
                 return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         },
+          // send message to selected members
+        sendMessage: function (){
+        this.sending_message = true
+        this.$http({
+                method: 'post',
+                url: this.$BASE_URL + '/api/sms/add-sms/',
+                data: {
+                sending_member_id: this.$session.get('member_id'),
+                app: "CHURCH PROJECTS: "+ this.context.response[0].name,
+                message: this.message,
+                website: true,
+                receipient_member_ids: this.member_ids
+                }
+                }).then(response => {        
+                this.sms_status.push(response.data)          
+                this.sending_message = false
+                })
+                .catch((err) => {
+                alert("an error occured when attempting to deliver to one of the members, this may be due to an invalid phone number")
+                this.sending_message = false
+                })
+        },
         exportData: function(){
             const FileDownload = require('js-file-download');
             //export contributions to csv
@@ -800,7 +878,8 @@ export default {
             })
         },
         fetchdata: function() {
-            this.fetch_data_error = []
+            this.fetch_data_error = []            
+            //get project with id
             this.$store.dispatch('update_isLoading', true)
             this.$http.get(this.$BASE_URL +'/api/projects/project-with-id/' + this.$route.params.id + '/')
                 .then(response => {
@@ -811,37 +890,54 @@ export default {
                     this.fetch_data_error.push(err)
                     this.$store.dispatch('update_isLoading', false)
                 })
-
+                   
+        
+           // contributions  towards a project
             this.$store.dispatch('update_isLoading', true)
             this.$http.get(this.$BASE_URL +'/api/projects/contribution-for-project/'+ this.$route.params.id + '/')
                 .then(response => {
                 this.contributions = {"response": response.data } 
                 var array = this.contributions.response
+                //set up selected members
+                for (var contribution in array){
+                        this.all_member_ids.push(array[contribution].member.member.id)
+                }
                 this.foundItems = array.length
                 this.$store.dispatch('update_isLoading', false)
                 })
                 .catch((err) => {
                 this.$store.dispatch('update_isLoading', false)
                 })
+                
+          this.getPledges()
+
         },
-        getPledges: function(){
-            this.memberSearch = ''
-            this.tab = 'pledges'
-            this.pledges_selected = true
-            this.$store.dispatch('update_isLoading', true)
-            this.$http.get(this.$BASE_URL +'/api/projects/pledges-for-project/'+ this.$route.params.id + '/')
-                .then(response => {
-                this.pledges = {"response": response.data } 
-                var array = this.pledges.response
-                this.foundPledges = array.length
-                this.$store.dispatch('update_isLoading', false)
-                })
-                .catch((err) => {
-                this.$store.dispatch('update_isLoading', false)
-                })
+        getPledges: function(){                
+                this.memberSearch = ''
+                this.tab = 'pledges'
+                this.pledges_selected = true
+                this.$store.dispatch('update_isLoading', true)
+                this.$http.get(this.$BASE_URL +'/api/projects/pledges-for-project/'+ this.$route.params.id + '/')
+                        .then(response => {
+                                this.pledges = {"response": response.data } 
+                                var array = this.pledges.response
+                                // set up member ids for selection
+                                for (var pledge in array){
+                                        this.all_member_ids.push(array[pledge].member.member.id)
+                                }
+                                this.foundPledges = array.length
+                                this.$store.dispatch('update_isLoading', false)
+                        })
+                        .catch((err) => {
+                                this.$store.dispatch('update_isLoading', false)
+                        })
         },
-        getContributions: function(){
+        getContributionsTab: function(){
             this.tab = 'contributions'
+            this.all_members = false
+        },
+        getPledgesTab: function(){
+            this.all_members = false
         },
         getAnswer: function () {
           var vm = this

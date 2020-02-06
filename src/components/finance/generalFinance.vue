@@ -256,68 +256,14 @@
                         <!-- EXPENDITURE -->
                         <div class="tab-pane fade show " id="v-pills-expenditure" role="tabpanel" aria-labelledby="v-pills-expenditure-tab">
                             <div v-if = "expenditures_selected">
-                                <h3 >Expenditure</h3> 
-                                <!-- what to show on small devices -->
-                                <div class="d-sm-block d-md-none d-lg-none btn-group"  v-if = "expenditures_selected">
-                                        <a href="#" data-toggle="modal" data-target="#addExpenditureType" style="text-decoration: none">
-                                            <div class="add-button">
-                                                <b>+</b> add expenditure type
-                                            </div>
-                                        </a>                     
-                                </div>                               
-                                <div class="text-muted">
-                                        <p>Total this month  |<span class="text-info">
-                                            Ksh {{humanize(expenditure_stats.total_this_month)}} </span>|
-                                        
-                                            Total this year  |<span class="text-info">
-                                             Ksh   {{humanize(expenditure_stats.total_this_year)}} </span>|
-
-
-                                             <a class="btn btn-sm btn-outline-info text-secondary dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
-                                                    more stats
-                                            </a>
-                                        </p>
-                                        <div class="collapse" id="statsTab">
-                                                <div class="card card-body outline-0">
-                                                    <expenditurestats msg="expenditure stats"/>
-                                                </div>
-                                        </div>
-                                    </div>
-                                <hr/>
-                                <p class="col-8">
-                                        <span class="badge badge-pill badge-info">{{found_expenditure_types}}</span> entries found
-                                </p>
-                                <table class="table">
-                                    <thead>
-                                        <tr>
-                                            <th>type</th>                                                   
-                                            <th>this month</th>
-                                            <th>this year</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr v-for = "data in expenditure_types.response">                                           
-                                            <td>
-                                                <router-link class="text-muted" style="text-decoration: none;"  :to="`/expenditure/`+ data.id + `/`">                                                         
-                                                    {{data.type_name}}
-                                                </router-link>
-                                            </td>                                        
-                                            <td><p class="text-secondary">{{humanize(data.total_this_month)}}</p></td>
-                                            <td><p>{{humanize(data.total_this_year)}}</p></td>                                                          
-                                            <td>
-                                                <router-link class="text-muted" style="text-decoration: none;"  :to="`/expenditure/`+ data.id + `/`">                                                         
-                                                    >
-                                                </router-link>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                                <expenditures/>
+                            </div>                            
                         </div>
                     </div>
                 </div>
                 <!-- ACTION BUTTONS -->
                 <div class = "col-12 col-sm-10 col-md-8 col-lg-3">
+                    <!-- add for tithes -->
                     <div class="btn-group" style="padding: 0px 0px 25px 10px" v-if = "tithes_selected">
                             <a href="#" data-toggle="modal" data-target="#addTithe" style="text-decoration: none">
                                 <div class="add-button" style="text-align: center">
@@ -331,6 +277,7 @@
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addOffering" v-on:click="getServiceTypes()"><b>+</b> add offering</a>
                             </div>
                     </div>
+                    <!-- add for offerings -->
                     <div class="btn-group" style="padding: 0px 0px 25px 10px" v-if = "offerings_selected">
                             <a href="#" data-toggle="modal" data-target="#addOffering" style="text-decoration: none" v-on:click="getServiceTypes()">
                                 <div class="add-button">
@@ -344,6 +291,7 @@
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addTithe"><b>+</b> add tithe</a>
                             </div>
                     </div>
+                    <!-- add for incomes  -->
                     <div class="btn-group" style="padding: 0px 0px 25px 10px" v-if = "any_other_selected">
                             <a href="#" data-toggle="modal" data-target="#addIncomeType" style="text-decoration: none">
                                 <div class="add-button">
@@ -359,10 +307,17 @@
                     </div>
                     <div class="btn-group" style="padding: 0px 0px 25px 10px" v-if = "expenditures_selected">
                         <a href="#" data-toggle="modal" data-target="#addExpenditureType" style="text-decoration: none">
-                            <div class="add-button">
+                            <div class="btn btn-success">
                                 <b>+</b> add expenditure type
                             </div>
                         </a>                     
+                    </div>
+
+                    <!-- actions on list  -->
+                    <div class="list-group font-weight-bold"  v-if = "expenditures_selected">
+                            <button type="button" class="action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#exportEpenditureToCSV" >
+                              <img src="@/assets/icons/icons8-export-csv-30.png" style="width: 35px; height:auto"> export to CSV
+                            </button>                            
                     </div>
                 </div>
             </div>
@@ -681,47 +636,7 @@
                     </div>
                 </div>
                 </div>
-                </div>
-                <!-- add expenditure type modal -->
-                <div class="modal fade" id="addExpenditureType" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalCenterTitle">add expenditure type</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        </div>
-                        <div class="modal-body">
-                                <form>                                            
-                                        <div class="row form-group">
-                                                <label class="col-3"><b>name:</b></label>
-                                                <input type="text" class=" col-8 form-control" placeholder="give the type a name" v-model="expenditure_type_name">                                                    
-                                                <p v-if="expenditure_type_name_errors.length">
-                                                    <ul>
-                                                            <small><li v-for="error in expenditure_type_name_errors"><p class="text-danger">{{ error }}</p></li></small>
-                                                    </ul>
-                                                </p>
-                                        </div>                                    
-                                        <hr/>   
-                                        <div class="row form-group">
-                                            <label class="col-3"><b>describe:</b></label>
-                                            <textarea type="text" class="col-8 form-control" rows='3' v-model="expenditure_type_description"></textarea>                                                   
-                                        </div>                                                                                
-                                </form>
-                        </div>
-                        <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-success" v-on:click="addExpenditureType()">
-                            <b>+</b> add expenditure type
-                            <span v-if="adding_to_finance"
-                                class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
-                            </span>
-                        </button>
-                        </div>
-                    </div>
-                    </div>
-                </div>
+                </div>               
         </div>
     </div>
 </template>
@@ -732,13 +647,17 @@ import tithestats from '@/subcomponents/statistics/tithestats.vue'
 import offeringstats from '@/subcomponents/statistics/offeringstats.vue'
 import incomestats from '@/subcomponents/statistics/incomestats.vue'
 import expenditurestats from '@/subcomponents/statistics/expenditurestats.vue'
+
+import expenditures from '@/subcomponents/finances/expenditure.vue'
 export default {
     name: 'generalFinance',
     components: {
         tithestats,
         offeringstats,
         incomestats,
-        expenditurestats
+        expenditurestats,
+
+        expenditures,
     } ,
 
     data () {
@@ -764,9 +683,6 @@ export default {
             offerings: null,
             income_stats: null,
             incomes: null,
-        //get ependitures
-            expenditure_types: null,
-            expenditure_stats: null,
         //service types
             service_types: null,
         //search for member
@@ -808,10 +724,6 @@ export default {
             income_amount: null,
             income_amount_errors: [],
             added_income: [],
-        //add income type
-            expenditure_type_name: '',
-            expenditure_type_description: '',
-            expenditure_type_name_errors: []
         }
     },
     created () {
@@ -893,7 +805,7 @@ export default {
             this.tithes_selected = true
             this.fetch_data_error = []
             this.$store.dispatch('update_isLoading', true)
-            // try local storage
+            // try local storage for tithes
             this.tithes = JSON.parse(localStorage.getItem('tithe_list'))
             if (this.tithes){
                 var array = this.tithes.response
@@ -905,7 +817,7 @@ export default {
             const currentVersion = this.$store.getters.tithe_list_version
             var version  = localStorage.getItem('tithe_list_version')
 
-            //else try network
+            //else try network for tithes
             if (!version || version < currentVersion) {
                 this.$store.dispatch('update_isLoading', true)
                 this.$http.get(this.$BASE_URL + '/api/finance/tithe-by-members-this-month/')
@@ -922,7 +834,7 @@ export default {
                         this.fetch_data_error.push(err)
                         this.$store.dispatch('update_isLoading', false)
                     })
-
+                // get tithe stats 
                 this.$store.dispatch('update_isLoading', true)
                 this.$http.get(this.$BASE_URL + '/api/finance/tithe-stats/')
                     .then(response => {
@@ -938,6 +850,7 @@ export default {
             }
             this.getIncomeTypeList()
         },
+        //get the list of income types
         getIncomeTypeList: function(){
             //try local storage
             this.income_types = JSON.parse(localStorage.getItem('income_type_list'))
@@ -980,18 +893,19 @@ export default {
                 })
             }
         },
+        //check if service exists for that date
         checkForService: function(){  
             this.$store.dispatch('update_isLoading', true)          
             this.$http.get(this.$BASE_URL + '/api/services/service-on-date/' + this.offering_date +'/of-type/' + this.service_type + '/')
-                    .then(response => {                    
-                    this.found_service = response.data                                  
-                    this.searched_for_service = true
-                    this.$store.dispatch('update_isLoading', false)
-                    })
-                    .catch((err) => {
-                        this.fetch_data_error.push(err)
-                        this.$store.dispatch('update_isLoading', false)
-                    })
+            .then(response => {                    
+                this.found_service = response.data                                  
+                this.searched_for_service = true
+                this.$store.dispatch('update_isLoading', false)
+            })
+            .catch((err) => {
+                this.fetch_data_error.push(err)
+                this.$store.dispatch('update_isLoading', false)
+            })
                     
         },
         getTithes: function(){
@@ -1017,7 +931,7 @@ export default {
             const currentVersion = this.$store.getters.offering_list_version
             var version  = localStorage.getItem('offering_list_version')
 
-            // try the network
+            // else try the network
             if (!version || version < currentVersion){
                 this.$store.dispatch('update_isLoading', true)
                 this.$http.get(this.$BASE_URL + '/api/finance/offering-stats/')
@@ -1108,49 +1022,7 @@ export default {
             this.tithes_selected = false            
             this.offerings_selected = false        
             this.any_other_selected = false
-            this.expenditures_selected = true
-
-            //try local storage
-            this.expenditure_stats = JSON.parse(localStorage.getItem('expenditure_stats'))
-            this.expenditure_types = JSON.parse(localStorage.getItem('expenditure_type_list'))
-            if (this.expenditure_types){
-                var array = this.expenditure_types.response
-                this.found_expenditure_types = array.length 
-            }
-
-            // else try the network
-            const currentVersion = this.$store.getters.expenditure_list_version
-            var version  = localStorage.getItem('expenditure_list_version')
-            var test = true
-            if (test) {
-                this.$store.dispatch('update_isLoading', true)
-                this.$http.get(this.$BASE_URL + '/api/finance/expenditure-stats/')
-                    .then(response => {
-                        this.expenditure_stats =  response.data
-                        localStorage.setItem('expenditure_stats',JSON.stringify(response.data) )
-                        this.$store.dispatch('update_isLoading', false)
-                    })
-                    .catch((err) => {
-                        this.fetch_data_error.push(err)
-                        this.$store.dispatch('update_isLoading', false)
-                    })
-
-                this.$store.dispatch('update_isLoading', true)
-                this.$http.get(this.$BASE_URL + '/api/finance/expenditure-type-list/')
-                    .then(response => {
-                        this.expenditure_types = {"response": response.data } 
-                        localStorage.setItem('expenditure_type_list',JSON.stringify({"response": response.data } ))
-                        localStorage.setItem('expenditure_list_version', currentVersion)                        
-
-                        var array = this.expenditure_types.response
-                        this.found_expenditure_types = array.length
-                        this.$store.dispatch('update_isLoading', false)
-                    })
-                    .catch((err) => {
-                        this.fetch_data_error.push(err)
-                        this.$store.dispatch('update_isLoading', false)
-                    })   
-            }
+            this.expenditures_selected = true            
         },
         //get service types
         getServiceTypes: function(){
@@ -1439,46 +1311,7 @@ export default {
                             alert("an error occured, try again later")
                         })
             }
-        },
-        expenditureTypeFormOK: function(){  
-            this.expenditure_type_name_errors = []
-
-            if (this.expenditure_type_description.length < 1){
-                this.expenditure_type_description = "none given"
-            }        
-            if (this.expenditure_type_name.length > 0){
-                return true
-            }
-            if (this.expenditure_type_name.length < 1){                
-                this.expenditure_type_name_errors.push("name required")
-                return false
-            }
-        },
-        addExpenditureType: function(){        
-            if (this.expenditureTypeFormOK()){
-                this.adding_to_finance = true
-                this.$http({                        
-                        method: 'post',
-                        url: this.$BASE_URL + '/api/finance/expenditure-type-list/',
-                        data: {
-                            type_name: this.expenditure_type_name,                                
-                            description: this.description_type_description                                                                                            
-                        }
-                        }).then(response => {     
-                            this.adding_to_finance = false                         
-                            this.expenditure_type_name = '',
-                            this.expenditure_type_description = '' 
-                            var new_version = parseInt(localStorage.getItem('expenditure_list_version')) + 1
-                            this.$store.dispatch('update_expenditure_list_version', new_version)  
-                            alert("expenditure type succesfully added")  
-                            this.getExpenditures()                    
-                        })
-                        .catch((err) => {
-                            this.adding_to_finance = false
-                            alert("an error occured, try again later")
-                        }) 
-            }
-        },        
+        }       
     },
 
 }
