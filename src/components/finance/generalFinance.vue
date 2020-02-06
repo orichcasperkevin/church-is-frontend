@@ -57,6 +57,7 @@
                                 <!-- tithes -->
                                 <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">                                          
                                         <h3>Tithes </h3>
+                                        <tithes/>
                                         <!-- when on a small device show this button --> 
                                         <div class="d-sm-block d-lg-none btn-group" style="padding: 0px 0px 25px 10px" v-if = "tithes_selected">
                                             <a href="#" data-toggle="modal" data-target="#addTithe" style="text-decoration: none">
@@ -649,6 +650,7 @@ import incomestats from '@/subcomponents/statistics/incomestats.vue'
 import expenditurestats from '@/subcomponents/statistics/expenditurestats.vue'
 
 import expenditures from '@/subcomponents/finances/expenditure.vue'
+import tithes from '@/subcomponents/finances/tithes.vue'
 export default {
     name: 'generalFinance',
     components: {
@@ -658,6 +660,7 @@ export default {
         expenditurestats,
 
         expenditures,
+        tithes
     } ,
 
     data () {

@@ -44,7 +44,7 @@
                 <tbody>
                     <tr v-for = "data in expenditure_types.response">                                           
                         <td>
-                            <router-link class="text-muted" style="text-decoration: none;"  :to="`/expenditure/`+ data.id + `/`">                                                         
+                            <router-link class="text-muted"  :to="`/expenditure/`+ data.id + `/`">                                                         
                                 {{data.type_name}}
                             </router-link>
                         </td>                                        
