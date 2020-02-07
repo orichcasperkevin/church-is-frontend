@@ -1,8 +1,10 @@
 @import '~bootstrap/scss/bootstrap';
-$blue: #326ada;
+$blue: #0275d8;
 $grey: 	#d2d2d2;
 $green:#139015;
 $dark: #a19c9c;
+$info: #5bc0de;
+$success: #5cb85c;
 
 $primary: $blue;
 $secondary: $grey;
@@ -45,6 +47,13 @@ img.church-is-menu {
 .home-menu-item:hover{
     background-color: ghostwhite;
     transition: all 0.3s ease-in-out;
+}
+.stat-item{
+  border: 1px solid;
+  border-radius: 5px;
+  border-color: $info;
+  padding: 5px 5px 5px 5px;
+  text-align: center;
 }
 .moreButton{
     color: rgb(97, 90, 90);
@@ -104,317 +113,16 @@ img.church-is-menu {
   width: 190px;
   height: auto;
 }
-
-/* Start CSS of the accordion */
-
-.accordion label {
-  color: black;
-  border-radius: 10px;
-  background-color: ghostwhite;
-  padding: 5px 15px;
-  display:block;
-  cursor: pointer;
-}
-.accordion p {
-  color: #424242;
-  padding: 10px;
-  opacity: 0;
-  display: none;
-  text-align: left;
-  background-color: #fff;
-  margin: 0px;
-}
-#tm:checked ~ .hiddentext {
-  display: block;
-  opacity: 1;
-}
-input#tm {
-  display: none;
-  position: relative;
-}
-#tn:checked ~ .hiddentext {
-  display: block;
-  opacity: 1;
-}
-input#tn {
-  display: none;
-  position: relative;
-}
-#to:checked ~ .hiddentext {
-  display: block;
-  opacity: 1;
-}
-input#to {
-  display: none;
-  position: relative;
-}
-.arrow{
-  color: black;
-}
-.shadowonhover {
-  border-radius: 5px;
-  background-color: #fff;
-  box-shadow: 0 1px 2px rgba(0,0,0,0.15);
-  transition: all 0.3s ease-in-out;
+.nav-pills > li > a.active {
+  color: black!important;
+  background-color: ghostwhite!important;
 }
 
-/* Create the hidden pseudo-element */
-/* include the shadow for the end state */
-.shadowonhover::after {
-  position: absolute;
-  z-index: -1;
-  opacity: 0;
-  border-radius: 5px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-  transition: opacity 0.3s;
-}
-.shadowonhover:hover {
-  transform: scale(1.01, 1.01);
+.nav-pills > a{
+  color: $primary!important;
 }
 
-/* Fade in the pseudo-element with the bigger shadow */
-.shadowonhover:hover::after {
-  opacity: 1;
-}
-
-/* Person */
-.person {
-	border: 1px solid black;
-	padding: 10px;
-	min-width: 150px;
-	background-color: #FFFFFF;
-	display: inline-block;
-}
-
-.person.female {
-	border-color: #F45B69;
-}
-
-.person.male {
-	border-color: #456990;
-}
-
-.person div {
-	text-align: center;
-}
-
-.person .name {
-	font-size: 16px;
-}
-
-.person .parentDrop, .person .spouseDrop, .person .childDrop {
-	border: 1px dashed #000000;
-	width: auto;
-	min-width: 80px;
-	min-height: 80px;
-	display: inline-block;
-	vertical-align: top;
-	position: relative;
-	padding-top: 15px;
-}
-
-.person .parentDrop>span,
-.person .spouseDrop>span,
-.person .childDrop>span {
-	position: absolute;
-	top: 2px;
-	left: 2px;
-	font-weight: bold;
-}
-.parentDrop>.person,
-.spouseDrop>.person,
-.childDrop>.person {
-	margin-top: 20px;
-}
-
-/* Tree */
-.tree ul {
-	padding-top: 20px;
-	position: relative;
-	transition: all 0.5s;
-	-webkit-transition: all 0.5s;
-	-moz-transition: all 0.5s;
-}
-
-.tree li {
-	display: table-cell;
-	text-align: center;
-	list-style-type: none;
-	position: relative;
-	padding: 20px 5px 0 5px;
-	transition: all 0.5s;
-	-webkit-transition: all 0.5s;
-	-moz-transition: all 0.5s;
-}
-
-
-
-/*We will use ::before and ::after to draw the connectors*/
-.tree li::before, .tree li::after {
-	content: '';
-	position: absolute;
-	top: 0;
-	right: 50%;
-	border-top: 1px solid #ccc;
-	width: 50%;
-	height: 20px;
-}
-
-.tree li::after {
-	right: auto;
-	left: 50%;
-	border-left: 1px solid #ccc;
-}
-
-/*We need to remove left-right connectors from elements without 
-any siblings*/
-.tree li:only-child::after, .tree li:only-child::before {
-	display: none;
-}
-
-/*Remove space from the top of single children*/
-.tree li:only-child {
-	padding-top: 0;
-}
-
-/*Remove left connector from first child and 
-right connector from last child*/
-.tree li:first-child::before, .tree li:last-child::after {
-	border: 0 none;
-}
-/*Adding back the vertical connector to the last nodes*/
-.tree li:last-child::before {
-	border-right: 1px solid #ccc;
-	border-radius: 0 5px 0 0;
-	-webkit-border-radius: 0 5px 0 0;
-	-moz-border-radius: 0 5px 0 0;
-}
-
-.tree li:first-child::after {
-	border-radius: 5px 0 0 0;
-	-webkit-border-radius: 5px 0 0 0;
-	-moz-border-radius: 5px 0 0 0;
-}
-
-/*Time to add downward connectors from parents*/
-.tree ul ul::before {
-	content: '';
-	position: absolute;
-	top: 0;
-	left: 50%;
-	border-left: 1px solid #ccc;
-	width: 0;
-	height: 20px;
-}
-
-.tree li .parent {
-	transition: all 0.5s;
-	-webkit-transition: all 0.5s;
-	-moz-transition: all 0.5s;
-	margin-top: 10px;
-}
-.tree li .parent::before {
-    content: '';
-    position: absolute;
-    top: 40px;
-    left: 50%;
-    border-left: 1px solid #ccc;
-    border-right: 1px solid #ccc;
-    width: 3px;
-    height: 10px;
-}
-.tree li .family {
-	position: relative;
-}
-.tree li .family .spouse {
-	position: absolute;
-	top: 0;
-	left: 50%;
-    margin-left: 95px;
-}
-.tree li .family .spouse::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: -10px;
-    border-top: 1px solid #ccc;
-    border-bottom: 1px solid #ccc;
-    width: 10px;
-    height: 3px;
-}
-
-/*Time for some hover effects*/
-/*We will apply the hover effect the the lineage of the element also*/
-.tree li .child:hover,
-.tree li .child:hover+.parent .person,
-.tree li .parent .person:hover,
-.tree li .child:hover+.parent .person+ul li .child,
-.tree li .parent .person:hover+ul li .child,
-.tree li .child:hover+.parent .person+ul li .parent .person,
-.tree li .parent .person:hover+ul li .parent .person {
-	background: #c8e4f8;
-	color: #000;
-	border: 1px solid #94a0b4;
-}
-/*Connector styles on hover*/
-.tree li .child:hover+.parent::before,
-.tree li .child:hover+.parent .person+ul li::after,
-.tree li .parent .person:hover+ul li::after,
-.tree li .child:hover+.parent .person+ul li::before,
-.tree li .parent .person:hover+ul li::before,
-.tree li .child:hover+.parent .person+ul::before,
-.tree li .parent .person:hover+ul::before,
-.tree li .child:hover+.parent .person+ul ul::before,
-.tree li .parent .person:hover+ul ul::before {
-	border-color: #94a0b4;
-}
-
-
-.progressbar {
-  counter-reset: step;
-}
-.progressbar li {
-  list-style-type: none;
-  width: 25%;
-  float: left;
-  font-size: 12px;
-  position: relative;
-  text-align: center;
-  text-transform: uppercase;
-  color: #7d7d7d;
-}
-.progressbar li:before {
-  width: 30px;
-  height: 30px;
-  content: counter(step);
-  counter-increment: step;
-  line-height: 30px;
-  border: 2px solid #7d7d7d;
-  display: block;
-  text-align: center;
-  margin: 0 auto 10px auto;
-  border-radius: 50%;
-  background-color: white;
-}
-.progressbar li:after {
-  width: 100%;
-  height: 2px;
-  content: '';
-  position: absolute;
-  background-color: #7d7d7d;
-  top: 15px;
-  left: -50%;
-  z-index: -1;
-}
-.progressbar li:first-child:after {
-  content: none;
-}
-.progressbar li.active {
-  color: green;
-}
-.progressbar li.active:before {
-  border-color: #55b776;
-}
-.progressbar li.active + li:after {
-  background-color: #55b776;
+.nav-pills > a.active {
+  color: black!important;
+  background-color: ghostwhite!important;
 }

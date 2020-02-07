@@ -63,7 +63,7 @@
                             <tr  v-for = "data in projects.response ">                    
                             <td>
                                 <router-link class="text-secondary" style="text-decoration: none;"  :to="`/projectDetail/`+ data.id + `/`">
-                                    <img style="width: 60%; height: auto" src="@/assets/icons/icons8-group-of-projects-filled-50.png">
+                                    <img style="width: 40%; height: auto" src="@/assets/icons/icons8-group-of-projects-filled-50.png">
                                 </router-link>
                             </td>                                
                             <td>
@@ -79,7 +79,7 @@
                             </td>
                             <td>
                                 <router-link class="text-muted" style="text-decoration: none;"  :to="`/projectDetail/`+ data.id + `/`">                                                         
-                                    >
+                                    <img style="width: 20px ;height: auto" src="@/assets/icons/icons8-right-arrow-50.png">
                                 </router-link>
                             </td> 
                             </tr>             

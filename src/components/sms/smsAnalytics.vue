@@ -6,7 +6,29 @@
                     <li class="breadcrumb-item active" aria-current="page">Sms Analytics</li>
                 </ol>
         </nav>
-        <div>
+        <div class="container">
+                <table class="table">
+                        <thead>
+                          <tr>     
+                            <th scope="col">date</th>                       
+                            <th scope="col">message</th>
+                            <th scope="col">receiver</th>
+                            <th scope="col">status</th>
+                            <th> cost</th>
+                          </tr>
+                        </thead>
+                        <tbody class="text-muted">
+                          <tr v-for= "message in sms_this_month" >  
+                            <td>{{$humanizeDate(message.sms.date)}}</td>                                                     
+                            <td><p>{{message.sms.message}}</p></td>
+                            <td>
+                                {{message.receipient.member.first_name}} {{message.receipient.member.first_name}}                        
+                            </td>
+                            <td>{{message.status}}
+                            <td>{{message.cost}}</td>                            
+                          </tr>
+                        </tbody>
+                      </table>
             {{sms_this_month}}
         </div>
     </div>

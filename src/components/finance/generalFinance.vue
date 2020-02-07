@@ -10,19 +10,25 @@
             <div class = "row">
                 <!-- NAVIGATIONS -->                
                 <div class="filters col-sm-12 col-md-8 col-lg-2" >
-                        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                        <div class="nav success flex-column nav-pills " id="v-pills-tab" role="tablist" aria-orientation="vertical">
                                 <a class="action-list list-group-item list-group-item-action border-0 active" id="v-pills-income-tab" data-toggle="pill" href="#v-pills-income" role="tab" aria-controls="v-pills-income" aria-selected="true" 
-                                    v-on:click="tithes_selected = true; expenditures_selected=false">
-                                        <img class="d-none d-lg-block d-xl-block" style="width: 20%; height: auto" src="@/assets/icons/icons8-request-money-filled-50.png">
+                                    v-on:click="tithes_selected = true; expenditures_selected=false">       
+                                    <span class="row">
+                                        <img class="d-none d-lg-block d-xl-block mr-2" style="width: 15%; height: auto" src="@/assets/icons/icons8-request-money-filled-50.png">
                                         Income
+                                    </span>                                                                     
                                 </a>
                                 <a class="action-list list-group-item list-group-item-action border-0" id="v-pills-expenditure-tab" data-toggle="pill" href="#v-pills-expenditure" role="tab" aria-controls="v-pills-expenditure" aria-selected="false" v-on:click="getExpenditures()">
-                                        <img class="d-none d-lg-block d-xl-block" style="width: 20%; height: auto" src="@/assets/icons/icons8-receipt-filled-50.png">
-                                        Expenditure
+                                    <span class="row">
+                                            <img class="d-none d-lg-block d-xl-block mr-2" style="width: 15%; height: auto" src="@/assets/icons/icons8-receipt-filled-50.png">
+                                            Expenditure
+                                    </span>                                      
                                 </a>  
                                 <router-link class="action-list list-group-item list-group-item-action border-0" id="v-pills-expenditure-tab" :to="{name: 'projectList'}">
-                                    <img class="d-none d-lg-block d-xl-block" style="width: 20%; height: auto" src="@/assets/icons/icons8-group-of-projects-filled-50.png">
-                                    Projects  
+                                    <span class="row">
+                                            <img class="d-none d-lg-block d-xl-block mr-2" style="width: 15%; height: auto" src="@/assets/icons/icons8-group-of-projects-filled-50.png">
+                                            Projects 
+                                    </span>                                     
                                 </router-link>
                             </div>
                 </div>
@@ -87,16 +93,19 @@
                                                         </div>
                                                 </div>
                                                 <div class="text-muted" v-if="any_other_selected">
-                                                        <p>Total this month  |<span class="text-info">
-                                                            Ksh {{humanize(income_stats.response.total_this_month)}} </span>|
-                                                        
-                                                            Total this year  |<span class="text-info">
-                                                                Ksh   {{humanize(income_stats.response.total_this_year)}} </span>|
-
-                                                                <a class="btn btn-sm btn-outline-info text-secondary dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
-                                                                    more stats
-                                                            </a>
-                                                        </p>                                                            
+                                                        <div class="row">
+                                                                <div class="stat-item mr-2 text-muted">
+                                                                        This month  <span class="text-info">
+                                                                         Ksh {{humanize(income_stats.response.total_this_month)}} </span>
+                                                                </div>
+                                                                <div class="stat-item mr-2">
+                                                                        This year  <span class="text-info">
+                                                                        Ksh   {{humanize(income_stats.response.total_this_year)}}</span>                                        
+                                                                </div>
+                                                                <a class="btn btn-outline-info text-secondary dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
+                                                                        more stats
+                                                                </a>
+                                                        </div>                                                                                                    
                                                         </p>
                                                         <div class="collapse" id="statsTab">
                                                             <div class="card card-body outline-0">

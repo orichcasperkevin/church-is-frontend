@@ -12,13 +12,18 @@
             <div class="row">
                 <div class="col-12 col-sm-10 col-md-8 col-lg-2">
                         <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                                                
                                 <a class="action-list list-group-item list-group-item-action border-0 active" id="v-pills-contributions-tab" data-toggle="pill" href="#v-pills-contributions" role="tab" aria-controls="v-pills-contributions" aria-selected="true" v-on:click="getContributionsTab()">
-                                        <img class="d-none d-lg-block d-xl-block" style="width: 20%; height: auto" src="@/assets/icons/icons8-request-money-filled-50.png">
-                                        contributions
+                                        <span class="row">
+                                                <img class="d-none d-lg-block d-xl-block mr-2" style="width: 20%; height: auto" src="@/assets/icons/icons8-request-money-filled-50.png">
+                                                contributions
+                                        </span>                                       
                                 </a>
                                 <a class="action-list list-group-item list-group-item-action border-0" id="v-pills-pledges-tab" data-toggle="pill" href="#v-pills-pledges" role="tab" aria-controls="v-pills-pledges" aria-selected="false" v-on:click="getPledgesTab()">
-                                        <img class="d-none d-lg-block d-xl-block" style="width: 20%; height: auto" src="@/assets/icons/icons8-promise-filled-50.png">
-                                        pledges
+                                        <span class="row">
+                                                <img class="d-none d-lg-block d-xl-block mr-2" style="width: 20%; height: auto" src="@/assets/icons/icons8-promise-filled-50.png">
+                                                pledges
+                                        </span>                                       
                                 </a>
                             
                         </div>                
@@ -45,16 +50,21 @@
                                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#settlePledge"><b>+</b> settle pledge</a>                                                                                                                
                                         </div>
                                 </div>
-                                <div class="small text-muted" v-for = "data in context.response ">
-                                        <p>Required amount  |<span class="text-info">
-                                                        KSh {{humanize(data.required_amount)}}</span>|
-                                        
-                                            Raised amount  |<span class="text-info">
-                                                        KSh {{humanize(data.raised_amount)}}</span>|
-
-                                           percentage funded  |<span class="text-info">
-                                                        {{data.percentage_funded}} %</span>|
-                                        </p>
+                                <div class=" text-muted" v-for = "data in context.response ">
+                                        <div class="row ml-1">
+                                                <div class="stat-item mr-2 text-muted">
+                                                        Required  <span class="text-info">
+                                                                Ksh {{humanize(data.required_amount)}}</span>
+                                                </div>
+                                                <div class="stat-item mr-2">
+                                                        Raised  <span class="text-info">
+                                                        Ksh   {{humanize(data.raised_amount)}}</span>                                        
+                                                </div>
+                                                <div class="stat-item mr-2">
+                                                        Funded  <span class="text-info">
+                                                        {{data.percentage_funded}} %</span>                                        
+                                                </div>
+                                        </div>                                     
                                 </div>                                 
                                 <hr/>
                                 <div class="row">
@@ -88,7 +98,7 @@
                                                 </td>
                                                 <td v-if = "data.names != ''"> {{data.names}}</td>
                                                 <td><p class="text-muted">{{humanize(data.amount)}}</p></td>
-                                                <td>{{data.recorded_at}}</td>                                               
+                                                <td>{{$humanizeDate(data.recorded_at)}}</td>                                               
                                             </tr>
                                         </tbody>
                                     </table>
@@ -117,16 +127,21 @@
                                                 </div>
                                         </div>
                                         <!-- pledges -->
-                                        <div class="small text-muted" v-for = "data in context.response ">
-                                                <p>Total in pledges  |<span class="text-info">
-                                                        KSh {{humanize(data.total_in_pledges)}}</span>|
-                                                
-                                                total in settled pledges  |<span class="text-info">
-                                                        KSh {{humanize(data.total_in_settled_pledges)}}</span>|
-
-                                                percentage settled  |<span class="text-info">
-                                                        {{data.percentage_of_pledge_settled}}</span>|
-                                                </p>
+                                        <div class="text-muted" v-for = "data in context.response ">
+                                                <div class="row ml-1">
+                                                        <div class="stat-item mr-2 text-muted">
+                                                                Pledges  <span class="text-info">
+                                                                        Ksh {{humanize(data.total_in_pledges)}}</span>
+                                                        </div>
+                                                        <div class="stat-item mr-2">
+                                                                Settled  <span class="text-info">
+                                                                Ksh   {{humanize(data.total_in_settled_pledges)}}</span>                                        
+                                                        </div>
+                                                        <div class="stat-item mr-2">
+                                                                Percentage settled  <span class="text-info">
+                                                                Ksh   {{data.percentage_of_pledge_settled}}%</span>                                        
+                                                        </div>
+                                                </div>                                                
                                         </div>                                         
                                            <hr/>
                                            <div class="row">

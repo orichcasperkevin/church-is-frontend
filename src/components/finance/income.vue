@@ -11,7 +11,7 @@
             </nav>
             <div class = "container">  
                 <div class="row">
-                        <div class="filters col-12 col-sm-8 col-md-8 col-lg-3" style="padding: 3px 3px 3px 3px">
+                        <div class="filters col-12 col-sm-8 col-md-8 col-lg-2" style="padding: 3px 3px 3px 3px">
                                 <a href="#" v-on:click="goBack()" role="button" aria-expanded="false">
                                         <div class="moreButton">                                
                                             <b> Back to finances</b>
@@ -23,15 +23,7 @@
                                         <div class="col-4">
                                                 <h3>
                                                         <span v-for="data in income_type.response">{{data.type_name}}</span>
-                                                </h3>
-                                                <div class="small text-muted" v-for="data in income_type.response">
-                                                    <p>total this month  |<span class="text-info">
-                                                        KSh {{humanize(data.total_this_month)}}</span>|
-                                                    
-                                                        total this year  |<span class="text-info">
-                                                            KSh {{humanize(data.total_this_year)}}</span>|        
-                                                    </p>
-                                                </div>
+                                                </h3>                                             
                                         </div>  
                                         <div class="col-4"></div>
                                         <div class="col-4">
@@ -46,9 +38,21 @@
                                                         </button>                                                        
                                                 </div>
                                         </div>                                        
-                                    </div>
-                                    <hr/>
+                                    </div>                                   
                                     <p class="col-8">
+                                            <div class="text-muted row" v-for="data in income_type.response">
+                                                    <div class="row">
+                                                            <div class="stat-item mr-2 text-muted">
+                                                                    This month  <span class="text-info">
+                                                                     Ksh {{humanize(data.total_this_month)}} </span>
+                                                            </div>
+                                                            <div class="stat-item mr-2">
+                                                                    This year  <span class="text-info">
+                                                                    Ksh   KSh {{humanize(data.total_this_year)}}</span>                                        
+                                                            </div>                                                               
+                                                    </div>                                                     
+                                            </div>
+                                            <hr/>
                                             <span class="badge badge-pill badge-info">{{foundItems}}</span> entries found
                                     </p>
                                     <table class="table">
@@ -113,7 +117,12 @@
                             </div>
                             <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-success" v-on:click="addIncome()"><b>+</b> add income</button>
+                            <button type="button" class="btn btn-success" v-on:click="addIncome()">
+                                <b>+</b> add income
+                                <span v-if="adding_income"
+                                    class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                                </span>
+                            </button>
                             </div>
                         </div>
                         </div>
@@ -139,7 +148,8 @@
                 income_type_errors: [],
                 income_amount: null,
                 income_amount_errors: [],
-                added_income: []
+                added_income: [],
+                adding_income: false
             }
         },
         created () {
@@ -211,25 +221,32 @@
         },
             addIncome: function(){           
             if (this.incomeFormOK()){
+                this.adding_income = true
                 this.$http({                        
-                        method: 'post',
-                        url: this.$BASE_URL + '/api/finance/add-income/',
-                        data: {                                                               
-                                recording_member_id: this.$session.get('member_id'),                             
-                                income_type_id: this.$route.params.id,                        
-                                narration: this.income_narration,                        
-                                amount: this.income_amount                                    
-                        }
-                        }).then(response => {
-                            this.added_income.push(response.data)
-                            this.income_amount = null,
-                            this.income_narration = ''
-                            alert("income successfully added")   
-                            this.fetchdata()               
-                        })
-                        .catch((err) => {
-                                
-                        })
+                    method: 'post',
+                    url: this.$BASE_URL + '/api/finance/add-income/',
+                    data: {                                                               
+                            recording_member_id: this.$session.get('member_id'),                             
+                            income_type_id: this.$route.params.id,                        
+                            narration: this.income_narration,                        
+                            amount: this.income_amount                                    
+                    }
+                    }).then(response => {
+                        this.added_income.push(response.data)
+                        this.income_amount = null,
+                        this.income_narration = ''
+                        this.adding_income = false
+                        //update income type list
+                        var new_version = parseInt(localStorage.getItem('income_type_list_version')) + 1
+                        this.$store.dispatch('update_income_type_list_version', new_version)
+
+                        alert("income successfully added")   
+                        this.fetchdata()               
+                    })
+                    .catch((err) => {
+                        alert(err)
+                        this.adding_income = false
+                    })
             }
         }
 

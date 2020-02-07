@@ -98,10 +98,12 @@
                   <hr/>
                 <div class="mb-2 row">
                   <p class="ml-2 mr-5">
-                    found <span class="badge badge-pill badge-info">{{foundItems}}</span>
+                      <div class="stat-item mr-2 text-muted">
+                          found <span class="text-info"><b>{{foundItems}}</b></span>
+                  </div>                   
                     <t/>
-                    <a class="btn btn-sm btn-outline-info text-secondary dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
-                        stats
+                    <a class="btn btn-outline-info text-secondary dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
+                        more stats
                     </a>
                   </p>                                                    
                   <!-- to be shown on small devices -->

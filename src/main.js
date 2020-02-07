@@ -19,12 +19,19 @@ Vue.use(Vuex)
 const options = { name: 'lodash' }
 Vue.use(VueLodash, options)
 Vue.use(VueSession) 
+
 Vue.config.productionTip = false
+//vuex
 Vue.prototype.$store =  store 
+//axios
 Vue.prototype.$http = axios
+
+//helpers
+Vue.prototype.$timeAgo = new TimeAgo('en-US')
 Vue.prototype.$humanizeDate = function(date_time){return this.$timeAgo.format(new Date(date_time), 'twitter')},
 Vue.prototype.$fileDownload = require('js-file-download');
 
+//DOMAINS
 Vue.prototype.$DOMAIN = { value :'http://my-domain.com:8000'}
 Vue.prototype.$BASE_URL = { value :localStorage.getItem('base_url_value'),toString:function(){return this.value}}
 

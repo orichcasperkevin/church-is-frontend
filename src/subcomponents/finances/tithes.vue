@@ -19,16 +19,19 @@
                     </div>        
                     <!-- tithe stats                                     -->
                     <div class="text-muted">
-                        <p>Total this month  |<span class="text-info">
-                            Ksh {{humanize(tithe_stats.response.total_in_tithe_this_month)}} </span>|
-                        
-                            Total this year  |<span class="text-info">
-                                Ksh   {{humanize(tithe_stats.response.total_in_tithe_this_year)}} </span>|                                                     
-
-                                <a class="btn btn-sm btn-outline-info text-secondary dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
+                        <div class="row">
+                            <div class="stat-item mr-2 text-muted">
+                                    This month  <span class="text-info">
+                                     Ksh {{humanize(tithe_stats.response.total_in_tithe_this_month)}} </span>
+                            </div>
+                            <div class="stat-item mr-2">
+                                    This year  <span class="text-info">
+                                    Ksh   {{humanize(tithe_stats.response.total_in_tithe_this_year)}} </span>                                        
+                            </div>
+                            <a class="btn btn-outline-info text-secondary dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
                                     more stats
                                 </a>
-                        </p>
+                        </div> 
                         <p>                                                    
                         </p>
                         <div class="collapse" id="statsTab">
@@ -60,7 +63,7 @@
                                         </router-link>
                                     </td>
                                     <td><p class="text-secondary">{{humanize(data.amount)}}</p></td>
-                                    <td>{{data.date}}</td>
+                                    <td>{{$humanizeDate(data.date)}}</td>
                                     <td><p class="text-secondary">{{humanize(data.total_this_month)}}</p></td>
                                     <td><p>{{humanize(data.total_this_year)}}</p></td>                                                          
                                 </tr>

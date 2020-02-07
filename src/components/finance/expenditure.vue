@@ -23,18 +23,10 @@
                                     <div class="col-lg-4 col-sm-12">
                                         <h3>
                                             <span v-for="data in expenditure_type.response">{{data.type_name}}</span>
-                                        </h3>
-                                        <div class="small text-muted" v-for="data in expenditure_type.response">
-                                            <p>total this month  |<span class="text-info">
-                                                KSh {{humanize(data.total_this_month)}}</span>|
-                                            
-                                                total this year  |<span class="text-info">
-                                                    KSh {{humanize(data.total_this_year)}}</span>|        
-                                            </p>
-                                        </div>
+                                        </h3>                                        
                                     </div>
                                     
-                                    <div class="col-lg-4 col-sm-12 ">
+                                    <div class="col-lg-4 col-sm-12 ml-5">
                                             <div class="btn-group" style="padding: 0px 0px 25px 10px" >
                                                     <a href="#" data-toggle="modal" data-target="#addExpenditure" style="text-decoration: none">
                                                         <div class="add-button">
@@ -46,9 +38,21 @@
                                                     </button>                                                        
                                             </div>                                           
                                     </div>                                    
-                                </div>                                
-                                <hr/>
+                                </div>                                                                
                                 <p class="col-8">
+                                        <div class="small text-muted" v-for="data in expenditure_type.response">                                               
+                                                <div class="row">
+                                                        <div class="stat-item mr-2 text-muted">
+                                                                This month  <span class="text-info">
+                                                                 Ksh {{humanize(data.total_this_month)}} </span>
+                                                        </div>
+                                                        <div class="stat-item mr-2">
+                                                                This year  <span class="text-info">
+                                                                Ksh   KSh {{humanize(data.total_this_year)}}</span>                                        
+                                                        </div>                                                               
+                                                </div>
+                                        </div>
+                                        <hr/>
                                         <span class="badge badge-pill badge-info">{{foundItems}}</span> entries found
                                 </p>
                                 <table class="table">
@@ -66,13 +70,13 @@
                                                     {{humanize(data.amount)}}
                                                 </router-link>
                                             </td>                                                               
-                                            <td><p class="text-info">{{data.date}}</p></td>
+                                            <td><p class="text-info">{{$humanizeDate(data.date)}}</p></td>
                                             <td><p class="text-secondary">{{data.narration}}</p></td>                                                                                                                                                                        
                                         </tr>
                                     </tbody>
                                 </table>
                       </div>
-            <!-- add income modal -->
+            <!-- add expenditure modal -->
             <div class="modal fade" id="addExpenditure" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
@@ -103,7 +107,12 @@
                         </div>
                         <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-success" v-on:click="addExpenditure()"><b>+</b> add expenditure</button>
+                        <button type="button" class="btn btn-success" v-on:click="addExpenditure()">
+                            <b>+</b> add expenditure
+                            <span v-if="adding_expenditure"
+                                class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                            </span>
+                        </button>
                         </div>
                     </div>
                     </div>
@@ -128,6 +137,7 @@ export default {
             expenditure_narration: null,
             expenditure_amount: null,
             expenditure_amount_errors: [],
+            adding_expenditure: false
         }
     },
     created () {
@@ -199,6 +209,7 @@ export default {
     },
         addExpenditure: function(){           
         if (this.expenditureFormOkay()){
+            this.adding_expenditure = true
             this.$http({                        
                     method: 'post',
                     url: this.$BASE_URL + '/api/finance/add-expenditure/',
@@ -212,11 +223,13 @@ export default {
                         this.added_income.push(response.data)
                         this.expenditure_amount = null,
                         this.expenditure_narration = ''
+                        this.adding_expenditure = false
                         alert("expenditure successfully added")   
                         this.fetchdata()               
                     })
                     .catch((err) => {
-                            
+                        alert("error while adding expenditure, check your connection and try again")
+                        this.adding_expenditure = false
                     })
         }
     }

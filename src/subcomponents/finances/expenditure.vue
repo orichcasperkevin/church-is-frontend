@@ -12,17 +12,19 @@
                     </a>                     
             </div>                               
             <div class="text-muted">
-                    <p>Total this month  |<span class="text-info">
-                        Ksh {{humanize(expenditure_stats.total_this_month)}} </span>|
-                    
-                        Total this year  |<span class="text-info">
-                            Ksh   {{humanize(expenditure_stats.total_this_year)}} </span>|
-
-
+                    <div class="row">
+                            <div class="stat-item mr-2 text-muted">
+                                    This month  <span class="text-info">
+                                     Ksh {{humanize(expenditure_stats.total_this_month)}}</span>
+                            </div>
+                            <div class="stat-item mr-2">
+                                    This year  <span class="text-info">
+                                    Ksh   {{humanize(expenditure_stats.total_this_year)}}</span>                                        
+                            </div>
                             <a class="btn btn-sm btn-outline-info text-secondary dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
-                                more stats
-                        </a>
-                    </p>
+                                    more stats
+                            </a>
+                    </div>                     
                     <div class="collapse" id="statsTab">
                             <div class="card card-body outline-0">
                                 <expenditurestats msg="expenditure stats"/>
@@ -52,7 +54,7 @@
                         <td><p>{{humanize(data.total_this_year)}}</p></td>                                                          
                         <td>
                             <router-link class="text-muted" style="text-decoration: none;"  :to="`/expenditure/`+ data.id + `/`">                                                         
-                                >
+                                <img style="width: 20px ;height: auto" src="@/assets/icons/icons8-right-arrow-50.png">
                             </router-link>
                         </td>
                     </tr>

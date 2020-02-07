@@ -18,16 +18,19 @@
                         </div>
                 </div>
                 <div class="text-muted" >
-                        <p>Total this month  |<span class="text-info">
-                            Ksh {{humanize(offering_stats.response.total_in_offerings_this_month)}} </span>|
-                        
-                            Total this year  |<span class="text-info">
-                                Ksh   {{humanize(offering_stats.response.total_in_offerings_this_year)}} </span>|
-
-                            <a class="btn btn-sm btn-outline-info text-secondary dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
-                                more stats
-                            </a>
-                        </p>                                                    
+                        <div class="row">
+                                <div class="stat-item mr-2 text-muted">
+                                        This month  <span class="text-info">
+                                         Ksh {{humanize(offering_stats.response.total_in_offerings_this_month)}}</span>
+                                </div>
+                                <div class="stat-item mr-2">
+                                        This year  <span class="text-info">
+                                        Ksh    {{humanize(offering_stats.response.total_in_offerings_this_month)}} </span>                                        
+                                </div>
+                                <a class="btn  btn-outline-info text-secondary dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
+                                        more stats
+                                </a>
+                            </div>                                                                            
                         </p>
                         <div class="collapse" id="statsTab">
                             <div class="card card-body outline-0">
@@ -58,8 +61,8 @@
                             </td>
                             <td v-if = "data.service != null"> {{data.service.type.name}}</td>
                             <td><p class="text-secondary">{{humanize(data.amount)}}</p></td>
-                            <td v-if = "data.member != null">{{data.date}}</td>
-                            <td v-if = "data.service != null"> {{data.service.date}}</td>
+                            <td v-if = "data.member != null">{{$humanizeDate(data.date)}}</td>
+                            <td v-if = "data.service != null"> {{$humanizeDate(data.service.date)}}</td>
                             <td><p class="text-secondary">{{humanize(data.total_this_month)}}</p></td>
                             <td><p>{{humanize(data.total_this_year)}}</p></td>                                                          
                         </tr>

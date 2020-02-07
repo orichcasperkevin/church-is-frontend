@@ -19,14 +19,19 @@
                 Groups
               </b>
             </h3>
-            <p class=" text-muted">
-              folders |<b class="text-info"> {{foundItems}} </b>|  groups |
-              <b class="text-info"> {{foundItems_independent}} </b>|
-
-              <a class="btn btn-sm btn-outline-info text-secondary dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
-                  more stats
-              </a>
-            </p>
+            <div class="row">
+                <div class="stat-item mr-2 text-muted">
+                        Folders <b> <span class="text-info">
+                         {{foundItems}} </span></b>
+                </div>
+                <div class="stat-item mr-2">
+                        Groups <b> <span class="text-info">
+                        {{foundItems_independent}}</span> </b>
+                </div>
+                <a class="btn btn-outline-info text-secondary dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
+                        more stats
+                </a>
+            </div>            
         </div>
       </div>
       <hr>
