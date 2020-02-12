@@ -3,11 +3,13 @@
       <!-- NAVBAR -->
       <nav aria-label="breadcrumb" >
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><span class="backButton">
-              <router-link style="text-decoration: none" :to="{name: 'Home'}">
-                  <img style="width: 25px ;height: auto" src="@/assets/icons/icons8-church-96.png">
-                Home
-            </router-link></span>
+            <li class="breadcrumb-item">
+              <span class="backButton">
+                <router-link style="text-decoration: none" :to="{name: 'Home'}">
+                    <img style="width: 25px ;height: auto" src="@/assets/icons/icons8-church-96.png">
+                  Home
+              </router-link>
+            </span>
           <li class="breadcrumb-item active" aria-current="page">
             members
           </li>
@@ -102,7 +104,7 @@
                           found <span class="text-info"><b>{{foundItems}}</b></span>
                   </div>                   
                     <t/>
-                    <a class="btn btn-outline-info text-secondary dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
+                    <a class="btn btn-outline-info text-secondary dropdown-toggle mr-1" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
                         more stats
                     </a>
                   </p>                                                    
@@ -584,7 +586,7 @@ export default {
       this.$store.dispatch('update_isLoading', true)
       // try local storage
       this.members = JSON.parse(localStorage.getItem('member_list'))
-      if (this.members){
+      if (this.members){        
         var array = this.members.response
         this.foundItems = array.length
         for (var data in this.members.response){
@@ -859,14 +861,22 @@ export default {
       })
     },
     getGroups: function(){
-      // get  groups            
-      this.$http.get(this.$BASE_URL + '/api/groups/church-group-list/')
-      .then(response => {
-          this.groups = {"response": response.data }                            
-      })
-      .catch((err) => {
-          this.fetch_data_error.push(err)          
-      })
+      // get  groups     
+      this.groups = JSON.parse(localStorage.getItem('group_list'))
+      const currentVersion = this.$store.getters.group_list_version
+      var version  = localStorage.getItem('group_list_version')
+
+      if (!version || version < currentVersion) {       
+          this.$http.get(this.$BASE_URL + '/api/groups/church-group-list/')
+          .then(response => {
+              this.groups = {"response": response.data }   
+              localStorage.setItem('group_list',JSON.stringify({"response": response.data }))
+              localStorage.setItem('group_list_version', currentVersion)                         
+          })
+          .catch((err) => {
+              this.fetch_data_error.push(err)          
+          })
+      }
       
     }
 }
