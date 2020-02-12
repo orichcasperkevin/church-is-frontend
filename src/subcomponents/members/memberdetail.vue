@@ -68,7 +68,7 @@
                                     <span class="row">
                                         <span class="col text-left">Residence</span>
                                         <span class="col text-right" >
-                                                <a href="#" data-toggle="modal" data-target="#editPersonalDetailModal">
+                                                <a href="#" data-toggle="modal" data-target="#editResidenceModal">
                                                         <img src="@/assets/icons/icons8-edit-24.png" style="width:20px ; height: auto">
                                                 </a>                                                   
                                         </span>
@@ -88,12 +88,12 @@
                                     </span>
                                     <span v-for = "data in residence_info">
                                             <span v-for = "data in data">
-                                                    <p><b>street / drive:</b> {{data.street}}</p>
+                                                    <p><b>street/drive:</b> {{data.street}}</p>
                                             </span>
                                     </span>
                                     <span v-for = "data in residence_info">
                                             <span v-for = "data in data">
-                                                    <p><b>area name:</b> {{data.village_estate}}</p>
+                                                    <p><b>estate:</b> {{data.village_estate}}</p>
                                             </span>
                                     </span>
                                     <span v-for = "data in residence_info">
@@ -104,14 +104,26 @@
                             </div>
                     </div>
             </div>
+            <!-- COL 2 -->
             <div class="col">
+                    <!-- contact detail -->
                     <div class="card border-0" style="max-width: 18rem;">
-                            <div class="card-header border-0"> contact </div>
+                            <div class="card-header border-0">
+                                <span class="row">
+                                        <span class="col text-left">Contact</span>
+                                        <span class="col text-right" >
+                                                <a href="#" data-toggle="modal" data-target="#editContactModal">
+                                                        <img src="@/assets/icons/icons8-edit-24.png" style="width:20px ; height: auto">
+                                                </a>                                                   
+                                        </span>
+                                </span> 
+                            </div>
                             <div class="card-body">
                                     <p v-if = "contact_info.contact.length == 0 "> none given </p>
                                     <span v-for = "data in contact_info">
                                             <span v-for = "data in data">
-                                                    <p><b>phone number:</b> {{data.phone}}</p>
+                                                    <p><b>phone 1:</b> {{data.phone}}</p>
+                                                    <p><b>phone 2:</b> {{data.phone2}}</p>
                                             </span>
                                             <span v-for = "data in member_info">
                                                     <span v-for = "data in data">
@@ -155,7 +167,7 @@
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalCenterTitle">Modal title</h5>
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Edit Personal detail</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
@@ -214,6 +226,126 @@
                     </div>
                 </div>
             </div>
+            <!-- edit residence data Modal -->
+            <div class="modal fade" id="editResidenceModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalCenterTitle">Modal Residence</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                    <div class="row form-group">                                                                          
+                                        <label class="col-3"><b>town:</b></label>                                
+                                        <input type="text" class=" col-8 form-control" 
+                                                :placeholder="residence_info.residence[0].town" 
+                                                v-model="new_town_name"> 
+                                    </div>
+                                    <div class="row form-group">                                                                    
+                                        <label class="col-3"><b>road:</b></label>
+                                        <input type="text" class=" col-8 form-control" 
+                                                :placeholder="residence_info.residence[0].road" 
+                                                v-model="new_road_name"> 
+                                    </div>
+                                    <div class="row form-group">  
+                                        <label class="col-3"><b>street:</b></label>
+                                        <input type="text" class=" col-8 form-control" 
+                                                :placeholder="residence_info.residence[0].street" 
+                                                v-model="new_street_name"> 
+                                    </div>  
+                                    <div class="row form-group">  
+                                        <label class="col-3"><b>estate:</b></label>
+                                        <input type="text" class=" col-8 form-control" 
+                                                :placeholder="residence_info.residence[0].village_estate" 
+                                                v-model="new_estate"> 
+                                        </div>
+                                    <div class="row form-group">  
+                                        <label class="col-3"><b>description:</b></label>
+                                        <input type="text" class=" col-8 form-control" 
+                                                :placeholder="residence_info.residence[0].description" 
+                                                v-model="new_description"> 
+                                </div>                              
+                                     
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-success" v-on:click="updateResidenceDetail()">
+                                        Save changes
+                                        <span v-if="updating_details"
+                                                class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                                        </span>
+                                </button>
+                            </div>
+                            </div>
+                        </div>
+           </div>
+           <!-- edit contact data Modal -->
+           <div class="modal fade" id="editContactModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalCenterTitle">Edit Contact</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                    {{contact_info.contact[0].phone}}
+                                <div class="row mb-3">
+                                        <span class="col-4">
+                                                <label><b>country code :</b></label>
+                                                <input class="form-control" type="text" 
+                                                        :placeholder="+254" v-model = "country_code">
+                                        </span>
+                                        <span class="col-8">
+                                                <label><b>phone number 1:</b></label>
+                                                <input type="text" class="form-control" 
+                                                        :placeholder="contact_info.contact[0].phone" v-model = "phone_number1">
+                                        </span>
+                                </div>
+                                <div class="row mb-5">
+                                        <span class="col-4">
+                                                <label><b>country code :</b></label>
+                                                <input class="form-control" type="text" placeholder="+254" v-model = "country_code">
+                                        </span>
+                                        <span class="col-8">
+                                                <label><b>phone number 2:</b></label>
+                                                <input type="text" class="form-control" 
+                                                        :placeholder="contact_info.contact[0].phone2" v-model = "phone_number2">
+                                        </span>
+                                </div> 
+                                <p v-if="phone_number_errors.length">
+                                        <ul>
+                                                <small><li v-for="error in phone_number_errors"><p class="text-danger">{{ error }}</p></li></small>
+                                        </ul>
+                                </p>
+                                <p v-if="phone_number_OK.length">
+                                        <ul>
+                                                <small><li v-for="error in phone_number_OK"><p class="text-success">{{ error }}</p></li></small>
+                                        </ul>
+                                </p> 
+                                <hr/>
+                                <div class="row form-group">                                             
+                                        <label class="col-3"><b>email:</b></label>                                
+                                        <input type="email" class=" col-8 form-control" 
+                                                :placeholder="contact_info.contact[0].member.email" 
+                                                v-model="new_email"> 
+                                </div>                                                                                      
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-success" v-on:click="updateContactDetail()">
+                                        Save changes
+                                        <span v-if="updating_details"
+                                                class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                                        </span>
+                                </button>
+                            </div>
+                            </div>
+                        </div>
+           </div>
     </div>    
 </template>
     
@@ -229,24 +361,78 @@ export default {
     },
     data(){
         return{    
-            member_info: null,    
-            contact_info: null, contact_errors: [],
-            age_info: null, age_errors: [],
-            residence_info: null, residence_errors: [],
-            roles_info: null, roles_errors: [],
-            marital_status_info: null, marital_status_errors: [],
-            family_info: null, family_errors: [],              
-            //edit personal info
-            updating_details:false,
-            new_d_o_b: null,
-            new_first_name: null,
-            new_middle_name:null,
-            new_last_name: null,
-            new_gender: null,
-            new_marital_status: null                  
+                member_info: null,    
+                contact_info: null, contact_errors: [],
+                age_info: null, age_errors: [],
+                residence_info: null, residence_errors: [],
+                roles_info: null, roles_errors: [],
+                marital_status_info: null, marital_status_errors: [],
+                family_info: null, family_errors: [],              
+                //edit personal info
+                updating_details:false,
+                new_d_o_b: null,
+                new_first_name: null,
+                new_middle_name:null,
+                new_last_name: null,
+                new_gender: null,
+                new_marital_status: null,
+                //update residence
+                new_town_name:null,
+                new_road_name:null,
+                new_estate:null,
+                new_street_name: null,
+                new_description :null,
+                //update contact
+                new_email: '',
+                phone_number_errors:[],
+                phone_number_OK:[],
+                country_code: '+254',
+                phone_number1: null,
+                phone_number2: null
         }
     },
-
+    watch:{
+        phone_number1: function(){
+                if (this.phone_number1.isNaN){
+                        this.phone_number_errors = []
+                        this.phone_number_errors.push(" phone number should be numbers only")
+                }
+                if (this.phone_number1.length > 9){
+                        this.phone_number_OK = []
+                        this.phone_number_errors = []
+                        this.phone_number_errors.push("number too long")
+                }
+                if (this.phone_number1.length < 9){
+                        this.phone_number_OK = []
+                        this.phone_number_errors = []
+                        this.phone_number_errors.push("number too short")
+                }
+                if (this.phone_number1.length == 9){
+                        this.phone_number_errors = []                       
+                        this.phone_number_OK.push(" number OK")
+                }
+        },
+        phone_number2: function(){
+                if (this.phone_number2.isNaN){
+                        this.phone_number_errors = []
+                        this.phone_number_errors.push(" phone number should be numbers only")
+                }
+                if (this.phone_number2.length > 9){
+                        this.phone_number_OK = []
+                        this.phone_number_errors = []
+                        this.phone_number_errors.push("number too long")
+                }
+                if (this.phone_number2.length < 9){
+                        this.phone_number_OK = []
+                        this.phone_number_errors = []
+                        this.phone_number_errors.push("number too short")
+                }
+                if (this.phone_number2.length == 9){
+                        this.phone_number_errors = []                        
+                        this.phone_number_OK.push(" number OK")
+                }
+        },
+    },
     methods:{
         fetchData: function(){
                 this.$store.dispatch('update_isLoading', true)
@@ -276,9 +462,11 @@ export default {
                 .catch(error=> {
                     
                 })
+
+                //member residence
                 this.$http.get(this.$BASE_URL + '/api/members/residence-for-member/'+this.$route.params.id+'/')
                 .then(response => {
-                this.residence_info = {"residence": response.data }
+                        this.residence_info = {"residence": response.data }
                 })
                 .catch(error=> {
                 this.residence_errors.push(error)
@@ -352,7 +540,68 @@ export default {
                         this.updating_details = false
                         alert("error updating")
                 })
-        }
+        },
+        
+        //update residence
+        updateResidenceDetail: function(){
+                this.updating_details = true
+                this.$http.patch(
+                        this.$BASE_URL + '/api/members/update-member-residence/',
+                        {
+                                'member_id':this.$route.params.id,
+                                'town':this.new_town_name,
+                                'road':this.new_road_name,                                
+                                'street':this.new_street_name,
+                                'estate':this.new_estate,
+                                'description':this.new_description
+                        }
+                )
+                .then(()=>{
+                        this.new_town_name = null
+                        this.new_road_name = null
+                        this.new_street_name = null
+                        this.new_description = null
+                        this.new_description  = null 
+                        this.updating_details = false
+                        this.fetchData()
+                        alert("update successful")
+                })
+                .catch(()=>{
+                        this.updating_details = false
+                        alert("error updating")
+                })
+        },
+        //update contact detail
+        updateContactDetail: function(){
+                this.updating_details = true
+                if (this.phone_number1){
+                        this.phone_number1 = this.country_code + this.phone_number1
+                }
+                if (this.phone_number2){
+                        this.phone_number2 = this.country_code + this.phone_number2
+                }
+                this.$http.patch(
+                        this.$BASE_URL + '/api/members/update-member-contact/',
+                        {
+                                'member_id':this.$route.params.id,
+                                'phone': this.phone_number1,
+                                'phone2':this.phone_number2,                                
+                                'email':this.new_email,                                
+                        }
+                )
+                .then(()=>{
+                        this.phone_number1 = null
+                        this.phone_number2 = null
+                        this.new_email = null
+                        this.updating_details = false
+                        this.fetchData()
+                        alert("update successful")
+                })
+                .catch(()=>{
+                        this.updating_details = false
+                        alert("error updating")
+                })
+        },
     },
 
 }
