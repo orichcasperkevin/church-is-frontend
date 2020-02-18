@@ -28,8 +28,7 @@
                             <td>{{message.cost}}</td>                            
                           </tr>
                         </tbody>
-                      </table>
-            {{sms_this_month}}
+                      </table>            
         </div>
     </div>
 </template>

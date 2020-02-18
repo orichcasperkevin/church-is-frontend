@@ -373,27 +373,7 @@
                                             <div class=" row form-group" v-if="! non_member">
                                               <label class="col-3"><b>member:</b></label>
                                               <div class="col-8">
-                                                    <input type="text" class=" form-control" placeholder="type to search member" v-model="memberSearch">   
-                                                    <div style="padding: 10px 10px 10px 10px" class="text-info" >{{memberSearch_status}}</div> 
-
-                                                    <div class="pre-scrollable searchedItemsDiv border " style="  max-height: 185px; overflow-y: scroll;" v-if="showMemberInput">
-                                                            <table class="table border-0" >
-                                                              <tbody>
-                                                                <tr class="searchedItem border-0" v-for="data in found_members.response">
-                                                                  <a href="#" style="text-decoration: none" v-on:click="selectMember(data.member.id,data.member.first_name,data.member.last_name)"> 
-                                                                  <td class="border-0">
-                                                                    
-                                                                      <img v-if = "data.gender == 'M'" style = "height: 32px "src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
-                                                                       <img v-if = "data.gender == 'F'" style = "height: 32px "src="@/assets/avatars/icons8-user-female-skin-type-4-40.png">
-                                                                       <img v-if = "data.gender == 'R'" style = "height: 32px "src="@/assets/avatars/icons8-contacts-96.png">
-                                                                       
-                                                                      <span class = "text-secondary">{{data.member.first_name}} {{data.member.last_name}}</span>                                                                      
-                                                                   </td>
-                                                                  </a>                                                                                                                                  
-                                                                </tr>
-                                                              </tbody>
-                                                            </table>
-                                                        </div>                                                    
+                                                        <searchmember v-on:memberSelected="onMemberSelected" />                                                   
                                               </div>                                           
                                               
                                             </div>
@@ -478,27 +458,7 @@
                                             <div class=" row form-group" v-if="! non_member">
                                               <label class="col-3"><b>member:</b></label>
                                               <div class="col-8">
-                                                    <input type="text" class=" form-control" placeholder="type to search member" v-model="memberSearch" autofocus>   
-                                                    <div style="padding: 10px 10px 10px 10px" class="text-info" >{{memberSearch_status}}</div> 
-
-                                                    <div class="pre-scrollable searchedItemsDiv border " style="  max-height: 185px; overflow-y: scroll;" v-if="showMemberInput">
-                                                            <table class="table border-0" >
-                                                              <tbody>
-                                                                <tr class="searchedItem border-0" v-for="data in found_members.response">
-                                                                  <a href="#" style="text-decoration: none" v-on:click="selectMember(data.member.id,data.member.first_name,data.member.last_name)"> 
-                                                                  <td class="border-0">
-                                                                    
-                                                                      <img v-if = "data.gender == 'M'" style = "height: 32px "src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
-                                                                       <img v-if = "data.gender == 'F'" style = "height: 32px "src="@/assets/avatars/icons8-user-female-skin-type-4-40.png">
-                                                                       <img v-if = "data.gender == 'R'" style = "height: 32px "src="@/assets/avatars/icons8-contacts-96.png">
-                                                                       
-                                                                      <span class = "text-secondary">{{data.member.first_name}} {{data.member.last_name}}</span>                                                                      
-                                                                   </td>
-                                                                  </a>                                                                                                                                  
-                                                                </tr>
-                                                              </tbody>
-                                                            </table>
-                                                        </div>  
+                                                        <searchmember v-on:memberSelected="onMemberSelected" />
                                                         <p v-if="selected_member_errors.length">
                                                                 <ul>
                                                                         <small><li v-for="error in selected_member_errors"><p class="text-danger">{{ error }}</p></li></small>
@@ -618,27 +578,7 @@
                                             <div class=" row form-group" v-if="! non_member">
                                                 <label class="col-3"><b>member:</b></label>
                                                 <div class="col-8">
-                                                    <input type="text" class=" form-control" placeholder="type to search member" v-model="memberSearch" autofocus>   
-                                                    <div style="padding: 10px 10px 10px 10px" class="text-info" >{{memberSearch_status}}</div> 
-
-                                                    <div class="pre-scrollable searchedItemsDiv border " style="  max-height: 185px; overflow-y: scroll;" v-if="showMemberInput">
-                                                            <table class="table border-0" >
-                                                                <tbody>
-                                                                <tr class="searchedItem border-0" v-for="data in found_members.response">
-                                                                    <a href="#" style="text-decoration: none" v-on:click="selectMember(data.member.id,data.member.first_name,data.member.last_name)"> 
-                                                                    <td class="border-0">
-                                                                    
-                                                                        <img v-if = "data.gender == 'M'" style = "height: 32px "src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
-                                                                        <img v-if = "data.gender == 'F'" style = "height: 32px "src="@/assets/avatars/icons8-user-female-skin-type-4-40.png">
-                                                                        <img v-if = "data.gender == 'R'" style = "height: 32px "src="@/assets/avatars/icons8-contacts-96.png">
-                                                                        
-                                                                        <span class = "text-secondary">{{data.member.first_name}} {{data.member.last_name}}</span>                                                                      
-                                                                    </td>
-                                                                    </a>                                                                                                                                  
-                                                                </tr>
-                                                                </tbody>
-                                                            </table>
-                                                        </div>   
+                                                        <searchmember v-on:memberSelected="onMemberSelected" />
                                                         <p v-if="selected_member_errors.length">
                                                                 <ul>
                                                                         <small><li v-for="error in selected_member_errors"><p class="text-danger">{{ error }}</p></li></small>
@@ -710,8 +650,10 @@
 </template>
 
 <script>
+import searchmember from '@/subcomponents/searchmember.vue'
 export default {
     name : 'projectDetail',
+    components: { searchmember },
     data () {
         return {
         //get data
@@ -726,9 +668,8 @@ export default {
         foundItems: null,
         fetch_data_error: [],
         //search for member
-        memberSearch: '',found_members:[],
-        memberSearch_status: '',selectedMember: 0,
-        showMemberInput: false,
+        // This value is set to the value emitted by the child
+        selectedMember: null, 
         member_ids: [],
         //add contribution
         adding_to_project: false,    
@@ -742,7 +683,7 @@ export default {
         phone_number_errors: [], phone_number_OK: [],
         added_contribution: [],
         //add pledge 
-        add_pledge_button_text: '+ addd pledge',
+        add_pledge_button_text: '+ add pledge',
         enable_add_pledge_button: true,
         pledge_amount: null,        
         pledge_due_date: '',
@@ -762,9 +703,8 @@ export default {
 
         }
     },
-    created () {
-        this.fetchdata()
-        this.debouncedGetAnswer = _.debounce(this.getAnswer, 1000)
+    created () {        
+        this.fetchdata()        
     },
     watch: {
         '$route': 'fetchdata',
@@ -774,28 +714,6 @@ export default {
                 }
                 else{
                         this.member_ids = this.all_member_ids
-                }
-        },
-    // search for member
-        memberSearch: function () {
-            var array = this.memberSearch.split(" ")
-            if (this.memberSearch.length > 0 && array.length == 1){
-                this.showMemberInput = true
-                this.memberSearch_status = 'typing...'
-                this.debouncedGetAnswer()
-            }else{
-                this.memberSearch_status = ''
-                this.found_members = []
-                this.showMemberInput = false
-                this.fetchdata()
-            }
-        },
-        selectedMember: function(){
-                if (this.selectMember > 0
-                    && ! this.non_member
-                    && this.contribution_amount > 0){
-                        this.added_contribution = []
-                        this.enable_add_button = true
                 }
         },
     //add contribution
@@ -839,6 +757,9 @@ export default {
 
      },
     methods: {
+        onMemberSelected (value) {
+            this.selectedMember = value
+          },
         humanize: function(x) {
                 return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         },
@@ -893,6 +814,7 @@ export default {
             })
         },
         fetchdata: function() {
+            this.tab = 'contributions'
             this.fetch_data_error = []            
             //get project with id
             this.$store.dispatch('update_isLoading', true)
@@ -952,30 +874,9 @@ export default {
             this.all_members = false
         },
         getPledgesTab: function(){
-            this.all_members = false
-        },
-        getAnswer: function () {
-          var vm = this
-          if (this.memberSearch.length > 0){
-            this.found_members = []
-            this.memberSearch_status = 'searching...'
-            this.$http.get(this.$BASE_URL + '/api/members/filter-by-first_name/' + this.memberSearch +'/')
-              .then(function (response) {
-                vm.found_members = {"response": response.data } 
-                vm.memberSearch_status = ''
-              })
-              .catch(function (error) {
-                vm.memberSearch_status = ''  
-                vm.showMemberInput = false
-              })
-            }
-        },
-        selectMember: function(id,first_name,last_name) {
-          this.selectedMember = id          
-          this.memberSearch =  first_name + ' ' + last_name 
-          this.memberSearch_status = ''
-          this.showMemberInput = false
-        },
+                this.tab='pledges'
+                this.all_members = false
+        },         
         //add contribution
         addContribution: function(){
                 if (this.non_member){
@@ -995,8 +896,7 @@ export default {
                         }
                         }).then(response => {        
                                this.adding_to_project = false
-                               this.enable_add_project_button = true
-                               this.memberSearch = ''    
+                               this.enable_add_project_button = true                               
                                this.name_if_not_member = ''
                                this.phone_number = ''
                                this.contribution_amount = null                                                                                                                       

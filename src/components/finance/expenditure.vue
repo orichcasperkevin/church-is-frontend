@@ -224,6 +224,8 @@ export default {
                         this.expenditure_amount = null,
                         this.expenditure_narration = ''
                         this.adding_expenditure = false
+                        var new_version = parseInt(localStorage.getItem('expenditure_list_version')) + 1
+                        this.$store.dispatch('update_expenditure_list_version', new_version) 
                         alert("expenditure successfully added")   
                         this.fetchdata()               
                     })

@@ -52,7 +52,7 @@
                 </a>
                 <div class="dropdown-menu" style="padding: 5px 5px" aria-labelledby="navbarDropdownMenuLink">
                     
-                    <router-link class="dropdown-item" :to="{name: 'smsAnalytics'}">sms analytics</router-link>
+                    <router-link class="dropdown-item" :to="{name: 'smsAnalytics'}">sms center</router-link>
                     <router-link class="d-none dropdown-item" :to="{name: 'sermons'}">sermons</router-link>                            
                     <router-link class="dropdown-item" :to="{name: 'services'}">services</router-link> 
                     <br><br>                    
@@ -69,8 +69,7 @@
                     session
                   </a>
                   <div class="dropdown-menu" style="padding: 5px 5px" aria-labelledby="navbarDropdownMenuLink">
-                      
-                      <div class="dropdown-item" >{{username}}</div>  
+                                            
 
                       <div class="card" style="width: 18rem;" v-if="client_detail_available" >                      
                         <div class="card-body" v-if="client_details.length">
@@ -78,6 +77,7 @@
                             {{client_details[0].client.name}}
                              <span class="badge badge-light">{{client_details[0].number_of_members}} members</span>
                              <span class="badge badge-light">{{client_details[0].number_of_sms}} sms since last credit</span>
+                             <span class="badge badge-light">{{client_details[0].sms_quota}} free sms left</span>
                            </h5>
                          
                           <h6 class="card-subtitle mb-2">
@@ -100,6 +100,7 @@
                                               
                         </div>
                       </div>
+                      <div class="dropdown-item" >{{username}}</div>  
                       <a href="#" class="dropdown-item" v-on:click="logOut()">log out</a>                  
                   </div>
               </li>              

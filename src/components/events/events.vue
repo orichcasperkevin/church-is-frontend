@@ -7,28 +7,72 @@
                     </ol>
             </nav> 
             <div class = "container">
-            <div class="row">
-                <div class="col">
-                    <vue-cal                
-                        :disable-views="['years', 'year']"
-                        default-view="month"                
-                        events-on-month-view="short"                        
-                        :events="events"
-                        :on-event-create="onEventCreate"
-                        style="height: 600px">
-                   </vue-cal>
-                </div>
-
-                <div class = "col-12 col-sm-10 col-md-8 col-lg-3" >
-                        <div style="padding: 0px 0px 25px 10px">
-                                <a href="#" data-toggle="modal" data-target="#addEvent" style="text-decoration: none">
-                                    <div class="add-button">
-                                        <b>+</b> add upcoming event
+                <div class="row">
+                       <div class="col">
+                           <!-- filters for events             -->
+                            <div class="row">                                        
+                                    <div class="col">                    
+                                        <div class="row">
+                                            <div class="col-lg-2 col-sm-3 mb-2">
+                                                    <div class="form-group">                                    
+                                                        <select class="form-control" v-model="view">
+                                                            <option value="list">list</option>
+                                                            <option value="calendar">calendar</option>                                        
+                                                        </select>
+                                                    </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </a>
+                            </div>
+                            <!-- calendar view -->
+                            <vue-cal  v-if="view == `calendar`"                          
+                                :disable-views="['years', 'year']"
+                                default-view="month"                
+                                events-on-month-view="short"                        
+                                :events="events"                        
+                                style="height: 600px">
+                            </vue-cal>
+                            <!-- list view    -->
+                            <div v-if="view == `list`">
+                                <div v-for="event in events">
+                                    <div class="card mb-5">        
+                                        <div class="mt-3 ml-3">
+                                            <img style="width: 45px ;height: auto" src="@/assets/icons/icons8-schedule-64.png">
+                                        </div>
+                                        <div class="card-body">
+                                            <h5 class="card-title">                                       
+                                                {{event.title}}
+                                            </h5>
+                                            <h5 class="text-muted">
+                                                {{event.start}} ---> {{event.end}} 
+                                                @ {{event.location}}                                        
+                                            </h5>
+                                            
+                                            <p class="card-text text-muted">{{event.description}}</p>
+                                            <div class="row">
+                                                <div class="col text-right">                                                    
+                                                    <router-link class="text-primary"  :to="`/eventDetail/`+ event.id + `/`">                                                         
+                                                        Mark register
+                                                    </router-link>
+                                                </div>                                           
+                                            </div>                                   
+                                        </div>
+                                    </div>
+                                </div>                                                
+                            </div>
+                       </div>
+                       <!-- add button -->
+                        <div class = "col-12 col-sm-10 col-md-8 col-lg-3" >
+                                <div style="padding: 0px 0px 25px 10px">
+                                        <a href="#" data-toggle="modal" data-target="#addEvent" style="text-decoration: none">
+                                            <div class="add-button">
+                                                <b>+</b> add upcoming event
+                                            </div>
+                                        </a>
+                                </div>
                         </div>
-                </div>                
-            </div>
+                </div>
+            </div>            
             <!--add event Modal -->
             <div class="modal fade" id="addEvent" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -73,8 +117,9 @@
                                                                 </ul>
                                                             </p>
 
-                                                            <label class="col-3">from</label>
-                                                            <input type="text" class=" col-8 form-control" placeholder="HH:MM" v-model="start_time">                                                          
+                                                            <label class="col-3">from</label>                                                                                                                 
+                                                            <input type="time" class=" col-8 form-control" v-model="start_time"> 
+
                                                             <p v-if="start_time_errors.length">
                                                                 <ul>
                                                                         <small><li v-for="error in start_time_errors"><p class="text-danger">{{ error }}</p></li></small>
@@ -97,7 +142,7 @@
                                                         </p>
 
                                                         <label class="col-3">to</label>
-                                                        <input type="text" class=" col-8 form-control" placeholder="HH:MM" v-model="end_time">                                                          
+                                                        <input type="time" class=" col-8 form-control" v-model="end_time">                                                          
                                                     </div>
                                             </div>
                                         </div>                                                        
@@ -119,9 +164,7 @@
                         </div>
                     </div>
                     </div>
-                </div>
-                                   
-            </div>
+            </div>                                           
         </div>
     </template>
     
@@ -140,6 +183,7 @@
                 fetch_data_error: [],               
                 events_available: false,
                 add_event_button_text: 'add event',
+                view: "list",
                 //add event                
                 event_title: '',event_title_errors: [],
                 event_location: '',event_location_errors: [],                
@@ -153,7 +197,7 @@
 
 
             }
-        },
+        }, 
         created () {
            this.checkLoggedIn()
            this.fetchData() 

@@ -42,7 +42,7 @@
                     </div>
                     <hr/>
                     <p>
-                        <span class="badge badge-pill badge-info">{{foundTithes}}</span> entries found
+                        <span class="badge badge-pill badge-info">{{foundTithes}}</span> entries
                     </p>                             
                     <div>                                                
                         <table class="table">
@@ -50,7 +50,7 @@
                                 <tr>
                                     <th>name</th>
                                     <th>amount</th>
-                                    <th>date</th>
+                                    <th>time</th>
                                     <th>this month</th>
                                     <th>this year</th>
                                 </tr>
@@ -206,7 +206,7 @@
             group: false,
             fetch_data_error: [],
             // This value is set to the value emitted by the child
-            selectedMember: '', 
+            selectedMember: null, 
             //add_tithe
             adding_tithe:false,
             add_tithe_button_text: '+ add tithe',
@@ -246,7 +246,7 @@
             //else try network for tithes
             if (!version || version < currentVersion) {
                 this.$store.dispatch('update_isLoading', true)
-                this.$http.get(this.$BASE_URL + '/api/finance/tithe-by-members-this-month/')
+                this.$http.get(this.$BASE_URL + '/api/finance/tithes-by-members/')
                 .then(response => {
                     this.tithes = {"response": response.data }   
                     var array = this.tithes.response

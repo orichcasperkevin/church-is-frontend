@@ -199,7 +199,7 @@
                         <th scope="row"></th>
                         <td ><img v-if = "data.member.gender == 'M'" style = "height: 32px "src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
                               <img v-if = "data.member.gender == 'F'" style = "height: 32px "src="@/assets/avatars/icons8-user-female-skin-type-4-40.png">
-                              <img v-if = "data.member.gender == 'R'" style = "height: 32px "src="@/assets/avatars/icons8-contacts-96.png">
+                              <img v-if = "! data.member.gender" style = "height: 32px "src="@/assets/avatars/icons8-contacts-96.png">
                           <router-link :to="`/memberDetail/`+ data.member.member.id">
                             <span class = "text-secondary">{{data.member.member.first_name}} {{data.member.member.last_name}}</span>
                           </router-link>
@@ -456,7 +456,8 @@
                                 <span v-if="submitting_file"
                                       class="spinner-border spinner-border-sm" 
                                       role="status" 
-                                      aria-hidden="true"></span>
+                                      aria-hidden="true">
+                                </span>
                         </button>
                         <button type="button" class="btn btn-success" 
                                 v-if="this.uploaded_file.length != 0" 

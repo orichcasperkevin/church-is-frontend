@@ -11,7 +11,7 @@ $secondary: $grey;
 $success: $green;
 $dark: $dark;
 tr:nth-child(even) {
-  background-color: #f2f2f2;
+  background-color: #fcfcfc;
 }
 .searchedItemsDiv{
   border-radius: 10px;
@@ -51,7 +51,7 @@ img.church-is-menu {
 .stat-item{
   border: 1px solid;
   border-radius: 5px;
-  border-color: $info;
+  border-color: $secondary;
   padding: 5px 5px 5px 5px;
   text-align: center;
 }

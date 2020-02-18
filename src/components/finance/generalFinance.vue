@@ -51,7 +51,7 @@
                                                           <a class="nav-link" id="pills-offerings-tab" data-toggle="pill" href="#pills-offerings" role="tab" aria-controls="pills-offerings" aria-selected="false" v-on:click = "getOfferings()">Offering</a>
                                                         </li>
                                                         <li class="nav-item">
-                                                          <a class="nav-link" id="pills-anyOther-tab" data-toggle="pill" href="#pills-anyOther" role="tab" aria-controls="pills-anyOther" aria-selected="false" v-on:click = "getAnyOther()">Income</a>
+                                                          <a class="nav-link" id="pills-anyOther-tab" data-toggle="pill" href="#pills-anyOther" role="tab" aria-controls="pills-anyOther" aria-selected="false" v-on:click = "getIncome()">Income</a>
                                                         </li>
                                                 </ul>
                                           </div>
@@ -312,7 +312,7 @@
                             </form>
                     </div>
                     <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" v-on:click="getAnyOther()" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" v-on:click="getIncome()" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-success" v-on:click="addIncomeType()">
                         <b>+</b> add income type
                         <span v-if="adding_to_finance"
@@ -523,7 +523,7 @@ export default {
             this.expenditures_selected = false
             this.offerings_selected = true
         },
-        getAnyOther: function(){
+        getIncome: function(){
             this.tithes_selected = false            
             this.offerings_selected = false
             this.expenditures_selected = false

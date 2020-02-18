@@ -137,9 +137,9 @@
                     <div class="card border-0" style="max-width: 18rem;">
                     <div class="card-header border-0">Family</div>
                     <div class="card-body">
-                            <p v-if = "family_info.family.length == 0 "> none given </p>
+                            <p v-if = "! family_info.family.length"> none given </p>
 
-                            <table class="table" v-if = "min_age > 0  || max_age != 150 ">
+                            <table class="table" v-else >
                                     <tbody>
                                     <tr v-for="data in family_info.family">
                                     <span  v-for = "data in data" >
@@ -182,7 +182,7 @@
                             <div class="row form-group">                                                                    
                                 <label class="col-3"><b>middle name:</b></label>
                                 <input type="text" class=" col-8 form-control" 
-                                        :placeholder="member_info.member[0].middle_name" 
+                                        :placeholder="member_info.member[0].middle_name || `not given`" 
                                         v-model="new_middle_name"> 
                             </div>
                             <div class="row form-group">  
@@ -193,7 +193,7 @@
                             </div>
                             <div class="row form-group">  
                                 <label class="col-3"><b>date of birth:</b></label>
-                                <input placeholder="sbiuwew" type="date" name="bday" max="3000-12-31" 
+                                <input  type="date" name="bday" max="3000-12-31" 
                                     min="1000-01-01" class="col-8 form-control" v-model="new_d_o_b"> 
                             </div>
                             <div class="row form-group">  
@@ -236,38 +236,69 @@
                                 <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <div class="modal-body">
-                                    <div class="row form-group">                                                                          
+                            <div class="modal-body" v-if="residence_info.residence.length">
+                                    <div class="row form-group">   
                                         <label class="col-3"><b>town:</b></label>                                
                                         <input type="text" class=" col-8 form-control" 
-                                                :placeholder="residence_info.residence[0].town" 
+                                                :placeholder="residence_info.residence[0].town || `not given`" 
                                                 v-model="new_town_name"> 
                                     </div>
-                                    <div class="row form-group">                                                                    
+                                    <div class="row form-group">   
                                         <label class="col-3"><b>road:</b></label>
                                         <input type="text" class=" col-8 form-control" 
-                                                :placeholder="residence_info.residence[0].road" 
+                                                :placeholder="residence_info.residence[0].road || `not given`" 
                                                 v-model="new_road_name"> 
                                     </div>
                                     <div class="row form-group">  
                                         <label class="col-3"><b>street:</b></label>
                                         <input type="text" class=" col-8 form-control" 
-                                                :placeholder="residence_info.residence[0].street" 
+                                                :placeholder="residence_info.residence[0].street || `not given`" 
                                                 v-model="new_street_name"> 
                                     </div>  
                                     <div class="row form-group">  
                                         <label class="col-3"><b>estate:</b></label>
                                         <input type="text" class=" col-8 form-control" 
-                                                :placeholder="residence_info.residence[0].village_estate" 
+                                                :placeholder="residence_info.residence[0].village_estate || `not given`" 
                                                 v-model="new_estate"> 
-                                        </div>
+                                    </div>
                                     <div class="row form-group">  
                                         <label class="col-3"><b>description:</b></label>
-                                        <input type="text" class=" col-8 form-control" 
-                                                :placeholder="residence_info.residence[0].description" 
+                                        <input type="text" class=" col-8 form-control"                                                 
+                                                :placeholder="residence_info.residence[0].description || `not given`" 
                                                 v-model="new_description"> 
-                                </div>                              
-                                     
+                                    </div>                                                          
+                            </div>
+                            <div class="modal-body" v-if="! residence_info.residence.length">
+                                        <div class="row form-group">  
+                                            <label class="col-3"><b>town:</b></label>                                
+                                            <input type="text" class=" col-8 form-control" 
+                                                    placeholder="not given" 
+                                                    v-model="new_town_name"> 
+                                        </div>
+                                        <div class="row form-group"> 
+                                            <label class="col-3"><b>road:</b></label>
+                                            <input type="text" class=" col-8 form-control" 
+                                                    placeholder="not given" 
+                                                    v-model="new_road_name"> 
+                                        </div>
+                                        <div class="row form-group">  
+                                            <label class="col-3"><b>street:</b></label>
+                                            <input type="text" class=" col-8 form-control" 
+                                                    placeholder="not given" 
+                                                    v-model="new_street_name"> 
+                                        </div>  
+                                        <div class="row form-group">  
+                                            <label class="col-3"><b>estate:</b></label>
+                                            <input type="text" class=" col-8 form-control" 
+                                                    placeholder="not given" 
+                                                    v-model="new_estate"> 
+                                            </div>
+                                        <div class="row form-group"> 
+                                            <label class="col-3"><b>description:</b></label>
+                                            <input type="text" class=" col-8 form-control"                                                 
+                                                    placeholder="not given" 
+                                                    v-model="new_description"> 
+                                       </div>           
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -291,8 +322,7 @@
                                 <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <div class="modal-body">
-                                    {{contact_info.contact[0].phone}}
+                            <div class="modal-body" v-if="contact_info.contact.length">                                    
                                 <div class="row mb-3">
                                         <span class="col-4">
                                                 <label><b>country code :</b></label>
@@ -302,7 +332,7 @@
                                         <span class="col-8">
                                                 <label><b>phone number 1:</b></label>
                                                 <input type="text" class="form-control" 
-                                                        :placeholder="contact_info.contact[0].phone" v-model = "phone_number1">
+                                                        :placeholder="contact_info.contact[0].phone || `not given`" v-model = "phone_number1">
                                         </span>
                                 </div>
                                 <div class="row mb-5">
@@ -313,7 +343,7 @@
                                         <span class="col-8">
                                                 <label><b>phone number 2:</b></label>
                                                 <input type="text" class="form-control" 
-                                                        :placeholder="contact_info.contact[0].phone2" v-model = "phone_number2">
+                                                        :placeholder="contact_info.contact[0].phone2 || `not given`" v-model = "phone_number2">
                                         </span>
                                 </div> 
                                 <p v-if="phone_number_errors.length">
@@ -330,9 +360,51 @@
                                 <div class="row form-group">                                             
                                         <label class="col-3"><b>email:</b></label>                                
                                         <input type="email" class=" col-8 form-control" 
-                                                :placeholder="contact_info.contact[0].member.email" 
+                                                :placeholder="contact_info.contact[0].member.email || `not given`" 
                                                 v-model="new_email"> 
                                 </div>                                                                                      
+                            </div>
+                            <div class="modal-body" v-if="! contact_info.contact.length">                                    
+                                        <div class="row mb-3">
+                                                <span class="col-4">
+                                                        <label><b>country code :</b></label>
+                                                        <input class="form-control" type="text" 
+                                                                placeholder="+254" v-model = "country_code">
+                                                </span>
+                                                <span class="col-8">
+                                                        <label><b>phone number 1:</b></label>
+                                                        <input type="text" class="form-control" 
+                                                                placeholder="not given" v-model = "phone_number1">
+                                                </span>
+                                        </div>
+                                        <div class="row mb-5">
+                                                <span class="col-4">
+                                                        <label><b>country code :</b></label>
+                                                        <input class="form-control" type="text" placeholder="+254" v-model = "country_code">
+                                                </span>
+                                                <span class="col-8">
+                                                        <label><b>phone number 2:</b></label>
+                                                        <input type="text" class="form-control" 
+                                                                placeholder="not given" v-model = "phone_number2">
+                                                </span>
+                                        </div> 
+                                        <p v-if="phone_number_errors.length">
+                                                <ul>
+                                                        <small><li v-for="error in phone_number_errors"><p class="text-danger">{{ error }}</p></li></small>
+                                                </ul>
+                                        </p>
+                                        <p v-if="phone_number_OK.length">
+                                                <ul>
+                                                        <small><li v-for="error in phone_number_OK"><p class="text-success">{{ error }}</p></li></small>
+                                                </ul>
+                                        </p> 
+                                        <hr/>
+                                        <div class="row form-group">                                             
+                                                <label class="col-3"><b>email:</b></label>                                
+                                                <input type="email" class=" col-8 form-control" 
+                                                        :placeholder="contact_info.contact[0].member.email || `not given`" 
+                                                        v-model="new_email"> 
+                                        </div>                                                                                      
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -469,8 +541,10 @@ export default {
                         this.residence_info = {"residence": response.data }
                 })
                 .catch(error=> {
-                this.residence_errors.push(error)
+                        this.residence_errors.push(error)
                 })
+
+
                 this.$http.get(this.$BASE_URL + '/api/members/roles-for-member/'+this.$route.params.id+'/')
                 .then(response => {
                 this.roles_info = {"roles": response.data }

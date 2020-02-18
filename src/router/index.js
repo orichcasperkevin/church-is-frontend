@@ -12,6 +12,7 @@ import groupList from "@/components/groups/groupList"
 import groupDetail from "@/components/groups/groupDetail"
 
 import events from "@/components/events/events"
+import eventDetail from '@/components/events/eventdetail'
 
 import projectList from "@/components/projects/projectList"
 import projectDetail from "@/components/projects/projectDetail"
@@ -85,6 +86,11 @@ export default new Router({
       path:'/events/',
       name: 'events',
       component: events  
+    },
+    {
+    path: '/eventDetail/:id',
+    name: 'eventDetail',
+    component: eventDetail
     },
     {
       path:'/projectList/',

@@ -56,9 +56,14 @@
                                                         <th>role</th>
                                                 </tr>
                                         </thead>
-                                                <tr v-for = "data in church_groups.response">
-                                                        <td>{{data.church_group.name}}</td>
-                                                        <td>{{data.date_joined}}</td>
+                                                <tr class="text-muted" v-for = "data in church_groups.response">
+                                                        <td>                                                                
+                                                                <router-link class="text-secondary" :to="`/groupDetail/`+ data.church_group.id ">
+                                                                        <img style="width: 30px ;height: auto" src="@/assets/icons/icons8-user-groups-48.png">                     
+                                                                        {{data.church_group.name}}
+                                                                </router-link>
+                                                        </td>
+                                                        <td>{{$humanizeDate(data.date_joined)}}</td>
                                                         <td>{{data.role.role}}</td>
                                                 </tr>
 
@@ -74,9 +79,10 @@
                                         <div class="row">
                                         <div class="col-2"></div>
                                         <div class="col-8">
+                                        <!-- navigation -->
                                         <ul class="nav nav-pills mb-3 mt-3" id="pills-tab" role="tablist">
                                                 <li class="nav-item">
-                                                        <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">contributions</a>
+                                                        <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Contributions</a>
                                                 </li>
                                                 <li class="nav-item">
                                                         <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Pledges</a>
@@ -106,7 +112,7 @@
                                                                         <tr v-for = "data in contribution_info.contribution">
                                                                                 <td>{{data.project.name}}</td>
                                                                                 <td><p class="text-muted">{{humanize(data.amount)}}</p></td>
-                                                                                <td>{{data.recorded_at}}</td>
+                                                                                <td>{{$humanizeDate(data.recorded_at)}}</td>
                                                                         </tr>
                                                                         </tbody>
                                                                 </table>
@@ -121,9 +127,9 @@
                                                                         <thead>
                                                                                 <tr>
                                                                                 <th>project</th>
-                                                                                <th>amount pledged</th>
-                                                                                <th>amount raised</th>
-                                                                                <th>amount remaining</th>
+                                                                                <th>pledged</th>
+                                                                                <th>raised</th>
+                                                                                <th>remaining</th>
                                                                                 <th>percentage funded</th>
                                                                                 </tr>
                                                                         </thead>
@@ -132,7 +138,7 @@
                                                                                 <td>{{data.project.name}} </td>
                                                                                 <td>{{humanize(data.amount)}}</td>
                                                                                 <td><p class="text-muted">{{humanize(data.amount_so_far)}}</p></td>
-                                                                                <td><p  >{{humanize(data.remaining_amount)}}</p></td>
+                                                                                <td><p  class="text-danger">{{humanize(data.remaining_amount)}}</p></td>
                                                                                 <td><span class="text-muted">{{data.percentage_funded}}</span></td>
 
                                                                                 </tr>
@@ -143,12 +149,7 @@
                                                                 </p>
                                                 </div>
                                                 <div class="tab-pane fade" id="pills-tithes" role="tabpanel" aria-labelledby="pills-tithes-tab" v-if = "finances_selected">
-                                                                <h3>Tithes</h3>
-                                                                <div class="row" v-for = "data in tithe_stats.stats">
-                                                                        <p class="card-text" style="padding: 5px"><small class="text-muted">total this month |<span class="text-info">{{humanize(data.total_this_month)}}</span>|</small> </p>
-                                                                        <p class="card-text" style="padding: 5px"><small class="text-muted">total this year |<span class="text-info">{{humanize(data.total_this_year)}}|</span></small> </p>
-                                                                </div>
-
+                                                                <h3>Tithes</h3>                                                    
                                                                 <table class="table">
                                                                         <thead>
                                                                         <tr>
@@ -170,11 +171,7 @@
                                                                 </p>
                                                 </div>
                                                 <div class="tab-pane fade" id="pills-offerings" role="tabpanel" aria-labelledby="pills-offerings-tab" v-if = "finances_selected">
-                                                                <h3>Offerings </h3>
-                                                                <div class="row" v-for = "data in offering_stats.stats">
-                                                                        <p class="card-text" style="padding: 5px"><small class="text-muted">total this month |<span class="text-info">{{humanize(data.total_this_month)}}</span>|</small> </p>
-                                                                        <p class="card-text" style="padding: 5px"><small class="text-muted">total this year |<span class="text-info">{{humanize(data.total_this_year)}}|</span></small> </p>
-                                                                </div>
+                                                                <h3>Offerings </h3>                                                                
                                                                 <table class="table">
                                                                         <thead>
                                                                         <tr>
@@ -352,7 +349,8 @@ export default {
   name: 'memberDetail',
   data () {
     return {  
-        //groups
+        member_info:null,
+        //groups        
         groups_selected: false,
         church_groups: null,
         //finances
@@ -382,7 +380,8 @@ export default {
         assigned_roles: [] 
     }
   },
-  created() {        
+  created() {   
+        this.getMemberInfo()     
         this.getRoles()
         this.getRoleForMember()
     },
@@ -402,6 +401,16 @@ export default {
   methods: {
         humanize: function(x) {
                 return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        },
+        getMemberInfo: function(){
+                //member personal detail
+                this.$http.get(this.$BASE_URL + '/api/members/member/'+this.$route.params.id+'/')
+                .then(response => {
+                        this.member_info = {"member": response.data }
+                })
+                .catch(error=> {
+                
+                })
         },
         getMemberGroups: function(){
                 this.$store.dispatch('update_isLoading', true)
