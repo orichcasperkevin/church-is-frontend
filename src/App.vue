@@ -1,9 +1,12 @@
 <template>
   <div id="app">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <router_link class="navbar-brand text-success"  href="#" :to="{name: 'groupsLanding'}" >
-        <img class="mr-0" style="width: 150px ;height: auto" src="@/assets/full_logo.png">|admin
+      <router_link class="navbar-brand text-success"  href="#">
+        <img class="mr-0" style="width: 150px ;height: auto" src="@/assets/full_logo.png">      
       </router_link>
+      <div>
+        <generalsearch/>
+      </div>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
       </button>
@@ -124,6 +127,7 @@
 import router from "./router";
 import Loading from 'vue-loading-overlay';
 import 'vue-loading-overlay/dist/vue-loading.css';
+import generalsearch from '@/subcomponents/generalsearch.vue'
 export default {
   name: 'App',
   data () {
@@ -134,7 +138,7 @@ export default {
         }
   },
   components: {
-      Loading
+      Loading,generalsearch
   },
   created(){
     this.username = this.$session.get("username") 

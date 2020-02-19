@@ -2,9 +2,19 @@
 <template>
     <div class="child">
         <!-- search for member -->
-            <input type="text" class=" form-control" placeholder="type to search member" v-model="memberSearch" autofocus>   
-            <div style="padding: 10px 10px 10px 10px" class="text-info" >{{memberSearch_status}}</div>                                                                                                       
-            <div class="pre-scrollable searchedItemsDiv border " style="  max-height: 185px; overflow-y: scroll;" v-if="showMemberInput">
+            <input type="text" class=" form-control" placeholder="type to search member" v-model="memberSearch" autofocus>                  
+
+            <div class="pre-scrollable searchedItemsDiv border " 
+                style="min-width: 200px; 
+                        max-height: 185px;
+                         overflow-y: scroll;
+                          position: absolute;
+                           z-index: 1;
+                            background-color: white"
+                v-if="showMemberInput">
+
+                <div style="padding: 10px 10px 10px 10px" class="text-info" >{{memberSearch_status}}</div> 
+
                 <table class="table border-0" >
                     <tbody>
                     <tr class="searchedItem border-0" v-for="data in found_members.response">

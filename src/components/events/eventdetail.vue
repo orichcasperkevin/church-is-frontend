@@ -26,7 +26,7 @@
                     <div class="col">
                         <div>
                             <h3>{{event[0].title}}</h3>
-                            <h4>{{event[0].start}} ---to--- {{event[0].end}}</h4>
+                            <h4>{{event[0].start}} <span class="text-muted">---to---</span> {{event[0].end}}</h4>
                         </div>                                               
                         <span class="mr-2 text-muted" v-for="group in groups">                            
                            {{group.group.name}}  expected to attend 
@@ -81,7 +81,7 @@
                             </li>                                                                                
                         </ul>
                         <div v-else class="text-muted text-center">            
-                            <h5>Loading ...</h5>
+                            <h5>Getting Register ...</h5>
                         </div>
                     </div>
                     <!-- actions -->

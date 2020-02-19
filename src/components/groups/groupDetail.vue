@@ -9,7 +9,7 @@
         </nav>
         <body>
             <div class="container">
-                <div class="row">
+                <div class="row ml-2">
                   <div class="col" v-for="data in group.response">
                       <h3 class="row">
                         <b>{{data.name}}</b>
@@ -22,18 +22,19 @@
             <div class="container">
             <div class="row">
 
-            <div class="col-sm-10 col-md-8 col-lg-2" style="padding: 0px 0px 0px 0px">
+            <div class="col-sm-10 col-md-8 col-lg-2 mb-3" style="padding: 0px 0px 0px 0px">
                 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                   <a class="action-list list-group-item list-group-item-action border-0"  data-toggle="pill" href="#member" role="tab" aria-controls="members" aria-selected="true">
                     <img  style="width: 30px; height: auto; " src="@/assets/icons/icons8-user-groups-40.png"> members
                   </a>
-                  <a class="action-list list-group-item list-group-item-action border-0"  data-toggle="pill" href="#activity" role="tab" aria-controls="activity" aria-selected="false" v-on:click="getGroupActivity()">
+                  <a class="action-list list-group-item list-group-item-action border-0"  data-toggle="pill" href="#activity" role="tab" aria-controls="activity" v-on:click="getGroupActivity()">
                       <img style="width: 30px; height: auto;" src="@/assets/icons/icons8-activity-history-48.png">  activity
                   </a>
                 </div>
             </div>
 
             <div class="tab-content col" >
+              <!-- GROUP MEMBERS -->
               <div class="tab-pane fade show active" id="member" role="tabpanel" aria-labelledby="profile-tab">
                 <div class = "center-div" v-if = "fetch_data_error.length > 0">
                   <img style = "height: 64px "src="@/assets/icons/icons8-wi-fi-off-64.png">
@@ -47,7 +48,7 @@
                       </h3>
                     </span>
                     <!-- on small devices -->
-                    <div class="btn-group  d-sm-block d-md-none" style="padding: 0px 0px 25px 0px">
+                    <div class="btn-group  d-sm-block d-md-none text-right" style="padding: 0px 0px 25px 0px">
                         <a href="#" data-toggle="modal" data-target="#addMemberToGroup" style="text-decoration: none">
                             <div class="add-button">
                             <span> <b>+</b> Add member to group</span>
@@ -62,7 +63,7 @@
                       </div>
                     <hr/>
                   <div class="row mb-1">
-                      <p>
+                      <p class="ml-4">
                       found <span class="badge badge-pill badge-info">{{foundItems}}</span>
                       </p>
                       <div class="btn-group d-sm-block d-md-none ml-2">
@@ -79,7 +80,7 @@
                             <div class="list-group ">
                                 <button type="button" class="action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#emailModatCenter" >
                                   <img src="@/assets/app_logo.png" style="width: 25px; height:auto">
-                                  . anvil channels
+                                  anvil channels
                                 </button>
                                 <button type="button" class="d-none action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#emailModatCenter" ><img src="@/assets/icons/icons8-email-64.png">email</button>
                                 <button type="button" class="list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#textModalCenter">
@@ -93,6 +94,11 @@
                   </div>                  
                 </div>
                 </div>
+                    <div v-if="! members.response.length" class="text-center text-muted">
+                        <h3>Oops!</h3>
+                        <h3>Group has no members added</h3>
+                        <p>add members to group so that we can list them</p>
+                    </div>
                     <table class="table">
                       <tbody>
                         <tr v-for="data in members.response">
@@ -115,40 +121,49 @@
                       </tbody>
                     </table>
               </div>
-              <div class="tab-pane fade" id="activity" role="tabpanel" aria-labelledby="v-pills-messages-tab">
-
-                <div v-if = "activity_selected == true">
-                    <div class = "center-div" v-if = "fetch_group_activity_data_error.length > 0">
-                        <img style = "height: 64px "src="@/assets/icons/icons8-wi-fi-off-64.png">
-                        <p class="text-info">check your connection</p>
-                      </div>
-                      <div v-if = "fetch_group_activity_data_error.length == 0">
-                      <div >
-                          <h3  v-for="data in group.response">
-                              activity
-                          </h3>
-                      </div>
-                      </div>
-                  <table class="table">
-                      <thead v-if = "group_meetings.response.length > 0">
-                        <tr>
-
-                          <th scope="col">date</th>
-                          <th scope="col">location</th>
-                          <th scope="col">host</th>
-                          <th scope="col">attendees</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr v-for = "data in group_meetings.response">
-                          <td >{{data.date}}</td>
-                          <td>{{data.location}}</td>
-                          <td>{{data.host.member.first_name}} {{data.host.member.last_name}}</td>
-                          <td><span class="badge badge-pill badge-info">{{data.number_of_attendees}}</span></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
+               <!-- GROUP ACTIVITY -->
+              <div class="tab-pane fade" id="activity" role="tabpanel" >   
+                <h3>Activity</h3>            
+                <hr>
+                <div v-if="group_meetings">
+                    <div v-if="group_meetings.length">                        
+                        <table class="table">
+                            <thead>
+                              <tr>                                
+                                <th scope="col">event</th>
+                                <th scope="col">start</th>
+                                <th scope="col">end</th>
+                                <th scope="col">attenders</th>
+                              </tr>
+                            </thead>                                                      
+                            <tbody>
+                              <tr v-for="meeting in group_meetings" class="text-muted">                                
+                                <td>                                    
+                                    <router-link class="text-muted"  :to="`/eventDetail/`+ meeting.event.id + `/`">                                                         
+                                      {{meeting.event.title}}
+                                    </router-link>
+                                </td>
+                                <td>{{meeting.event.start}}</td>
+                                <td>{{meeting.event.end}}</td>
+                                <td>
+                                    <span class="badge badge-pill badge-secondary">
+                                        {{meeting.event.attendees}}
+                                    </span>
+                                    of
+                                    <span class="badge badge-pill badge-secondary">
+                                        {{meeting.group.number_of_members}}
+                                    </span>
+                                </td>
+                              </tr>                              
+                            </tbody>
+                          </table>
+                    </div>
+                    <div class="text-muted text-center" v-else>
+                        <h3>Oops!</h3>
+                        <h3>Group has not had any meetings recently</h3>
+                        <p>mark event registers by this group to get content here</p>
+                    </div>
+                </div>                  
               </div>
               </div>
               <div class="col-12 col-sm-10 col-md-8 col-lg-3">
@@ -184,37 +199,14 @@
                         <div class="modal-body">                            
                             <div class="form-group">
                                 <label><b>member :</b></label>
-                                <input type = "text" class="form-control" placeholder="search" v-model="memberSearch" autofocus></input>
-                                <div style="padding: 10px 10px 10px 10px" class="text-info" >{{memberSearch_status}}</div>
-
-                                <div class="pre-scrollable searchedItemsDiv border " style="  max-height: 185px; overflow-y: scroll;" v-if="showMemberInput">
-                                    <table class="table border-0" >
-                                      <tbody>
-                                        <tr class="searchedItem border-0" v-for="data in found_members.response">
-                                          <a href="#" style="text-decoration: none" v-on:click="selectMember(data.id,data.member.first_name,data.member.last_name)">
-                                          <td class="border-0">
-
-                                              <img v-if = "data.gender == 'M'" style = "height: 32px "src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
-                                               <img v-if = "data.gender == 'F'" style = "height: 32px "src="@/assets/avatars/icons8-user-female-skin-type-4-40.png">
-                                               <img v-if = "data.gender == 'R'" style = "height: 32px "src="@/assets/avatars/icons8-contacts-96.png">
-
-                                              <span class = "text-secondary">{{data.member.first_name}} {{data.member.last_name}}</span>
-
-                                           </td>
-                                          </a>
-
-
-                                        </tr>
-                                      </tbody>
-                                    </table>
-                                </div>
+                                <searchmember v-on:memberSelected="onMemberSelected" />
                                 <label><b>role :</b></label>
                                 <div class="container row">
                                     <select class="col-8 form-control" v-model="role" >
                                         <option v-for="data in roles.response" :value="data.id" >{{data.role}}</option>
                                     </select>
                                     <button class="ml-2 col-3 btn btn-outline-success" data-toggle="modal" data-target="#addRole">
-                                      + add role
+                                      + add
                                     </button>
                                 </div>                                
                               </div>
@@ -250,38 +242,17 @@
                                         <div class="row form-group">
                                                 <label class="col-3"><b>description:</b></label>
                                                 <textarea type="text" class="col-8 form-control" rows='3' v-model="role_description"></textarea>                                                   
-                                        </div>  
-                                        <hr/>
-                                        <div class="form-check form-check-inline">
-                                             <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value=true v-model="member_admin">
-                                             <label class="form-check-label" for="inlineCheckbox1">member admin</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                              <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value=true v-model="site_admin">
-                                              <label class="form-check-label" for="inlineCheckbox2">website admin</label>
-                                        </div>  
-                                        <div class="form-check form-check-inline">
-                                             <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value=true v-model="group_admin">
-                                              <label class="form-check-label" for="inlineCheckbox2">group admin</label>
-                                        </div> 
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value=true v-model="events_admin">
-                                            <label class="form-check-label" for="inlineCheckbox1">events admin</label>
-                                        </div>
-                                        <div class="form-check form-check-inline">
-                                                <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value=true v-model="projects_admin">
-                                                <label class="form-check-label" for="inlineCheckbox2">projects admin</label>
-                                        </div>  
-                                        <div class="form-check form-check-inline">
-                                            <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value=true v-model="finance_admin">
-                                                <label class="form-check-label" for="inlineCheckbox2">finance admin</label>
-                                        </div>                                                                                                                                                                  
+                                        </div>                                                                                                                                                                                                                            
                                 </form>
                         </div>
                         <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-success" disabled v-if="! enable_role_button"><b>+</b> add role </button>
-                        <button type="button" class="btn btn-success" v-if="enable_role_button" v-on:click="addRole()"> {{add_role_button_text}} </button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>                        
+                        <button type="button" class="btn btn-success" v-on:click="addRole()">
+                           {{add_role_button_text}} 
+                           <span v-if="adding_member"
+                             class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                          </span>
+                        </button>
                         </div>
                     </div>
                     </div>
@@ -358,8 +329,10 @@
   </template>
 
 <script>
+import searchmember from '@/subcomponents/searchmember.vue'
 export default {
   name: 'groupDetail',
+  components: { searchmember },
   data () {
     return {
       group: null,
@@ -369,9 +342,10 @@ export default {
       fetch_group_activity_data_error: [],
       group_meetings: null,
       activity_selected: false,
-      memberSearch: '',found_members:[],role: null,
-      memberSearch_status: '',selectedMember: null,
-      showMemberInput: true,roles: null,
+      //add member
+      role: null,
+      selectedMember: null, 
+      roles: null,
       added_member: [],
       member_ids: [],
       message: "",
@@ -387,23 +361,9 @@ export default {
     }
   },
   created() {
-        this.fetchData()
-        this.debouncedGetAnswer = _.debounce(this.getAnswer, 1000)
+        this.fetchData()  
     },
   watch: {
-    // whenever question changes, this function will run
-    memberSearch: function () {
-      var array = this.memberSearch.split(" ")
-      if (this.memberSearch.length > 0 && array.length == 1){
-        this.showMemberInput = true
-        this.memberSearch_status = 'typing...'
-        this.debouncedGetAnswer()
-      }else{
-          this.memberSearch_status = ''
-          this.found_members = []
-          this.fetchData()
-      }
-    },
     role_name: function (){
         if (this.role_name.length > 0 && this.role_description.length > 0){
             this.enable_role_button = true
@@ -419,29 +379,12 @@ export default {
       goBack: function() {
           window.history.back();
       },
-      getAnswer: function () {
-          var vm = this
-          if (this.memberSearch.length > 0){
-            this.found_members = []
-            this.memberSearch_status = 'searching...'
-            this.$http.get(this.$BASE_URL + '/api/members/filter-by-first_name/' + this.memberSearch +'/')
-              .then(function (response) {
-                vm.found_members = {"response": response.data }
-                vm.memberSearch_status = ''
-              })
-              .catch(function (error) {
-                vm.memberSearch_status = ''
-                vm.showMemberInput = false
-              })
-            }
-        },
-      selectMember: function(id,first_name,last_name) {
-        this.selectedMember = id
-        this.memberSearch = first_name + ' ' + last_name
-        this.showMemberInput = false
+      //select member
+      onMemberSelected (value) {
+            this.selectedMember = value
       },
-      addMemberToGroup: function(){
-        if (this.selectMember && this.role){
+      addMemberToGroup: function(){      
+        if (this.selectedMember && this.role){
           var group_id
           var obj = this.group.response
           group_id = obj["0"].id
@@ -454,8 +397,7 @@ export default {
             role_id: this.role
           }
           }).then(response => {
-            this.adding_member = false            
-            this.memberSearch = ''
+            this.adding_member = false                        
             this.role = ''
             alert("member successfully added")
           })
@@ -464,16 +406,18 @@ export default {
             alert("an error occered while attempting to add member, check your data and try again" + err)            
           })
         }
+        else{
+          alert("error adding member to group")
+        }
       },
       getGroupActivity: function() {
-        this.activity_selected = true
-        this.fetch_group_activity_data_error = []
-        this.$http.get(this.$BASE_URL + '/api/groups/church-group-meeting-list/' + this.$route.params.id + '/')
+        this.activity_selected = true        
+        this.$http.get(this.$BASE_URL + '/api/events/events-by-group/' + this.$route.params.id + '/')
         .then(response => {
-          this.group_meetings = {"response": response.data }
+          this.group_meetings = response.data 
         })
         .catch((err) => {
-          this.fetch_group_activity_data_error.push(err)
+          alert(err)
         })
       },
       sendMessage: function (){
@@ -544,7 +488,7 @@ export default {
               this.enable_role_button = true 
             })                
     },
-    getRoles: function(){
+      getRoles: function(){
       this.$store.dispatch('update_isLoading', true)
         this.$http.get(this.$BASE_URL + '/api/members/role-list/')
         .then(response => {

@@ -300,8 +300,8 @@
                     return true
                 }
         },
-        //add tithe
-        addTithe: function(){
+            //add tithe
+          addTithe: function(){
             if (this.addTitheFormOK()){
                 this.enable_add_tithe_button = false
                 this.add_tithe_button_text = 'adding tithe...'  
@@ -335,8 +335,8 @@
                     })
             }
         },
-        //export data to csv
-        exportData: function(){            
+           //export data to csv
+          exportData: function(){            
             //export to csv
             this.exporting_data = true
             this.$http.get(this.$BASE_URL + '/api/finance/get-tithes-as-csv/' + this.csv_date +'/' )

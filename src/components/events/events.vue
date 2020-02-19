@@ -2,7 +2,13 @@
         <div>
             <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><span class="backButton"><router-link style="text-decoration: none" :to="{name: 'Home'}">Home</router-link></span>  
+                        <li class="breadcrumb-item">
+                            <span class="backButton">
+                                <router-link style="text-decoration: none" :to="{name: 'Home'}">
+                                    Home
+                                </router-link>
+                            </span>  
+                        </li>
                         <li class="breadcrumb-item active" aria-current="page">events</li>
                     </ol>
             </nav> 
@@ -21,8 +27,18 @@
                                                         </select>
                                                     </div>
                                             </div>
+                                              <!-- on smaller devices -->
+                                            <div class="col btn-group d-sm-block d-md-none text-right">
+                                                    <div style="padding: 0px 0px 25px 10px">
+                                                            <a href="#" data-toggle="modal" data-target="#addEvent" style="text-decoration: none">
+                                                                <div class="add-button">
+                                                                    <b>+</b> add upcoming event
+                                                                </div>
+                                                            </a>
+                                                    </div>
+                                            </div>
                                         </div>
-                                    </div>
+                                    </div>                                  
                             </div>
                             <!-- calendar view -->
                             <vue-cal  v-if="view == `calendar`"                          
@@ -51,9 +67,11 @@
                                             <p class="card-text text-muted">{{event.description}}</p>
                                             <div class="row">
                                                 <div class="col text-right">                                                    
-                                                    <router-link class="text-primary"  :to="`/eventDetail/`+ event.id + `/`">                                                         
-                                                        Mark register
-                                                    </router-link>
+                                                    <span class="backButton">
+                                                        <router-link class="text-primary" style="text-decoration: none"  :to="`/eventDetail/`+ event.id + `/`">                                                         
+                                                            Mark register
+                                                        </router-link>
+                                                    </span>                                                    
                                                 </div>                                           
                                             </div>                                   
                                         </div>
