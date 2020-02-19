@@ -2,7 +2,7 @@
     <div class="child">
         <!-- general search -->
         
-            <input type="text" class=" form-control"   style="background-color:darkgrey"
+            <input type="text" class=" form-control"   style="background-color:ghostwhite"
                     placeholder="members,groups & events" v-model="generalSearch" autofocus>                  
 
             <div class="pre-scrollable searchedItemsDiv border " 

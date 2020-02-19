@@ -55,54 +55,22 @@
                 </a>
                 <div class="dropdown-menu" style="padding: 5px 5px" aria-labelledby="navbarDropdownMenuLink">
                     
-                    <router-link class="dropdown-item" :to="{name: 'smsAnalytics'}">sms center</router-link>
-                    <router-link class="d-none dropdown-item" :to="{name: 'sermons'}">sermons</router-link>                            
+                    <router-link class="dropdown-item" :to="{name: 'smsAnalytics'}">sms center</router-link>                                               
                     <router-link class="dropdown-item" :to="{name: 'services'}">services</router-link> 
-                    <br><br>                    
-                    
-
+                    <hr>
+                    <router-link class="dropdown-item" :to="{name: 'myAccount'}">church account</router-link> 
                 </div>
             </li>
 
           </ul>
           <ul class="navbar-nav mr-auto">
               <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" v-on:click="getClientDetail()" id="navbarDropdownMenuLink" 
+                  <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" 
                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     session
                   </a>
                   <div class="dropdown-menu" style="padding: 5px 5px" aria-labelledby="navbarDropdownMenuLink">
-                                            
-
-                      <div class="card" style="width: 18rem;" v-if="client_detail_available" >                      
-                        <div class="card-body" v-if="client_details.length">
-                          <h5 class="card-title">
-                            {{client_details[0].client.name}}
-                             <span class="badge badge-light">{{client_details[0].number_of_members}} members</span>
-                             <span class="badge badge-light">{{client_details[0].number_of_sms}} sms since last credit</span>
-                             <span class="badge badge-light">{{client_details[0].sms_quota}} free sms left</span>
-                           </h5>
-                         
-                          <h6 class="card-subtitle mb-2">
-                            church code
-                            <span class="badge badge-light text-info">
-                              <h5>{{client_details[0].church_code}}</h5></span>                       
-                          </h6>
-                
-                          <p class="card-text">{{client_details[0].city_or_town | }},{{client_details[0].road_or_street}} {{client_details[0].location_description}}</p>
-                          <p class="card-text">website: {{client_details[0].website | none given}}</p>  
-                          <div >
-                              <button disabled type="button" class="btn btn-success">
-                                  credit <span class="badge badge-light">
-                                     {{client_details[0].credit}}
-                                  </span>
-                              </button>
-  
-                               <p><i> apprx {{client_details[0].apprx_number_of_days_left}} days left</i></p>
-                          </div>                       
-                                              
-                        </div>
-                      </div>
+                                                                 
                       <div class="dropdown-item" >{{username}}</div>  
                       <a href="#" class="dropdown-item" v-on:click="logOut()">log out</a>                  
                   </div>

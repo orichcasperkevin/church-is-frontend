@@ -161,8 +161,8 @@
                                                                         <tbody>
                                                                         <tr v-for = "data in tithe_info.tithes">
                                                                                 <td><p class="text-muted">{{humanize(data.amount)}}</p></td>
-                                                                                <td class="small"> {{data.narration}}</td>
-                                                                                <td>{{data.date}}</td>
+                                                                                <td > {{data.narration}}</td>
+                                                                                <td>{{$humanizeDate(data.date)}}</td>
                                                                         </tr>
                                                                         </tbody>
                                                                 </table>
@@ -184,7 +184,7 @@
                                                                         <tr v-for = "data in offering_info.offerings">
                                                                                 <td><p class="text-muted">{{humanize(data.amount)}}</p></td>
                                                                                 <td> {{data.narration}}</td>
-                                                                                <td>{{data.date}}</td>
+                                                                                <td>{{$humanizeDate(data.date)}}</td>
                                                                         </tr>
                                                                         </tbody>
                                                                 </table>

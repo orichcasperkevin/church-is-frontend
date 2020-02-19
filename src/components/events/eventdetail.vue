@@ -30,7 +30,13 @@
                         </div>                                               
                         <span class="mr-2 text-muted" v-for="group in groups">                            
                            {{group.group.name}}  expected to attend 
-                        </span>   
+                        </span>  
+                        <div class="text-left mt-2">
+                            <div class="text-center text-muted col-3 border border-secondary rounded">
+                                <h1>{{event[0].attendees}} </h1>
+                                People attended
+                            </div>                            
+                        </div>                        
                         <hr/>
                         <div v-if="!groups.length" class="text-center text-muted">
                             <h3>Oops!</h3>

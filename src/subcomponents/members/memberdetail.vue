@@ -118,7 +118,7 @@
                                         </span>
                                 </span> 
                             </div>
-                            <div class="card-body">
+                            <div class="card-body" v-if="contact_info">
                                     <p v-if = "contact_info.contact.length == 0 "> none given </p>
                                     <span v-for = "data in contact_info">
                                             <span v-for = "data in data">
@@ -137,27 +137,7 @@
                     <div class="card border-0" style="max-width: 18rem;">
                     <div class="card-header border-0">Family</div>
                     <div class="card-body">
-                            <p v-if = "! family_info.family.length"> none given </p>
-
-                            <table class="table" v-else >
-                                    <tbody>
-                                    <tr v-for="data in family_info.family">
-                                    <span  v-for = "data in data" >
-                                            <span  >{{data.name}}</span>
-                                            <div v-for = "data in data.members">
-                                            <td>
-                                                    <img v-if = "data.gender == 'M'" style = "height: 32px "src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
-                                                    <img v-if = "data.gender == 'F'" style = "height: 32px "src="@/assets/avatars/icons8-user-female-skin-type-4-40.png">
-                                                    <img v-if = "data.gender == 'R'" style = "height: 32px "src="@/assets/avatars/icons8-contacts-96.png">
-
-                                            <span class="text-secondary">{{data.member.first_name}} {{data.member.last_name}}</span>
-
-                                            </td>
-                                            </div>
-                                    </span>
-                                    </tr>
-                                    </tbody>
-                            </table>
+                            
                     </div>
                     </div>
             </div>
@@ -364,7 +344,7 @@
                                                 v-model="new_email"> 
                                 </div>                                                                                      
                             </div>
-                            <div class="modal-body" v-if="! contact_info.contact.length">                                    
+                            <div class="modal-body" v-if="! contact_info">                                    
                                         <div class="row mb-3">
                                                 <span class="col-4">
                                                         <label><b>country code :</b></label>
