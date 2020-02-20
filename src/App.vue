@@ -1,15 +1,15 @@
 <template>
   <div id="app">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" v-if="checkLoggedIn()">
       <router_link class="navbar-brand text-success"  href="#">
         <img class="mr-0" style="width: 150px ;height: auto" src="@/assets/full_logo.png">      
       </router_link>
-      <div>
-        <generalsearch/>
-      </div>
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="row">
+        <generalsearch class="mr-2"/>
+        <button class="navbar-toggler ml-2" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
       </button>
+      </div>
       <div id="navbarNavDropdown" class="navbar-collapse collapse">
 
           <ul class="navbar-nav mr-auto" style="padding: 10px 10px 10px 10px">
@@ -55,8 +55,8 @@
                 </a>
                 <div class="dropdown-menu" style="padding: 5px 5px" aria-labelledby="navbarDropdownMenuLink">
                     
-                    <router-link class="dropdown-item" :to="{name: 'smsAnalytics'}">sms center</router-link>                                               
                     <router-link class="dropdown-item" :to="{name: 'services'}">services</router-link> 
+                    <router-link class="dropdown-item" :to="{name: 'smsAnalytics'}">sms center</router-link>                                                                   
                     <hr>
                     <router-link class="dropdown-item" :to="{name: 'myAccount'}">church account</router-link> 
                 </div>
@@ -139,18 +139,6 @@ export default {
     doAJAX : function (){       
       this.isLoading = true
     },
-    getClientDetail: function(){
-      this.client_detail_available = true
-      var church_id = localStorage.getItem('church_id')
-      this.$http.get(this.$BASE_URL + '/api/clients/client-detail/' + church_id +'/')
-        .then(response => {
-          this.client_details = response.data                                          
-        
-        })
-        .catch((err) => {
-          this.login_error.push("church code not set")        
-        })
-    }
   }
 }
 </script>

@@ -128,7 +128,7 @@
                     this.offering_by_type_stats = response.data                
                 })
                 .catch((error) => {
-                    alert('error while fetching statistics for your offerings')
+                    console.log('error while fetching statistics for your offerings')
                 })
 
                 // offering by service type stats
@@ -137,7 +137,7 @@
                     this.offering_by_service_stats = response.data                
                 })
                 .catch((error) => {
-                    alert('error while fetching statistics for your service offerings')
+                    console.log('error while fetching statistics for your service offerings')
                 })
             },
     

@@ -2,28 +2,26 @@
     <div>  
         <!-- EXPENDITURE CONTENTS -->
         <div>
-            <h3 >Expenditure</h3> 
-            <!-- what to show on small devices -->
-            <div class="d-sm-block d-md-none d-lg-none btn-group"  v-if = "expenditures_selected">
-                    <a href="#" data-toggle="modal" data-target="#addExpenditureType" style="text-decoration: none">
-                        <div class="add-button">
-                            <b>+</b> add expenditure type
-                        </div>
-                    </a>                     
-            </div>                               
+            <h3 >Expenditure</h3>                                          
             <div class="text-muted">
                     <div class="row">
-                            <div class="stat-item mr-2 text-muted">
+                            <div class="d-none d-lg-block stat-item mr-2 text-muted">
                                     This month  <span class="text-info">
                                      Ksh {{humanize(expenditure_stats.total_this_month)}}</span>
                             </div>
-                            <div class="stat-item mr-2">
+                            <div class="d-none d-lg-block stat-item mr-2">
                                     This year  <span class="text-info">
                                     Ksh   {{humanize(expenditure_stats.total_this_year)}}</span>                                        
                             </div>
-                            <a class="btn btn-sm btn-outline-info text-secondary dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
+                            <a class="ml-2 btn btn-sm btn-outline-info text-secondary dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
                                     more stats
                             </a>
+                             <!-- when on a small device show this button --> 
+                             <div class="ml-3 d-sm-block d-md-none btn-group">
+                                    <button class="btn btn-success" data-toggle="modal" data-target="#addOffering">                            
+                                            Add expenditure type                                         
+                                    </button>                      
+                            </div>
                     </div>                     
                     <div class="collapse" id="statsTab">
                             <div class="card card-body outline-0">

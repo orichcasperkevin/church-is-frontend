@@ -92,7 +92,7 @@
                     this.new_members_stats = response.data                
                 })
                 .catch((error) => {
-                    alert('error while fetching statistics for new members')
+                    console.log('error while fetching statistics for new members')
                 })
 
                 //age distribution stats
@@ -101,7 +101,7 @@
                     this.age_distribution_stats = response.data                
                 })
                 .catch((error) => {
-                    alert('error while fetching statistics for age distribution')
+                    console.log('error while fetching statistics for age distribution')
                 })
             },
     

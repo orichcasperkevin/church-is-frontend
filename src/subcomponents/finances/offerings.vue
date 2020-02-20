@@ -19,17 +19,23 @@
                 </div>
                 <div class="text-muted" >
                         <div class="row">
-                                <div class="stat-item mr-2 text-muted">
+                                <div class="d-none d-lg-block stat-item mr-2 text-muted">
                                         This month  <span class="text-info">
                                          Ksh {{humanize(offering_stats.response.total_in_offerings_this_month)}}</span>
                                 </div>
-                                <div class="stat-item mr-2">
+                                <div class="d-none d-lg-block stat-item mr-2">
                                         This year  <span class="text-info">
                                         Ksh    {{humanize(offering_stats.response.total_in_offerings_this_month)}} </span>                                        
                                 </div>
-                                <a class="btn  btn-outline-info text-secondary dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
+                                <a class="ml-3 btn btn-outline-info text-secondary dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
                                         more stats
                                 </a>
+                                <!-- when on a small device show this button --> 
+                                <div class="ml-3 d-sm-block d-md-none btn-group">
+                                    <button class="btn btn-success" data-toggle="modal" data-target="#addOffering">                            
+                                            <b>+</b> Add Offering                                          
+                                    </button>                      
+                                </div> 
                             </div>                                                                            
                         </p>
                         <div class="collapse" id="statsTab">

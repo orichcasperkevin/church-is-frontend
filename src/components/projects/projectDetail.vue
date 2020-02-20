@@ -52,15 +52,15 @@
                                 </div>
                                 <div class=" text-muted" v-for = "data in context.response ">
                                         <div class="row ml-1">
-                                                <div class="stat-item mr-2 text-muted">
+                                                <div class="d-none d-lg-block stat-item mr-2 text-muted">
                                                         Required  <span class="text-info">
                                                                 Ksh {{humanize(data.required_amount)}}</span>
                                                 </div>
-                                                <div class="stat-item mr-2">
+                                                <div class="d-none d-lg-block stat-item mr-2">
                                                         Raised  <span class="text-info">
                                                         Ksh   {{humanize(data.raised_amount)}}</span>                                        
                                                 </div>
-                                                <div class="stat-item mr-2">
+                                                <div class=" d-none d-lg-block stat-item mr-2">
                                                         Funded  <span class="text-info">
                                                         {{data.percentage_funded}} %</span>                                        
                                                 </div>
@@ -129,15 +129,15 @@
                                         <!-- pledges -->
                                         <div class="text-muted" v-for = "data in context.response ">
                                                 <div class="row ml-1">
-                                                        <div class="stat-item mr-2 text-muted">
+                                                        <div class="d-none d-lg-block stat-item mr-2 text-muted">
                                                                 Pledges  <span class="text-info">
                                                                         Ksh {{humanize(data.total_in_pledges)}}</span>
                                                         </div>
-                                                        <div class="stat-item mr-2">
+                                                        <div class=" d-none d-lg-block stat-item mr-2">
                                                                 Settled  <span class="text-info">
                                                                 Ksh   {{humanize(data.total_in_settled_pledges)}}</span>                                        
                                                         </div>
-                                                        <div class="stat-item mr-2">
+                                                        <div class="d-none d-lg-block stat-item mr-2">
                                                                 Percentage settled  <span class="text-info">
                                                                 Ksh   {{data.percentage_of_pledge_settled}}%</span>                                        
                                                         </div>

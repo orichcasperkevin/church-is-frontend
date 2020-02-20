@@ -10,89 +10,73 @@
                 <div class = "row">
                     <div class = "col-12 col-sm-10 col-md-8 col-lg-2">
                             <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                    <a class="action-list list-group-item list-group-item-action border-0 active" id="v-pills-income-tab" data-toggle="pill" href="#v-pills-today" role="tab" aria-controls="v-pills-today" aria-selected="true">today</a>
-                                    <a class="action-list list-group-item list-group-item-action border-0" id="v-pills-expenditure-tab" data-toggle="pill" href="#v-pills-this-month" role="tab" aria-controls="v-pills-this-month" aria-selected="false" v-on:click="getServicesThisMonth()">this month</a>  
+                                    <a class="action-list list-group-item list-group-item-action border-0 active" id="v-pills-expenditure-tab" data-toggle="pill" href="#v-pills-this-month" role="tab" aria-controls="v-pills-this-month" aria-selected="true" >all services</a>
+                                    <a class="action-list list-group-item list-group-item-action border-0 " id="v-pills-income-tab" data-toggle="pill" href="#v-pills-today" role="tab" aria-controls="v-pills-today" aria-selected="false">services today</a>                                     
                             </div>
                     </div>
                     <div class = "col">
                             <div class="tab-content" id="v-pills-tabContent">
-                       
-                                    <div class="tab-pane fade show active" id="v-pills-today" role="tabpanel" aria-labelledby="v-pills-today-tab">
+                                <!-- services today tab -->
+                                    <div class="tab-pane fade show " id="v-pills-today" role="tabpanel" aria-labelledby="v-pills-today-tab">
                                         <div v-if = "! services_available">
-                                            <div class="center-div">
-                                                <p class = "text-info">no services available today</p>
+                                            <div class="text-center text-muted">
+                                                <h3>Oops!</h3>
+                                                <h5>There are no services in session today</h5>
+                                                <button class="btn btn-success" data-toggle="modal" data-target="#addService" style="text-decoration: none">                                                    
+                                                        <b>+</b> add service                                                    
+                                                </button>
                                             </div>
                                         </div>
-                                        <div v-if = "services_available">                                                                                      
-                                        <div v-for="data in services_today.response">
-                                            <div>
-                                                <h3 class="home-menu-item">{{data.service.type.name}}</h3>                                               
-                                                <p class="text-info small" v-if ="data.service.type.church_groups.length > 0">                                                        
-                                                    <span v-for="data in data.service.type.church_groups">
-                                                        for: {{data.name}}
-                                                    </span>
-                                                </p>
-                                                <p class="text-info small" v-if ="data.service.type.church_groups.length == 0">
-                                                    open to all
-                                                </p>
-                                                <hr/>
-                                            </div>
-                                            <div  >
-                                                <div>action: <span class="text-muted">{{data.action}}</span></div>
-                                                <div>value: <span class="text-muted">{{data.value}}</span></div>
-                                            </div>
-                                            <div class="row" style="padding: 10px">
-                                                <div class = "col-6">
-                                                    
-                                                </div>
-                                                <div class = "col-6">
-                                                    <p class="small">venue: <span class="text-info">
-                                                        {{data.service.venue}}</span>
-                                                    </p>
-                                                    <p class="small">time: <span class="text-info">
-                                                            {{data.service.start}} - {{data.service.end}}</span>
-                                                        </p>
-                                                </div>
-                                            </div>
-                                            <hr/>
-                                        </div>
+                                        <div v-if = "services_available">    
+                                            <h3>Services Today</h3>                                                                                  
+                                                <table class="table">
+                                                        <thead>
+                                                            <tr>                                                            
+                                                            <th scope="col">Service type</th>
+                                                            <th scope="col">date</th>
+                                                            <th scope="col">venue</th>
+                                                            <th scope="col">starts</th>
+                                                            <th scope="col">ends</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr class="text-muted" v-for="data in services_today.response">                                                             
+                                                                <td>{{data.service.type.name}}</td>
+                                                                <td>Today</td>
+                                                                <td>{{data.service.venue}}</td>
+                                                                <td>{{data.service.start}}</td>
+                                                                <td>{{data.service.end}}</td>
+                                                            </tr>                                                              
+                                                        </tbody>
+                                                    </table>   
                                         </div>
                                     </div>
-                                    <div class="tab-pane fade show " id="v-pills-this-month" role="tabpanel" aria-labelledby="v-pills-this-month-tab">
+                               <!-- default is services in general tab -->
+                                    <div class="tab-pane fade show active " id="v-pills-this-month" role="tabpanel" aria-labelledby="v-pills-this-month-tab">
+                                        <h3>All Services </h3>
                                         <div v-if = "this_month_selected">
-                                                <div v-for="data in services_this_month.response">
-                                                        <div>
-                                                            <h3 class="home-menu-item">{{data.service.type.name}}</h3>                                               
-                                                            <p class="text-info small" v-if ="data.service.type.church_groups.length > 0">                                                        
-                                                                <span v-for="data in data.service.type.church_groups">
-                                                                    for: {{data.name}}
-                                                                </span>
-                                                            </p>
-                                                            <p class="text-info small" v-if ="data.service.type.church_groups.length == 0">
-                                                                open to all
-                                                            </p>
-                                                            <hr/>
-                                                        </div>
-                                                        <div  >
-                                                            <div>action: <span class="text-muted">{{data.action}}</span></div>
-                                                            <div>value: <span class="text-muted">{{data.value}}</span></div>
-                                                        </div>
-                                                        <div class="row" style="padding: 10px">
-                                                            <div class = "col-6">
-                                                                
-                                                            </div>
-                                                            <div class = "col-6">
-                                                                <p class="small">venue: <span class="text-info">
-                                                                    {{data.service.venue}}</span>
-                                                                </p>
-                                                                <p class="small">time: <span class="text-info">
-                                                                        {{data.service.start}} - {{data.service.end}}</span>
-                                                                    </p>
-                                                            </div>
-                                                        </div>
-                                                        <hr/>
-                                                    </div>
-                                            </div>
+                                               <!-- table of services  -->
+                                               <table class="table">
+                                                    <thead>
+                                                        <tr>                                                            
+                                                        <th scope="col">Service type</th>
+                                                        <th scope="col">date</th>
+                                                        <th scope="col">venue</th>
+                                                        <th scope="col">starts</th>
+                                                        <th scope="col">ends</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr class="text-muted" v-for="data in services_this_month.response">                                                             
+                                                            <td>{{data.service.type.name}}</td>
+                                                            <td>{{$humanizeDate(data.service.date)}}</td>
+                                                            <td>{{data.service.venue}}</td>
+                                                            <td>{{data.service.start}}</td>
+                                                            <td>{{data.service.end}}</td>
+                                                        </tr>                                                              
+                                                    </tbody>
+                                                </table>                                                
+                                        </div>
                                     </div>
                             </div>
                     </div>
@@ -124,11 +108,13 @@
                             </div>
                             <div class="modal-body">  
                                 <div class="row form-group">
-                                        <label class="col-3"><b>type:</b></label>                                                                                                                                   
-                                        <select class="col-6 form-control" v-model="service_type" >
+                                        <label class="col-3"><b>type:</b></label>                                                                                                                                                     
+                                        <select class="col-4 form-control" v-model="service_type" >
                                             <option v-for="data in service_types.response" :value="data.id" >{{data.name}}</option>
                                         </select>
-                                        <a href=# class="col-2 text-success" data-toggle="modal" data-target="#addServiceType"><h3>+</h3></a>
+                                        <a href=# class="col-2 text-success" data-toggle="modal" data-target="#addServiceType">
+                                            <p class="mt-1">+ Add</p>
+                                        </a>
                                         <p v-if="service_type_errors.length">
                                                 <ul>
                                                         <small><li v-for="error in service_type_errors"><p class="text-danger">{{ error }}</p></li></small>
@@ -164,12 +150,12 @@
                                         <div class="col-8">
                                             <div class="row form-group">
                                                     <div class="col-6">
-                                                            <label class="col-3">from</label>
-                                                            <input type="text" class=" col-8 form-control" placeholder="HH:MM" v-model="service_start"> 
+                                                            <label class="col-2">from</label>
+                                                            <input type="time" class=" col-10 form-control" v-model="service_start"> 
                                                     </div>
                                                     <div class="col-6">
-                                                        <label class="col-3">to</label>
-                                                        <input type="text" class=" col-8 form-control" placeholder="HH:MM" v-model="service_end"> 
+                                                        <label class="col-2">to</label>
+                                                        <input type="time" class=" col-10 form-control" v-model="service_end"> 
                                                     </div>
                                             </div>
                                         </div>
@@ -181,8 +167,8 @@
                                 </div> 
                                 <hr/>
                                 <div class="row form-group">
-                                        <label class="col-3"><b>action:</b></label>
-                                        <input type="text" class=" col-8 form-control" placeholder="title of action to be performed" v-model="service_action">                                                                                         
+                                        <label class="col-3"><b>Lesson:</b></label>
+                                        <input type="text" class=" col-8 form-control" placeholder="lesson to be taught" v-model="service_action">                                                                                         
                                         <p v-if="service_action_errors.length">
                                                 <ul>
                                                         <small><li v-for="error in service_action_errors"><p class="text-danger">{{ error }}</p></li></small>
@@ -190,8 +176,8 @@
                                         </p>
                                 </div>                                                           
                                 <div class="row form-group">
-                                        <label class="col-3"><b>value:</b></label>
-                                        <input type="text" class=" col-8 form-control" placeholder="the value to be learnt" v-model="service_value">                                                                                         
+                                        <label class="col-3"><b>description:</b></label>
+                                        <input type="text" class=" col-8 form-control" placeholder="brief description of the lesson" v-model="service_value">                                                                                         
                                         <p v-if="service_value_errors.length">
                                                 <ul>
                                                         <small><li v-for="error in service_value_errors"><p class="text-danger">{{ error }}</p></li></small>
@@ -285,6 +271,8 @@
         },
         created () {
            this.fetchData() 
+           this.getServiceTypes()
+           this.getServicesThisMonth()
         },
         methods: {
             fetchData () {
@@ -301,8 +289,7 @@
                     .catch((err) => {
                         this.fetch_data_error.push(err)
                         this.$store.dispatch('update_isLoading', false)
-                    })
-            this.getServiceTypes()
+                    })            
             },
             getServicesThisMonth: function () {
                 this.this_month_selected = true

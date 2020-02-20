@@ -19,24 +19,23 @@
                             <div class="row">                                        
                                     <div class="col">                    
                                         <div class="row">
-                                            <div class="col-lg-2 col-sm-3 mb-2">
+                                            <!-- list and calendar views -->
+                                            <div class="col-6 col-lg-2">
                                                     <div class="form-group">                                    
                                                         <select class="form-control" v-model="view">
                                                             <option value="list">list</option>
                                                             <option value="calendar">calendar</option>                                        
                                                         </select>
                                                     </div>
-                                            </div>
-                                              <!-- on smaller devices -->
-                                            <div class="col btn-group d-sm-block d-md-none text-right">
-                                                    <div style="padding: 0px 0px 25px 10px">
-                                                            <a href="#" data-toggle="modal" data-target="#addEvent" style="text-decoration: none">
-                                                                <div class="add-button">
-                                                                    <b>+</b> add upcoming event
-                                                                </div>
-                                                            </a>
-                                                    </div>
-                                            </div>
+                                            </div>   
+                                              <!--add button on smaller devices -->
+                                              <div class="col-6 btn-group d-sm-block d-md-none text-right">
+                                                <div style="padding: 0px 0px 25px 10px">
+                                                        <button class="btn btn-success" data-toggle="modal" data-target="#addEvent">                                                            
+                                                                <b>+</b> add  event                                                
+                                                        </button>
+                                                </div>
+                                            </div>                                         
                                         </div>
                                     </div>                                  
                             </div>
@@ -80,7 +79,7 @@
                             </div>
                        </div>
                        <!-- add button -->
-                        <div class = "col-12 col-sm-10 col-md-8 col-lg-3" >
+                        <div class = "col-12 col-sm-10 col-md-8 col-lg-3 d-none d-lg-block" >
                                 <div style="padding: 0px 0px 25px 10px">
                                         <a href="#" data-toggle="modal" data-target="#addEvent" style="text-decoration: none">
                                             <div class="add-button">

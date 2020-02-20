@@ -11,7 +11,7 @@
         <div class="row">
             <!-- NAVIGATION ON THE LEFT -->
             <div class="col-12 col-sm-10 col-md-8 col-lg-2">
-                    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                    <div class="d-none nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                             <a class="action-list list-group-item list-group-item-action border-0"  data-toggle="pill" href="#inProgress" role="tab" aria-controls="members" aria-selected="true">
                               <img style="width: 20px; height: auto" src="@/assets/icons/icons8-present-48.png">
                               in-progress
@@ -35,14 +35,15 @@
                             <div class="card card-body outline-0">
                                 <projectstats msg="expenditure stats"/>
                             </div>
-                    </div>
-                    <div class="d-sm-block d-md-none">
-                            <a href="#" data-toggle="modal" data-target="#addProject" style="text-decoration: none">
-                                <div class="btn btn-success add-button">
-                                    <b>+</b> add project
-                                </div>
-                            </a>
-                    </div>
+                            <!-- show this button on smaller devices -->
+                            <div class="d-sm-block d-md-none">
+                                    <a href="#" data-toggle="modal" data-target="#addProject" style="text-decoration: none">
+                                        <div class="btn btn-success add-button">
+                                            <b>+</b> add project
+                                        </div>
+                                    </a>
+                            </div>
+                    </div>                    
                     <hr/>                    
                     <div class="col-8 center-div" v-if = "fetch_data_error.length > 0">
                         <div class = "center-div" >

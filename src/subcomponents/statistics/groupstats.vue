@@ -65,7 +65,7 @@
                     this.group_general_stats = response.data                
                 })
                 .catch((error) => {
-                    alert('error while fetching statistics for groups')
+                    console.log('error while fetching statistics for groups')
                 })
             },
     

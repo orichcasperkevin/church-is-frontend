@@ -87,7 +87,7 @@
                     this.income_general_stats = response.data                
                 })
                 .catch((error) => {
-                    alert('error while fetching statistics for your offerings')
+                    console.log('error while fetching statistics for your offerings')
                 })
             
             },

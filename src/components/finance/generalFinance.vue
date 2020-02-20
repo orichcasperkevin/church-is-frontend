@@ -74,37 +74,38 @@
                                         <offerings/>                                        
                                     </div>
                                 </div>
-                                <!-- others -->
+                                <!-- Income-->
                                 <div class="tab-pane fade" id="pills-anyOther" role="tabpanel" aria-labelledby="pills-anyOther-tab">                                        
                                         <div v-if = "any_other_selected">
-                                                <h3>Income</h3>
-                                                <!-- what to show on small devices -->
-                                                <div class="d-sm-block d-md-none d-lg-none btn-group" v-if = "any_other_selected">
-                                                        <a href="#" data-toggle="modal" data-target="#addIncomeType" style="text-decoration: none">
-                                                            <div class="add-button">
-                                                                <b>+</b> add income type
-                                                            </div>
-                                                        </a>
-                                                        <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                                                                <span class="sr-only">Toggle Dropdown</span>
-                                                        </button>
-                                                        <div class="dropdown-menu border-success" aria-labelledby="dropdownMenuReference">                            
-                                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addIncome"><b>+</b> add income</a>                                                                
-                                                        </div>
-                                                </div>
+                                                <h3>Income</h3>                                                
                                                 <div class="text-muted" v-if="any_other_selected">
                                                         <div class="row">
-                                                                <div class="stat-item mr-2 text-muted">
+                                                                <div class="d-none d-lg-block stat-item mr-2 text-muted">
                                                                         This month  <span class="text-info">
                                                                          Ksh {{humanize(income_stats.response.total_this_month)}} </span>
                                                                 </div>
-                                                                <div class="stat-item mr-2">
+                                                                <div class="d-none d-lg-block stat-item mr-2">
                                                                         This year  <span class="text-info">
                                                                         Ksh   {{humanize(income_stats.response.total_this_year)}}</span>                                        
                                                                 </div>
-                                                                <a class="btn btn-outline-info text-secondary dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
+                                                                <a class="ml-2 btn btn-outline-info text-secondary dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
                                                                         more stats
                                                                 </a>
+
+                                                                <!-- what to show on small devices -->
+                                                                <div class="ml-2 d-sm-block d-md-none d-lg-none btn-group" v-if = "any_other_selected">
+                                                                        <a href="#" data-toggle="modal" data-target="#addIncomeType" style="text-decoration: none">
+                                                                            <div class="add-button">
+                                                                                add income type
+                                                                            </div>
+                                                                        </a>
+                                                                        <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
+                                                                                <span class="sr-only">Toggle Dropdown</span>
+                                                                        </button>
+                                                                        <div class="dropdown-menu border-success" aria-labelledby="dropdownMenuReference">                            
+                                                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addIncome"><b>+</b> add income</a>                                                                
+                                                                        </div>
+                                                                </div>
                                                         </div>                                                                                                    
                                                         </p>
                                                         <div class="collapse" id="statsTab">
@@ -614,7 +615,7 @@ export default {
                             this.income_type_description = '' 
                             var new_version = parseInt(localStorage.getItem('income_type_list_version')) + 1
                             this.$store.dispatch('update_income_type_list_version', new_version) 
-                            
+                            this.getIncomeTypeList()
                             alert("income type succesfully added")                                                
                         })
                         .catch((err) => {

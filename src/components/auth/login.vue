@@ -5,10 +5,10 @@
         <div class="col"></div>
         
         <div style="padding: 10px">
-          <div class="card w-400" style="background-color: ghostwhite">
+          <div class="card w-400" style="background-color: ghostwhite; min-width: 300px;">
             <div class="card-header text-center">
-              <img class="mr-0 " style="width: 50px ;height: auto" src="@/assets/app_logo.png">
-              <p>church admin login</p>
+              <img class="mr-0 " style="width: 50px ;height: auto" src="@/assets/app_logo1.png">
+              <p>anvil church admin login</p>
             </div>
             <div class="card-body">
               <form>
@@ -94,7 +94,7 @@
           this.$http.get(this.$DOMAIN.value + '/api/clients/client/' + church_id + '/')
             .then(response => {
               var data = response.data              
-              this.$BASE_URL.value = "http://"+ data[0].domain_url         
+              this.$BASE_URL.value = "http://"+ data[0].domain_url    
               localStorage.setItem('base_url_value',this.$BASE_URL.value)
               localStorage.setItem('church_id', church_id )
             })
@@ -130,7 +130,7 @@
           .catch((err) => {
             this.login_info = []
             this.login_error = []
-            this.login_error.push("invalid credentials!")
+            this.login_error.push("invalid credentials")
 
           })
       },

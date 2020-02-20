@@ -113,7 +113,7 @@
                     this.project_general_stats = response.data                
                 })
                 .catch((error) => {
-                    alert('error while fetching statistics for projects')
+                    console.log('error while fetching statistics for projects')
                 })
 
                 //project size stats                
@@ -122,7 +122,7 @@
                     this.project_size_stats = response.data                
                 })
                 .catch((error) => {
-                    alert('error while fetching statistics for project sizes')
+                    console.log('error while fetching statistics for project sizes')
                 })
             },
     

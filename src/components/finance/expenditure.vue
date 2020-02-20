@@ -42,11 +42,11 @@
                                 <p class="col-8">
                                         <div class="small text-muted" v-for="data in expenditure_type.response">                                               
                                                 <div class="row">
-                                                        <div class="stat-item mr-2 text-muted">
+                                                        <div class="d-none d-lg-block stat-item mr-2 text-muted">
                                                                 This month  <span class="text-info">
                                                                  Ksh {{humanize(data.total_this_month)}} </span>
                                                         </div>
-                                                        <div class="stat-item mr-2">
+                                                        <div class="d-none d-lg-block stat-item mr-2">
                                                                 This year  <span class="text-info">
                                                                 Ksh   KSh {{humanize(data.total_this_year)}}</span>                                        
                                                         </div>                                                               

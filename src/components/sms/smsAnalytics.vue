@@ -45,13 +45,15 @@ export default {
        this.fetchData() 
     },
     methods: {
-        fetchData () {            
+        fetchData () {  
+            this.$store.dispatch('update_isLoading', true)          
             this.$http.get(this.$BASE_URL + '/api/sms/sms-this-month/')
                 .then(response => {
                 this.sms_this_month =  response.data 
-               
+                this.$store.dispatch('update_isLoading', false)
                 })
                 .catch((err) => {
+                    this.$store.dispatch('update_isLoading', false)
                     alert("error occured while fetching data")
                 })
         }

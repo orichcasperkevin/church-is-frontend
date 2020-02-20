@@ -26,13 +26,16 @@
                     <div class="col">
                         <div>
                             <h3>{{event[0].title}}</h3>
-                            <h4>{{event[0].start}} <span class="text-muted">---to---</span> {{event[0].end}}</h4>
+                            <h5>{{event[0].start}} 
+                                <span class="text-muted">---to---</span>
+                                 {{event[0].end}}
+                            </h5>
                         </div>                                               
                         <span class="mr-2 text-muted" v-for="group in groups">                            
                            {{group.group.name}}  expected to attend 
                         </span>  
                         <div class="text-left mt-2">
-                            <div class="text-center text-muted col-3 border border-secondary rounded">
+                            <div class="text-center text-muted col-lg-3 col-sm-8 border border-secondary rounded">
                                 <h1>{{event[0].attendees}} </h1>
                                 People attended
                             </div>                            
@@ -58,9 +61,7 @@
                                 <div class="row">
                                     <!-- member list -->
                                     <div class="col">                                        
-                                            <img v-if = "item.member.gender == 'M'" style = "height: 32px "src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
-                                            <img v-if = "item.member.gender == 'F'" style = "height: 32px "src="@/assets/avatars/icons8-user-female-skin-type-4-40.png">
-                                            <img v-if = "! item.member.gender" style = "height: 32px "src="@/assets/avatars/icons8-contacts-96.png">
+                                           
                                             <router-link :to="`/memberDetail/`+ item.member.member.id">
                                                 <span class = "text-secondary">{{item.member.member.first_name}} {{item.member.member.last_name}}</span>
                                             </router-link>   
@@ -68,7 +69,7 @@
                                     <!-- action button -->
                                     <div class="col text-right">
                                         <div v-if="! attended_member_ids.includes(item.member.member.id)">
-                                            <button type="button" class="btn btn-success" v-on:click="checkInMember(item.member.member.id)">
+                                            <button type="button" class="btn btn-sm btn-success" v-on:click="checkInMember(item.member.member.id)">
                                                 Check In
                                                 <span   
                                                         class="d-none spinner-border spinner-border-sm" 
@@ -79,7 +80,7 @@
                                             </button>
                                         </div>    
                                         <div v-else>
-                                            <button disabled type="button" class="btn btn-light">Checked</button>
+                                            <button disabled type="button" class="btn btn-sm btn-light">Checked</button>
                                         </div>   
                                                                          
                                     </div>
@@ -87,12 +88,12 @@
                             </li>                                                                                
                         </ul>
                         <div v-else class="text-muted text-center">            
-                            <h5>Getting Register ...</h5>
+                            <h5 v-if="groups.length">Getting Register ...</h5>
                         </div>
                     </div>
                     <!-- actions -->
                     <div class="col-lg-3 col-sm-12">
-                        mp;kp;k
+                        
                     </div>
                 </div>                
             </div>

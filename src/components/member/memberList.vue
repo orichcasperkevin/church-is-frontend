@@ -20,8 +20,8 @@
         <div class="container">
           <div class="row">
             <!-- FILTERS TAB ON THE LEFT -->
-            <div class="filters col-12 col-sm-8 col-md-8 col-lg-2" style="padding: 3px 3px 3px 3px">
-                <div class="form-group">
+            <div class="filters col-12 col-sm-0 col-md-8 col-lg-2 " style="padding: 3px 3px 3px 3px">
+                <div class="form-group d-none d-lg-block">
                     <label for="searchInput">
                       <b>
                       <img style="width: 20px ;height: auto" src="@/assets/icons/icons8-search-80.png">
@@ -33,7 +33,7 @@
                     <small id="searchHelp" class="form-text text-muted">search members by their first names</small>
                 </div>
               <p>
-                  <a class="" data-toggle="collapse" href="#collapseMoreFilters" role="button" aria-expanded="false" aria-controls="collapseMoreFilters">
+                  <a class="d-none d-lg-block" data-toggle="collapse" href="#collapseMoreFilters" role="button" aria-expanded="false" aria-controls="collapseMoreFilters">
                     <div class="moreButton">
                       <img style="width: 25px ;height: auto" src="@/assets/icons/icons8-down-arrow-64.png">
                     <b> more filters</b>
@@ -107,23 +107,7 @@
                     <a class="btn btn-outline-info text-secondary dropdown-toggle mr-1" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
                         more stats
                     </a>
-                  </p>                                                    
-                  <!-- to be shown on small devices -->
-                  <div class="btn-group d-sm-block d-md-none ">
-                      <router-link :to="{name: 'memberAdd'}" style="text-decoration: none">
-                          <div class="add-button">
-                            + Add member
-                          </div>
-                      </router-link>
-                      <button type="button" class="btn btn-sm btn-success dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                        <span class="sr-only">Toggle Dropdown</span>
-                      </button>
-                      <div class="dropdown-menu border-success" aria-labelledby="dropdownMenuReference">
-                          <a class="dropdown-item" href="#" data-toggle="modal" data-target="#importCSV"><b>+</b> import from csv</a>
-                          <div class="dropdown-divider"></div>
-                          <router-link class="dropdown-item" :to="{name: 'adminRoles'}"> assign roles</router-link>
-                      </div>
-                  </div>
+                  </p>                                                                 
                 </div>               
                 
               </div>
@@ -140,8 +124,9 @@
                         <input multiple class="form-check-input" 
                                 type="checkbox" :value=true v-model="all_members">
                               all
-                        <div class="btn-group d-sm-block d-md-none ml-2">
-                            <a href="#" style="text-decoration: none">
+                        <!-- actions drop down on phone -->
+                        <div class="btn-group d-sm-block d-md-none ml-5 mb-2" style="text-decoration: none; position:absolute">
+                            <a href="#">
                                 <div class="btn btn-light">
                                   actions
                                 </div>
@@ -166,9 +151,14 @@
                                       <img style="width: 25px; height:auto" src="@/assets/icons/icons8-add-user-group-man-man-64.png">
                                       assign group
                                     </button>
+                                    <router-link :to="{name: 'memberAdd'}" class="ml-2 mr-2">
+                                        <div class="add-button">
+                                          + Add member
+                                        </div>
+                                    </router-link>                                    
                                 </div>                            
                             </div>
-                          </div>
+                        </div>
                       </th>
                       <th></th>
                       <th></th>

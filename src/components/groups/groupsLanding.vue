@@ -46,29 +46,33 @@
                 <a class="btn btn-sm btn-success " href="#" data-toggle="modal" data-target="#addModal" style="text-decoration: none" v-on:click="selectFolder()">
                   + Add folder
                  </a>
-              <div class="list-group" v-for="data in groups.response">
-                <router-link :to="`/groupList/`+ data.id + `/` + data.name"class="row list-group-item list-group-item-action border-0" >
-                  <span>
-                      <img style="width: 20px ;height: auto" src="@/assets/icons/icons8-folder-48.png">
-                      {{data.name}}                      
-                  </span>
-                </router-link>
-              </div>
-              <hr>
+              <div v-if="groups">
+                  <div class="list-group" v-for="data in groups.response">
+                      <router-link :to="`/groupList/`+ data.id + `/` + data.name"class="row list-group-item list-group-item-action border-0" >
+                        <span>
+                            <img style="width: 20px ;height: auto" src="@/assets/icons/icons8-folder-48.png">
+                            {{data.name}}                      
+                        </span>
+                      </router-link>
+                    </div>
+                    <hr>
+              </div>             
               <b>
                 groups
               </b>
                 <a class="btn btn-sm btn-success" href="#" data-toggle="modal" data-target="#addModal" style="text-decoration: none">
                   + Add group
                 </a>
-              <div class="list-group" v-for="data in independent_groups.response">
-                <router-link  :to="`/groupDetail/`+ data.id" class="list-group-item list-group-item-action border-0" >
-                <span>
-                      <img style="width: 30px ;height: auto" src="@/assets/icons/icons8-user-groups-48.png">
-                      {{data.name}}                      
-                </span>
-              </router-link>
-              </div>
+              <div v-if="independent_groups">
+                  <div class="list-group" v-for="data in independent_groups.response">
+                      <router-link  :to="`/groupDetail/`+ data.id" class="list-group-item list-group-item-action border-0" >
+                      <span>
+                            <img style="width: 30px ;height: auto" src="@/assets/icons/icons8-user-groups-48.png">
+                            {{data.name}}                      
+                      </span>
+                    </router-link>
+                  </div>
+              </div>             
         </div>
         <!-- CONTENT IN THE MIDDLE -->
         <div class="col-sm-10 col-md-8 col-lg-9">
@@ -84,13 +88,7 @@
         <!-- Modal add group -->
         <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                <div class="vld-parent">
-                    <loading :active.sync="isLoading"
-                    :can-cancel="false"
-                    :is-full-page="false"></loading>
-
-                </div>
+                <div class="modal-content">               
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalCenterTitle">add group / folder</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close" v-on:click="fetchData()">
@@ -136,8 +134,7 @@ export default {
   name: 'groupsLanding',
   components: { groupstats },
   data () {
-    return {
-      isLoading : false,
+    return {      
       groups: null,independent_groups: null,
       foundItems: null,foundItems_independent: null,
       fetch_data_error: [],
@@ -161,22 +158,22 @@ export default {
           router.push("/login")
       }
     },
-    fetchData() {
+    fetchData() {      
       this.fetch_data_error = []
       this.$store.dispatch('update_isLoading', true)
       // try local storage
-      this.groups = JSON.parse(localStorage.getItem('group_list'))
-      if (this.groups){
-        var array = this.groups.response
+      this.groups = JSON.parse(localStorage.getItem('group_list'))    
+      if (this.groups){        
+        var array = this.groups.response          
         this.foundItems = array.length
         this.$store.dispatch('update_isLoading', false)
       }
 
       const currentVersion = this.$store.getters.group_list_version
       var version  = localStorage.getItem('group_list_version')
-
+      
       //else try the network
-      if (!version || version < currentVersion) {
+      if (!version || version <= currentVersion) {      
         this.$http.get(this.$BASE_URL + '/api/groups/group-of-church-groups-list')
         .then(response => {
             this.groups = {"response": response.data }
