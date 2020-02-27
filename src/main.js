@@ -13,12 +13,18 @@ import { store } from './store'
 import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en'
 
-TimeAgo.addLocale(en)
+//guill vue
+import VueQuillEditor from 'vue-quill-editor' 
+// require styles
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
+
 
 Vue.use(Vuex)
-const options = { name: 'lodash' }
-Vue.use(VueLodash, options)
+Vue.use(VueLodash, { name: 'lodash' })
 Vue.use(VueSession) 
+Vue.use(VueQuillEditor, /* { default global options } */) //component <quill-editor/>
 
 Vue.config.productionTip = false
 //vuex
@@ -27,12 +33,13 @@ Vue.prototype.$store =  store
 Vue.prototype.$http = axios
 
 //helpers
+TimeAgo.addLocale(en)
 Vue.prototype.$timeAgo = new TimeAgo('en-US')
 Vue.prototype.$humanizeDate = function(date_time){return this.$timeAgo.format(new Date(date_time), 'twitter')},
 Vue.prototype.$fileDownload = require('js-file-download');
 
 //DOMAINS
-Vue.prototype.$DOMAIN = { value :'http://anvilchurch.com'}
+Vue.prototype.$DOMAIN = { value :'http://my-domain.com:8000'}
 Vue.prototype.$BASE_URL = { value :localStorage.getItem('base_url_value'),toString:function(){return this.value}}
 
 /* eslint-disable no-new */
