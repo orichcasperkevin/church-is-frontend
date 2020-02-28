@@ -2,13 +2,13 @@
   <div id="app">
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark" v-if="checkLoggedIn()">
       <router_link class="navbar-brand text-success"  href="#">
-        <img class="mr-0" style="width: 150px ;height: auto" src="@/assets/full_logo.png">      
+          <button class="navbar-toggler ml-2" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+          </button>
+          <img class="mr-0" style="width: 150px ;height: auto" src="@/assets/full_logo.png">      
       </router_link>
       <div class="row">
-        <generalsearch class="mr-2"/>
-        <button class="navbar-toggler ml-2" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-      </button>
+        <generalsearch class="mr-2  col-sm-12"/>
       </div>
       <div id="navbarNavDropdown" class="navbar-collapse collapse">
 

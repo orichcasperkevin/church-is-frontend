@@ -4,7 +4,7 @@
         
             <input type="text" class=" form-control"   style="background-color:ghostwhite"
                     placeholder="members,groups & events" v-model="generalSearch" autofocus>                  
-
+            <div style="background-color: ghostwhite" class="text-info rounded" >{{search_status}}</div> 
             <div class="pre-scrollable searchedItemsDiv border " 
                 style="min-width: 400px; 
                         max-height: 350px;
@@ -12,18 +12,13 @@
                           position: absolute;
                            z-index: 3;
                             background-color: white"
-                v-if="showSearchResults">
-
-                <div style="padding: 10px 10px 10px 10px" class="text-info" >{{search_status}}</div> 
+                              v-if="showSearchResults">                
 
                 <table class="table border-0" >                    
                     <tbody>
                     <!-- MEMBERS -->
-                    <h6 class="ml-2">Members found</h6>
-                    <!-- if no member matching pattern was found -->
-                    <div class="text-center text-muted" v-if="! found_members.response.length">
-                        None
-                    </div>
+                    <h6 class="ml-2" v-if="found_members.response.length">Members found</h6>
+                    <!-- if no member matching pattern was found -->                    
                     <tr class="searchedItem border-0" v-for="data in found_members.response">   
                         <a>                                                                             
                             <td class="border-0"  v-on:click="hideSearchResults(`/memberDetail/`+ data.member.id)">
@@ -38,11 +33,7 @@
                     </tr>
                     <hr>
                     <!-- GROUPS -->
-                    <h6 class="ml-2">Groups found</h6>
-                    <!-- if no group matching pattern was found -->
-                    <div class="text-center text-muted" v-if="! found_groups.length">
-                        None
-                    </div>
+                    <h6 class="ml-2" v-if="found_groups.length">Groups found</h6>                    
                     <tr class="searchedItem border-0" v-for="group in found_groups">                        
                         <router-link class="text-secondary" style="text-decoration: none;"  :to="`/groupDetail/`+ group.id ">
                             <td class="border-0"  v-on:click="hideSearchResults()">
@@ -56,18 +47,14 @@
                     </tr>
                     <hr>
                     <!-- EVENTS -->
-                    <h6 class="ml-2">Events found</h6>
-                    <!-- if no event matching pattern was found -->
-                    <div class="text-center text-muted" v-if="! found_events.length">
-                        None
-                    </div>
+                    <h6 class="ml-2" v-if="found_events.length">Events found</h6>                   
                     <tr class="searchedItem border-0" v-for="event in found_events">    
                         <router-link class="text-secondary" style="text-decoration: none"  :to="`/eventDetail/`+ event.id + `/`">                     
                             <td class="ml-2 border-0 row"  v-on:click="hideSearchResults()">
                                 <img style="width: 25px ;height: auto" src="@/assets/icons/icons8-schedule-64.png">
                                 {{event.title}} 
                                 <div class="ml-3 text-small">
-                                    (starts {{$humanizeDate(event.start)}})
+                                    ({{$humanizeDate(event.start)}})
                                 </div>                           
                             </td>  
                         </router-link>                                                                                                                                                      
@@ -101,11 +88,11 @@ data() {
 },
 watch:{
     generalSearch: function () {        
-        if (this.generalSearch.length > 0){
+        if (this.generalSearch.length > 0){            
             this.showSearchResults = true
-            this.search_status = 'typing...'
+            this.search_status = 'typing...'            
             this.debouncedGetAnswer()
-        }else{
+        }else{        
             this.search_status = ''
             this.found_members = []
             this.found_events = []
@@ -118,7 +105,7 @@ watch:{
 methods: {
     hideSearchResults: function(route){        
         this.showSearchResults = false
-        console.log(route)
+        this.generalSearch = ''
         router.push(route)        
         location.reload()
     },

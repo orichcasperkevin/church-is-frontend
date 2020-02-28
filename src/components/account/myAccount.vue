@@ -25,12 +25,15 @@
                             </div>
                             <div class="col">
                                     <button disabled type="button" class="btn btn-success">
-                                            credit <span class="badge badge-light">
+                                            Anvil credit <span class="badge badge-light">
                                                {{client_details[0].credit}}
                                             </span>
-                                        </button>
-            
-                                         <p><i> apprx {{client_details[0].apprx_number_of_days_left}} days left</i></p>
+                                        </button>            
+                                         <p>
+                                             <i>
+                                                  apprx {{client_details[0].apprx_number_of_days_left}} days left on platform
+                                                </i>
+                                            </p>
                             </div>                           
                         </section>
                         <hr>      
@@ -47,7 +50,7 @@
                                         </div> 
                                         <div class="mb-2 ml-3 text-center text-muted col-lg-2 col-sm-12 border border-secondary rounded">
                                                 <h1 class="font-weight-bold">{{client_details[0].sms_quota}}</h1>
-                                                free sms left
+                                                
                                         </div> 
                                                                    
                                 </div> 
@@ -55,29 +58,41 @@
                         <hr>
                         <!-- church statements -->
                         <section>
-                            <h3 class="font-weight-bold text-muted">Website Management</h3>
+                            <h3 class="font-weight-bold text-muted">Your Anvil Website Management</h3>
+                            <a :href="`http://` + client_details[0].domain_url" target="_blank">
+                                {{client_details[0].domain_url}}
+                            </a>                            
                             <!-- church-statements -->
                             <section>
                                 <h4>church statements</h4>
-                                <h6 class="text-primary">mission statement</h6>
+                                <h6 >mission statement</h6>
                                 <article class="border border-light text-muted" >
-                                    <p v-if="church_statements.length">
-                                        {{church_statements[0].mission}}
-                                    </p>
-                                    <h5 class="text-muted text-center" v-else>
+                                                                    
+                                    <textarea v-if="church_statements.length" 
+                                                rows="3" class="form-control mb-2" v-model="mission_statement">
+                                    </textarea> 
+                                    <h5 class="text-muted text-center" v-if="! church_statements.length">
                                         <p>Oops!</p>
                                         <p>You have not added your church's mission statement</p>
                                         <button class="btn btn-success" data-toggle="modal" data-target="#addVisionAndMisionStatement">
                                             + add mission statement
                                         </button>
                                     </h5>
+                                    <div class="text-right" v-if="church_statements.length">
+                                        <button class="btn btn-success" v-on:click="editChurchStatements()">
+                                            edit mission statement
+                                            <span v-if="updating_statements"
+                                                class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                                            </span>
+                                        </button>
+                                    </div>
                                 </article>
 
-                                <h6 class="text-primary">vision statement</h6>
-                                <article class="border border-light text-muted" >
-                                    <p v-if="church_statements.length">
-                                        {{church_statements[0].vision}}
-                                    </p>
+                                <h6 >vision statement</h6>
+                                <article class="border border-light text-muted" >                                   
+                                    <textarea v-if="church_statements.length" 
+                                                rows="3" class="form-control mb-2" v-model="vision_statement">
+                                    </textarea> 
                                     <h5 class="text-muted text-center" v-else>
                                         <p>Oops!</p>
                                         <p>You have not added your church's vision statement</p>
@@ -85,16 +100,32 @@
                                             + add vision statement
                                         </button>
                                     </h5>
+                                    <div class="text-right" v-if="church_statements.length">
+                                        <button class="btn btn-success" v-on:click="editChurchStatements()">
+                                            edit vision statement
+                                            <span v-if="updating_statements"
+                                                class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                                            </span>
+                                        </button>
+                                    </div>
                                 </article>
                             </section>
                             <!-- church  about -->
                             <section>
                                 <h4>About church</h4>
-                                <article class="border border-light text-muted" >
-                                    <p v-if="church_about.length">
-                                        {{church_about[0].about}}
-                                    </p>
-                                    <h5 class="text-muted text-center" v-else>
+                                <article class="border border-light text-muted" >                                    
+                                    <textarea v-if="church_about.length" 
+                                                rows="3" class="form-control mb-2" v-model="about_church">
+                                    </textarea> 
+                                    <div class="text-right" v-if="church_about.length">
+                                        <button class="btn btn-success" v-on:click="editAbout()">
+                                            edit about church
+                                            <span v-if="updating_about"
+                                                class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                                            </span>
+                                        </button>
+                                    </div>
+                                    <h5 class="text-muted text-center" v-if="! church_about.length">
                                         <p>Oops!</p>
                                         <p>You have not added an about for your church</p>                                        
                                         <button class="btn btn-success" data-toggle="modal" data-target="#addChurchAbout">
@@ -380,6 +411,10 @@
                 description:null,
                 start:null,
                 end:null,
+                //updating
+                updating_statements: false,
+                updating_about:false
+
             }
         },
         created () {
@@ -409,7 +444,9 @@
                 var church_id = localStorage.getItem('church_id')
                 this.$http.get(this.$BASE_URL + '/api/clients/church-statements/' + this.church_id +'/')
                     .then(response => {
-                        this.church_statements = response.data                                          
+                        this.church_statements = response.data 
+                        this.mission_statement = this.church_statements[0].mission                                         
+                        this.vision_statement = this.church_statements[0].vision  
                         this.$store.dispatch('update_isLoading', false)
                     })
                     .catch((err) => {                              
@@ -445,7 +482,8 @@
                 this.$store.dispatch('update_isLoading', true)                                
                 this.$http.get(this.$BASE_URL + '/api/clients/church-about/' + this.church_id +'/')
                     .then(response => {
-                        this.church_about = response.data                                          
+                        this.church_about = response.data   
+                        this.about_church = this.church_about[0].about                                       
                         this.$store.dispatch('update_isLoading', false)
                     })
                     .catch((err) => {                              
@@ -526,18 +564,53 @@
                         start:this.start,
                         end:this.end
                     }
-                ).then((response)=>{
-                    this.adding_web_content = false
-                    this.getChurchPeriodicTheme()                
-                    this.theme = null
-                    this.description = null
-                    this.start = null
-                    this.end = null
-                    alert("theme succesfully added")
+                    ).then((response)=>{
+                        this.adding_web_content = false
+                        this.getChurchPeriodicTheme()                
+                        this.theme = null
+                        this.description = null
+                        this.start = null
+                        this.end = null
+                        alert("theme succesfully added")
 
+                    }).catch((err)=>{
+                        this.adding_web_content = false
+                        alert("error :" + err + "make sure to fill all the fields") 
+                    })
+            },
+            //edit church statements
+            editChurchStatements: function(){
+                this.updating_statements = true //this toggles the button spinners
+                this.$http.patch(
+                    this.$BASE_URL + '/api/clients/update-church-statements/',
+                    {
+                        church_id:this.church_id,
+                        mission:this.mission_statement,
+                        vision:this.vision_statement
+                    }  
+                ).then((response)=>{
+                    this.updating_statements = false
+                    this.getChurchStatements()
+                }).catch((err)=>{                    
+                    this.updating_statements = false
+                    alert("error: " + err)
+                })
+            },
+            //edit about church:
+            editAbout: function(){
+                this.updating_about = true
+                this.$http.patch(
+                    this.$BASE_URL + '/api/clients/update-about-church/',
+                    {
+                        church_id:this.church_id,
+                        about:this.about_church
+                    }
+                ).then(()=>{
+                    this.updating_about = false
+                    this.getChurchAbout()                    
                 }).catch((err)=>{
-                    this.adding_web_content = false
-                    alert("error :" + err + "make sure to fill all the fields") 
+                    this.updating_about = false
+                    alert("error :" + err)
                 })
             }
 
