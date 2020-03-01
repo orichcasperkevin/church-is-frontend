@@ -1,7 +1,7 @@
 <template>
     <div class="memberList">
       <!-- NAVBAR -->
-      <nav aria-label="breadcrumb" >
+      <nav aria-label="breadcrumb" class="container">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
               <span class="backButton">

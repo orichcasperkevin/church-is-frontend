@@ -1,12 +1,8 @@
 <template>
     <div class="Home">
-        <div class="container">
-            <div class="church-is-home row align-items-center text-secondary">
-                <img class="mr-0" style="width: 150px ;height: auto" src="@/assets/text_logo.png">
-                  as iron sharpens iron so shall man sharpen man
-            </div>
+        <div class="container">           
             <div class="church-is-home row ">
-              <div class="col-sm">
+              <div class="col-sm mb-3">
                   <router-link :to="{name: 'memberList'}">
                       <div class="home-menu-item border-0">
                           <img style = "height: 64px "src="@/assets/icons/icons8-contacts-208.png">
@@ -19,7 +15,7 @@
                       </ul>
                 </div>
               </div>
-              <div class="col-sm">
+              <div class="col-sm mb-3">
                   <router-link :to="{name: 'groupsLanding'}">
                       <div class="home-menu-item border-0">
                         <img style = "height: 64px "src="@/assets/icons/icons8-user-groups-208.png">
@@ -32,7 +28,7 @@
                         </ul>
                   </div>
                 </div>
-                <div class="col-sm">
+                <div class="col-sm mb-3">
                     <router-link :to="{name: 'generalFinance'}">
                         <div class="home-menu-item border-0">
                             <img style = "height: 64px "src="@/assets/icons/icons8-request-money-filled-50.png">

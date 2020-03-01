@@ -141,7 +141,12 @@ export default new Router({
       path: '/my-account/',
       name: 'myAccount',
       component:  () => import('@/components/account/myAccount.vue')
-    }      
+    },
+    {
+      path: '/news/',
+      name: 'news',
+      component:  () => import('@/components/news/news.vue')
+    },      
 
   ]
 })
