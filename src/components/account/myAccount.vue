@@ -25,15 +25,20 @@
                             </div>
                             <div class="col">
                                     <button disabled type="button" class="btn btn-success">
-                                            Anvil credit <span class="badge badge-light">
-                                               {{client_details[0].credit}}
-                                            </span>
-                                        </button>            
-                                         <p>
-                                             <i>
-                                                  apprx {{client_details[0].apprx_number_of_days_left}} days left on platform
-                                                </i>
-                                            </p>
+                                        ANVIL credit :<span class="badge badge-light">
+                                            {{client_details[0].credit}}
+                                        </span>
+                                    </button>            
+                                        <p>
+                                            <i>
+                                                apprx {{client_details[0].apprx_number_of_days_left}} days left on platform
+                                        </i>
+                                    </p>
+                                    <button disabled type="button" class="btn btn-success">
+                                        SMS credit
+                                    </button> 
+                                    <p>mpesa paybill : <i class="text-muted">{{sms_credentials[0].at_mpesa_paybill}}</i></p>                                    
+                                    <p>mpesa account number : <i class="text-muted">{{sms_credentials[0].at_mpesa_acc_no}}</i></p> 
                             </div>                           
                         </section>
                         <hr>      
@@ -413,12 +418,14 @@
                 end:null,
                 //updating
                 updating_statements: false,
-                updating_about:false
+                updating_about:false,
+                sms_credentials:null
 
             }
         },
         created () {
            this.getClientDetail() 
+           this.getChurchSMSCredentials()
            this.getChurchStatements()
            this.getChurchCoreValues()
            this.getChurchPeriodicTheme()
@@ -436,6 +443,19 @@
                     })
                     .catch((err) => {                     
                         this.$store.dispatch('update_isLoading', false)      
+                    })
+            },
+            //church sms credentials
+            getChurchSMSCredentials: function(){
+                this.$store.dispatch('update_isLoading', true)                                
+                this.$http.get(this.$BASE_URL + '/api/clients/church-sms-credentials/' + this.church_id +'/')
+                    .then(response => {
+                        this.sms_credentials = response.data                   
+                        this.$store.dispatch('update_isLoading', false)
+                    })
+                    .catch((err) => {                              
+                        alert(err)
+                        this.$store.dispatch('update_isLoading', false)
                     })
             },
             //church statements
