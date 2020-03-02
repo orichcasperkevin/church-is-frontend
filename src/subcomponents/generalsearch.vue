@@ -1,9 +1,16 @@
 <template>
     <div class="child">
-        <!-- general search -->
-        
-            <input type="text" class=" form-control"   style="background-color:white"
-                    placeholder="search members,groups & events" v-model="generalSearch" autofocus>                  
+        <!-- general search -->         
+                    
+            <div class="input-group ">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">
+                            <img style="width: 20px ;height: auto" src="@/assets/icons/icons8-search-80.png">
+                        </span>
+                    </div>
+                    <input type="text" class=" form-control"   style="background-color:white"
+                    placeholder="search members,groups & events" v-model="generalSearch" autofocus> 
+            </div>                    
             <div style="background-color: ghostwhite" class="text-info rounded" >{{search_status}}</div> 
             <div class="pre-scrollable searchedItemsDiv border " 
                 style="min-width: 400px; 
@@ -14,7 +21,7 @@
                             background-color: white"
                               v-if="showSearchResults">                
 
-                <table class="table border-0" >                    
+                <table class="table border-0 text-left" >                    
                     <tbody>
                     <!-- MEMBERS -->
                     <h6 class="ml-2" v-if="found_members.response.length">Members found</h6>
@@ -31,7 +38,7 @@
                             </td>    
                         </a>                                                                                                                                                    
                     </tr>
-                    <hr>
+                    
                     <!-- GROUPS -->
                     <h6 class="ml-2" v-if="found_groups.length">Groups found</h6>                    
                     <tr class="searchedItem border-0" v-for="group in found_groups">                        
@@ -45,7 +52,7 @@
                             </td>                       
                         </router-link>                                                                                                                                    
                     </tr>
-                    <hr>
+                    
                     <!-- EVENTS -->
                     <h6 class="ml-2" v-if="found_events.length">Events found</h6>                   
                     <tr class="searchedItem border-0" v-for="event in found_events">    
@@ -61,6 +68,11 @@
                     </tr>
                     </tbody>
                 </table>
+                <!-- nothing found -->                
+                <div class="text-center text-muted" v-if="! found_members.response.length & ! found_events.length & ! found_groups.length">
+                    <h3>Oops!</h3>
+                    <h5>nothing matching query found</h5>
+                </div>
             </div>
     </div>
 </template>

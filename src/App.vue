@@ -28,42 +28,42 @@
                 <img style="width: 25px ;height: auto" src="@/assets/icons/icons8-schedule-64.png">
               events
             </span>
-          </router-link>
-          <!-- finace side nav -->
-          <router-link class="nav-link" :to="{name: 'generalFinance'}">
-            <span  v-on:click="doAJAX(); closeNav()">
-              <img style="width: 25px ;height: auto" src="@/assets/icons/icons8-money-48.png">
-            finances
-          </span>
-        </router-link>
-        <hr>
-        <!-- more side nav -->
-        <router-link class="nav-link" :to="{name: 'services'}">
+            </router-link>
+            <!-- finace side nav -->
+            <router-link class="nav-link" :to="{name: 'generalFinance'}">
+              <span  v-on:click="doAJAX(); closeNav()">
+                <img style="width: 25px ;height: auto" src="@/assets/icons/icons8-money-48.png">
+              finances
+            </span>
+            </router-link>
+            <hr>
+            <!-- more side nav -->
+            <router-link class="nav-link" :to="{name: 'services'}">
             <span  v-on:click="doAJAX(); closeNav()">
               services
             </span>          
-        </router-link> 
-        <hr>
-        <router-link class="nav-link" :to="{name: 'smsAnalytics'}">
+            </router-link> 
+            <hr>
+            <router-link class="nav-link" :to="{name: 'smsAnalytics'}">
             <span  v-on:click="doAJAX(); closeNav()">
                 sms center
             </span>          
-        </router-link>                                                                   
-        <router-link class="nav-link" :to="{name: 'news'}">
+            </router-link>                                                                   
+            <router-link class="nav-link" :to="{name: 'news'}">
             <span  v-on:click="doAJAX(); closeNav()">
               news center
             </span>          
-        </router-link>
-        <hr>
-        <router-link class="nav-link" :to="{name: 'myAccount'}">
+            </router-link>
+            <hr>
+            <router-link class="nav-link" :to="{name: 'myAccount'}">
             <span  v-on:click="doAJAX(); closeNav()">
               church account
             </span>        
-        </router-link> 
-        <hr>
-        <div class="dropdown-item" >{{username}}</div>  
-        <a href="#" class="dropdown-item" v-on:click="logOut()">log out</a> 
-      </div>
+            </router-link> 
+            <hr>
+            <div class="dropdown-item" >{{username}}</div>  
+            <a href="#" class="dropdown-item" v-on:click="logOut()">log out</a> 
+          </div>
                    
 
           <img class="mr-0" style="width: 150px ;height: auto" src="@/assets/full_logo.png">      
@@ -76,7 +76,7 @@
           <ul class="navbar-nav mr-auto" style="padding: 10px 10px 10px 10px">
               <li class="nav-item">
                   <router-link class="nav-link" :to="{name: 'memberList'}">                      
-                    <span class="navButton border" v-on:click="doAJAX">
+                    <span class="navButton " v-on:click="doAJAX">
                         <img style="width: 25px ;height: auto" src="@/assets/icons/icons8-people-48.png">
                         members
                     </span>
@@ -85,7 +85,7 @@
 
               <li class="nav-item">
                   <router-link class="nav-link" :to="{name: 'groupsLanding'}">
-                    <span class="navButton border" v-on:click="doAJAX">
+                    <span class="navButton " v-on:click="doAJAX">
                         <img style="width: 25px ;height: auto" src="@/assets/icons/icons8-user-groups-48.png">
                       groups
                     </span>
@@ -94,7 +94,7 @@
 
               <li class="nav-item">
                   <router-link class="nav-link" :to="{name: 'events'}">
-                      <span class="navButton border" v-on:click="doAJAX">
+                      <span class="navButton " v-on:click="doAJAX">
                         <img style="width: 25px ;height: auto" src="@/assets/icons/icons8-schedule-64.png">
                       events
                     </span>
@@ -102,7 +102,7 @@
               </li>
               <li class="nav-item">
                 <router-link class="nav-link" :to="{name: 'generalFinance'}">
-                    <span class="navButton border" v-on:click="doAJAX">
+                    <span class="navButton " v-on:click="doAJAX">
                       <img style="width: 25px ;height: auto" src="@/assets/icons/icons8-money-48.png">
                     finances
                   </span>

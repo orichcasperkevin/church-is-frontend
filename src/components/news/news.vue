@@ -7,9 +7,20 @@
                 </ol>
         </nav>
         <div class="container">
-            <h3>              
-                News
-            </h3> 
+            <div class="row">
+                <h3 class="col-6">              
+                    News
+                </h3>
+                 <!--add button on smaller devices -->
+                 <div class="col-6 btn-group d-sm-block d-md-none text-right">
+                        <div style="padding: 0px 0px 25px 10px">
+                                <button class="btn btn-success" data-toggle="modal" data-target="#addNewsModal">                                                            
+                                        <b>+</b> add  news          
+                                </button>
+                        </div>
+                </div>  
+            </div>
+             
             <hr>
             <div class="row">
                 <!-- navigation on the left -->
@@ -23,12 +34,12 @@
                             <div class="col-lg-12 " v-if="news">                                                                        
                                 <div    v-for="news in news"
                                         class="border border-light shadow p-2 mb-2 bg-white rounded">
-                                    <i class="ml-3 text-primary font-weight-bold">{{news.author}}</i>
-                                    <p class="ml-3 lead">{{news.heading}}</p>   
+                                    <i class="text-primary font-weight-bold">{{news.author}}</i>
+                                    <p class="lead">{{news.heading}}</p>   
                                     <article :id="`article_` + news.id">                                    
                                     </article>                                                                                                         
                                     <p>
-                                    <p class="ml-3">{{$humanizeDate(news.date)}}</p>
+                                    <i>{{$humanizeDate(news.date)}}</i>
                                     </p>
                                 </div>                                        
                             </div>
@@ -110,15 +121,6 @@ export default {
     created () {
        this.getNews() 
     },
-    watch :{
-        news:function(){            
-            if (this.news && this.$el){
-                if (this.news.length){                    
-                    this.parseNewsArticles()
-                }
-            }
-        }
-    },
     methods: {
         //get news
         getNews () {  
@@ -126,26 +128,24 @@ export default {
             this.$http.get(this.$BASE_URL + '/api/news/recent-news/')
                 .then(response => {
                     this.news =  response.data                    
-                    this.$store.dispatch('update_isLoading', false)
-                    // setTimeout(()=>{ this.parseNewsArticles() },15)
+                    this.$store.dispatch('update_isLoading', false)                    
+                    setTimeout(()=>{ this.parseNewsArticles() },3000)
                 })
                 .catch((err) => {
                     this.$store.dispatch('update_isLoading', false)
                     alert("error occured while fetching data:" + err )
                 })
         },
-        parseNewsArticles: function(){
-            console.log(this.news)
+        parseNewsArticles: function(){           
             for (var i in this.news){
-                //article div           
-                console.log("here2")   
-                var article_div = document.getElementById("article_" + this.news[i].id)
-                console.log(article_div)
+                //article div                       
+                var article_div = document.getElementById("article_" + this.news[i].id)                                
                 //new elements
-                var el = document.createElement('div')
-                var domString = news.article
+                var el = document.createElement('div')        
+                var domString = this.news[i].article
                 el.innerHTML =  domString;
-                //article_div.appendChild(el.firstChild);
+                article_div.appendChild(el);                
+
             }        
         },
         //adding news article
