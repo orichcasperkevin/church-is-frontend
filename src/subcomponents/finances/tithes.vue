@@ -38,7 +38,7 @@
                         <span class="badge badge-pill badge-info">{{foundTithes}}</span> entries
                     </p>                             
                     <div>                                                
-                        <table class="table">
+                        <table class="table table-responsive-sm">
                             <thead>
                                 <tr>
                                     <th>name</th>

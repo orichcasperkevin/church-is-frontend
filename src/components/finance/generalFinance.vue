@@ -118,7 +118,7 @@
                                                 <p class="col-8">
                                                         <span class="badge badge-pill badge-info">{{foundIncomes}}</span> types found
                                                 </p>
-                                                <table class="table">
+                                                <table class="table table-responsive-sm">
                                                     <thead>
                                                         <tr>
                                                             <th>type</th>                                                                

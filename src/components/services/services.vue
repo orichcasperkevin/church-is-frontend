@@ -19,17 +19,15 @@
                                 <!-- services today tab -->
                                     <div class="tab-pane fade show " id="v-pills-today" role="tabpanel" aria-labelledby="v-pills-today-tab">
                                         <div v-if = "! services_available">
-                                            <div class="text-center text-muted">
+                                            <div class="mb-5 text-center text-muted">
                                                 <h3>Oops!</h3>
-                                                <h5>There are no services in session today</h5>
-                                                <button class="btn btn-success" data-toggle="modal" data-target="#addService" style="text-decoration: none">                                                    
-                                                        <b>+</b> add service                                                    
-                                                </button>
+                                                <h5>There are no services in session today</h5>                                                
                                             </div>
+                                            <hr>
                                         </div>
                                         <div v-if = "services_available">    
                                             <h3>Services Today</h3>                                                                                  
-                                                <table class="table">
+                                                <table class="table table-responsive">
                                                         <thead>
                                                             <tr>                                                            
                                                             <th scope="col">Service type</th>
@@ -56,7 +54,7 @@
                                         <h3>All Services </h3>
                                         <div v-if = "this_month_selected">
                                                <!-- table of services  -->
-                                               <table class="table">
+                                               <table class="table table-responsive">
                                                     <thead>
                                                         <tr>                                                            
                                                         <th scope="col">Service type</th>
@@ -211,7 +209,8 @@
                                     <form>                                            
                                             <div class="row form-group">
                                                     <label class="col-3"><b>name:</b></label>
-                                                    <input type="text" class=" col-8 form-control" v-model="service_type_name">                                                    
+                                                    <input  type="text" class=" col-8 form-control" 
+                                                            v-model="service_type_name" placeholder="eg. main service">                                                    
                                                     <p v-if="service_type_name_errors.length">
                                                         <ul>
                                                                 <small><li v-for="error in service_type_name_errors"><p class="text-danger">{{ error }}</p></li></small>
@@ -222,7 +221,16 @@
                                             <div class="row form-group">
                                                 <label class="col-3"><b>describe:</b></label>
                                                 <textarea type="text" class="col-8 form-control" rows='3' v-model="service_type_description"></textarea>                                                   
-                                            </div>                                                                                
+                                            </div>  
+                                            <div class="row form-group">
+                                                <label class="col-3"><b>starts:</b></label>
+                                                <input type="time" class="col-8 form-control" v-model="service_start_time">                                                   
+                                            </div>
+                                            <div class="row form-group">
+                                                <label class="col-3"><b>ends</b></label>
+                                                <input type="time" class="col-8 form-control" v-model="service_end_time">                                                   
+                                            </div> 
+                                                                                                                         
                                     </form>
                             </div>
                             <div class="modal-footer">
@@ -266,6 +274,8 @@
                 service_type_name: '',
                 service_type_description: '',
                 service_type_name_errors: [],
+                service_start_time:null,
+                service_end_time:null,
                 added_income_type: [],
             }
         },
@@ -443,7 +453,9 @@
                         url: this.$BASE_URL + '/api/services/service-types/',
                         data: {
                                 name: this.service_type_name,                                
-                                description: this.service_type_description                                                                                            
+                                description: this.service_type_description,
+                                start:this.service_start_time,
+                                end:this.service_end_time                                                                         
                         }
                         }).then(response => {              
                                this.adding_service = false                

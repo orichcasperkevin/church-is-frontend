@@ -72,7 +72,7 @@
                                         found <span class="badge badge-pill badge-info">{{foundItems}}</span>
                                 </p>                                                  
                                 </div>                             
-                                    <table class="table">
+                                    <table class="table table-responsive-sm">
                                         <thead>
                                             <tr>
                                                 <th>
@@ -149,7 +149,7 @@
                                                         found <span class="badge badge-pill badge-info">{{humanize(foundPledges)}}</span>
                                                 </p>                                                                                           
                                             </div>
-                                        <table class="table">
+                                        <table class="table table-responsive-sm">
                                                 <thead>
                                                     <tr>
                                                         <th>

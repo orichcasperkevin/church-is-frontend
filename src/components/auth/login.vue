@@ -94,9 +94,10 @@
           this.$http.get(this.$DOMAIN.value + '/api/clients/client/' + church_id + '/')
             .then(response => {
               var data = response.data              
-              this.$BASE_URL.value = "http://"+ data[0].domain_url
+              this.$BASE_URL.value = "http://"+ data[0].domain_url + ":8000"
               localStorage.setItem('base_url_value',this.$BASE_URL.value)
               localStorage.setItem('church_id', church_id )
+              localStorage.setItem('church_details',response.data)
             })
             .catch((err) => {
               this.login_error.push("church code not set")        

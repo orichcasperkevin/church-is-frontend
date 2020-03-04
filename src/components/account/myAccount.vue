@@ -15,7 +15,7 @@
                     <!-- content div -->
                     <div class="col-11" v-if="client_detail_available">
                         <section class="row">
-                            <div class="col">
+                            <div class="col-lg-6 col-sm-12">
                                 <h3 class="font-weight-bold">{{client_details[0].client.name}}</h3>
                                 <h6 class="card-subtitle text-muted mb-2">
                                         church code
@@ -23,7 +23,7 @@
                                           <h5>{{client_details[0].church_code}}</h5></span>                       
                                 </h6>
                             </div>
-                            <div class="col">
+                            <div class="col-lg-6 col-sm-12"">
                                     <button disabled type="button" class="btn btn-success">
                                         ANVIL credit :<span class="badge badge-light">
                                             {{client_details[0].credit}}
@@ -34,11 +34,19 @@
                                                 apprx {{client_details[0].apprx_number_of_days_left}} days left on platform
                                         </i>
                                     </p>
+                                    <div>
+
+                                        
+                                    </div>
                                     <button disabled type="button" class="btn btn-success">
                                         SMS credit
                                     </button> 
-                                    <p>mpesa paybill : <i class="text-muted">{{sms_credentials[0].at_mpesa_paybill}}</i></p>                                    
-                                    <p>mpesa account number : <i class="text-muted">{{sms_credentials[0].at_mpesa_acc_no}}</i></p> 
+                                    <p>mpesa paybill : 
+                                        <i v-if="sms_credentials.length" class="text-muted">{{sms_credentials[0].at_mpesa_paybill}}</i>
+                                    </p>                                    
+                                    <p>mpesa account number : 
+                                        <i v-if="sms_credentials.length"class="text-muted">{{sms_credentials[0].at_mpesa_acc_no}}</i>
+                                    </p> 
                             </div>                           
                         </section>
                         <hr>      
@@ -51,12 +59,13 @@
                                         </div> 
                                         <div class="mb-2 ml-3 text-center text-muted col-lg-2 col-sm-12 border border-secondary rounded">
                                                 <h1 class="font-weight-bold">{{client_details[0].number_of_sms}}</h1>
-                                                sms delivered since last credit
-                                        </div> 
+                                                sms delivered this month
+                                        </div>     
                                         <div class="mb-2 ml-3 text-center text-muted col-lg-2 col-sm-12 border border-secondary rounded">
-                                                <h1 class="font-weight-bold">{{client_details[0].sms_quota}}</h1>
-                                                
-                                        </div> 
+                                            <h1 class="font-weight-bold">{{client_details[0].tier.tier}}</h1>
+                                            anvil plan<br/>
+                                            <i>{{client_details[0].tier.price_per_month}}/month</i>
+                                        </div>                                   
                                                                    
                                 </div> 
                         </section>
@@ -150,7 +159,7 @@
                                                     </li>                                                  
                                             </ul>
                                         </p>
-                                        <div class="text-right">
+                                        <div class="text-right" v-if="church_core_values.length">
                                                 <button class="btn btn-success" data-toggle="modal" data-target="#addChurchCoreValue">
                                                         + add church core value
                                                 </button>
@@ -177,7 +186,7 @@
                                                     </li>                                                  
                                             </ul>
                                         </p>
-                                        <div class="text-right">
+                                        <div class="text-right" v-if="church_periodic_themes.length">
                                                 <button class="btn btn-success" data-toggle="modal" data-target="#addThemeModal">
                                                         + add periodic theme
                                                 </button>
@@ -419,7 +428,7 @@
                 //updating
                 updating_statements: false,
                 updating_about:false,
-                sms_credentials:null
+                sms_credentials:[]
 
             }
         },

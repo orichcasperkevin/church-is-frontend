@@ -7,7 +7,7 @@
                         <li class="breadcrumb-item active" aria-current="page">member detail</li>
                 </ol>
         </nav>
-        <div class="container">
+        <section class="container">
                 <div class="row">
                         <div class="col" v-if="member_info != null">
                         <h3 class="row" v-for="data in member_info.member">
@@ -16,12 +16,12 @@
                         </div>
                 </div>
                 <hr>
-        </div>
-        <div class="container">
+        </section>
+        <section class="container">
                 <div class="row">
                 <!-- NAVIGATION ON THE LEFT -->
                 <div class="col-sm-12 col-md-8 col-lg-3">
-                        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                        <nav class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                                 <a class="nav-link active list-group-item list-group-item-action border-0" id="pill-detail-tab" data-toggle="pill" href="#pill-detail" role="tab" aria-controls="pill-detail" aria-selected="true">
                                         <img class="church-is-menu" src="@/assets/icons/icons8-user-groups-208.png"> detail
                                 </a>                                                                
@@ -31,11 +31,11 @@
                                 <a class="nav-link list-group-item list-group-item-action border-0" id="pill-contributions-tab" data-toggle="pill" href="#pill-contributions" role="tab" aria-controls="pill-contributions" aria-selected="false" v-on:click = "getMemberFinances()">
                                         <img class="church-is-menu" src="@/assets/icons/icons8-donate-filled-50.png"> finances
                                 </a>
-                                <a class="nav-link list-group-item list-group-item-action border-0" id="pill-roles-tab" data-toggle="pill" href="#pill-roles" 
+                                <a class=" d-none nav-link list-group-item list-group-item-action border-0" id="pill-roles-tab" data-toggle="pill" href="#pill-roles" 
                                    role="tab" aria-controls="pill-roles" aria-selected="false">
                                         <img class="church-is-menu" src="@/assets/icons/icons8-admin-settings-male-30.png"> roles
                                 </a> 
-                        </div>
+                        </nav>
                 </div>
                 <!-- CONTENT ON THE RIGHT -->
                 <div class="col">
@@ -48,7 +48,7 @@
                                 <div class="tab-pane fade" id="pill-groups" role="tabpanel" aria-labelledby="pill-groups-tab">
 
                                         <h3> Church Groups</h3>
-                                        <table class="table" v-if = "groups_selected == true">
+                                        <table class="table table-responsive-sm" v-if = "groups_selected == true">
                                         <thead class=""  v-if = "church_groups.response.length > 0">
                                                 <tr>
                                                         <th>group</th>
@@ -80,7 +80,7 @@
                                         <div class="col-2"></div>
                                         <div class="col-8">
                                         <!-- navigation -->
-                                        <ul class="nav nav-pills mb-3 mt-3" id="pills-tab" role="tablist">
+                                        <ul class="row nav nav-pills mb-3 mt-3" id="pills-tab" role="tablist">
                                                 <li class="nav-item">
                                                         <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Contributions</a>
                                                 </li>
@@ -97,10 +97,10 @@
                                         </div>
                                         <div class="col-2"></div>
                                         </div>
-                                        <div class="tab-content" id="pills-tabContent">
+                                        <section class="tab-content" id="pills-tabContent">
                                                 <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" v-if="finances_selected">
                                                                 <h3 >Contributions</h3>
-                                                                <table class="table">
+                                                                <table class="table table-responsive-sm">
                                                                         <thead>
                                                                         <tr>
                                                                                 <th>project</th>
@@ -122,7 +122,7 @@
                                                 </div>
                                                 <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" v-if="finances_selected">
                                                                 <h3>Pledges</h3>
-                                                                <table class="table">
+                                                                <table class="table table-responsive-sm">
 
                                                                         <thead>
                                                                                 <tr>
@@ -150,7 +150,7 @@
                                                 </div>
                                                 <div class="tab-pane fade" id="pills-tithes" role="tabpanel" aria-labelledby="pills-tithes-tab" v-if = "finances_selected">
                                                                 <h3>Tithes</h3>                                                    
-                                                                <table class="table">
+                                                                <table class="table table-responsive-sm">
                                                                         <thead>
                                                                         <tr>
                                                                                 <th>amount</th>
@@ -172,7 +172,7 @@
                                                 </div>
                                                 <div class="tab-pane fade" id="pills-offerings" role="tabpanel" aria-labelledby="pills-offerings-tab" v-if = "finances_selected">
                                                                 <h3>Offerings </h3>                                                                
-                                                                <table class="table">
+                                                                <table class="table table-responsive-sm">
                                                                         <thead>
                                                                         <tr>
                                                                                 <th>amount</th>
@@ -194,7 +194,7 @@
 
 
                                                 </div>
-                                        </div>
+                                        </section>
                                 </div>
                                 <!-- member roles -->
                                 <div class="tab-pane fade" id="pill-roles" role="tabpanel" 
@@ -283,62 +283,65 @@
                         </div>
                 </div>
                 </div>
-        </div>        
-        <!-- add role Modal -->
-        <div class="modal fade" id="addRole" tabindex="-1" role="dialog" aria-labelledby="addRoleModal" aria-hidden="true">
+        </section>  
+        <!-- Modals  -->
+        <section>
+                <!-- add role Modal -->
+                <div class="modal fade" id="addRole" tabindex="-1" role="dialog" aria-labelledby="addRoleModal" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                         <div class="modal-content">
-                            <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalCenterTitle">add a role</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">add a role</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
-                            </button>
-                            </div>
-                            <div class="modal-body">                                   
-                                    <form >
-                                            <div class=" row form-group">
-                                            <label class="col-3"><b>name:</b></label>
-                                            <input type="text" class="col-8 form-control" placeholder="enter name of the role" v-model="role_name">                                        
-                                            </div>
-                                            <div class="row form-group">
-                                                    <label class="col-3"><b>description:</b></label>
-                                                    <textarea type="text" class="col-8 form-control" rows='3' v-model="role_description"></textarea>                                                   
-                                            </div>  
-                                            <hr/>
-                                            <div class="form-check form-check-inline">
-                                                 <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value=true v-model="member_admin">
-                                                 <label class="form-check-label" for="inlineCheckbox1">member admin</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                  <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value=true v-model="site_admin">
-                                                  <label class="form-check-label" for="inlineCheckbox2">website admin</label>
-                                            </div>  
-                                            <div class="form-check form-check-inline">
-                                                 <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value=true v-model="group_admin">
-                                                  <label class="form-check-label" for="inlineCheckbox2">group admin</label>
-                                            </div> 
-                                            <div class="form-check form-check-inline">
+                        </button>
+                        </div>
+                        <div class="modal-body">                                   
+                                <form >
+                                        <div class=" row form-group">
+                                        <label class="col-3"><b>name:</b></label>
+                                        <input type="text" class="col-8 form-control" placeholder="enter name of the role" v-model="role_name">                                        
+                                        </div>
+                                        <div class="row form-group">
+                                                <label class="col-3"><b>description:</b></label>
+                                                <textarea type="text" class="col-8 form-control" rows='3' v-model="role_description"></textarea>                                                   
+                                        </div>  
+                                        <hr/>
+                                        <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value=true v-model="member_admin">
+                                                <label class="form-check-label" for="inlineCheckbox1">member admin</label>
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value=true v-model="site_admin">
+                                                <label class="form-check-label" for="inlineCheckbox2">website admin</label>
+                                        </div>  
+                                        <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value=true v-model="group_admin">
+                                                <label class="form-check-label" for="inlineCheckbox2">group admin</label>
+                                        </div> 
+                                        <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="checkbox" id="inlineCheckbox1" value=true v-model="events_admin">
                                                 <label class="form-check-label" for="inlineCheckbox1">events admin</label>
-                                            </div>
-                                            <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value=true v-model="projects_admin">
-                                                    <label class="form-check-label" for="inlineCheckbox2">projects admin</label>
-                                            </div>  
-                                            <div class="form-check form-check-inline">
+                                        </div>
+                                        <div class="form-check form-check-inline">
+                                                <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value=true v-model="projects_admin">
+                                                <label class="form-check-label" for="inlineCheckbox2">projects admin</label>
+                                        </div>  
+                                        <div class="form-check form-check-inline">
                                                 <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value=true v-model="finance_admin">
-                                                    <label class="form-check-label" for="inlineCheckbox2">finance admin</label>
-                                            </div>                                                                                                                                                                  
-                                    </form>
-                            </div>
-                            <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-success" disabled v-if="! enable_role_button"><b>+</b> add role </button>
-                            <button type="button" class="btn btn-success" v-if="enable_role_button" v-on:click="addRole()"> {{add_role_button_text}} </button>
-                            </div>
+                                                <label class="form-check-label" for="inlineCheckbox2">finance admin</label>
+                                        </div>                                                                                                                                                                  
+                                </form>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-success" disabled v-if="! enable_role_button"><b>+</b> add role </button>
+                        <button type="button" class="btn btn-success" v-if="enable_role_button" v-on:click="addRole()"> {{add_role_button_text}} </button>
                         </div>
                         </div>
-        </div>
+                        </div>
+                </div>
+        </section>     
     </div>
   </template>
 

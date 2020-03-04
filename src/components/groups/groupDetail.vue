@@ -3,7 +3,7 @@
         <nav aria-label="breadcrumb" class="container">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><span class="backButton"><router-link style="text-decoration: none" :to="{name: 'Home'}">Home</router-link></span>
-                  <li class="breadcrumb-item"><span class="backButton"><a href="#" style="text-decoration: none" v-on:click="goBack()">groups</a></span>
+                  <li class="breadcrumb-item"><span class="backButton"><router-link href="#" style="text-decoration: none" :to="{name: 'groupsLanding'}">groups</router-link></span>
                 <li class="breadcrumb-item active" aria-current="page" v-for="data in group.response">{{data.name}}</li>
             </ol>
         </nav>
@@ -41,26 +41,17 @@
                   <p class="text-info">check your connection</p>
                 </div>
                 <div v-if = "fetch_data_error.length == 0">
-                <div class="">
-                    <span aria-current="page" v-for="data in group.response">
-                      <h3>
+                <div>                   
+                    <span aria-current="page" v-for="data in group.response" class="row">
+                      <h3 class="ml-3">
                          members <span>({{foundItems}})</span>
                       </h3>
-                    </span>
-                    <!-- on small devices -->
-                    <div class="btn-group  d-sm-block d-md-none text-right" style="padding: 0px 0px 25px 0px">
-                        <a href="#" data-toggle="modal" data-target="#addMemberToGroup" style="text-decoration: none">
-                            <div class="add-button">
-                            <span> <b>+</b> Add member to group</span>
-                            </div>
-                        </a>
-                        <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                          <span class="sr-only">Toggle Dropdown</span>
-                        </button>
-                        <div class="dropdown-menu border-success" aria-labelledby="dropdownMenuReference">
-                            <a class="d-none dropdown-item" href="#" data-toggle="modal" data-target="#importCSV"><b>+</b> import from csv</a>
-                        </div>
-                      </div>
+                      <!-- on small devices -->
+                      <span class=" btn btn-success  d-sm-block d-md-none mx-auto"
+                            data-toggle="modal" data-target="#addMemberToGroup">                        
+                            + add member
+                      </span> 
+                    </span>                   
                     <hr/>
                   <div class="row mb-1">
                       <p class="ml-4">
@@ -127,7 +118,7 @@
                 <hr>
                 <div v-if="group_meetings">
                     <div v-if="group_meetings.length">                        
-                        <table class="table">
+                        <table class="table table-responsive">
                             <thead>
                               <tr>                                
                                 <th scope="col">event</th>
@@ -166,7 +157,7 @@
                 </div>                  
               </div>
               </div>
-              <div class="col-12 col-sm-10 col-md-8 col-lg-3">
+              <div class="col-12 col-sm-10 col-md-8 col-lg-3 d-sm-none d-md-block">
                 <div class="btn-group" style="padding: 0px 0px 25px 0px">
                   <a href="#" data-toggle="modal" data-target="#addMemberToGroup" style="text-decoration: none">
                       <div class="add-button">

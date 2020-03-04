@@ -12,37 +12,27 @@
             <div class = "container">  
                 <div class="row">
                         <div class="filters col-12 col-sm-8 col-md-8 col-lg-2" style="padding: 3px 3px 3px 3px">
-                                <a href="#" v-on:click="goBack()" role="button" aria-expanded="false">
-                                        <div class="moreButton">                                
-                                            <b> Back to finances</b>
-                                        </div>
-                                    </a>
+                                
                             </div>
                             <div class="col-9">
                                     <div class="row">
                                         <div class="col-4">
                                                 <h3>
-                                                        <span v-for="data in income_type.response">{{data.type_name}}</span>
+                                                        <span v-for="data in income_type.response">{{data.type_name}}</span>                                                        
                                                 </h3>                                             
                                         </div>  
                                         <div class="col-4"></div>
                                         <div class="col-4">
-                                                <div class="btn-group" style="padding: 0px 0px 25px 10px" >
-                                                        <a href="#" data-toggle="modal" data-target="#addIncome" style="text-decoration: none">
-                                                            <div class="add-button">
-                                                                <b>+</b> add income 
-                                                            </div>
-                                                        </a>
-                                                        <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                                                                <span class="sr-only">Toggle Dropdown</span>
-                                                        </button>                                                        
-                                                </div>
+                                                <button class="btn btn-success"
+                                                        data-toggle="modal" data-target="#addIncome">
+                                                    add
+                                                </button>                                               
                                         </div>                                        
                                     </div>                                   
                                     <p class="col-8">
                                             <div class="text-muted row" v-for="data in income_type.response">
-                                                    <div class="row">
-                                                            <div class="stat-item mr-2 text-muted">
+                                                    <div class="row d-none d-lg-block d-xl-none" >
+                                                            <div class="stat-item  mr-2 text-muted">
                                                                     This month  <span class="text-info">
                                                                      Ksh {{humanize(data.total_this_month)}} </span>
                                                             </div>
@@ -55,7 +45,7 @@
                                             <hr/>
                                             <span class="badge badge-pill badge-info">{{foundItems}}</span> entries found
                                     </p>
-                                    <table class="table">
+                                    <table class="table table-responsive-sm">
                                         <thead>
                                             <tr>
                                                 <th>amount</th>                                                                

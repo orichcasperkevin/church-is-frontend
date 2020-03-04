@@ -48,7 +48,7 @@
                 <p class="col-8">
                         <span class="badge badge-pill badge-info">{{foundOfferings}}</span> entries found
                 </p>
-                <table class="table">
+                <table class="table table-responsive-sm">
                     <thead>
                         <tr>
                             <th>name</th>

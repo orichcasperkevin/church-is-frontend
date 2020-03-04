@@ -6,8 +6,12 @@
               <span class="navbar-toggler-icon"></span>
           </button>
 
-          <div id="mySidenav" class="sidenav">
-            <a href="javascript:void(0)" class="closebtn" v-on:click="closeNav()">&times;</a>
+          <div id="mySidenav" class="sidenav shadow-lg bg-white rounded">
+            <div class="row">
+                <img class="ml-4 " style="width: 150px ;height: auto" src="@/assets/full_logo.png">  
+                <a href="javascript:void(0)" class="closebtn" v-on:click="closeNav()">&times;</a>                  
+            </div>            
+            <hr>
             <!-- members nav on mobile -->
             <router-link class="nav-link" :to="{name: 'memberList'}">                      
               <span  v-on:click="doAJAX(); closeNav()">
@@ -46,7 +50,7 @@
             <hr>
             <router-link class="nav-link" :to="{name: 'smsAnalytics'}">
             <span  v-on:click="doAJAX(); closeNav()">
-                sms center
+                sms outbox
             </span>          
             </router-link>                                                                   
             <router-link class="nav-link" :to="{name: 'news'}">
@@ -66,7 +70,7 @@
           </div>
                    
 
-          <img class="mr-0" style="width: 150px ;height: auto" src="@/assets/full_logo.png">      
+          <img class="mr-0" style="width: 150px ;height: auto" src="@/assets/text_logo.png">      
       </router_link>
       <div class="text-center">
         <generalsearch class="mr-2  col-sm-12"/>
@@ -167,7 +171,7 @@ export default {
         return{                    
           fullPage: true,
           client_detail_available :false,
-          client_details : null
+          client_details : localStorage.getItem('church_details')
         }
   },
   components: {

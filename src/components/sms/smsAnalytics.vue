@@ -7,7 +7,7 @@
                 </ol>
         </nav>
         <div class="container">
-                <table class="table">
+                <table class="table table-responsive">
                         <thead>
                           <tr>     
                             <th scope="col">date</th>                       

@@ -53,7 +53,7 @@
                     </div>
                     <div v-if = "fetch_data_error.length == 0">
                     found <span class="badge badge-pill badge-info">{{foundItems}}</span>                    
-                    <table class="table">                     
+                    <table class="table table-responsive-sm">                     
                         <thead>
                             <th></th>
                             <th>name</th>

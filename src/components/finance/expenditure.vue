@@ -12,31 +12,21 @@
         <div class = "container">  
             <div class="row">
                     <div class="filters col-sm-8 col-md-8 col-lg-2" style="padding: 3px 3px 3px 3px">
-                            <a href="#" v-on:click="goBack()" role="button" aria-expanded="false">
-                                    <div class="moreButton">                                
-                                        <b> back</b>
-                                    </div>
-                                </a>
+                           
                         </div>
                         <div class="col-sm-12 col-lg-9">
                                 <div class="row">
-                                    <div class="col-lg-4 col-sm-12">
+                                    <div class="col-4">
                                         <h3>
                                             <span v-for="data in expenditure_type.response">{{data.type_name}}</span>
                                         </h3>                                        
                                     </div>
                                     
-                                    <div class="col-lg-4 col-sm-12 ml-5">
-                                            <div class="btn-group" style="padding: 0px 0px 25px 10px" >
-                                                    <a href="#" data-toggle="modal" data-target="#addExpenditure" style="text-decoration: none">
-                                                        <div class="add-button">
-                                                            <b>+</b> add expenditure
-                                                        </div>
-                                                    </a>
-                                                    <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                                                            <span class="sr-only">Toggle Dropdown</span>
-                                                    </button>                                                        
-                                            </div>                                           
+                                    <div class="col-4 ">
+                                            <button class="btn btn-success"
+                                                        data-toggle="modal" data-target="#addExpenditure">
+                                                    add
+                                                </button>                                                                                   
                                     </div>                                    
                                 </div>                                                                
                                 <p class="col-8">
@@ -55,7 +45,7 @@
                                         <hr/>
                                         <span class="badge badge-pill badge-info">{{foundItems}}</span> entries found
                                 </p>
-                                <table class="table">
+                                <table class="table table-responsive-sm">
                                     <thead>
                                         <tr>
                                             <th>amount</th>                                                                

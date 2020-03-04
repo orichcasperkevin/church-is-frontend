@@ -10,9 +10,9 @@
                 <li class="breadcrumb-item active" aria-current="page">groups</li>
             </ol>
     </nav>
-    <div class="container">
+    <section class="container">
       <div class="row">
-        <div class="col">
+        <div class="col-12 ml-3 mb-3">
             <h3 class="row">
               <b>
                   <img style="width: 48px ;height: auto" src="@/assets/icons/icons8-user-groups-48.png">
@@ -33,20 +33,27 @@
                 </a>
             </div>            
         </div>
+        <section class="collapse col-12" id="statsTab" style="max-width: 500px">
+            <div class="card card-body">
+                <groupstats msg="expenditure stats"/>
+            </div>
+        </section>
       </div>
       <hr>
-    </div>
+    </section>
     <div class="container">
       <div class="row">
         <!-- NAVIGATION ON THE LEFT -->
         <div class="col-sm-10 col-md-5 col-lg-3">
+            <div class="d-none d-sm-block d-md-none">
                 <b>
-                  folders
-                </b>
-                <a class="btn btn-sm btn-success " href="#" data-toggle="modal" data-target="#addModal" style="text-decoration: none" v-on:click="selectFolder()">
-                  + Add folder
-                 </a>
-              <div v-if="groups">
+                    folders
+                  </b>
+                  <a class="btn btn-sm btn-success " href="#" data-toggle="modal" data-target="#addModal" style="text-decoration: none" v-on:click="selectFolder()">
+                    + Add folder
+                   </a>
+             </div>
+              <div v-if="groups" class="d-none d-sm-block d-md-none">
                   <div class="list-group" v-for="data in groups.response">
                       <router-link :to="`/groupList/`+ data.id + `/` + data.name"class="row list-group-item list-group-item-action border-0" >
                         <span>
@@ -75,18 +82,14 @@
               </div>             
         </div>
         <!-- CONTENT IN THE MIDDLE -->
-        <div class="col-sm-10 col-md-8 col-lg-9">
-            <div class="collapse" id="statsTab" style="max-width: 500px">
-                <div class="card card-body outline-0">
-                    <groupstats msg="expenditure stats"/>
-                </div>
-            </div>
+        <div class="col-sm-10 col-md-8 col-lg-9">           
             <router-view >
 
             </router-view>
-        </div>
-        <!-- Modal add group -->
-        <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        </div>        
+        <section>
+          <!-- Modal add group -->
+          <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">               
                 <div class="modal-header">
@@ -121,7 +124,8 @@
                 </div>
                 </div>
             </div>
-            </div>
+          </div>
+        </section>
       </div>
     </div>
   </div>

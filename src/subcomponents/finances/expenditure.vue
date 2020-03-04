@@ -33,7 +33,7 @@
             <p class="col-8">
                     <span class="badge badge-pill badge-info">{{found_expenditure_types}}</span> entries found
             </p>
-            <table class="table">
+            <table class="table table-responsive-sm">
                 <thead>
                     <tr>
                         <th>type</th>                                                   

@@ -137,14 +137,22 @@ export default {
                 })
         },
         parseNewsArticles: function(){           
-            for (var i in this.news){
+            for (var i in this.news){                
                 //article div                       
-                var article_div = document.getElementById("article_" + this.news[i].id)                                
+                var article_div = document.getElementById("article_" + this.news[i].id)                                                                
                 //new elements
                 var el = document.createElement('div')        
                 var domString = this.news[i].article
                 el.innerHTML =  domString;
                 article_div.appendChild(el);                
+
+                var images = article_div.getElementsByTagName("img")                
+                for (var img in images){
+                    var img_el = images[img]
+                    if (img_el instanceof HTMLElement){                        
+                        img_el.classList.add("image-fit");  // make image to fit box
+                    }                    
+                }
 
             }        
         },
@@ -160,9 +168,15 @@ export default {
                 } 
             ).then(()=>{
                 this.adding_news_article = false
+                this.news_article = null
+                this.news_author = null
+                this.news_title = null
                 this.getNews()
             }).catch((err)=>{
                 this.adding_news_article = false
+                this.news_article = null
+                this.news_author = null
+                this.news_title = null
                 alert("an error occured :" + err)
             })
         }
