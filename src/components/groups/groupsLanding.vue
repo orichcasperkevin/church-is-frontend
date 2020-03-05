@@ -70,7 +70,7 @@
                 <a class="btn btn-sm btn-success" href="#" data-toggle="modal" data-target="#addModal" style="text-decoration: none">
                   + Add group
                 </a>
-              <div v-if="independent_groups">
+              <div v-if="independent_groups" >
                   <div class="list-group" v-for="data in independent_groups.response">
                       <router-link  :to="`/groupDetail/`+ data.id" class="list-group-item list-group-item-action border-0" >
                       <span>

@@ -23,14 +23,18 @@
             <div class="row">
 
             <div class="col-sm-10 col-md-8 col-lg-2 mb-3" style="padding: 0px 0px 0px 0px">
-                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                  <a class="action-list list-group-item list-group-item-action border-0"  data-toggle="pill" href="#member" role="tab" aria-controls="members" aria-selected="true">
+                <nav class="nav nav-pills " id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                  <a class="action-list list-group-item list-group-item-action border-0 "
+                    data-toggle="pill" href="#member" role="tab" aria-controls="members" aria-selected="true">
                     <img  style="width: 30px; height: auto; " src="@/assets/icons/icons8-user-groups-40.png"> members
                   </a>
-                  <a class="action-list list-group-item list-group-item-action border-0"  data-toggle="pill" href="#activity" role="tab" aria-controls="activity" v-on:click="getGroupActivity()">
+                  <a class="action-list list-group-item list-group-item-action border-0 "
+                    data-toggle="pill" href="#activity" role="tab" aria-controls="activity" v-on:click="getGroupActivity()">
                       <img style="width: 30px; height: auto;" src="@/assets/icons/icons8-activity-history-48.png">  activity
                   </a>
-                </div>
+                </nav>
+                               
+
             </div>
 
             <div class="tab-content col" >

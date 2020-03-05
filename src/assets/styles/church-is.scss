@@ -10,6 +10,7 @@ $primary: $blue;
 $secondary: $grey;
 $success: $green;
 $dark: $dark;
+
 tr:nth-child(even) {
   background-color: #fcfcfc;
 }
@@ -140,6 +141,16 @@ img.church-is-menu {
   overflow-x: hidden; /* Disable horizontal scroll */
   padding-top: 60px; /* Place content 60px from the top */
   transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+}
+#main-app {
+  transition: margin-left .5s;
+  padding: 20px;
+}
+/* Smartphones ----------- */
+@media only screen and (max-width: 760px) {
+  #main-app { 
+    width: 100vw;     
+  }
 }
 
 /* Position and style the close button (top right corner) */

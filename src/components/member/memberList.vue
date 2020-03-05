@@ -212,7 +212,7 @@
                 <div class="dropdown-menu border-success" aria-labelledby="dropdownMenuReference">
                     <a class="dropdown-item" href="#" data-toggle="modal" data-target="#importCSV"><b>+</b> import from csv</a>
                     <div class="dropdown-divider"></div>
-                    <router-link class="dropdown-item" :to="{name: 'adminRoles'}"> assign roles</router-link>
+                    <router-link class="d-none dropdown-item" :to="{name: 'adminRoles'}"> assign roles</router-link>
                 </div>
               </div>
                 <div class="list-group font-weight-bold">

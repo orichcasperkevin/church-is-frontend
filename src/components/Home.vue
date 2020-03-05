@@ -96,6 +96,14 @@ export default {
   created() {
     this.fetchData()
   },
+  mounted() {
+    document.getElementById("anvil-side-nav").style.width = "250px";
+    document.getElementById("main-app").style.marginLeft = "250px";
+  },
+  destroyed(){
+    document.getElementById("anvil-side-nav").style.width = "0";
+    document.getElementById("main-app").style.marginLeft = "0";
+  },
   methods: {
     fetchData: function(){
       this.$http.get(this.$BASE_URL + '/api/finance/pending-confirmations/')

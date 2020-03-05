@@ -1,21 +1,21 @@
 <template>
     <div>
-        <nav aria-label="breadcrumb">
+        <nav aria-label="breadcrumb" class="container">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><span class="backButton"><router-link style="text-decoration: none" :to="{name: 'Home'}">Home</router-link></span>  
-                    <li class="breadcrumb-item active" aria-current="page">news</li>
+                    <li class="breadcrumb-item active" aria-current="page">news & announcements</li>
                 </ol>
         </nav>
         <div class="container">
             <div class="row">
                 <h3 class="col-6">              
-                    News
+                    News & announcements
                 </h3>
                  <!--add button on smaller devices -->
                  <div class="col-6 btn-group d-sm-block d-md-none text-right">
                         <div style="padding: 0px 0px 25px 10px">
                                 <button class="btn btn-success" data-toggle="modal" data-target="#addNewsModal">                                                            
-                                        <b>+</b> add  news          
+                                        <b>+</b> add          
                                 </button>
                         </div>
                 </div>  
@@ -56,7 +56,7 @@
                 <section class="col-lg-2">
                     <button data-toggle="modal" data-target="#addNewsModal"
                             class="btn btn-success">
-                        + Add news
+                        + Add 
                     </button>
                 </section>
             </div>                      

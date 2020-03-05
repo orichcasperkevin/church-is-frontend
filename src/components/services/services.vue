@@ -27,7 +27,7 @@
                                         </div>
                                         <div v-if = "services_available">    
                                             <h3>Services Today</h3>                                                                                  
-                                                <table class="table table-responsive">
+                                                <table class="table table-responsive-sm">
                                                         <thead>
                                                             <tr>                                                            
                                                             <th scope="col">Service type</th>
@@ -54,7 +54,7 @@
                                         <h3>All Services </h3>
                                         <div v-if = "this_month_selected">
                                                <!-- table of services  -->
-                                               <table class="table table-responsive">
+                                               <table class="table table-responsive-sm">
                                                     <thead>
                                                         <tr>                                                            
                                                         <th scope="col">Service type</th>
