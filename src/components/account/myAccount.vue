@@ -25,8 +25,7 @@
                             </div>
                             <div class="col-lg-6 col-sm-12"">
                                     <button disabled type="button" class="btn btn-success">
-                                        ANVIL credit :<span class="badge badge-light">
-                                            {{client_details[0].credit}}
+                                        ANVIL credit
                                         </span>
                                     </button>            
                                         <p>

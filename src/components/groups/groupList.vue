@@ -39,52 +39,50 @@
         </div>
         </div>
         <div class="col-sm-10 col-md-8 col-lg-3">
-            <div style="padding: 0px 0px 25px 0px">
-                    <a href="#" data-toggle="modal" data-target="#addGroup" style="text-decoration: none">
-                        <div class="add-button">
-                            <b>+</b> add to {{group_name}}
-                        </div>
-                    </a>
+            <button class="btn btn-success" data-toggle="modal" data-target="#addGroup">
+                <b>+</b> add to {{group_name}}
+            </button>           
+        </div>
+        </div>
+        
+        <!-- Modal add group -->
+        <div class="modal fade" id="addGroup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">add group to {{group_name}} folder</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" v-on:click="fetchData()">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">                    
+                <div class="form-group">
+                        <label for="addGroup"> group name</label>
+                        <input type="text" class="form-control" maxlength="20" id="addGroup" v-model="name"></input>
+                        <p v-if="name_errors.length">
+                                <ul>
+                                        <small><li v-for="error in name_errors"><p class="text-danger">{{ error }}</p></li></small>
+                                </ul>
+                        </p>
+                </div>
+                <div class="form-group">
+                    <label for="addGroupDescription">description</label>
+                    <textarea class="form-control" id="addGroupDescription" 
+                                maxlength="50"  rows="3" v-model="description"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="fetchData()">Close</button>
+                <button type="button" class="btn btn-success" v-on:click="addGroup()">
+                    <b>+</b> add group
+                    <span v-if="adding_group"
+                        class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                    </span>
+                </button>
+            </div>
             </div>
         </div>
         </div>
-            <!-- Modal add group -->
-            <div class="modal fade" id="addGroup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalCenterTitle">add group to {{group_name}} folder</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" v-on:click="fetchData()">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">                    
-                    <div class="form-group">
-                            <label for="addGroup"> group name</label>
-                            <input type="text" class="form-control" id="addGroup" autofocus v-model="name"></input>
-                            <p v-if="name_errors.length">
-                                    <ul>
-                                            <small><li v-for="error in name_errors"><p class="text-danger">{{ error }}</p></li></small>
-                                    </ul>
-                            </p>
-                    </div>
-                    <div class="form-group">
-                        <label for="addGroupDescription">description</label>
-                        <textarea class="form-control" id="addGroupDescription" rows="3" v-model="description"></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="fetchData()">Close</button>
-                    <button type="button" class="btn btn-success" v-on:click="addGroup()">
-                        <b>+</b> add group
-                        <span v-if="adding_group"
-                            class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
-                        </span>
-                    </button>
-                </div>
-                </div>
-            </div>
-            </div>
     </div>
   </template>
 

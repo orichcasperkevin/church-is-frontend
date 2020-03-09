@@ -33,17 +33,17 @@
                                             <div class="text-muted row" v-for="data in income_type.response">
                                                     <div class="row d-none d-lg-block d-xl-none" >
                                                             <div class="stat-item  mr-2 text-muted">
-                                                                    This month  <span class="text-info">
+                                                                    This month  <span class="text-secondary font-weight-bold">
                                                                      Ksh {{humanize(data.total_this_month)}} </span>
                                                             </div>
                                                             <div class="stat-item mr-2">
-                                                                    This year  <span class="text-info">
+                                                                    This year  <span class="text-secondary font-weight-bold">
                                                                     Ksh   KSh {{humanize(data.total_this_year)}}</span>                                        
                                                             </div>                                                               
                                                     </div>                                                     
                                             </div>
                                             <hr/>
-                                            <span class="badge badge-pill badge-info">{{foundItems}}</span> entries found
+                                            <span class="badge badge-pill badge-secondary">{{foundItems}}</span> entries found
                                     </p>
                                     <table class="table table-responsive-sm">
                                         <thead>

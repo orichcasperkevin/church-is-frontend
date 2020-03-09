@@ -53,15 +53,15 @@
                                 <div class=" text-muted" v-for = "data in context.response ">
                                         <div class="row ml-1">
                                                 <div class="d-none d-lg-block stat-item mr-2 text-muted">
-                                                        Required  <span class="text-info">
+                                                        Required  <span class="text-secondary font-weight-bold">
                                                                 Ksh {{humanize(data.required_amount)}}</span>
                                                 </div>
                                                 <div class="d-none d-lg-block stat-item mr-2">
-                                                        Raised  <span class="text-info">
+                                                        Raised  <span class="text-secondary font-weight-bold">
                                                         Ksh   {{humanize(data.raised_amount)}}</span>                                        
                                                 </div>
                                                 <div class=" d-none d-lg-block stat-item mr-2">
-                                                        Funded  <span class="text-info">
+                                                        Funded  <span class="text-secondary font-weight-bold">
                                                         {{data.percentage_funded}} %</span>                                        
                                                 </div>
                                         </div>                                     
@@ -69,7 +69,7 @@
                                 <hr/>
                                 <div class="row">
                                 <p class="col-8">
-                                        found <span class="badge badge-pill badge-info">{{foundItems}}</span>
+                                        found <span class="badge badge-pill badge-secondary">{{foundItems}}</span>
                                 </p>                                                  
                                 </div>                             
                                     <table class="table table-responsive-sm">
@@ -130,15 +130,15 @@
                                         <div class="text-muted" v-for = "data in context.response ">
                                                 <div class="row ml-1">
                                                         <div class="d-none d-lg-block stat-item mr-2 text-muted">
-                                                                Pledges  <span class="text-info">
+                                                                Pledges  <span class="text-text-secondary font-weight-bold">
                                                                         Ksh {{humanize(data.total_in_pledges)}}</span>
                                                         </div>
                                                         <div class=" d-none d-lg-block stat-item mr-2">
-                                                                Settled  <span class="text-info">
+                                                                Settled  <span class="text-text-secondary font-weight-bold">
                                                                 Ksh   {{humanize(data.total_in_settled_pledges)}}</span>                                        
                                                         </div>
                                                         <div class="d-none d-lg-block stat-item mr-2">
-                                                                Percentage settled  <span class="text-info">
+                                                                Percentage settled  <span class="text-secondary font-weight-bold">
                                                                 Ksh   {{data.percentage_of_pledge_settled}}%</span>                                        
                                                         </div>
                                                 </div>                                                
@@ -146,7 +146,7 @@
                                            <hr/>
                                            <div class="row">
                                                 <p class="col-6">
-                                                        found <span class="badge badge-pill badge-info">{{humanize(foundPledges)}}</span>
+                                                        found <span class="badge badge-pill badge-secondary">{{humanize(foundPledges)}}</span>
                                                 </p>                                                                                           
                                             </div>
                                         <table class="table table-responsive-sm">
@@ -307,11 +307,13 @@
                             <div class="modal-body">
                                 <div class="form-group" v-if="sms_status.length == 0">
                                     <label for="exampleFormControlTextarea1">message</label>
+                                    <textmessage v-on:messageSet="onMessageSet"/>
                                     <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model = "message"></textarea>
                                   </div>
-                                  <div v-if="sms_status.length > 0">
-                                    <p class="text-info"> The members will receive your message.</p>
-                                    <p> check sms status later as it may take a while</p>
+                                  <div v-if="sms_status.length > 0" class="text-center">
+                                        <p class="text-success">Successfull</p>
+                                        <p class="text-info"> The members will receive your message.</p>
+                                        <p> check sms status later as it may take a while</p>
                                     </div>
                             </div>
                             <div class="modal-footer">
@@ -651,9 +653,10 @@
 
 <script>
 import searchmember from '@/subcomponents/searchmember.vue'
+import textmessage from '@/subcomponents/textmessage.vue'
 export default {
     name : 'projectDetail',
-    components: { searchmember },
+    components: { searchmember,textmessage },
     data () {
         return {
         //get data
@@ -764,25 +767,28 @@ export default {
                 return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         },
           // send message to selected members
+        onMessageSet: function(value){
+                this.message = value
+        },
         sendMessage: function (){
         this.sending_message = true
         this.$http({
                 method: 'post',
                 url: this.$BASE_URL + '/api/sms/add-sms/',
                 data: {
-                sending_member_id: this.$session.get('member_id'),
-                app: "CHURCH PROJECTS: "+ this.context.response[0].name,
-                message: this.message,
-                website: true,
-                receipient_member_ids: this.member_ids
+                        sending_member_id: this.$session.get('member_id'),
+                        app: "CHURCH PROJECTS: "+ this.context.response[0].name,
+                        message: this.message,
+                        website: true,
+                        receipient_member_ids: this.member_ids
                 }
                 }).then(response => {        
-                this.sms_status.push(response.data)          
-                this.sending_message = false
+                        this.sms_status.push(response.data)          
+                        this.sending_message = false
                 })
                 .catch((err) => {
-                alert("an error occured when attempting to deliver to one of the members, this may be due to an invalid phone number")
-                this.sending_message = false
+                        alert("an error occured when attempting to deliver to one of the members, this may be due to an invalid phone number")
+                        this.sending_message = false
                 })
         },
         exportData: function(){

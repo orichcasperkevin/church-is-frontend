@@ -109,9 +109,6 @@
                            <td class="text-muted">
                              {{data.role.role}}
                            </td>
-
-
-
                         </tr>
                       </tbody>
                     </table>
@@ -122,7 +119,7 @@
                 <hr>
                 <div v-if="group_meetings">
                     <div v-if="group_meetings.length">                        
-                        <table class="table table-responsive">
+                        <table class="table table-responsive-sm">
                             <thead>
                               <tr>                                
                                 <th scope="col">event</th>
@@ -167,7 +164,7 @@
                       <div class="add-button">
                       <span> <b>+</b> Add member to group</span>
                       </div>
-                  </a>
+                  </a>                 
                   <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
@@ -285,17 +282,17 @@
                     <div class="modal-dialog modal-dialog-centered" role="document">
                       <div class="modal-content">
                         <div class="modal-header">
-                          <h5 class="modal-title" >text group members</h5>
+                          <h5 class="modal-title" >text group members </h5>
                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                           </button>
                         </div>
                         <div class="modal-body">
                             <div class="form-group" v-if="sms_status.length == 0">
-                                <label for="exampleFormControlTextarea1">message</label>
-                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model = "message"></textarea>
+                                <label for="exampleFormControlTextarea1">message </label>
+                                <textmessage v-on:messageSet="onMessageSet"/>                                
                               </div>
-                              <div v-if="sms_status.length > 0">
+                              <div v-if="sms_status.length > 0" class="text-center">
                                 <p class="text-success">successful</p>
                                 <p class="text-info"> The members will receive your message.</p>
                                 <p> check sms status later as it may take a while</p>
@@ -325,9 +322,10 @@
 
 <script>
 import searchmember from '@/subcomponents/searchmember.vue'
+import textmessage from '@/subcomponents/textmessage.vue'
 export default {
   name: 'groupDetail',
-  components: { searchmember },
+  components: { searchmember,textmessage },
   data () {
     return {
       group: null,
@@ -415,6 +413,9 @@ export default {
           alert(err)
         })
       },
+      onMessageSet: function(value){
+        this.message = value
+      },
       sendMessage: function (){
         this.sending_message = true
         this.$http({ method: 'post', url: this.$BASE_URL + '/api/sms/add-sms/',
@@ -499,36 +500,32 @@ export default {
         this.$store.dispatch('update_isLoading', true)
         this.$http.get(this.$BASE_URL + '/api/members/role-list/')
         .then(response => {
-          this.roles = {"response": response.data }
-          this.$store.dispatch('update_isLoading', false)
+          this.roles = {"response": response.data }          
         })
         .catch((err) => {
-          this.fetch_data_error.push(err)
-          this.$store.dispatch('update_isLoading', false)
+          this.fetch_data_error.push(err)          
         })
 
         this.fetch_data_error = []
         this.$store.dispatch('update_isLoading', true)
         this.$http.get(this.$BASE_URL + '/api/groups/church-group/' + this.$route.params.id + '/')
         .then(response => {
-          this.group = {"response": response.data }
-          this.$store.dispatch('update_isLoading', false)
+          this.group = {"response": response.data }          
         })
         .catch((err) => {
-          this.fetch_data_error.push(err)
-          this.$store.dispatch('update_isLoading', false)
+          this.fetch_data_error.push(err)          
         })
 
         this.$store.dispatch('update_isLoading', true)
         this.$http.get(this.$BASE_URL + '/api/groups/church-group-members/' + this.$route.params.id + '/')
-        .then(response => {
+        .then(response => {          
           this.members = {"response": response.data }
           var array = this.members.response
           this.foundItems = array.length
           for (var data in this.members.response){
             this.member_ids.push(this.members.response[data].member.id)
-        }
-        this.$store.dispatch('update_isLoading', false)
+          }
+          this.$store.dispatch('update_isLoading', false)
         })
         .catch((err) => {
           this.fetch_data_error.push(err)

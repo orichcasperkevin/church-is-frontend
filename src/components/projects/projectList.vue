@@ -27,8 +27,8 @@
                     <div class="tab-pane fade show active" id="inProgress" role="tabpanel" aria-labelledby="profile-tab"></div>
                     <h3> Projects</h3>
                     <p>
-                        <a class="btn btn-sm btn-outline-info text-secondary dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
-                                stats
+                        <a class="btn btn-sm btn-outline-secondary dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
+                                more stats
                         </a>
                     </p>
                     <div class="collapse" id="statsTab">
@@ -52,7 +52,7 @@
                         </div>
                     </div>
                     <div v-if = "fetch_data_error.length == 0">
-                    found <span class="badge badge-pill badge-info">{{foundItems}}</span>                    
+                    found <span class="badge badge-pill badge-secondary">{{foundItems}}</span>                    
                     <table class="table table-responsive-sm">                     
                         <thead>
                             <th></th>

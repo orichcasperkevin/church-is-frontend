@@ -1,91 +1,97 @@
 <template>
   <div >
-    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top" v-if="checkLoggedIn()">
-      <router_link class="navbar-brand"  href="#">
-          <button class="btn btn-light ml-2" type="button" v-on:click="openNav()">
-              <span class="navbar-toggler-icon"></span>
-          </button>
-
-          <div id="anvil-side-nav" class="sidenav shadow-lg bg-white rounded small">
-            <div class="row">
-                <img class="ml-4 " style="width: 150px ;height: auto" src="@/assets/full_logo.png">  
-                <a href="javascript:void(0)" class="closebtn" v-on:click="closeNav()">&times;</a> 
-                <div class="ml-2 dropdown-item" >{{username}}</div>  
-                <a href="#" class=" ml-2 dropdown-item" v-on:click="logOut()">log out</a>                  
-            </div>            
-            <hr>
-            <!-- members nav on mobile -->
-            <router-link class="nav-link" :to="{name: 'memberList'}">                      
-              <span  v-on:click="doAJAX(); closeNav()">
-                  <img style="width: 25px ;height: auto" src="@/assets/icons/icons8-people-48.png">
-                  members
-              </span>              
-            </router-link> 
-            <!-- groups side nav -->
-            <router-link class="nav-link" :to="{name: 'groupsLanding'}">
-              <span  v-on:click="doAJAX(); closeNav()">
-                  <img style="width: 25px ;height: auto" src="@/assets/icons/icons8-user-groups-48.png">
-                groups
-              </span>
-            </router-link>
-            <!-- events side nav -->
-            <router-link class="nav-link" :to="{name: 'events'}">
-              <span  v-on:click="doAJAX(); closeNav()">
-                <img style="width: 25px ;height: auto" src="@/assets/icons/icons8-schedule-64.png">
-              events
-            </span>
-            </router-link>
-            <!-- finace side nav -->
-            <router-link class="nav-link" :to="{name: 'generalFinance'}">
-              <span  v-on:click="doAJAX(); closeNav()">
-                <img style="width: 25px ;height: auto" src="@/assets/icons/icons8-money-48.png">
-              finances
-            </span>
-            </router-link>
-            <hr>
-            <!-- more side nav -->
-            <router-link class="nav-link" :to="{name: 'services'}">
-            <span  v-on:click="doAJAX(); closeNav()">
-              services
-            </span>          
-            </router-link> 
-            <hr>
-            <router-link class="nav-link" :to="{name: 'smsAnalytics'}">
-            <span  v-on:click="doAJAX(); closeNav()">
-                sms outbox
-            </span>          
-            </router-link>                                                                   
-            <router-link class="nav-link" :to="{name: 'news'}">
-            <span  v-on:click="doAJAX(); closeNav()">
-              news & announcements
-            </span>          
-            </router-link>
-            <hr>
-            <router-link class="nav-link" :to="{name: 'myAccount'}">
-            <span  v-on:click="doAJAX(); closeNav()">
-              church account
-            </span>        
-            </router-link>                         
-          </div>
-                   
-          <img class="mr-0" style="width: 150px ;height: auto" src="@/assets/text_logo.png">      
-      </router_link>
-      <div class="text-center col-lg-8">
-        <generalsearch class="mr-2"/>
-      </div>      
-  </nav>
-  <div class="vld-parent">
-      <loading :active.sync="isLoading" 
-               :can-cancel="false" 
+      <!-- when this div is hovered on , display side nav -->
+    <div  v-if="checkLoggedIn()"
+          style="position: fixed ;height: 100%; z-index: 9998;"
+          class="d-flex flex-column justify-content-center p-1 "
+          v-on:mouseover="openNav()">            
+    </div>
+    <section class="d-flex flex-row navbar navbar-expand-lg navbar-light sticky-top shadow-sm bg-frost" v-if="checkLoggedIn()">
+      <button class="btn btn-light ml-2" type="button" v-on:click="openNav()">
+          <span class="navbar-toggler-icon"></span>
+      </button>
+      <img class="d-none d-lg-block mr-0" style="width: 150px ;height: auto" src="@/assets/text_logo.png">   
+      <div class="text-center">
+          <generalsearch class="mr-3"/>
+      </div>           
+    </section>
+    <nav>        
+      <div id="anvil-side-nav" class="sidenav shadow-lg bg-white rounded">
+        <div class="row">
+            <img class="ml-4 " style="width: 150px ;height: auto" src="@/assets/full_logo.png">  
+            <a href="javascript:void(0)" class="closebtn text-secondary" v-on:click="closeNav()">&times;</a> 
+            <div class="ml-2 dropdown-item" >{{username}}</div>  
+            <a href="#" class=" ml-2 dropdown-item" v-on:click="logOut()">log out</a>                  
+        </div>            
+        <hr>
+        <!-- members nav on mobile -->
+        <router-link class="nav-link" :to="{name: 'memberList'}">                      
+          <span  v-on:click="doAJAX(); closeNav()">
+              <img style="width: 25px ;height: auto" src="@/assets/icons/icons8-people-48.png">
+              members
+          </span>              
+        </router-link> 
+        <!-- groups side nav -->
+        <router-link class="nav-link" :to="{name: 'groupsLanding'}">
+          <span  v-on:click="doAJAX(); closeNav()">
+              <img style="width: 25px ;height: auto" src="@/assets/icons/icons8-user-groups-48.png">
+            groups
+          </span>
+        </router-link>
+        <!-- events side nav -->
+        <router-link class="nav-link" :to="{name: 'events'}">
+          <span  v-on:click="doAJAX(); closeNav()">
+            <img style="width: 25px ;height: auto" src="@/assets/icons/icons8-schedule-64.png">
+          events
+        </span>
+        </router-link>
+        <!-- finace side nav -->
+        <router-link class="nav-link" :to="{name: 'generalFinance'}">
+          <span  v-on:click="doAJAX(); closeNav()">
+            <img style="width: 25px ;height: auto" src="@/assets/icons/icons8-money-48.png">
+          finances
+        </span>
+        </router-link>
+        <hr>
+        <!-- more side nav -->
+        <router-link class="nav-link" :to="{name: 'services'}">
+        <span  v-on:click="doAJAX(); closeNav()">
+          services
+        </span>          
+        </router-link> 
+        <hr>
+        <router-link class="nav-link" :to="{name: 'smsAnalytics'}">
+        <span  v-on:click="doAJAX(); closeNav()">
+            sms outbox
+        </span>          
+        </router-link>                                                                   
+        <router-link class="nav-link" :to="{name: 'news'}">
+        <span  v-on:click="doAJAX(); closeNav()">
+          news & announcements
+        </span>          
+        </router-link>
+        <hr>
+        <router-link class="nav-link" :to="{name: 'myAccount'}">
+        <span  v-on:click="doAJAX(); closeNav()">
+          church account
+        </span>        
+        </router-link>                         
+      </div>                                
+    </nav> 
+    <!-- nav frost overlay -->
+    <div id="nav-frost-overlay" class="d-none nav-frost-overlay" v-on:mouseover="closeNav()"></div>
+    <!-- loader overlay -->
+    <div class="vld-parent">
+        <loading :active.sync="isLoading" 
+                :can-cancel="false" 
                 :on-cancel="onCancel"
                 :is-full-page="fullPage">
-      </loading>
-      
-  </div>
-  <div id="main-app">
-      <!-- the entire app lives here -->
+        </loading>      
+    </div>
+  <!-- the entire app lives here -->
+  <section id="main-app" >     
       <router-view />
-  </div>    
+  </section>    
   </div>
 </template>
 
@@ -100,7 +106,11 @@ export default {
         return{                    
           fullPage: true,
           client_detail_available :false,
-          client_details : localStorage.getItem('church_details')
+          client_details : localStorage.getItem('church_details'),
+          // DOM
+          anvil_side_nav:null,
+          main_app:null,
+          nav_frost_overlay:null
         }
   },
   components: {
@@ -110,6 +120,13 @@ export default {
     this.username = this.$session.get("username") 
     this.checkLoggedIn()    
   },
+  // when DOM is ready
+  mounted(){
+    this.anvil_side_nav = document.getElementById("anvil-side-nav")
+    this.main_app = document.getElementById("main-app")
+    this.nav_frost_overlay = document.getElementById("nav-frost-overlay")
+  },
+  
   computed: {
     username(){
       return this.$store.getters.logged_in_member      
@@ -139,14 +156,18 @@ export default {
     },
     /* Set the width of the side navigation to 250px */
     openNav:function() {
-      document.getElementById("anvil-side-nav").style.width = "250px"      
-      document.getElementById("main-app").style.marginLeft = "100px"    
+      this.anvil_side_nav.style.width = "250px"      
+      this.main_app.style.marginLeft = "100px"          
+      this.nav_frost_overlay.classList.add("bg-frost")      
+      this.nav_frost_overlay.classList.remove("d-none")
     },
 
     /* Set the width of the side navigation to 0 */
     closeNav:function() {
-      document.getElementById("anvil-side-nav").style.width = "0"
-      document.getElementById("main-app").style.marginLeft = "0"
+      this.anvil_side_nav.style.width = "0"
+      this.main_app.style.marginLeft = "0"
+      this.nav_frost_overlay.classList.remove("bg-frost")
+      this.nav_frost_overlay.classList.add("d-none")
       
     }
   }

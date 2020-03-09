@@ -21,14 +21,14 @@
             </h3>
             <div class="row">
                 <div class="stat-item mr-2 text-muted">
-                        Folders <b> <span class="text-info">
+                        Folders <b> <span class="text-secondary">
                          {{foundItems}} </span></b>
                 </div>
                 <div class="stat-item mr-2">
-                        Groups <b> <span class="text-info">
+                        Groups <b> <span class="text-secondary">
                         {{foundItems_independent}}</span> </b>
                 </div>
-                <a class="btn btn-outline-info text-secondary dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
+                <a class="btn btn-outline-secondary dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
                         more stats
                 </a>
             </div>            
@@ -45,7 +45,7 @@
       <div class="row">
         <!-- NAVIGATION ON THE LEFT -->
         <div class="col-sm-10 col-md-5 col-lg-3">
-            <div class="d-none d-sm-block d-md-none">
+            <div class="d-flex justify-content-between">
                 <b>
                     folders
                   </b>
@@ -53,29 +53,39 @@
                     + Add folder
                    </a>
              </div>
-              <div v-if="groups" class="d-none d-sm-block d-md-none">
+              <div v-if="groups" class="">
                   <div class="list-group" v-for="data in groups.response">
                       <router-link :to="`/groupList/`+ data.id + `/` + data.name"class="row list-group-item list-group-item-action border-0" >
-                        <span>
-                            <img style="width: 20px ;height: auto" src="@/assets/icons/icons8-folder-48.png">
-                            {{data.name}}                      
+                        <span class="d-flex justify-content-between">
+                          <div>
+                              <img style="width: 20px ;height: auto" src="@/assets/icons/icons8-folder-48.png">
+                              {{data.name}}  
+                          </div>                                              
+                          <span class="font-weight-bold">
+                            {{data.number_of_groups}}
+                          </span>
                         </span>
                       </router-link>
                     </div>
                     <hr>
               </div>             
-              <b>
-                groups
-              </b>
-                <a class="btn btn-sm btn-success" href="#" data-toggle="modal" data-target="#addModal" style="text-decoration: none">
-                  + Add group
-                </a>
+              <div class="d-flex justify-content-between">
+                <b>groups</b>
+                  <a class="btn btn-sm btn-success" href="#" data-toggle="modal" data-target="#addModal" style="text-decoration: none">
+                    + Add group
+                  </a>
+              </div>             
               <div v-if="independent_groups" >
                   <div class="list-group" v-for="data in independent_groups.response">
                       <router-link  :to="`/groupDetail/`+ data.id" class="list-group-item list-group-item-action border-0" >
-                      <span>
+                      <span class="d-flex justify-content-between">
+                        <div>
                             <img style="width: 30px ;height: auto" src="@/assets/icons/icons8-user-groups-48.png">
-                            {{data.name}}                      
+                            {{data.name}}
+                        </div>           
+                        <span class="text-muted font-weight-bold">
+                          {{data.number_of_members}}
+                        </span>                                       
                       </span>
                     </router-link>
                   </div>
@@ -86,14 +96,15 @@
             <router-view >
 
             </router-view>
-        </div>        
+        </div>  
+             
         <section>
           <!-- Modal add group -->
           <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">               
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalCenterTitle">add group / folder</h5>
+                    <h5 class="modal-title" id="exampleModalCenterTitle">add group</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close" v-on:click="fetchData()">
                     <span aria-hidden="true">&times;</span>
                     </button>
@@ -101,7 +112,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                             <label for="addGroup"> name</label>
-                            <input type="text" class="form-control" id="addGroup" autofocus v-model="name"></input>
+                            <input type="text" class="form-control" id="addGroup" maxlength="20" v-model="name"></input>
                             <p v-if="name_errors.length">
                                     <ul>
                                             <small><li v-for="error in name_errors"><p class="text-danger">{{ error }}</p></li></small>
@@ -110,7 +121,8 @@
                     </div>
                     <div class="form-group">
                         <label for="addGroupDescription">description</label>
-                        <textarea class="form-control" id="addGroupDescription" rows="3" v-model="description"></textarea>
+                        <textarea class="form-control" maxlength="50"
+                                  id="addGroupDescription" rows="3" v-model="description"></textarea>
                     </div>
                 </div>
                 <div class="modal-footer">

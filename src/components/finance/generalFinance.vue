@@ -81,14 +81,14 @@
                                                 <div class="text-muted" v-if="any_other_selected">
                                                         <div class="row">
                                                                 <div class="d-none d-lg-block stat-item mr-2 text-muted">
-                                                                        This month  <span class="text-info">
+                                                                        This month  <span class="text-secondary font-weight-bold">
                                                                          Ksh {{humanize(income_stats.response.total_this_month)}} </span>
                                                                 </div>
                                                                 <div class="d-none d-lg-block stat-item mr-2">
-                                                                        This year  <span class="text-info">
+                                                                        This year  <span class="text-secondary font-weight-bold">
                                                                         Ksh   {{humanize(income_stats.response.total_this_year)}}</span>                                        
                                                                 </div>
-                                                                <a class="ml-2 btn btn-outline-info text-secondary dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
+                                                                <a class="ml-2 btn btn-outline-secondary dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
                                                                         more stats
                                                                 </a>
 
@@ -116,7 +116,7 @@
                                                 </div>                                                    
                                                 <hr/>
                                                 <p class="col-8">
-                                                        <span class="badge badge-pill badge-info">{{foundIncomes}}</span> types found
+                                                        <span class="badge badge-pill badge-secondary">{{foundIncomes}}</span> types found
                                                 </p>
                                                 <table class="table table-responsive-sm">
                                                     <thead>

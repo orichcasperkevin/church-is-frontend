@@ -69,30 +69,30 @@
                     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                        <h5 class="modal-title" >Add news</h5>
+                        <h5 class="modal-title" >Add news or announcement</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                         </div>
                         <div class="modal-body">
-                            <label class="font-weight-bold">news heading / title</label>                            
-                            <input  v-model="news_title"
+                            <label class="font-weight-bold">heading / title</label>                            
+                            <input  v-model="news_title" maxlength="100"
                                     type="text" class="mb-4 form-control" 
-                                    placeholder="A catchy title for your news article">
+                                    placeholder="A catchy title for your article">
                             
-                            <label class=font-weight-bold>news article</label> 
+                            <label class=font-weight-bold>article</label> 
                             <quill-editor class="mb-4" v-model="news_article"/>
 
-                            <label class="font-weight-bold">news author</label>                            
-                            <input  v-model="news_author"
+                            <label class="font-weight-bold">author</label>                            
+                            <input  v-model="news_author" maxlength="100"
                                     type="text" class="mb-4 form-control" 
-                                    placeholder="who is writing this article? eg. John Doe, Church Pastor ">
+                                    placeholder="eg. John Doe, Church Pastor ">
                             
                         </div>
                         <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-success" v-on:click="addNewsArticle()">
-                            add news article
+                            add article
                             <span v-if="adding_news_article"
                                 class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
                             </span>

@@ -104,7 +104,8 @@
                                 <form>
                                         <div class=" row form-group">
                                             <label class="col-3"><b>title:</b></label>
-                                            <input type="text" class="col-8 form-control" placeholder="enter title of event" v-model="event_title">                                        
+                                            <input type="text" class="col-8 form-control" maxlength="20"
+                                                    placeholder="enter title of event" v-model="event_title">                                        
                                             <p v-if="event_title_errors.length">
                                                 <ul>
                                                         <small><li v-for="error in event_title_errors"><p class="text-danger">{{ error }}</p></li></small>
@@ -114,7 +115,8 @@
                                         
                                         <div class="row form-group">
                                                 <label class="col-3"><b>location:</b></label>
-                                                <input type="text" class="col-8 form-control" placeholder="enter event location" v-model="event_location">                                        
+                                                <input type="text" class="col-8 form-control" maxlength="20"
+                                                        placeholder="enter event location" v-model="event_location">                                        
                                                 <p v-if="event_location_errors.length">
                                                     <ul>
                                                             <small><li v-for="error in event_location_errors"><p class="text-danger">{{ error }}</p></li></small>
@@ -165,7 +167,10 @@
                                         </div>                                                        
                                         <div class="row form-group">
                                                 <label class="col-3"><b>description:</b></label>
-                                                <textarea type="text" class="col-8 form-control" rows='3' v-model="event_description"></textarea>                                                   
+                                                <textarea type="text" class="col-8 form-control" 
+                                                        maxlength="150"
+                                                        rows='3' v-model="event_description">
+                                                </textarea>                                                   
                                         </div>                                                                                  
                             
                                 </form>
@@ -288,8 +293,8 @@
                 }
             },
             addEvent: function (){                
-                if (this.addEventFormOkay()){
-                    this.adding_event = true
+                if (this.addEventFormOkay()){                    
+                    this.adding_event = true                    
                     this.$http({                        
                         method: 'post',
                         url: this.$BASE_URL + '/api/events/add-event/',

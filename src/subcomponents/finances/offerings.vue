@@ -18,16 +18,16 @@
                         </div>
                 </div>
                 <div class="text-muted" >
-                        <div class="row">
+                        <div class="row ">
                                 <div class="d-none d-lg-block stat-item mr-2 text-muted">
-                                        This month  <span class="text-info">
+                                        This month  <span class="text-secondary font-weight-bold">
                                          Ksh {{humanize(offering_stats.response.total_in_offerings_this_month)}}</span>
                                 </div>
                                 <div class="d-none d-lg-block stat-item mr-2">
-                                        This year  <span class="text-info">
+                                        This year  <span class="text-secondary font-weight-bold">
                                         Ksh    {{humanize(offering_stats.response.total_in_offerings_this_month)}} </span>                                        
                                 </div>
-                                <a class="ml-3 btn btn-outline-info text-secondary dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
+                                <a class="ml-3 btn btn-outline-secondary dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
                                         more stats
                                 </a>
                                 <!-- when on a small device show this button --> 
@@ -46,7 +46,7 @@
                 </div>                     
                 <hr/>
                 <p class="col-8">
-                        <span class="badge badge-pill badge-info">{{foundOfferings}}</span> entries found
+                        <span class="badge badge-pill badge-secondary">{{foundOfferings}}</span> entries found
                 </p>
                 <table class="table table-responsive-sm">
                     <thead>

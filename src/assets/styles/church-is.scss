@@ -11,6 +11,10 @@ $secondary: $grey;
 $success: $green;
 $dark: $dark;
 
+.bg-frost{
+  background-color: rgba(56, 59, 68, 0.15);
+  backdrop-filter: blur(5px);
+}
 tr:nth-child(even) {
   background-color: #fcfcfc;
 }
@@ -37,7 +41,7 @@ img.church-is-menu {
   }
 .card-header {
     font-size: 20px;
-  }  
+  }
 .home-menu-item{
 
     border-radius: 10px;
@@ -91,10 +95,6 @@ img.church-is-menu {
   background-color:gainsboro ;
   transition: all 0.3s ease-in-out;
 }
-.accordionButton{
-    background-color:ghostwhite;
-    padding: 5px 5px 5px 5px;
-}
 .container{
     padding: 5px 5px 5px 5px;
 }
@@ -111,10 +111,7 @@ img.church-is-menu {
   font-weight: 400;
   transition: all 0.3s ease-in-out;
 }
-#container{
-  width: 190px;
-  height: auto;
-}
+
 .nav-pills > li > a.active {
   color: black!important;
   background-color: ghostwhite!important;
@@ -128,28 +125,32 @@ img.church-is-menu {
   color: black!important;
   background-color: ghostwhite!important;
 }
-
 /* The side navigation menu */
 .sidenav {
   height: 100%; /* 100% Full-height */
   width: 0; /* 0 width - change this with JavaScript */
   position: fixed; /* Stay in place */
-  z-index: 1; /* Stay on top */
+  z-index: 9999; /* Stay on top */
   top: 0; /* Stay at the top */
-  left: 0;
-  background-color:white; /* Black*/
+  left: 0;  
   overflow-x: hidden; /* Disable horizontal scroll */
   padding-top: 60px; /* Place content 60px from the top */
-  transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+  transition: 0.5s ease-out; /* 0.5 second transition effect to slide in the sidenav */
 }
 #main-app {
-  transition: margin-left .5s;
+  transition: margin-left .3s ease-out;
   padding: 20px;
 }
 /* Smartphones ----------- */
 @media only screen and (max-width: 760px) {
-  #main-app { 
-    width: 100vw;     
+  #main-app {
+    width: 100vw;
+  }
+  .sidenav {
+    padding-top: 15px;
+  }
+  .sidenav a {
+    font-size: 18px;
   }
 }
 
@@ -161,14 +162,13 @@ img.church-is-menu {
   font-size: 36px;
   margin-left: 50px;
 }
-
-
-/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
-@media screen and (max-height: 450px) {
-  .sidenav {padding-top: 15px;}
-  .sidenav a {font-size: 18px;}
+// the overlay that comes whaen nav is on
+.nav-frost-overlay{
+  position:fixed ;
+  height: 100%;
+  width: 100%;
+  z-index: 9997;
 }
-
 .image-fit{
   height: 100%;
   width: 100%;

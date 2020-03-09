@@ -1,16 +1,16 @@
 <template>
     <div class="child">
         <!-- general search -->         
-                    
-            <div class="input-group ">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text" id="basic-addon1">
+                                     
+            <div class="input-group">
+                    <input type="text" class="form-control" v-model="generalSearch"
+                            placeholder="search members,groups & events" >
+                    <div class="input-group-append">
+                      <span class="input-group-text" >
                             <img style="width: 20px ;height: auto" src="@/assets/icons/icons8-search-80.png">
-                        </span>
+                      </span>
                     </div>
-                    <input type="text" class=" form-control"   style="background-color:white"
-                    placeholder="search members,groups & events" v-model="generalSearch" autofocus> 
-            </div>                    
+            </div>             
             <div style="background-color: ghostwhite" class="text-info rounded" >{{search_status}}</div> 
             <div class="pre-scrollable searchedItemsDiv border " 
                 style="min-width: 400px; 

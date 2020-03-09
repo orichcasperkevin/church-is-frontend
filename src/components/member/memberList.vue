@@ -20,7 +20,7 @@
         <div class="container">
           <div class="row">
             <!-- FILTERS TAB ON THE LEFT -->
-            <div class="filters col-12 col-sm-0 col-md-8 col-lg-2 " style="padding: 3px 3px 3px 3px">
+            <div class="filters col-12 col-sm-0 col-md-8 col-lg-3 " style="padding: 3px 3px 3px 3px">
                 <div class="form-group d-none d-lg-block">
                     <label for="searchInput">
                       <b>
@@ -44,9 +44,8 @@
               <div class="collapse"  id="collapseMoreFilters">
                   <div id="container row" >
                       <div class="accordion">
-                        <label for="tm" class="accordionitem"><b>age</b> <span class="arrow">&raquo;</span></label>
-                        <input type="checkbox" id="tm"/>
-                          <div class="row" style="padding : 10px">
+                        <label for="tm" class="accordionitem"><b>age</b></label>                      
+                          <div class="row">
                             <div class="col">
                             <div class="form-group">
                                 <small><b>min age :</b></small>
@@ -63,8 +62,7 @@
                       </div>
 
                       <div class="accordion">
-                        <label for="tn" class="accordionitem"><b>gender</b> <span class="arrow">&raquo;</span></label>
-                        <input type="checkbox" id="tn"/>
+                        <label for="tn" class="accordionitem"><b>gender</b></label>                        
                         <div class="row" style="padding : 10px">
                           <div class="col">
                             <div class="radio">
@@ -101,10 +99,10 @@
                 <div class="mb-2 row">
                   <p class="ml-2 mr-5">
                       <div class="stat-item mr-2 text-muted">
-                          found <span class="text-info"><b>{{foundItems}}</b></span>
+                          found <span class="text-secondary"><b>{{foundItems}}</b></span>
                   </div>                   
                     <t/>
-                    <a class="btn btn-outline-info text-secondary dropdown-toggle mr-1" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
+                    <a class="btn btn-outline-secondary dropdown-toggle mr-1" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
                         more stats
                     </a>
                   </p>                                                                 
@@ -275,11 +273,11 @@
                       <div class="modal-body">
                           <div class="form-group" v-if="sms_status.length == 0">
                               <label for="exampleFormControlTextarea1">message</label>
-                              <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model = "message"></textarea>
+                              <textmessage v-on:messageSet="onMessageSet"/>                              
                             </div>
-                            <div v-if="sms_status.length > 0">
-                              <p class="text-info"> The members will receive your message.</p>
-                              <p> check sms status later as it may take a while</p>
+                            <div v-if="sms_status.length > 0" class="text-center">
+                              <p class="text-success"> The members will receive your message.</p>
+                              <p> check sms outbox later as it may take a while</p>
                               </div>
                       </div>
                       <div class="modal-footer">
@@ -481,9 +479,10 @@
 <script>
 import router from "../../router";
 import memberstats from '@/subcomponents/statistics/memberstats.vue'
+import textmessage from '@/subcomponents/textmessage.vue'
 export default {
   name: 'memberList',
-  components: {memberstats},
+  components: {memberstats,textmessage},
   data () {
     return {
       fetch_data_error: [],
@@ -614,6 +613,9 @@ export default {
       }
     },
   // send message to selected members
+    onMessageSet: function(value){
+      this.message = value
+    },
     sendMessage: function (){
       this.sending_message = true
       this.$http({
@@ -694,6 +696,8 @@ export default {
         this.$store.dispatch('update_isLoading', true)
         this.$http.get(this.$BASE_URL + '/api/members/filter-by-first_name/' + this.firstnamesearch +'/')
           .then(function (response) {
+            vm.min_age = 0
+            vm.max_age = 150
             vm.members = {"response": response.data }
             vm.firstnamesearch_status = ''
             var array = vm.members.response
@@ -706,9 +710,11 @@ export default {
         }
     },
     searchByGender() {
-      this.$store.dispatch('update_isLoading', true)
+      this.$store.dispatch('update_isLoading', true)      
       this.$http.get(this.$BASE_URL + '/api/members/filter-by-gender/'+ this.gendersearch)
             .then(response => {
+              this.min_age = 0
+              this.max_age = 150
               this.members = {"response": response.data }
               var array = this.members.response
               this.foundItems = array.length
@@ -731,7 +737,7 @@ export default {
       if (this.min_age != '' && this.max_age != ''){
       this.$store.dispatch('update_isLoading', true)
       this.$http.get(this.$BASE_URL + '/api/members/filter-by-age/'+ this.min_age +'/' + this.max_age + '/')
-      .then(response => {
+      .then(response => {        
         this.members = {"response": response.data }
         var array = this.members.response
         this.foundItems = array.length

@@ -8,14 +8,14 @@
 
                         <div class="row">
                             <div class="d-none d-lg-block stat-item mr-2 text-muted">
-                                    This month  <span class="text-info">
+                                    This month  <span class="text-secondary font-weight-bold">
                                      Ksh {{humanize(tithe_stats.response.total_in_tithe_this_month)}} </span>
                             </div>
                             <div class="stat-item d-none d-lg-block mr-2">
-                                    This year  <span class="text-info">
+                                    This year  <span class="text-secondary font-weight-bold">
                                     Ksh   {{humanize(tithe_stats.response.total_in_tithe_this_year)}} </span>                                        
                             </div>
-                            <a class="ml-2 btn btn-outline-info text-secondary dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
+                            <a class="ml-2 btn btn-outline-secondary dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
                                     more stats
                             </a>
                             <!-- when on a small device show this button --> 
@@ -35,7 +35,7 @@
                     </div>
                     <hr/>
                     <p>
-                        <span class="badge badge-pill badge-info">{{foundTithes}}</span> entries
+                        <span class="badge badge-pill badge-secondary">{{foundTithes}}</span> entries
                     </p>                             
                     <div>                                                
                         <table class="table table-responsive-sm">
