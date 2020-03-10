@@ -1,5 +1,8 @@
 <template>
     <div>
+        <!-- this compnent requires text message modal -->
+        <textmessage :memberIds="member_ids"/> 
+
         <nav aria-label="breadcrumb" class="container">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><span class="backButton"><router-link style="text-decoration: none" :to="{name: 'Home'}">Home</router-link></span>  
@@ -63,23 +66,23 @@
                             <div class="tab-content" id="pills-tabContent">                                                                      
                                 <!-- tithes -->
                                 <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">                                          
-                                        <h3>Tithes </h3>
-                                        <tithes/>                                    
+                                        <h3 class="font-weight-bold">Tithes </h3>
+                                        <tithes v-on:membersSelected="setMemberIds"/>                                    
                                 </div>
                                 <!-- offerings -->
                                 <div class="tab-pane fade" id="pills-offerings" role="tabpanel" aria-labelledby="pills-offerings-tab">                                                                                  
                                     <div v-if = "offerings_selected">
                                         <!-- offerings -->
-                                        <h3 >Offering</h3>
-                                        <offerings/>                                        
+                                        <h3 class="font-weight-bold">Offering</h3>
+                                        <offerings v-on:membersSelected="setMemberIds"/>                                        
                                     </div>
                                 </div>
                                 <!-- Income-->
                                 <div class="tab-pane fade" id="pills-anyOther" role="tabpanel" aria-labelledby="pills-anyOther-tab">                                        
                                         <div v-if = "any_other_selected">
-                                                <h3>Income</h3>                                                
+                                                <h3 class="font-weight-bold">Income</h3>                                                
                                                 <div class="text-muted" v-if="any_other_selected">
-                                                        <div class="row">
+                                                        <div class="d-flex d-flex-row justify-content-center">
                                                                 <div class="d-none d-lg-block stat-item mr-2 text-muted">
                                                                         This month  <span class="text-secondary font-weight-bold">
                                                                          Ksh {{humanize(income_stats.response.total_this_month)}} </span>
@@ -215,14 +218,22 @@
                             </button>                            
                     </div>
                     <div class="list-group font-weight-bold"  v-if = "tithes_selected">
+                            <button type="button" class="list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#textModalCenter">
+                                <img src="@/assets/icons/icons8-comments-64.png">
+                                text people
+                            </button>
                             <button type="button" class="action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#exportTithesToCSV" >
                               <img src="@/assets/icons/icons8-export-csv-30.png" style="width: 35px; height:auto"> export to CSV
                             </button>                            
                     </div>
                     <div class="list-group font-weight-bold"  v-if = "offerings_selected">
+                            <button type="button" class="list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#textModalCenter">
+                                    <img src="@/assets/icons/icons8-comments-64.png">
+                                    text people
+                            </button>   
                             <button type="button" class="action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#exportOfferingsToCSV" >
                               <img src="@/assets/icons/icons8-export-csv-30.png" style="width: 35px; height:auto"> export to CSV
-                            </button>                            
+                            </button>                                                     
                     </div>
                     <div class="list-group font-weight-bold"  v-if = "any_other_selected">
                             <button type="button" class="action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#exportIncomeToCSV" >
@@ -379,14 +390,15 @@ import incomestats from '@/subcomponents/statistics/incomestats.vue'
 import expenditures from '@/subcomponents/finances/expenditure.vue'
 import tithes from '@/subcomponents/finances/tithes.vue'
 import offerings from '@/subcomponents/finances/offerings.vue'
+import textmessage from '@/subcomponents/textmessage.vue'
 export default {
     name: 'generalFinance',
     components: {    
         incomestats,        
-
         expenditures,
         tithes,
-        offerings
+        offerings,
+        textmessage
     } ,
 
     data () {
@@ -422,8 +434,9 @@ export default {
             added_income: [],
         // exporting data
             csv_date: '',
-            exporting_data:false
-        
+            exporting_data:false,
+        //select members
+            member_ids:[]
         }
     },
     created () {
@@ -463,6 +476,9 @@ export default {
         },
         humanize: function(x) {
                 return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        },
+        setMemberIds (value){                                    
+            this.member_ids = value 
         },
         //fetch data
         fetchdata () {

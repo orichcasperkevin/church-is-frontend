@@ -1,12 +1,11 @@
 <!-- Parent.vue -->
 <template>
-        <div>
+        <div>  
             <!-- TITHES CONTENT -->
-            <div>                
+            <div>
                     <!-- tithe stats -->
-                    <div class="text-muted">
-
-                        <div class="row">
+                    <content class="text-muted">
+                        <div class="d-flex justify-content-center">
                             <div class="d-none d-lg-block stat-item mr-2 text-muted">
                                     This month  <span class="text-secondary font-weight-bold">
                                      Ksh {{humanize(tithe_stats.response.total_in_tithe_this_month)}} </span>
@@ -27,20 +26,25 @@
                         </div> 
                         <p>                                                    
                         </p>
-                        <div class="collapse" id="statsTab">
-                            <div class="card card-body outline-0">
+                        <div class="collapse " id="statsTab">
+                            <div class="card card-body outline-0 ">                            
                                 <tithestats msg="tithe stats"/>
                             </div>
                         </div>
-                    </div>
+                    </content>
                     <hr/>
-                    <p>
-                        <span class="badge badge-pill badge-secondary">{{foundTithes}}</span> entries
-                    </p>                             
-                    <div>                                                
+                    <p><span class="badge badge-pill badge-secondary">{{foundTithes}}</span> entries</p> 
+                    <!-- main content-->
+                    <content>                                                
                         <table class="table table-responsive-sm">
                             <thead>
                                 <tr>
+                                    <th>                                     
+                                        <label class="anvil-checkbox">all
+                                            <input type="checkbox" :value=true v-model="all_members">
+                                            <span class="anvil-checkmark"></span>
+                                        </label>
+                                    </th>
                                     <th>name</th>
                                     <th>amount</th>
                                     <th>time</th>
@@ -50,10 +54,17 @@
                             </thead>
                             <tbody>
                                 <tr v-for = "data in tithes.response">
-                                    <td>                                     
-                                        <router-link :to="`/memberDetail/`+ data.member.member.id">
-                                            <span class = "text-secondary">{{data.member.member.first_name}} {{data.member.member.last_name}}</span>
-                                        </router-link>
+                                    <td v-if = "data.member != null">                                          
+                                            <label class="anvil-checkbox">
+                                                    <input multiple type="checkbox" :value=data.member.member.id v-model="member_ids">
+                                                    <span class="anvil-checkmark"></span>
+                                            </label>
+                                    </td>
+                                    <td v-else></td>
+                                    <td v-if = "data.member != null">
+                                            <router-link :to="`/memberDetail/`+ data.member.member.id">
+                                                    <span class = "text-secondary">{{data.member.member.first_name}} {{data.member.member.last_name}}</span>
+                                            </router-link>
                                     </td>
                                     <td><p class="text-secondary">{{humanize(data.amount)}}</p></td>
                                     <td>{{$humanizeDate(data.date)}}</td>
@@ -62,7 +73,7 @@
                                 </tr>
                             </tbody>
                         </table>
-                    </div>
+                    </content>
             </div>
             <!-- add tithe modal -->
             <div class="modal fade" id="addTithe" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -187,6 +198,8 @@
       import searchmember from '@/subcomponents/searchmember.vue'
       import tithestats from '@/subcomponents/statistics/tithestats.vue'
       export default {
+        name: 'about',
+        components: { searchmember,tithestats },
         created () {
             this.getTithes()
         },
@@ -210,12 +223,34 @@
             added_tithe: [],add_tithe_errors: [],
             // exporting data
             csv_date: '',
-            exporting_data:false
+            exporting_data:false,
+            //member ids
+            all_members: false,
+            member_ids: [],
+            all_member_ids: [],
+            //sending message
+            message: " ",
+            sms_status: [],
+            sending_message: false,
           }
         },
-        name: 'about',
-        components: { searchmember,tithestats },
+        watch: {
+            all_members: function(){
+                if (this.all_members != true){
+                    this.member_ids = []
+                }
+                else{
+                    this.member_ids = this.all_member_ids
+                }
+            },
+            member_ids: function(){
+                this.emitToParent()
+            }
+        },
         methods: {
+            emitToParent (event) {                               
+                this.$emit('membersSelected', this.member_ids)
+            },
            humanize: function(x) {return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");},
           // Triggered when `memberSelected` event is emitted by the child.
           onMemberSelected (value) {
@@ -229,6 +264,10 @@
             if (this.tithes){
                 var array = this.tithes.response
                 this.foundTithes = array.length
+                for (var tithe in array){
+                        this.all_member_ids.push(array[tithe].member.member.id)                       
+                } 
+                this.emitToParent()
                 this.$store.dispatch('update_isLoading', false)
             }            
             this.tithe_stats = JSON.parse(localStorage.getItem('tithe_stats'))
@@ -243,6 +282,10 @@
                 .then(response => {
                     this.tithes = {"response": response.data }   
                     var array = this.tithes.response
+                    for (var tithe in array){
+                        this.all_member_ids.push(array[tithe].member.member.id)                        
+                    }   
+                    this.emitToParent()
                     this.foundTithes = array.length                  
                     
                     localStorage.setItem('tithe_list',JSON.stringify({"response": response.data }))                

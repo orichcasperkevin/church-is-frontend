@@ -1,5 +1,8 @@
 <template>
     <div>
+        <!-- this compnent requires text message modal -->
+        <textmessage :memberIds="member_ids"/> 
+
         <nav aria-label="breadcrumb" class="container">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><span class="backButton"><router-link style="text-decoration: none" :to="{name: 'Home'}">Home</router-link></span>
@@ -24,8 +27,8 @@
 
             <div class="col-sm-10 col-md-8 col-lg-2 mb-3" style="padding: 0px 0px 0px 0px">
                 <nav class="nav nav-pills " id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                  <a class="action-list list-group-item list-group-item-action border-0 "
-                    data-toggle="pill" href="#member" role="tab" aria-controls="members" aria-selected="true">
+                  <a class="action-list list-group-item list-group-item-action border-0 active"
+                    data-toggle="pill" href="#member" role="tab" aria-controls="members" aria-selected="true" >
                     <img  style="width: 30px; height: auto; " src="@/assets/icons/icons8-user-groups-40.png"> members
                   </a>
                   <a class="action-list list-group-item list-group-item-action border-0 "
@@ -48,7 +51,7 @@
                 <div>                   
                     <span aria-current="page" v-for="data in group.response" class="row">
                       <h3 class="ml-3">
-                         members <span>({{foundItems}})</span>
+                         members
                       </h3>
                       <!-- on small devices -->
                       <span class=" btn btn-success  d-sm-block d-md-none mx-auto"
@@ -59,7 +62,7 @@
                     <hr/>
                   <div class="row mb-1">
                       <p class="ml-4">
-                      found <span class="badge badge-pill badge-info">{{foundItems}}</span>
+                      found <span class="badge badge-pill badge-secondary">{{foundItems}}</span>
                       </p>
                       <div class="btn-group d-sm-block d-md-none ml-2">
                           <a href="#" style="text-decoration: none">
@@ -96,12 +99,27 @@
                     </div>
                     <table class="table">
                       <tbody>
-                        <tr v-for="data in members.response">
-
-                          <th scope="row"></th>
-                          <td ><img v-if = "data.member.gender == 'M'" style = "height: 32px "src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
-                               <img v-if = "data.member.gender == 'F'" style = "height: 32px "src="@/assets/avatars/icons8-user-female-skin-type-4-40.png">
-                               <img v-if = "data.member.gender == 'R'" style = "height: 32px "src="@/assets/avatars/icons8-contacts-96.png">
+                        <tr>                            
+                            <th class="anvil-checkbox">                                
+                                  <label class="anvil-checkbox">all
+                                      <input type="checkbox" :value=true v-model="all_members">
+                                      <span class="anvil-checkmark"></span>
+                                  </label>
+                            </th>
+                            <th>names</th>
+                            <th>role</th>
+                        </tr>
+                        <tr v-for="data in members.response">   
+                          <td >                                  
+                                <label class="anvil-checkbox">
+                                    <input multiple type="checkbox" :value=data.member.member.id v-model="member_ids">
+                                    <span class="anvil-checkmark"></span>
+                                </label>
+                          </td>                                               
+                          <td >
+                            <img v-if = "data.member.gender == 'M'" style = "height: 32px "src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
+                            <img v-if = "data.member.gender == 'F'" style = "height: 32px "src="@/assets/avatars/icons8-user-female-skin-type-4-40.png">
+                            <img v-if = "data.member.gender == 'R'" style = "height: 32px "src="@/assets/avatars/icons8-contacts-96.png">
                             <router-link :to="`/memberDetail/`+ data.member.member.id">
                               <span class = "text-secondary">{{data.member.member.first_name}} {{data.member.member.last_name}} </span>
                             </router-link>
@@ -276,41 +294,7 @@
                         </div>
                       </div>
                     </div>
-                  </div>
-                <!-- Modal text people -->
-                <div class="modal fade" id="textModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title" >text group members </h5>
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                          </button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="form-group" v-if="sms_status.length == 0">
-                                <label for="exampleFormControlTextarea1">message </label>
-                                <textmessage v-on:messageSet="onMessageSet"/>                                
-                              </div>
-                              <div v-if="sms_status.length > 0" class="text-center">
-                                <p class="text-success">successful</p>
-                                <p class="text-info"> The members will receive your message.</p>
-                                <p> check sms status later as it may take a while</p>
-                                </div>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="closeSmsModal()">Close</button>
-                          <span v-if = "sms_status.length == 0">
-                            <button type="button" class="btn btn-success" v-on:click=sendMessage()>send text
-                              <span v-if="sending_message"
-                                class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
-                            </span>
-                            </button>                            
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                </div>              
               </div>
             </div>
             </div>
@@ -350,7 +334,9 @@ export default {
       role_description: null,
       enable_role_button: false,
       add_role_button_text: '+ add role',
-      added_role: []
+      added_role: [],
+      //all members
+      all_members:true
     }
   },
   created() {
@@ -366,7 +352,15 @@ export default {
         if (this.role_description.length > 0 && this.role_name.length > 0){
             this.enable_role_button = true
         }
-    }
+    },
+    all_members: function(){
+          if (this.all_members != true){
+              this.member_ids = []
+          }
+          else{
+            this.member_ids = this.all_member_ids
+          }
+        }
   },
   methods: {
       goBack: function() {
@@ -413,27 +407,7 @@ export default {
           alert(err)
         })
       },
-      onMessageSet: function(value){
-        this.message = value
-      },
-      sendMessage: function (){
-        this.sending_message = true
-        this.$http({ method: 'post', url: this.$BASE_URL + '/api/sms/add-sms/',
-        data: {
-          sending_member_id: this.$session.get('member_id'),
-          app: this.group.response[0].name,
-          message: this.message,
-          website: true,
-          receipient_member_ids: this.member_ids
-        }
-        }).then(response => {
-          this.sending_message = false
-          this.sms_status.push(response.data)
-        })
-        .catch((err) => {
-          this.sending_message = false
-        })
-      },
+      
       addChannelNotification: function(){
         this.sending_message = true
         this.$http({ method: 'post', url: this.$BASE_URL + '/api/social/add-channel-notification/',
@@ -451,10 +425,6 @@ export default {
           this.sending_message = false
           alert(err)
         })
-      },
-      closeSmsModal: function (){
-        this.sms_status = []
-        this.message = ""
       },
       //add role        
       addRole: function() {
@@ -521,10 +491,11 @@ export default {
         .then(response => {          
           this.members = {"response": response.data }
           var array = this.members.response
-          this.foundItems = array.length
+          this.foundItems = array.length        
           for (var data in this.members.response){
-            this.member_ids.push(this.members.response[data].member.id)
+            this.member_ids.push(this.members.response[data].member.id)            
           }
+          this.all_member_ids = this.member_ids
           this.$store.dispatch('update_isLoading', false)
         })
         .catch((err) => {

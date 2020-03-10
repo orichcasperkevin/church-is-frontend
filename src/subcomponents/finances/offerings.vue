@@ -18,7 +18,7 @@
                         </div>
                 </div>
                 <div class="text-muted" >
-                        <div class="row ">
+                        <div class="d-flex d-flex-row justify-content-center">
                                 <div class="d-none d-lg-block stat-item mr-2 text-muted">
                                         This month  <span class="text-secondary font-weight-bold">
                                          Ksh {{humanize(offering_stats.response.total_in_offerings_this_month)}}</span>
@@ -51,6 +51,12 @@
                 <table class="table table-responsive-sm">
                     <thead>
                         <tr>
+                            <th>
+                                 <label class="anvil-checkbox">all
+                                    <input type="checkbox" :value=true v-model="all_members">
+                                    <span class="anvil-checkmark"></span>
+                                </label>
+                            </th>
                             <th>name</th>
                             <th>amount</th>
                             <th>date</th>
@@ -60,6 +66,12 @@
                     </thead>
                     <tbody>
                         <tr v-for = "data in offerings.response">
+                            <td v-if = "data.member != null">                                          
+                                    <label class="anvil-checkbox">
+                                            <input multiple type="checkbox" :value=data.member.member.id v-model="member_ids">
+                                            <span class="anvil-checkmark"></span>
+                                    </label>
+                            </td>
                             <td v-if = "data.member != null">                                
                                 <router-link :to="`/memberDetail/`+ data.member.member.id">
                                     <span class = "text-secondary">{{data.member.member.first_name}} {{data.member.member.last_name}}</span>
@@ -276,7 +288,11 @@
             // exporting data
             offering_from: '',
             csv_date: '',
-            exporting_data:false
+            exporting_data:false,
+            //selecting members
+            all_members: false,
+            member_ids: [],
+            all_member_ids: [],
           }
         },
         name: 'offerings',
@@ -303,6 +319,17 @@
                     }                           
                     this.checkForService()               
                 }
+            },
+            all_members: function(){
+                if (this.all_members != true){
+                    this.member_ids = []
+                }
+                else{
+                    this.member_ids = this.all_member_ids
+                }
+            },
+            member_ids: function(){
+                this.emitToParent()
             }
         },
         methods: {
@@ -310,6 +337,9 @@
           // Triggered when `memberSelected` event is emitted by the child.
           onMemberSelected (value) {
             this.selectedMember = value
+          },
+          emitToParent (event) {                               
+                this.$emit('membersSelected', this.member_ids)
           },
           //check for service on a date
           checkForService: function(){  
@@ -334,6 +364,9 @@
             if (this.offerings){
                 var array = this.offerings.response
                 this.foundOfferings = array.length
+                for (var offering in array){
+                    this.all_member_ids.push(array[offering].member.member.id)                       
+                } 
             }
 
             const currentVersion = this.$store.getters.offering_list_version
@@ -344,9 +377,9 @@
                 this.$store.dispatch('update_isLoading', true)
                 this.$http.get(this.$BASE_URL + '/api/finance/offering-stats/')
                 .then(response => {
-                this.offering_stats = {"response": response.data }                      
-                localStorage.setItem('offering_stats',JSON.stringify({"response": response.data }))                
-                this.$store.dispatch('update_isLoading', false)
+                    this.offering_stats = {"response": response.data }                      
+                    localStorage.setItem('offering_stats',JSON.stringify({"response": response.data }))                
+                    this.$store.dispatch('update_isLoading', false)
                 })
                 .catch((err) => {
                     this.fetch_data_error.push(err)
@@ -359,6 +392,9 @@
                     this.offerings = {"response": response.data } 
                     var array = this.offerings.response
                     this.foundOfferings = array.length
+                    for (var offering in array){
+                        this.all_member_ids.push(array[offering].member.member.id)                       
+                    } 
 
                     localStorage.setItem('offering_list',JSON.stringify({"response": response.data }))                
                     localStorage.setItem('offering_list_version', currentVersion)

@@ -2,9 +2,9 @@
     <div>  
         <!-- EXPENDITURE CONTENTS -->
         <div>
-            <h3 >Expenditure</h3>                                          
+            <h3 class="font-weight-bold">Expenditure</h3>                                          
             <div class="text-muted">
-                    <div class="row">
+                    <div class="d-flex d-flex-row justify-content-center">
                             <div class="d-none d-lg-block stat-item mr-2 text-muted">
                                     This month  <span class="text-secondary font-weight-bold">
                                      Ksh {{humanize(expenditure_stats.total_this_month)}}</span>

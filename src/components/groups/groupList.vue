@@ -14,7 +14,7 @@
             </div>
         </div>
         <div v-if = "fetch_data_error.length == 0">
-        found <span class="badge badge-pill badge-info">{{foundItems}}</span>        
+        found <span class="badge badge-pill badge-secondary">{{foundItems}}</span>        
         <p></p>
         <table class="table">                     
             <tbody>
@@ -28,8 +28,7 @@
                 <td></td>
                 <td></td>
                 <td> 
-                    <p> 
-                        <small class="text-muted">members -</small>
+                    <p>                         
                         <span class="badge badge-pill badge-secondary">{{data.number_of_members}}</span>
                     </p>
                 </td>

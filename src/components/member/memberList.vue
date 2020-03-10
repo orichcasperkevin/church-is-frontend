@@ -1,5 +1,8 @@
-<template>
-    <div class="memberList">
+<template>  
+    <div>
+        <!-- this compnent requires text message modal -->
+        <textmessage :memberIds="member_ids"/> 
+
       <!-- NAVBAR -->
       <nav aria-label="breadcrumb" class="container">
         <ol class="breadcrumb">
@@ -20,7 +23,7 @@
         <div class="container">
           <div class="row">
             <!-- FILTERS TAB ON THE LEFT -->
-            <div class="filters col-12 col-sm-0 col-md-8 col-lg-3 " style="padding: 3px 3px 3px 3px">
+            <div class="filters col-12 col-sm-0 col-md-8 col-lg-2 " style="padding: 3px 3px 3px 3px">
                 <div class="form-group d-none d-lg-block">
                     <label for="searchInput">
                       <b>
@@ -45,19 +48,17 @@
                   <div id="container row" >
                       <div class="accordion">
                         <label for="tm" class="accordionitem"><b>age</b></label>                      
-                          <div class="row">
-                            <div class="col">
-                            <div class="form-group">
-                                <small><b>min age :</b></small>
-                                <input type="number" class="form-control" id="searchInput"  placeholder="min age" v-model = "min_age">
-                            </div>
-                            </div>
-                            <div class="col">
-                              <div class="form-group">
+                          <div class="d-flex flex-row justify-content-about">
+                            
+                              <div class="form-group p-1">
+                                  <small><b>min age :</b></small>
+                                  <input type="number" class="form-control" id="searchInput"  placeholder="min age" v-model = "min_age">
+                              </div>                                                       
+                              <div class="form-group p-1 ">
                                   <small><b>max age :</b></small>
                                   <input type="number" class="form-control" id="searchInput" placeholder="max age" v-model = "max_age">
                               </div>
-                            </div>
+
                           </div>
                       </div>
 
@@ -65,8 +66,8 @@
                         <label for="tn" class="accordionitem"><b>gender</b></label>                        
                         <div class="row" style="padding : 10px">
                           <div class="col">
-                            <div class="radio">
-                                <input type="radio" name="optradio" value="M" v-model="gendersearch"> male
+                            <div>
+                                <input type="radio" name="optradio" value="M" v-model="gendersearch"> male                               
                               </div>
                             </div>
                             <div class="col">
@@ -91,7 +92,7 @@
               </div>
               <div v-if = "fetch_data_error.length == 0">
               <div>              
-                  <h3>
+                  <h3 class="font-weight-bold">
                     <img style="width: 48px ;height: auto" src="@/assets/icons/icons8-people-48.png">
                     Members                  
                   </h3>                                  
@@ -118,10 +119,11 @@
                   <thead>
                     <tr>
                       <th></th>
-                      <th class="row ml-1">
-                        <input multiple class="form-check-input" 
-                                type="checkbox" :value=true v-model="all_members">
-                              all
+                      <th class="row ml-1">                                                      
+                              <label class="anvil-checkbox">all 
+                                  <input type="checkbox":value=true v-model="all_members">
+                                  <span class="anvil-checkmark"></span>
+                              </label>                              
                         <!-- actions drop down on phone -->
                         <div class="btn-group d-sm-block d-md-none ml-5 mb-2" style="text-decoration: none; position:absolute">
                             <a href="#">
@@ -165,7 +167,12 @@
                     <tbody>
                       <tr v-for="data in members.response">
                         <th scope="row"></th>
-                        <td>  <input multiple class="form-check-input" type="checkbox" :value=data.member.id v-model="member_ids"></td>
+                        <td>                            
+                          <label class="anvil-checkbox">
+                              <input multiple type="checkbox" :value=data.member.id v-model="member_ids">
+                              <span class="anvil-checkmark"></span>
+                          </label>
+                        </td>
                         <td ><img v-if = "data.gender == 'M'" style = "height: 32px "src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
                               <img v-if = "data.gender == 'F'" style = "height: 32px "src="@/assets/avatars/icons8-user-female-skin-type-4-40.png">
                               <img v-if = "data.gender == 'R'" style = "height: 32px "src="@/assets/avatars/icons8-contacts-96.png">
@@ -260,42 +267,7 @@
                     </div>
                   </div>
               </div>
-              <!-- Modal text people -->
-              <div class="modal fade" id="textModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                  <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" >send message to selected members</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-                      <div class="modal-body">
-                          <div class="form-group" v-if="sms_status.length == 0">
-                              <label for="exampleFormControlTextarea1">message</label>
-                              <textmessage v-on:messageSet="onMessageSet"/>                              
-                            </div>
-                            <div v-if="sms_status.length > 0" class="text-center">
-                              <p class="text-success"> The members will receive your message.</p>
-                              <p> check sms outbox later as it may take a while</p>
-                              </div>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="closeSmsModal()">Close</button>
-                        <span v-if = "sms_status.length == 0">
-                          <button type="button" class="btn btn-success" 
-                                  v-on:click=sendMessage()>
-                                  send text
-                                  <span v-if="sending_message"
-                                        class="spinner-border spinner-border-sm" 
-                                        role="status" aria-hidden="true">
-                                  </span>
-                          </button>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-              </div>
+            
               <!-- Modal assign group -->
               <div class="modal fade" id="assignModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -501,9 +473,7 @@ export default {
       member_ids: [],
       //text messaging
       text_button_name: "",
-      message: " ",
-      sms_status: [],
-      sending_message: false,
+      message: " ",            
       sending_anvil_message:false,
       // csv file upload    
       submitting_file: false,
@@ -572,6 +542,7 @@ export default {
       }
     },
     fetchData() {
+      this.all_member_ids = []
       this.fetch_data_error = []
       this.$store.dispatch('update_isLoading', true)
       // try local storage
@@ -579,6 +550,7 @@ export default {
       if (this.members){        
         var array = this.members.response
         this.foundItems = array.length
+        this.member_ids = []
         for (var data in this.members.response){
           this.member_ids.push(this.members.response[data].member.id)
           this.all_member_ids = this.member_ids
@@ -597,6 +569,7 @@ export default {
         this.members = {"response": response.data }
         var array = this.members.response
         this.foundItems = array.length
+        this.member_ids = []
         for (var data in this.members.response){
           this.member_ids.push(this.members.response[data].member.id)
         }
@@ -612,31 +585,7 @@ export default {
       })
       }
     },
-  // send message to selected members
-    onMessageSet: function(value){
-      this.message = value
-    },
-    sendMessage: function (){
-      this.sending_message = true
-      this.$http({
-        method: 'post',
-        url: this.$BASE_URL + '/api/sms/add-sms/',
-        data: {
-          sending_member_id: this.$session.get('member_id'),
-          app: "GENERAL CHURCH",
-          message: this.message,
-          website: true,
-          receipient_member_ids: this.member_ids
-        }
-        }).then(response => {        
-          this.sms_status.push(response.data)          
-          this.sending_message = false
-        })
-        .catch((err) => {
-          alert("an error occured when attempting to deliver to one of the members, this may be due to an invalid phone number")
-          this.sending_message = false
-        })
-    },
+
     sendAnvilMessage: function(){   
       this.sending_anvil_message = true 
       this.$http({
@@ -699,6 +648,10 @@ export default {
             vm.min_age = 0
             vm.max_age = 150
             vm.members = {"response": response.data }
+            vm.member_ids = []
+            for (var data in vm.members.response){
+              vm.member_ids.push(vm.members.response[data].member.id)
+            }
             vm.firstnamesearch_status = ''
             var array = vm.members.response
             vm.foundItems = array.length
@@ -718,6 +671,7 @@ export default {
               this.members = {"response": response.data }
               var array = this.members.response
               this.foundItems = array.length
+              this.member_ids = []
               for (var data in this.members.response){
                 this.member_ids.push(this.members.response[data].member.id)
               }
@@ -741,6 +695,7 @@ export default {
         this.members = {"response": response.data }
         var array = this.members.response
         this.foundItems = array.length
+        this.member_ids = []
         for (var data in this.members.response){
           this.member_ids.push(this.members.response[data].member.id)
          }

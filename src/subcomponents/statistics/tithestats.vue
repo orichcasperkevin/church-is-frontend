@@ -1,6 +1,6 @@
 <template>
     <div class="tithe-stats" >    
-        <div v-if="data.datasets.length" style="max-height: 50%">
+        <div v-if="data.datasets.length" style="max-height: 40%">
             <barchart :data='data'/>
         </div>    
         <div v-else>

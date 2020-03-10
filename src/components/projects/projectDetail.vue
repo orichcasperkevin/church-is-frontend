@@ -1,5 +1,8 @@
 <template>
     <div >
+        <!-- this compnent requires text message modal -->
+        <textmessage :memberIds="member_ids"/> 
+
         <nav aria-label="breadcrumb" class="container">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><span class="backButton"><router-link style="text-decoration: none" :to="{name: 'Home'}">Home</router-link></span> 
@@ -7,7 +10,7 @@
                     <li class="breadcrumb-item"><span class="backButton"><router-link style="text-decoration: none" :to="{name: 'projectList'}">projects</router-link></span> 
                     <li class="breadcrumb-item active" aria-current="page"><span v-for = "data in context.response">{{data.name}}</span></li>
                 </ol>
-        </nav>
+        </nav>        
         <div class="container">
             <div class="row">
                 <div class="col-12 col-sm-10 col-md-8 col-lg-2">
@@ -32,7 +35,7 @@
                         <div class="tab-content" id="v-pills-tabContent">
                                 <!-- contributions tab -->
                                 <div class="tab-pane fade show active" id="v-pills-contributions" role="tabpanel" aria-labelledby="v-pills-contributions-tab">
-                                <h3 >
+                                <h3 class="font-weight-bold">
                                         <span v-for = "data in context.response">{{data.name}} /</span> contributions                                        
                                 </h3>
                                 <!-- what to show on small devices -->
@@ -51,7 +54,7 @@
                                         </div>
                                 </div>
                                 <div class=" text-muted" v-for = "data in context.response ">
-                                        <div class="row ml-1">
+                                        <div class="d-flex d-flex-row justify-content-center">
                                                 <div class="d-none d-lg-block stat-item mr-2 text-muted">
                                                         Required  <span class="text-secondary font-weight-bold">
                                                                 Ksh {{humanize(data.required_amount)}}</span>
@@ -76,9 +79,10 @@
                                         <thead>
                                             <tr>
                                                 <th>
-                                                        <input multiple class="form-check-input" 
-                                                        type="checkbox" :value=true v-model="all_members">
-                                                        all
+                                                    <label class="anvil-checkbox">all
+                                                        <input type="checkbox" :value=true v-model="all_members">
+                                                        <span class="anvil-checkmark"></span>
+                                                    </label>
                                                 </th>
                                                 <th>name</th>
                                                 <th>amount</th>
@@ -86,9 +90,12 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr v-for = "data in contributions.response">
-                                                <td v-if = "data.member != null">  
-                                                        <input multiple class="form-check-input" type="checkbox" :value=data.member.member.id v-model="member_ids">
+                                            <tr v-for = "data in contributions.response">                                               
+                                                <td v-if = "data.member != null">                                          
+                                                   <label class="anvil-checkbox">
+                                                        <input multiple type="checkbox" :value=data.member.member.id v-model="member_ids">
+                                                        <span class="anvil-checkmark"></span>
+                                                   </label>
                                                 </td>
                                                 <td v-else></td>
                                                 <td v-if = "data.member != null">
@@ -106,7 +113,7 @@
                                 <!-- pledges tab -->
                                 <div class="tab-pane fade" id="v-pills-pledges" role="tabpanel" aria-labelledby="v-pills-pledges-tab">
                                     <div v-if = "pledges_selected">
-                                        <h3>
+                                        <h3 class="font-weight-bold">
                                                 <span v-for = "data in context.response">{{data.name}} /</span> pledges
 
                                         </h3>
@@ -128,7 +135,7 @@
                                         </div>
                                         <!-- pledges -->
                                         <div class="text-muted" v-for = "data in context.response ">
-                                                <div class="row ml-1">
+                                                <div class="d-flex d-flex-row justify-content-center">
                                                         <div class="d-none d-lg-block stat-item mr-2 text-muted">
                                                                 Pledges  <span class="text-text-secondary font-weight-bold">
                                                                         Ksh {{humanize(data.total_in_pledges)}}</span>
@@ -153,9 +160,10 @@
                                                 <thead>
                                                     <tr>
                                                         <th>
-                                                                <input multiple class="form-check-input" 
-                                                                type="checkbox" :value=true v-model="all_members">
-                                                                all
+                                                        <label class="anvil-checkbox">all
+                                                                <input type="checkbox" :value=true v-model="all_members">
+                                                                <span class="anvil-checkmark"></span>
+                                                        </label>
                                                         </th>
                                                         <th>name</th>
                                                         <th>pledged</th>
@@ -165,10 +173,13 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr v-for = "data in pledges.response" v-if="selectedMember == '' || selectedMember == null || memberSearch == ''">                                                                                                                
-                                                        <td v-if = "data.member != null"> 
-                                                                <input multiple class="form-check-input" type="checkbox" :value=data.member.member.id v-model="member_ids">
-                                                        </td>    
+                                                    <tr v-for = "data in pledges.response" v-if="selectedMember == '' || selectedMember == null || memberSearch == ''">                                                                                                                  
+                                                        <td v-if = "data.member != null">                                          
+                                                                <label class="anvil-checkbox">
+                                                                        <input multiple type="checkbox" :value=data.member.member.id v-model="member_ids">
+                                                                        <span class="anvil-checkmark"></span>
+                                                                </label>
+                                                        </td> 
                                                         <td v-else></td>                                                        
                                                         <td v-if = "data.member != null">
                                                                 <router-link :to="`/memberDetail/`+ data.member.member.id">
@@ -183,7 +194,7 @@
                                                         
                                                     </tr>
                                                 </tbody>
-                                            </table>
+                                        </table>
                                     </div>
                                 </div>
                                
@@ -223,7 +234,7 @@
                                 </div>
                         </div>
 
-                        <!-- more actions -->
+                        <!-- more actions -->                          
                         <div class="list-group font-weight-bold">
                                 <button type="button" class="list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#textModalCenter"><img src="@/assets/icons/icons8-comments-64.png">
                                         text people
@@ -293,45 +304,7 @@
                             </div>
                           </div>
                         </div>
-                </div> 
-                <!-- Modal text people -->
-                <div class="modal fade" id="textModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h5 class="modal-title" >send message to selected members</h5>
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                              </button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="form-group" v-if="sms_status.length == 0">
-                                    <label for="exampleFormControlTextarea1">message</label>
-                                    <textmessage v-on:messageSet="onMessageSet"/>
-                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model = "message"></textarea>
-                                  </div>
-                                  <div v-if="sms_status.length > 0" class="text-center">
-                                        <p class="text-success">Successfull</p>
-                                        <p class="text-info"> The members will receive your message.</p>
-                                        <p> check sms status later as it may take a while</p>
-                                    </div>
-                            </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="closeSmsModal()">Close</button>
-                              <span v-if = "sms_status.length == 0">
-                                <button type="button" class="btn btn-success" 
-                                        v-on:click=sendMessage()>
-                                        send text
-                                        <span v-if="sending_message"
-                                              class="spinner-border spinner-border-sm" 
-                                              role="status" aria-hidden="true">
-                                        </span>
-                                </button>
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                </div>
+                </div>                                           
                 <!-- Modal assign group -->
                 <div class="modal fade" id="assignModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -765,31 +738,6 @@ export default {
           },
         humanize: function(x) {
                 return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        },
-          // send message to selected members
-        onMessageSet: function(value){
-                this.message = value
-        },
-        sendMessage: function (){
-        this.sending_message = true
-        this.$http({
-                method: 'post',
-                url: this.$BASE_URL + '/api/sms/add-sms/',
-                data: {
-                        sending_member_id: this.$session.get('member_id'),
-                        app: "CHURCH PROJECTS: "+ this.context.response[0].name,
-                        message: this.message,
-                        website: true,
-                        receipient_member_ids: this.member_ids
-                }
-                }).then(response => {        
-                        this.sms_status.push(response.data)          
-                        this.sending_message = false
-                })
-                .catch((err) => {
-                        alert("an error occured when attempting to deliver to one of the members, this may be due to an invalid phone number")
-                        this.sending_message = false
-                })
         },
         exportData: function(){
             const FileDownload = require('js-file-download');

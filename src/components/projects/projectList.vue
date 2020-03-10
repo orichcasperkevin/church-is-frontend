@@ -25,7 +25,7 @@
             <!-- CONTENT AT CENTER -->
             <div class="tab-content col">
                     <div class="tab-pane fade show active" id="inProgress" role="tabpanel" aria-labelledby="profile-tab"></div>
-                    <h3> Projects</h3>
+                    <h3 class="font-weight-bold"> Projects</h3>
                     <p>
                         <a class="btn btn-sm btn-outline-secondary dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
                                 more stats
