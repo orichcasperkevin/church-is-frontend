@@ -60,16 +60,30 @@
                                                     <span class="anvil-checkmark"></span>
                                             </label>
                                     </td>
-                                    <td v-else></td>
+                                    <td v-else>
+                                            <label class="anvil-checkbox">
+                                                    <input multiple type="checkbox">
+                                                    <span class="anvil-checkmark"></span>
+                                            </label>
+                                    </td>
                                     <td v-if = "data.member != null">
                                             <router-link :to="`/memberDetail/`+ data.member.member.id">
                                                     <span class = "text-secondary">{{data.member.member.first_name}} {{data.member.member.last_name}}</span>
                                             </router-link>
                                     </td>
+                                    <td v-if="data.service">{{data.service.type.name}} ({{data.service.date}})</td>
+                                    <td v-if="data.group">
+                                            <router-link  :to="`/groupDetail/`+ data.group.id" class="text-muted">                                    
+                                                <div>                                             
+                                                    {{data.group.name}}
+                                                </div>                                                                                                                                
+                                            </router-link>
+                                    </td>
+                                    <td v-if="! data.group && ! data.service && ! data.member">anonymous</td>
                                     <td><p class="text-secondary">{{humanize(data.amount)}}</p></td>
                                     <td>{{$humanizeDate(data.date)}}</td>
-                                    <td><p class="text-secondary">{{humanize(data.total_this_month)}}</p></td>
-                                    <td><p>{{humanize(data.total_this_year)}}</p></td>                                                          
+                                    <td><p class="text-secondary" v-if="data.total_this_month">{{humanize(data.total_this_month)}}</p></td>
+                                    <td><p v-if="data.total_this_year">{{humanize(data.total_this_year)}}</p></td>                                                          
                                 </tr>
                             </tbody>
                         </table>
@@ -80,12 +94,17 @@
                     <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalCenterTitle">add tithe for member</h5>
+                        <h5 class="modal-title" id="exampleModalCenterTitle">add tithing</h5>
                         <button type="button" class="close" data-dismiss="modal" v-on:click="getTithes()" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                         </div>
-                        <div class="modal-body">                                                                       
+                        <div class="modal-body"> 
+                                <customselect :fields="['member','group','service']"
+                                              v-on:inputChanged="onInputChanged" 
+                                              v-on:memberSelected="onMemberSelected"
+                                              v-on:groupSelected="onGroupSelected"
+                                              v-on:serviceFound="onServiceFound"/>                                                                                                                        
                                 <div v-if="add_tithe_errors.length > 0">
                                     <ul>
                                             <small>
@@ -95,23 +114,7 @@
                                             </small>
                                     </ul>
                                 </div>                                    
-                                <form>                                                                                       
-                                        <div class=" row form-group">
-                                            <label class="col-3"><b>member:</b></label>
-                                            <div class="col-8">
-                                                    <searchmember v-on:memberSelected="onMemberSelected" />
-                                                    <div v-if="tithe_member_error.length > 0">
-                                                        <ul>
-                                                                <small>
-                                                                    <li v-for="error in tithe_member_error">
-                                                                        <p class="text-danger">{{ error }}</p>
-                                                                    </li>
-                                                                </small>
-                                                        </ul>
-                                                    </div>                                                   
-                                            </div>                                           
-                                            
-                                        </div>
+                                <form>                                                                                                                           
                                                                               
                                         <hr/>
                                         <div class="row form-group">
@@ -139,7 +142,7 @@
                         <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="getTithes()">Close</button>
                         <button type="button" class="btn btn-success" disabled v-if= "! enable_add_tithe_button && add_tithe_button_text != 'adding tithe...'">{{add_tithe_button_text}}</button>
                         <button type="button" class="btn btn-success" v-on:click="addTithe()">
-                            {{add_tithe_button_text}}
+                            add tithe
                             <span v-if="adding_tithe"
                                 class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
                             </span>
@@ -195,11 +198,11 @@
         </div>
       </template>
       <script>
-      import searchmember from '@/subcomponents/searchmember.vue'
       import tithestats from '@/subcomponents/statistics/tithestats.vue'
+      import customselect from '@/subcomponents/finances/select.vue'
       export default {
         name: 'about',
-        components: { searchmember,tithestats },
+        components: { tithestats,customselect },
         created () {
             this.getTithes()
         },
@@ -232,6 +235,10 @@
             message: " ",
             sms_status: [],
             sending_message: false,
+            //add
+            not_member:false,
+            group:null,
+            service:null
           }
         },
         watch: {
@@ -251,128 +258,134 @@
             emitToParent (event) {                               
                 this.$emit('membersSelected', this.member_ids)
             },
-           humanize: function(x) {return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");},
-          // Triggered when `memberSelected` event is emitted by the child.
-          onMemberSelected (value) {
-            this.selectedMember = value
-          },
-          getTithes: function(){
-            this.fetch_data_error = []
-            this.$store.dispatch('update_isLoading', true)
-            // try local storage for tithes
-            this.tithes = JSON.parse(localStorage.getItem('tithe_list'))
-            if (this.tithes){
-                var array = this.tithes.response
-                this.foundTithes = array.length
-                for (var tithe in array){
-                        this.all_member_ids.push(array[tithe].member.member.id)                       
-                } 
-                this.emitToParent()
-                this.$store.dispatch('update_isLoading', false)
-            }            
-            this.tithe_stats = JSON.parse(localStorage.getItem('tithe_stats'))
-
-            const currentVersion = this.$store.getters.tithe_list_version
-            var version  = localStorage.getItem('tithe_list_version')
-
-            //else try network for tithes
-            if (!version || version < currentVersion) {
+            humanize: function(x) {return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");},
+            // Triggered when `memberSelected` event is emitted by the child.
+            onMemberSelected (value) {             
+                this.selectedMember = value
+            },
+            onInputChanged (value){
+                this.selectedMember = null
+                this.group = null
+                this.service = null
+            },
+            onServiceFound (found_service){                                                                 
+                this.service = found_service[0].type.id
+            },
+            onGroupSelected (group){                
+                this.group = group
+            },
+            getTithes: function(){
+                this.fetch_data_error = []
                 this.$store.dispatch('update_isLoading', true)
-                this.$http.get(this.$BASE_URL + '/api/finance/tithes-by-members/')
-                .then(response => {
-                    this.tithes = {"response": response.data }   
+                // try local storage for tithes
+                this.tithes = JSON.parse(localStorage.getItem('tithe_list'))
+                if (this.tithes){
                     var array = this.tithes.response
+                    this.foundTithes = array.length
                     for (var tithe in array){
-                        this.all_member_ids.push(array[tithe].member.member.id)                        
-                    }   
+                        if (array[tithe].member){
+                            this.all_member_ids.push(array[tithe].member.member.id) 
+                        }                                                  
+                    } 
                     this.emitToParent()
-                    this.foundTithes = array.length                  
-                    
-                    localStorage.setItem('tithe_list',JSON.stringify({"response": response.data }))                
-                    localStorage.setItem('tithe_list_version', currentVersion) 
                     this.$store.dispatch('update_isLoading', false)
-                })
-                .catch((err) => {
-                    this.fetch_data_error.push(err)
-                    this.$store.dispatch('update_isLoading', false)
-                })
+                }            
+                this.tithe_stats = JSON.parse(localStorage.getItem('tithe_stats'))
 
-            }
-            this.getTitheStats()
-          },
-          // get tithe stats 
-          getTitheStats: function(){                
-                this.$store.dispatch('update_isLoading', true)
-                this.$http.get(this.$BASE_URL + '/api/finance/tithe-stats/')
-                .then(response => {
-                    this.tithe_stats = {"response": response.data } 
+                const currentVersion = this.$store.getters.tithe_list_version
+                var version  = localStorage.getItem('tithe_list_version')
 
-                    localStorage.setItem('tithe_stats',JSON.stringify({"response": response.data }))                          
-                    this.$store.dispatch('update_isLoading', false)
-                })
-                .catch((err) => {
-                    this.fetch_data_error.push(err)
-                    this.$store.dispatch('update_isLoading', false)
-                })
-          },
-          //check that add tithe form is okay
-          addTitheFormOK: function(){
-            this.added_tithe = []
-            this.tithe_member_error = []
-            this.tithe_amount_error = []
-            if (this.tithe_narration.length < 1){                    
-                    this.tithe_narration = "none given"
-            }   
-            if (this.selectedMember == null){                
-                this.tithe_member_error.push("No member selected, select one")
-                return false
-            }
-            if (this.tithe_amount < 1){
-                this.tithe_amount_error.push(" enter an amount")
-                return false
-            }
-            if (this.selectedMember > 0
-                && this.tithe_amount > 0){                    
-                    return true
-                }
-        },
-            //add tithe
-          addTithe: function(){
-            if (this.addTitheFormOK()){
-                this.enable_add_tithe_button = false
-                this.add_tithe_button_text = 'adding tithe...'  
-                this.adding_tithe = true              
-                this.$http({
-                    method: 'post',
-                    url: this.$BASE_URL + '/api/finance/add-tithe-for-member/',
-                    data: {
-                        member_id: this.selectedMember,
-                        narration: this.tithe_narration,
-                        recording_member_id: this.$session.get('member_id'),                             
-                        amount: this.tithe_amount                                      
-                    }
-                    }).then(response => {
-                        this.adding_tithe = false                                                                                                                                                            
-                        this.selectedMember = null,
-                        this.tithe_narration = '',
-                        this.tithe_amount = ''                        
-                        this.enable_add_tithe_button = true
-                        this.add_tithe_button_text = '+ add tithe '
-                        this.memberSearch = '' 
-                        var new_version = parseInt(localStorage.getItem('tithe_list_version')) + 1
-                        this.$store.dispatch('update_tithe_list_version', new_version)        
-                        alert("tithe of amount " + response.data.amount + "\n"
-                                + "added for " + response.data.member.member.first_name)                     
+                //else try network for tithes
+                if (!version || version < currentVersion) {
+                    this.$store.dispatch('update_isLoading', true)
+                    this.$http.get(this.$BASE_URL + '/api/finance/tithes-by-members/')
+                    .then(response => {
+                        this.tithes = {"response": response.data }   
+                        var array = this.tithes.response
+                        for (var tithe in array){
+                            if (array[tithe].member){
+                                this.all_member_ids.push(array[tithe].member.member.id) 
+                            }                         
+                        }   
+                        this.emitToParent()
+                        this.foundTithes = array.length                  
+                        
+                        localStorage.setItem('tithe_list',JSON.stringify({"response": response.data }))                
+                        localStorage.setItem('tithe_list_version', currentVersion) 
+                        this.$store.dispatch('update_isLoading', false)
                     })
                     .catch((err) => {
-                        this.adding_tithe = false
-                        this.add_tithe_errors.push('oops, an error occured \n you may be disconnected ,check your connection and try again')
-                                                        
+                        this.fetch_data_error.push(err)
+                        this.$store.dispatch('update_isLoading', false)
                     })
-            }
-        },
-           //export data to csv
-          exportData: function(){            
+
+                }
+                this.getTitheStats()
+            },
+            // get tithe stats 
+            getTitheStats: function(){                
+                    this.$store.dispatch('update_isLoading', true)
+                    this.$http.get(this.$BASE_URL + '/api/finance/tithe-stats/')
+                    .then(response => {
+                        this.tithe_stats = {"response": response.data } 
+
+                        localStorage.setItem('tithe_stats',JSON.stringify({"response": response.data }))                          
+                        this.$store.dispatch('update_isLoading', false)
+                    })
+                    .catch((err) => {
+                        this.fetch_data_error.push(err)
+                        this.$store.dispatch('update_isLoading', false)
+                    })
+            },
+            //check that add tithe form is okay
+            addTitheFormOK: function(){
+                this.added_tithe = []
+                this.tithe_member_error = []
+                this.tithe_amount_error = []
+                if (this.tithe_narration.length < 1){                    
+                        this.tithe_narration = "none given"
+                }                   
+                if (this.tithe_amount < 1){
+                    alert(" enter an amount")
+                    return false
+                }
+                return true
+            },
+            //add tithe
+            addTithe: function(){
+                if (this.addTitheFormOK()){
+                    this.enable_add_tithe_button = false
+                    this.add_tithe_button_text = 'adding tithe...'  
+                    this.adding_tithe = true              
+                    this.$http({
+                        method: 'post',
+                        url: this.$BASE_URL + '/api/finance/add-tithe-for-member/',
+                        data: {
+                            member_id: this.selectedMember,
+                            narration: this.tithe_narration,
+                            recording_member_id: this.$session.get('member_id'),                             
+                            amount: this.tithe_amount,
+                            service:this.service,
+                            group:this.group                                     
+                        }
+                        }).then(response => {
+                            this.adding_tithe = false                                                                                                                                                            
+                            this.selectedMember = null,
+                            this.tithe_narration = '',
+                            this.tithe_amount = ''                                                                            
+                            var new_version = parseInt(localStorage.getItem('tithe_list_version')) + 1
+                            this.$store.dispatch('update_tithe_list_version', new_version)        
+                            alert("tithe of succesfully added, amount: " + response.data.amount )                     
+                        })
+                        .catch((err) => {
+                            this.adding_tithe = false
+                            alert('oops, an error occured \n you may be disconnected ,check your connection and try again')
+                                                            
+                        })
+                }
+            },
+            //export data to csv
+            exportData: function(){            
             //export to csv
             this.exporting_data = true
             this.$http.get(this.$BASE_URL + '/api/finance/get-tithes-as-csv/' + this.csv_date +'/' )

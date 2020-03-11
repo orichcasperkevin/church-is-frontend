@@ -5,7 +5,7 @@
             <div>
                 <!-- what to show on small devices -->
                 <div class="d-sm-block d-md-none d-lg-none btn-group" v-if = "offerings_selected">
-                        <a href="#" data-toggle="modal" data-target="#addOffering" style="text-decoration: none" v-on:click="getServiceTypes()">
+                        <a href="#" data-toggle="modal" data-target="#addOffering" style="text-decoration: none">
                             <div class="add-button">
                                 <b>+</b> add offering
                             </div>
@@ -65,24 +65,37 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for = "data in offerings.response">
+                        <tr v-for = "data in offerings.response">                             
                             <td v-if = "data.member != null">                                          
                                     <label class="anvil-checkbox">
                                             <input multiple type="checkbox" :value=data.member.member.id v-model="member_ids">
                                             <span class="anvil-checkmark"></span>
                                     </label>
                             </td>
-                            <td v-if = "data.member != null">                                
+                            <td v-else>
+                                <label class="anvil-checkbox">
+                                        <input multiple type="checkbox">
+                                        <span class="anvil-checkmark"></span>
+                                </label> 
+                            </td>
+                            <td v-if = "data.member != null">                                      
                                 <router-link :to="`/memberDetail/`+ data.member.member.id">
                                     <span class = "text-secondary">{{data.member.member.first_name}} {{data.member.member.last_name}}</span>
                                 </router-link>
                             </td>
-                            <td v-if = "data.service != null"> {{data.service.type.name}}</td>
+                            <td v-if = "data.service != null"> {{data.service.type.name}} ({{data.service.date}})</td>
+                            <td v-if = "data.group != null">
+                                    <router-link  :to="`/groupDetail/`+ data.group.id" class="text-muted">                                    
+                                          <div>                                             
+                                              {{data.group.name}}
+                                          </div>                                                                                                                                
+                                    </router-link>                                 
+                            </td>
+                            <td v-if="! data.group && ! data.service && ! data.member">anonymous</td>
                             <td><p class="text-secondary">{{humanize(data.amount)}}</p></td>
-                            <td v-if = "data.member != null">{{$humanizeDate(data.date)}}</td>
-                            <td v-if = "data.service != null"> {{$humanizeDate(data.service.date)}}</td>
-                            <td><p class="text-secondary">{{humanize(data.total_this_month)}}</p></td>
-                            <td><p>{{humanize(data.total_this_year)}}</p></td>                                                          
+                            <td >{{$humanizeDate(data.date)}}</td>                            
+                            <td><p class="text-secondary" v-if="data.total_this_month">{{humanize(data.total_this_month)}}</p></td>
+                            <td><p v-if="data.total_this_year">{{humanize(data.total_this_year)}}</p></td>                                                          
                         </tr>
                     </tbody>
                 </table>
@@ -98,62 +111,24 @@
                         </button>
                         </div>
                         <div class="modal-body">                                                            
-                                <form>
-                                        <div class="row checkbox">
-                                                <div class="col-3"></div>
-                                                <div class="col-8">
-                                                        <label><input type="checkbox" :value= true v-model = "non_member"> offering from service </label>                                                            
-                                                </div>                                                    
-                                        </div>
-                                        <hr/>
-
-                                        <div class=" row form-group" v-if="! non_member">
-                                            <label class="col-3"><b>member:</b></label>
-                                            <div class="col-8">
-                                                    <searchmember v-on:memberSelected="onMemberSelected" /> 
-                                                    <p v-if="selected_member_errors.length">
-                                                        <ul>
-                                                                <small><li v-for="error in selected_member_errors"><p class="text-danger">{{ error }}</p></li></small>
-                                                        </ul>
-                                                    </p>                                                  
-                                            </div>                                           
-                                            
-                                        </div>
-                            
-                                        <div class=" row form-group" v-if="non_member">
-                                            <label class="col-3"><b>service type:</b></label>                                                                                                                                   
-                                            <select class="col-8 form-control" v-model="service_type" >
-                                                <option v-for="data in service_types.response" :value="data.id" >{{data.name}}</option>
-                                            </select>
-                                            <p v-if="service_type_errors.length">
-                                                <ul>
-                                                        <small><li v-for="error in service_type_errors"><p class="text-danger">{{ error }}</p></li></small>
-                                                </ul>
-                                            </p>                                                                                                                                          
-                                        </div>  
-                                        <div class="row" v-if="non_member">
-                                            <label class="col-3 "><b>service date</b></label>
-                                            <div class="input-group form-group col-5" style="padding: 0px" >
-                                                <input type="date" name="bday" max="3000-12-31" 
-                                                       min="1000-01-01" class="form-control" v-model="offering_date">                                                                                                                      
-                                            </div>
-                                            <p v-if="offering_date_errors.length">
-                                                <ul>
-                                                        <small><li v-for="error in offering_date_errors"><p class="text-danger">{{ error }}</p></li></small>
-                                                </ul>
-                                            </p>
-                                        </div> 
-                                        <p v-if="found_service.length && non_member  ">
-                                            <ul v-if="found_service.length > 0">
-                                                    <small><li><p class="text-success"> found a service for that date</p></li></small>
+                                <form>                                        
+                                        <customselect :fields="['member','service','group']" 
+                                              v-on:inputChanged="onInputChanged"
+                                              v-on:memberSelected="onMemberSelected"
+                                              v-on:serviceFound="onServiceFound"
+                                              v-on:groupSelected="onGroupSelected"/>
+                                        <p v-if="selected_member_errors.length">
+                                            <ul>
+                                                    <small><li v-for="error in selected_member_errors"><p class="text-danger">{{ error }}</p></li></small>
                                             </ul>
                                         </p>  
-                                        <p v-if="found_service.length == 0 && non_member && searched_for_service">
-                                            <ul >
-                                                    <small><li ><p class="text-danger"> NO service found for that date</p></li></small>
+                                        <p v-if="service_type_errors.length">
+                                            <ul>
+                                                <small><li v-for="error in service_type_errors"><p class="text-danger">{{ error }}</p></li></small>
                                             </ul>
-                                        </p>                                                                                                                                   
-                                        <hr/>
+                                        </p>                                                                                    
+                                                                  
+                                        <hr>                              
                                         <div class="row form-group">
                                                 <label class="col-3"><b>amount:</b></label>
                                                 <input type="number" class=" col-3 form-control" placeholder="amount" v-model="offering_amount">
@@ -163,10 +138,10 @@
                                                             <small><li v-for="error in offering_amount_errors"><p class="text-danger">{{ error }}</p></li></small>
                                                     </ul>
                                                 </p> 
-                                        </div>
-                                        <hr/>
+                                        </div>                                       
+                                        <hr v-if="! non_member">
                                         <div class="form-group">
-                                                <div class="row" v-if="! non_member">
+                                                <div class="row" v-if="show_date">                                                    
                                                         <label class="col-3 "><b>date</b></label>
                                                         <div class="input-group form-group col-5" style="padding: 0px" >
                                                             <input type="date" name="bday" max="3000-12-31" 
@@ -255,7 +230,7 @@
         </div>
       </template>
       <script>
-      import searchmember from '@/subcomponents/searchmember.vue'
+      import customselect from '@/subcomponents/finances/select.vue'      
       import offeringstats from '@/subcomponents/statistics/offeringstats.vue'
       export default {
         created () {
@@ -293,33 +268,20 @@
             all_members: false,
             member_ids: [],
             all_member_ids: [],
+            //adding
+            show_date:true,
+            group:null,
+            service:null
           }
         },
         name: 'offerings',
-        components: { searchmember,offeringstats },
+        components: { customselect,offeringstats },
         watch: {
             offering_date: function(){      
                 this.searched_for_service = false      
                 this.found_service = []
-                this.service_type_errors = []
-                if (this.non_member){                
-                    if (this.service_type == null){
-                        this.service_type_errors.push("select a type of service")
-                        return
-                    }                           
-                    this.checkForService()                              
-                }            
-            },
-            service_type: function(){
-                this.searched_for_service = false
-                this.found_service = []
-                if (this.non_member && this.offering_date.length > 0){                
-                    if (this.offering_date == null){                    
-                        return
-                    }                           
-                    this.checkForService()               
-                }
-            },
+                this.service_type_errors = []                          
+            },      
             all_members: function(){
                 if (this.all_members != true){
                     this.member_ids = []
@@ -336,26 +298,30 @@
            humanize: function(x) {return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");},
           // Triggered when `memberSelected` event is emitted by the child.
           onMemberSelected (value) {
+            this.non_member = false
+            this.show_date = true
             this.selectedMember = value
           },
+          onServiceFound (found_service){                        
+            this.non_member = true
+            this.show_date = false
+            this.offering_date = found_service[0].date            
+            this.found_service = found_service            
+            this.service_type = found_service[0].type.id
+          },
+          onInputChanged (value){
+            this.selectedMember = null
+            this.group = null
+            this.service = null
+          },            
+          onGroupSelected (group){
+            this.show_date = true   
+            this.non_member = true             
+            this.group = group
+           },
           emitToParent (event) {                               
                 this.$emit('membersSelected', this.member_ids)
           },
-          //check for service on a date
-          checkForService: function(){  
-            this.$store.dispatch('update_isLoading', true)          
-            this.$http.get(this.$BASE_URL + '/api/services/service-on-date/' + this.offering_date +'/of-type/' + this.service_type + '/')
-            .then(response => {                    
-                this.found_service = response.data                                  
-                this.searched_for_service = true
-                this.$store.dispatch('update_isLoading', false)
-            })
-            .catch((err) => {
-                this.fetch_data_error.push(err)
-                this.$store.dispatch('update_isLoading', false)
-            })
-                    
-        },
           //get offerings
           getOfferings: function(){
             //try local storage
@@ -365,7 +331,9 @@
                 var array = this.offerings.response
                 this.foundOfferings = array.length
                 for (var offering in array){
-                    this.all_member_ids.push(array[offering].member.member.id)                       
+                    if (array[offering].member){
+                        this.all_member_ids.push(array[offering].member.member.id) 
+                    }                                          
                 } 
             }
 
@@ -392,8 +360,10 @@
                     this.offerings = {"response": response.data } 
                     var array = this.offerings.response
                     this.foundOfferings = array.length
-                    for (var offering in array){
-                        this.all_member_ids.push(array[offering].member.member.id)                       
+                    for (var offering in array){                         
+                        if (array[offering].member){
+                            this.all_member_ids.push(array[offering].member.member.id) 
+                        }                     
                     } 
 
                     localStorage.setItem('offering_list',JSON.stringify({"response": response.data }))                
@@ -407,19 +377,6 @@
             }
             
         },
-        //get service types
-        getServiceTypes: function(){
-            this.$store.dispatch('update_isLoading', true)
-            this.$http.get(this.$BASE_URL + '/api/services/service-types/')
-                .then(response => {
-                    this.service_types =  {"response":response.data}
-                    this.$store.dispatch('update_isLoading', false)
-                })
-                .catch((err) => {
-                    this.found_service = []
-                    this.$store.dispatch('update_isLoading', false)
-                })
-        },
         //validate offering form
         addOfferingFormOK: function(){                     
             this.offering_amount_errors = []
@@ -430,44 +387,25 @@
             if (this.offering_narration.length < 1){
                 this.offering_narration = "none given"
             }
-            if (this.phone_number.length < 1
-                || this.phone_number_errors.length > 0){
-                    this.phone_number = "none given"
-                }
-            if (this.non_member
-                && this.service_type > 0
-                && this.offering_date.length == 10
-                && this.offering_amount > 0){                 
-                    return true
-                }
-            if (! this.non_member
-                && (this.selectedMember != null
-                &&  this.selectedMember != '')
-                && this.offering_date.length == 10
-                && this.offering_amount > 0){                 
-                    return true
-                }
+
             if (this.offering_amount < 1){
-                this.offering_amount_errors.push("enter an amount")
+                this.offering_amount_errors.push("enter an amount")            
                 return false
             }     
             if (! this.non_member
                 && (this.selectedMember == null
                 || this.selectedMember == '')){
-                this.selected_member_errors.push("select member, none selected")
+                alert("select member, none selected")                                
                 return false
             }    
-            if (this.offering_date.length < 1){
-                this.offering_date_errors.push("date input required")
+            if (!this.non_member && this.offering_date.length < 1){
+                this.offering_date_errors.push("date input required")            
                 return false
-            }
-            if (this.offering_date.length != 10){
-                this.offering_date_errors.push("incorrect date , use format YYYY-MM-DD")
-                return false
-            }
+            }     
+            return true
         },
         //add offerring
-        addOffering: function(){           
+        addOffering: function(){            
             if (this.addOfferingFormOK()){     
                 //if offering is by non member                           
                 if (this.non_member){
@@ -476,7 +414,8 @@
                         method: 'post',
                         url: this.$BASE_URL + '/api/finance/add-service-offering/',
                         data: {
-                            service_type_id: this.service_type,                                
+                            service_type_id: this.service_type, 
+                            group: this.group,                                                           
                             recording_member_id: this.$session.get('member_id'),                                 
                             date: this.offering_date,                                
                             narration: this.offering_narration,                        
