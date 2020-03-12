@@ -7,6 +7,25 @@
                 </ol>
         </nav>
         <div class="container">
+                <h3 class="font-weight-bold">SMS outbox</h3>
+                <hr>
+                <section class="row">
+                        <div class="mb-2 ml-3 text-center text-muted col-lg-2 col-sm-12 border border-secondary rounded">
+                                <h1 class="font-weight-bold" v-if="sms_credit_balance">
+                                    {{sms_credit_balance}} 
+                                </h1>
+                                <h1 v-else>
+                                    <span
+                                        class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                                    </span>
+                                </h1>                        
+                                credit balance
+                        </div> 
+                        <div class="mb-2 ml-3 text-center text-muted col-lg-2 col-sm-12 border border-secondary rounded">
+                                <h1 class="font-weight-bold">{{client_details[0].number_of_sms}}</h1>
+                                sms delivered this month
+                        </div>
+                </section>
                 <table class="table table-responsive-sm">
                         <thead>
                           <tr>     
@@ -38,11 +57,16 @@ export default {
     name: 'smsAnalytics',
     data () {
         return{
-           sms_this_month: null
+           church_id: localStorage.getItem('church_id'),
+           sms_this_month: null,
+           sms_credit_balance: null,
+           client_details:null,
         }
     },
     created () {
        this.fetchData() 
+       this.getSMSCreditBalance()
+       this.getClientDetail()
     },
     methods: {
         fetchData () {  
@@ -56,7 +80,27 @@ export default {
                     this.$store.dispatch('update_isLoading', false)
                     alert("error occured while fetching data")
                 })
-        }
+        },
+        //church sms balance
+        getSMSCreditBalance: function(){
+            this.$http.get(this.$BASE_URL + '/api/sms/sms-credit-balance')
+            .then((response)=>{            
+                this.sms_credit_balance =  response.data.UserData.balance
+            })
+        },
+        getClientDetail: function(){
+            this.$store.dispatch('update_isLoading', true)
+            this.client_detail_available = true     
+            this.$http.get(this.$BASE_URL + '/api/clients/client-detail/' + this.church_id +'/')
+                .then(response => {
+                    this.client_details = response.data       
+                    this.$store.dispatch('update_isLoading', false)                                   
+                
+                })
+                .catch((err) => {                     
+                    this.$store.dispatch('update_isLoading', false)      
+                })
+        },
     }
 }
 </script>

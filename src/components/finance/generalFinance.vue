@@ -186,7 +186,7 @@
                                     <span class="sr-only">Toggle Dropdown</span>
                             </button>
                             <div class="dropdown-menu border-success" aria-labelledby="dropdownMenuReference">
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addTithe"><b>+</b> add tithe</a>
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addOfferingType"><b>+</b> add offering type</a>
                             </div>
                     </div>
                     <!-- add for incomes  -->

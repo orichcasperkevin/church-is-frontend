@@ -23,20 +23,7 @@
                                           <h5>{{client_details[0].church_code}}</h5></span>                       
                                 </h6>
                             </div>
-                            <div class="col-lg-6 col-sm-12"">
-                                    <button disabled type="button" class="btn btn-success">
-                                        ANVIL credit
-                                        </span>
-                                    </button>            
-                                        <p>
-                                            <i>
-                                                apprx {{client_details[0].apprx_number_of_days_left}} days left on platform
-                                        </i>
-                                    </p>
-                                    <div>
-
-                                        
-                                    </div>
+                            <div class="col-lg-6 col-sm-12">                                  
                                     <button disabled type="button" class="btn btn-success">
                                         SMS credit
                                     </button> 
@@ -89,12 +76,15 @@
                                         <p>You have not added your church's mission statement</p>
                                         <button class="btn btn-success" data-toggle="modal" data-target="#addVisionAndMisionStatement">
                                             + add mission statement
+                                            <span v-if="updating"
+                                                class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                                            </span>
                                         </button>
                                     </h5>
                                     <div class="text-right" v-if="church_statements.length">
                                         <button class="btn btn-success" v-on:click="editChurchStatements()">
                                             edit mission statement
-                                            <span v-if="updating_statements"
+                                            <span v-if="updating"
                                                 class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
                                             </span>
                                         </button>
@@ -111,12 +101,15 @@
                                         <p>You have not added your church's vision statement</p>
                                         <button class="btn btn-success" data-toggle="modal" data-target="#addVisionAndMisionStatement">
                                             + add vision statement
+                                            <span v-if="updating"
+                                                class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                                            </span>
                                         </button>
                                     </h5>
                                     <div class="text-right" v-if="church_statements.length">
                                         <button class="btn btn-success" v-on:click="editChurchStatements()">
                                             edit vision statement
-                                            <span v-if="updating_statements"
+                                            <span v-if="updating"
                                                 class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
                                             </span>
                                         </button>
@@ -143,6 +136,9 @@
                                         <p>You have not added an about for your church</p>                                        
                                         <button class="btn btn-success" data-toggle="modal" data-target="#addChurchAbout">
                                             + add about church
+                                            <span v-if="updating"
+                                                class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                                            </span>
                                         </button>
                                     </h5>
                                 </article>
@@ -161,6 +157,9 @@
                                         <div class="text-right" v-if="church_core_values.length">
                                                 <button class="btn btn-success" data-toggle="modal" data-target="#addChurchCoreValue">
                                                         + add church core value
+                                                        <span v-if="updating"
+                                                            class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                                                        </span>
                                                 </button>
                                         </div>                                       
                                         <h5 class="text-muted text-center" v-if="! church_core_values.length">
@@ -168,6 +167,9 @@
                                             <p>You have not added your church's church core values</p>
                                             <button class="btn btn-success" data-toggle="modal" data-target="#addChurchCoreValue">
                                                 + add church core value
+                                                <span v-if="updating"
+                                                    class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                                                </span>
                                             </button>
                                         </h5>
                                     </article>
@@ -188,6 +190,9 @@
                                         <div class="text-right" v-if="church_periodic_themes.length">
                                                 <button class="btn btn-success" data-toggle="modal" data-target="#addThemeModal">
                                                         + add periodic theme
+                                                        <span v-if="updating"
+                                                            class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                                                        </span>
                                                 </button>
                                         </div>  
                                         <h5 class="text-muted text-center"  v-if="! church_periodic_themes.length">
@@ -195,6 +200,9 @@
                                             <p>You have not added your church's Periodic Theme</p>
                                             <button class="btn btn-success" data-toggle="modal" data-target="#addThemeModal">
                                                 + add theme
+                                                <span v-if="updating"
+                                                    class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                                                </span>
                                             </button>
                                         </h5>
                                     </article>
@@ -425,7 +433,7 @@
                 start:null,
                 end:null,
                 //updating
-                updating_statements: false,
+                updating: false,
                 updating_about:false,
                 sms_credentials:[]
 
@@ -608,7 +616,7 @@
             },
             //edit church statements
             editChurchStatements: function(){
-                this.updating_statements = true //this toggles the button spinners
+                this.updating = true //this toggles the button spinners
                 this.$http.patch(
                     this.$BASE_URL + '/api/clients/update-church-statements/',
                     {
@@ -617,10 +625,10 @@
                         vision:this.vision_statement
                     }  
                 ).then((response)=>{
-                    this.updating_statements = false
+                    this.updating = false
                     this.getChurchStatements()
                 }).catch((err)=>{                    
-                    this.updating_statements = false
+                    this.updating = false
                     alert("error: " + err)
                 })
             },
