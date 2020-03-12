@@ -161,21 +161,13 @@ methods: {
     //get groups
     getGroups: function(){
       // get  groups     
-      this.groups = JSON.parse(localStorage.getItem('group_list'))
-      const currentVersion = this.$store.getters.group_list_version
-      var version  = localStorage.getItem('group_list_version')
-
-      if (!version || version < currentVersion) {       
-          this.$http.get(this.$BASE_URL + '/api/groups/church-group-list/')
+      this.$http.get(this.$BASE_URL + '/api/groups/church-group-list/')
           .then(response => {
-              this.groups = {"response": response.data }   
-              localStorage.setItem('group_list',JSON.stringify({"response": response.data }))
-              localStorage.setItem('group_list_version', currentVersion)                         
+              this.groups = {"response": response.data }                                        
           })
           .catch((err) => {
               this.fetch_data_error.push(err)          
           })
-      }
       
     },
     //get service types
