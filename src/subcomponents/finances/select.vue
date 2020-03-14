@@ -1,7 +1,7 @@
 <!-- Child.vue -->
 <template>
     <div class="d-flex d-flex-column">                    
-        <div class="row form-group">             
+        <div class="anvil-select row form-group">             
                 <select class="col-4 custom-select border-0 shadow-0 font-weight-bold"
                         v-model = "selected_input"
                         style="outline: none;
@@ -11,7 +11,8 @@
                         <option value="service_input" v-if="fields.includes('service')">service</option>
                         <option value="none_member_input" v-if="fields.includes('non_member')">non member</option>
                 </select>  
-                <div class="col-8">
+                
+                <div class="col-8 height-smooth">
                     <!-- member -->
                     <searchmember v-if="selected_input == 'member_input'" v-on:memberSelected="onMemberSelected" />                                                                        
                     <!-- groups -->

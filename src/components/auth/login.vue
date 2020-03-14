@@ -93,14 +93,15 @@
           var church_id = parseInt(this.church_code)
           this.$http.get(this.$DOMAIN.value + '/api/clients/client/' + church_id + '/')
             .then(response => {
+              localStorage.clear()
               var data = response.data              
-              this.$BASE_URL.value = "http://"+ data[0].domain_url 
-              localStorage.setItem('base_url_value',this.$BASE_URL.value)
+              this.$BASE_URL.value = "http://"+ data[0].domain_url
+              localStorage.setItem('base_url_value',this.$BASE_URL.value)              
               localStorage.setItem('church_id', church_id )
-              localStorage.setItem('church_details',response.data)
+              localStorage.setItem('church_details',JSON.stringify(response.data))
             })
             .catch((err) => {
-              this.login_error.push("church code not set")        
+              this.login_error.push("church code not set or invalid")        
             })
         }
       }
@@ -131,7 +132,12 @@
           .catch((err) => {
             this.login_info = []
             this.login_error = []
-            this.login_error.push("invalid credentials")
+            if(! err.response){
+              this.login_error.push(err)
+            }
+            else{
+              this.login_error.push("invalid credentials")
+            }            
 
           })
       },

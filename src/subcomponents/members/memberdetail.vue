@@ -344,7 +344,7 @@
                                                 v-model="new_email"> 
                                 </div>                                                                                      
                             </div>
-                            <div class="modal-body" v-if="! contact_info">                                    
+                            <div class="modal-body" v-else>                                    
                                         <div class="row mb-3">
                                                 <span class="col-4">
                                                         <label><b>country code :</b></label>
@@ -382,7 +382,7 @@
                                         <div class="row form-group">                                             
                                                 <label class="col-3"><b>email:</b></label>                                
                                                 <input type="email" class=" col-8 form-control" 
-                                                        :placeholder="contact_info.contact[0].member.email || `not given`" 
+                                                        placeholder="email not given" 
                                                         v-model="new_email"> 
                                         </div>                                                                                      
                             </div>

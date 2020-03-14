@@ -6,13 +6,13 @@
           class="d-flex flex-column justify-content-center p-1 "
           v-on:mouseover="openNav()">            
     </div>
-    <section class="d-flex flex-row navbar navbar-expand-lg navbar-light sticky-top shadow-sm bg-frost" v-if="checkLoggedIn()">
-      <button class="btn btn-light ml-2" type="button" v-on:click="openNav()">
+    <section class="navbar navbar-expand-lg navbar-light sticky-top shadow-sm bg-frost" v-if="checkLoggedIn()">
+      <button class="btn btn-light ml-3" type="button" v-on:click="openNav()">
           <span class="navbar-toggler-icon"></span>
       </button>
-      <img class="d-none d-lg-block mr-0" style="width: 150px ;height: auto" src="@/assets/text_logo.png">   
-      <div class="text-center">
-          <generalsearch class="mr-3"/>
+      <h3 class="ml-2 mr-3 font-weight-bold" id=church-name-heading></h3>
+      <div class="mt-2 col-sm-12 col-lg-8">
+          <generalsearch />
       </div>           
     </section>
     <nav>        
@@ -90,8 +90,8 @@
     </div>
   <!-- the entire app lives here -->
   <section id="main-app" >     
-      <router-view />
-  </section>    
+      <router-view v-on:churchDetailSet="onChurchDetailSet"/>
+  </section>   
   </div>
 </template>
 
@@ -106,7 +106,7 @@ export default {
         return{                    
           fullPage: true,
           client_detail_available :false,
-          client_details : localStorage.getItem('church_details'),
+          church_detail : JSON.parse(localStorage.getItem('church_details')),
           // DOM
           anvil_side_nav:null,
           main_app:null,
@@ -125,6 +125,8 @@ export default {
     this.anvil_side_nav = document.getElementById("anvil-side-nav")
     this.main_app = document.getElementById("main-app")
     this.nav_frost_overlay = document.getElementById("nav-frost-overlay")
+    var church_name_heading = document.getElementById("church-name-heading") 
+    church_name_heading.innerHTML = this.church_detail[0].name
   },
   
   computed: {
@@ -153,7 +155,7 @@ export default {
     },
     doAJAX : function (){       
       this.isLoading = true
-    },
+    },    
     /* Set the width of the side navigation to 250px */
     openNav:function() {
       this.anvil_side_nav.style.width = "250px"      

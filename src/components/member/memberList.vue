@@ -173,12 +173,14 @@
                               <span class="anvil-checkmark"></span>
                           </label>
                         </td>
-                        <td ><img v-if = "data.gender == 'M'" style = "height: 32px "src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
+                        <td >
+                          <img v-if = "data.gender == 'M'" style = "height: 32px "src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
                               <img v-if = "data.gender == 'F'" style = "height: 32px "src="@/assets/avatars/icons8-user-female-skin-type-4-40.png">
                               <img v-if = "data.gender == 'R'" style = "height: 32px "src="@/assets/avatars/icons8-contacts-96.png">
 
-                          <router-link :to="`/memberDetail/`+ data.member.id">
-                            <span class = "text-secondary">{{data.member.first_name}} {{data.member.last_name}}</span>
+                          <router-link :to="`/memberDetail/`+ data.member.id">                          
+                            <span class = "text-secondary">{{data.member.first_name}} {{data.member.last_name}}</span>                            
+                            <span class="ml-4 text-secondary"><i v-if="data.phone_number">({{data.phone_number}})</i></span>
                           </router-link>
                           </td>
 
