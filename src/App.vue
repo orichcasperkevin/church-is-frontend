@@ -10,18 +10,18 @@
       <button class="btn btn-light ml-3" type="button" v-on:click="openNav()">
           <span class="navbar-toggler-icon"></span>
       </button>
-      <h3 class="ml-2 mr-3 font-weight-bold" id=church-name-heading></h3>
+      <img class="ml-4 " style="width: 150px ;height: auto" src="@/assets/text_logo.png">       
       <div class="mt-2 col-sm-12 col-lg-8">
           <generalsearch />
       </div>           
     </section>
     <nav>        
       <div id="anvil-side-nav" class="sidenav shadow-lg bg-white rounded">
-        <div class="row">
-            <img class="ml-4 " style="width: 150px ;height: auto" src="@/assets/full_logo.png">  
+        <div class="row">            
             <a href="javascript:void(0)" class="closebtn text-secondary" v-on:click="closeNav()">&times;</a> 
-            <div class="ml-2 dropdown-item" >{{username}}</div>  
-            <a href="#" class=" ml-2 dropdown-item" v-on:click="logOut()">log out</a>                  
+            <h3 class="ml-4 mr-2 d-flex flex-wrap font-weight-bold" id=church-name-heading> church</h3>
+            <div class="ml-1 dropdown-item" >{{username}}</div>  
+            <a href="#" class=" ml-1 dropdown-item" v-on:click="logOut()">log out</a>                  
         </div>            
         <hr>
         <!-- members nav on mobile -->
@@ -75,7 +75,11 @@
         <span  v-on:click="doAJAX(); closeNav()">
           church account
         </span>        
-        </router-link>                         
+        </router-link>    
+        <hr>
+        <div class="mb-5 ml-2 mt-5 text-center bg-dark rounded">          
+          <img class="ml-4 " style="width: 150px ;height: auto" src="@/assets/full_logo.png">
+        </div>                       
       </div>                                
     </nav> 
     <!-- nav frost overlay -->

@@ -56,7 +56,7 @@
               <div v-if="groups" class="">
                   <div class="list-group" v-for="data in groups.response">
                       <router-link :to="`/groupList/`+ data.id + `/` + data.name"class="row list-group-item list-group-item-action border-0" >
-                        <span class="d-flex justify-content-between">
+                        <span class="d-flex justify-content-between" v-on:click="scrollToElement('folder-content')">
                           <div>
                               <img style="width: 20px ;height: auto" src="@/assets/icons/icons8-folder-48.png">
                               {{data.name}}  
@@ -92,8 +92,9 @@
               </div>             
         </div>
         <!-- CONTENT IN THE MIDDLE -->
-        <div class="col-sm-10 col-md-8 col-lg-9">           
-            <router-view >
+        <div class="col-sm-10 col-md-8 col-lg-9">   
+            <hr class="d-sm-block d-lg-none">        
+            <router-view id="folder-content">
 
             </router-view>
         </div>  
@@ -173,6 +174,9 @@ export default {
       if (!this.$session.has("token")) {
           router.push("/login")
       }
+    },
+    scrollToElement: function(element){
+      document.getElementById(element).scrollIntoView();
     },
     fetchData() {      
       this.fetch_data_error = []

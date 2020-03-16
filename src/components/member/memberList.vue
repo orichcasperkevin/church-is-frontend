@@ -19,7 +19,7 @@
         </ol>
       </nav>
       <!-- BOdY -->
-      <body>
+      <body class="main-content">
         <div class="container">
           <div class="row">
             <!-- FILTERS TAB ON THE LEFT -->
@@ -124,40 +124,16 @@
                                   <input type="checkbox":value=true v-model="all_members">
                                   <span class="anvil-checkmark"></span>
                               </label>                              
-                        <!-- actions drop down on phone -->
+                        <!-- actions drop down on phone -->                       
                         <div class="btn-group d-sm-block d-md-none ml-5 mb-2" style="text-decoration: none; position:absolute">
-                            <a href="#">
+                            <a href="#" v-on:click="openAction()">
                                 <div class="btn btn-light">
                                   actions
                                 </div>
                               </a>
-                            <button type="button" class="btn btn-sm btn-light dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                              <span class="sr-only">Toggle Dropdown</span>
-                            </button>
-                            <div class="dropdown-menu border-light" aria-labelledby="dropdownMenuReference">
-                              <!-- when device is a phone -->
-                                <div class="list-group font-weight-bold">
-                                    <button type="button" class="action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#anvilModal" >
-                                      <img src="@/assets/app_logo.png" style="width: 25px; height:auto">. Anvil message
-                                    </button>
-                                    <button type="button" class="d-none action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#emailModatCenter" ><img src="@/assets/icons/icons8-email-64.png">
-                                      email ({{foundItems}})
-                                    </button>
-                                    <button type="button" class="list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#textModalCenter">
-                                      <img style="width: 25px; height:auto" src="@/assets/icons/icons8-comments-64.png">
-                                      text members
-                                    </button>
-                                    <button type="button" class="list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#assignModalCenter">
-                                      <img style="width: 25px; height:auto" src="@/assets/icons/icons8-add-user-group-man-man-64.png">
-                                      assign group
-                                    </button>
-                                    <router-link :to="{name: 'memberAdd'}" class="ml-2 mr-2">
-                                        <div class="add-button">
-                                          + Add member
-                                        </div>
-                                    </router-link>                                    
-                                </div>                            
-                            </div>
+                            <button v-on:click="openAction()" type="button" class="btn btn-sm btn-light dropdown-toggle dropdown-toggle-split">
+                              <span class="sr-only" >Toggle Dropdown</span>
+                            </button>                           
                         </div>
                       </th>
                       <th></th>
@@ -223,7 +199,7 @@
                 </div>
               </div>
                 <div class="list-group font-weight-bold">
-                    <button type="button" class="action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#anvilModal" >
+                    <button type="button" class="d-none action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#anvilModal" >
                       <img src="@/assets/app_logo.png" style="width: 55px; height:auto">. Anvil message
                     </button>
                     <button type="button" class="d-none action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#emailModatCenter" ><img src="@/assets/icons/icons8-email-64.png">
@@ -447,6 +423,32 @@
           </div>
         </div>
       </body>
+
+      <!-- bottom navigation -->
+      <div id="bottom-actions-tab" class="bottom-action-tab bg-light shadow-lg"
+           style="border-radius: 5%">          
+        <h2 class="text-right mr-5">
+          <a href="javascript:void(0)" class="closebtn text-secondary" v-on:click="closeActions()">&times;</a>
+        </h2>        
+        <button type="button" class="d-none action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#anvilModal" >
+          <img src="@/assets/app_logo.png" style="width: 25px; height:auto"> anvil message
+        </button>  
+        <button v-on:click="closeActions()" type="button" class="list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#textModalCenter">
+          <img style="width: 25px; height:auto" src="@/assets/icons/icons8-comments-64.png">
+          text members
+        </button>
+        <button v-on:click="closeActions()" type="button" class="list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#assignModalCenter">
+          <img style="width: 25px; height:auto" src="@/assets/icons/icons8-add-user-group-man-man-64.png">
+          assign group
+        </button>              
+        <div class="text-right mr-5">
+          <router-link :to="{name: 'memberAdd'}" class="mt-2 ml-2 mr-2">
+            <div class="btn btn-success">
+              + Add member
+            </div>
+        </router-link> 
+        </div>
+      </div>
     </div>
   </template>
 
@@ -542,6 +544,15 @@ export default {
       if (!this.$session.has("token")) {
           router.push("/login")
       }
+    },
+        /* Set the width of the side navigation to 250px */
+    openAction: function() {            
+      document.getElementById('bottom-actions-tab').style.height = "250px"                    
+    },
+
+    /* Set the width of the side navigation to 0 */
+    closeActions:function() {   
+      document.getElementById('bottom-actions-tab').style.height = "0px"    
     },
     fetchData() {
       this.all_member_ids = []
@@ -813,14 +824,22 @@ export default {
       })
     },
     getGroups: function(){
-      // get  groups     
-      this.$http.get(this.$BASE_URL + '/api/groups/church-group-list/')
+      // get  groups           
+      const currentVersion = this.$store.getters.group_list_version
+      var version  = localStorage.getItem('group_list_version')
+
+      this.groups = JSON.parse(localStorage.getItem('group_list_all'))
+
+      if (!version || version <= currentVersion) {
+        this.$http.get(this.$BASE_URL + '/api/groups/church-group-list/')
           .then(response => {
-              this.groups = {"response": response.data }                                       
+              this.groups = {"response": response.data }  
+              localStorage.setItem('group_list_all',JSON.stringify({"response": response.data }))              
           })
           .catch((err) => {
               this.fetch_data_error.push(err)          
           })
+      }
       
     }
 }

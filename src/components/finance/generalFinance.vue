@@ -46,6 +46,7 @@
                                           </div>
                                           <!-- nav pills for offerings,tithes and others -->
                                           <div class="col-sm-12 col-lg-8">
+                                                <hr class="d-sm-block d-lg-none">  
                                                 <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                                                         <li class="nav-item">
                                                           <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" Tithe="true" v-on:click = "getTithes()">Tithe</a>
@@ -65,7 +66,7 @@
                             <!-- income tab contents -->
                             <div class="tab-content" id="pills-tabContent">                                                                      
                                 <!-- tithes -->
-                                <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">                                          
+                                <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">                                                                          
                                         <h3 class="font-weight-bold">Tithes </h3>
                                         <tithes v-on:membersSelected="setMemberIds"/>                                    
                                 </div>
@@ -73,6 +74,7 @@
                                 <div class="tab-pane fade" id="pills-offerings" role="tabpanel" aria-labelledby="pills-offerings-tab">                                                                                  
                                     <div v-if = "offerings_selected">
                                         <!-- offerings -->
+                                        
                                         <h3 class="font-weight-bold">Offering</h3>
                                         <offerings v-on:membersSelected="setMemberIds"/>                                        
                                     </div>
@@ -80,6 +82,7 @@
                                 <!-- Income-->
                                 <div class="tab-pane fade" id="pills-anyOther" role="tabpanel" aria-labelledby="pills-anyOther-tab">                                        
                                         <div v-if = "any_other_selected">
+                                                <hr class="d-sm-block d-lg-none">  
                                                 <h3 class="font-weight-bold">Income</h3>                                                
                                                 <div class="text-muted" v-if="any_other_selected">
                                                         <div class="d-flex d-flex-row justify-content-center">
@@ -154,6 +157,7 @@
                         <!-- EXPENDITURE -->
                         <div class="tab-pane fade show " id="v-pills-expenditure" role="tabpanel" aria-labelledby="v-pills-expenditure-tab">
                             <div v-if = "expenditures_selected">
+                                <hr class="d-sm-block d-lg-none">  
                                 <expenditures/>
                             </div>                            
                         </div>

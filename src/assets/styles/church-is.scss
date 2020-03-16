@@ -11,6 +11,9 @@ $secondary: $grey;
 $success: $green;
 $dark: $dark;
 
+html {
+  scroll-behavior: smooth;
+}
 .bg-frost{
   background-color: rgba(56, 59, 68, 0.15);
   backdrop-filter: blur(5px);
@@ -142,6 +145,19 @@ img.church-is-menu {
   transition: margin-left .3s ease-in-out;
   transition-delay: 0.1s;
   padding: 20px;
+}
+/* The side navigation menu */
+.bottom-action-tab {
+  height: 0; /* 100% Full-height */
+  width: 100%; /* 0 width - change this with JavaScript */
+  position: fixed; /* Stay in place */
+  z-index: 9999; /* Stay on top */
+  bottom: 0; /* Stay at the top */
+  left: 0;  
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-bottom: 5px; /* Place content 60px from the top */
+  transition: 0.5s ease-in-out; /* 0.5 second transition effect to slide in the sidenav */
+  transition-delay: 0.1s;
 }
 /* Smartphones ----------- */
 @media only screen and (max-width: 760px) {

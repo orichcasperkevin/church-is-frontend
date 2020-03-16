@@ -20,10 +20,10 @@
         <section class="container">
                 <div class="row">
                 <!-- NAVIGATION ON THE LEFT -->
-                <div class="col-sm-12 col-md-8 col-lg-3">
+                <div class="col-sm-12 col-md-8 col-lg-3">                        
                         <nav class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                                 <a class="nav-link active list-group-item list-group-item-action border-0" id="pill-detail-tab" data-toggle="pill" href="#pill-detail" role="tab" aria-controls="pill-detail" aria-selected="true">
-                                        <img class="church-is-menu" src="@/assets/icons/icons8-user-groups-208.png"> detail
+                                        <img class="church-is-menu" src="@/assets/icons/icons8-contacts-208.png"> detail
                                 </a>                                                                
                                 <a class="nav-link list-group-item list-group-item-action border-0" id="pill-groups-tab" data-toggle="pill" href="#pill-groups" role="tab" aria-controls="pill-groups" aria-selected="false" v-on:click = "getMemberGroups()">
                                         <img class="church-is-menu" src="@/assets/icons/icons8-user-groups-filled-50.png"> groups
@@ -37,16 +37,17 @@
                                 </a> 
                         </nav>
                 </div>
-                <!-- CONTENT ON THE RIGHT -->
+                <!-- CONTENT ON THE RIGHT -->                
                 <div class="col">
                         <div class="tab-content" id="v-pills-tabContent">
                                 <!-- member detail -->
                                 <div class="tab-pane fade show active" id="pill-detail" role="tabpanel" aria-labelledby="pill-detail-tab">                                
+                                        <hr class="d-sm-block d-lg-none">
                                         <memberdetail/>                                       
                                 </div>
                                 <!-- member groups -->
                                 <div class="tab-pane fade" id="pill-groups" role="tabpanel" aria-labelledby="pill-groups-tab">
-
+                                        <hr class="d-sm-block d-lg-none">
                                         <h3> Church Groups</h3>
                                         <table class="table table-responsive-sm" v-if = "groups_selected == true">
                                         <thead class=""  v-if = "church_groups.response.length > 0">
@@ -78,8 +79,9 @@
                                 <div class=" tab-pane fade" id="pill-contributions" role="tabpanel" aria-labelledby="pill-contributions-tab">
                                         <div class="row">
                                         <div class="col-2"></div>
-                                        <div class="col-8">
+                                        <div class="col-lg-8 col-sm-12">
                                         <!-- navigation -->
+                                        <hr class="d-sm-block d-lg-none">
                                         <ul class="row nav nav-pills mb-3 mt-3" id="pills-tab" role="tablist">
                                                 <li class="nav-item">
                                                         <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Contributions</a>

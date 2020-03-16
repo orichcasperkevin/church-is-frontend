@@ -50,6 +50,7 @@
                 <div v-if = "fetch_data_error.length == 0">
                 <div>                   
                     <span aria-current="page" v-for="data in group.response" class="row">
+                      <hr class="d-sm-block d-lg-none">  
                       <h3 class="ml-3">
                          members
                       </h3>
@@ -133,6 +134,7 @@
               </div>
                <!-- GROUP ACTIVITY -->
               <div class="tab-pane fade" id="activity" role="tabpanel" >   
+                <hr class="d-sm-block d-lg-none">  
                 <h3>Activity</h3>            
                 <hr>
                 <div v-if="group_meetings">
