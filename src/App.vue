@@ -73,7 +73,7 @@
         <hr>
         <router-link class="nav-link" :to="{name: 'myAccount'}">
         <span  v-on:click="doAJAX(); closeNav()">
-          church account
+          account & website
         </span>        
         </router-link>    
         <hr>

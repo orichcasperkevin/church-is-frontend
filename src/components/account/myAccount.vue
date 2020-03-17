@@ -23,7 +23,16 @@
                                           <h5>{{client_details[0].church_code}}</h5></span>                       
                                 </h6>
                             </div>
-                            <div class="col-lg-6 col-sm-12">                                  
+                            <div class="col-lg-6 col-sm-12">   
+                                    <button disabled type="button" class="btn btn-success">
+                                            ANVIL credit
+                                    </button> 
+                                    <p>plan : 
+                                        <i v-if="sms_credentials.length" class="text-muted">{{client_details[0].tier.tier}}</i>
+                                    </p>                                    
+                                    <p>price : 
+                                        <i v-if="sms_credentials.length"class="text-muted">{{client_details[0].tier.price_per_month}}/month</i>
+                                    </p>                                
                                     <button disabled type="button" class="btn btn-success">
                                         SMS credit
                                     </button> 
@@ -46,12 +55,12 @@
                                         <div class="mb-2 ml-3 text-center text-muted col-lg-2 col-sm-12 border border-secondary rounded">
                                                 <h1 class="font-weight-bold">{{client_details[0].number_of_sms}}</h1>
                                                 sms delivered this month
-                                        </div>     
+                                        </div>                                             
                                         <div class="mb-2 ml-3 text-center text-muted col-lg-2 col-sm-12 border border-secondary rounded">
-                                            <h1 class="font-weight-bold">{{client_details[0].tier.tier}}</h1>
-                                            anvil plan<br/>
-                                            <i>{{client_details[0].tier.price_per_month}}/month</i>
-                                        </div>                                   
+                                                <h1 class="font-weight-bold">{{client_details[0].site_visitors.this_month}}</h1>
+                                                website visits this month<br/>
+                                                <i>{{client_details[0].site_visitors.last_month}} last month</i>
+                                        </div>                                 
                                                                    
                                 </div> 
                         </section>

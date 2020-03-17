@@ -49,16 +49,11 @@
                 </div>
                 <div v-if = "fetch_data_error.length == 0">
                 <div>                   
-                    <span aria-current="page" v-for="data in group.response" class="row">
+                    <span aria-current="page" v-for="data in group.response">
                       <hr class="d-sm-block d-lg-none">  
-                      <h3 class="ml-3">
+                      <h3>
                          members
-                      </h3>
-                      <!-- on small devices -->
-                      <span class=" btn btn-success  d-sm-block d-md-none mx-auto"
-                            data-toggle="modal" data-target="#addMemberToGroup">                        
-                            + add member
-                      </span> 
+                      </h3>                      
                     </span>                   
                     <hr/>
                   <div class="row mb-1">
@@ -66,29 +61,15 @@
                       found <span class="badge badge-pill badge-secondary">{{foundItems}}</span>
                       </p>
                       <div class="btn-group d-sm-block d-md-none ml-2">
-                          <a href="#" style="text-decoration: none">
+                          <a  v-on:click="openAction()">
                               <div class="btn btn-light">
                                 actions
                               </div>
                             </a>
-                          <button type="button" class="btn btn-sm btn-light dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                            <span class="sr-only">Toggle Dropdown</span>
-                          </button>
-                          <div class="dropdown-menu border-light" aria-labelledby="dropdownMenuReference">
-                            <!-- when device is a phone -->
-                            <div class="list-group ">
-                                <button type="button" class="action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#emailModatCenter" >
-                                  <img src="@/assets/app_logo.png" style="width: 25px; height:auto">
-                                  anvil channels
-                                </button>
-                                <button type="button" class="d-none action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#emailModatCenter" ><img src="@/assets/icons/icons8-email-64.png">email</button>
-                                <button type="button" class="list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#textModalCenter">
-                                  <img src="@/assets/icons/icons8-comments-64.png" style="width: 25px; height:auto">
-                                  text members
-                                </button>
-          
-                            </div>                           
-                          </div>
+                          <button v-on:click="openAction()" type="button" class="btn btn-sm btn-light dropdown-toggle dropdown-toggle-split">
+                            <span class="sr-only" >Toggle Dropdown</span>
+                          </button> 
+                         
                       </div>
                   </div>                  
                 </div>
@@ -193,7 +174,7 @@
                   </div>
                 </div>
                   <div class="list-group ">
-                      <button type="button" class="action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#emailModatCenter" ><img src="@/assets/app_logo.png" style="width: 55px; height:auto">. anvil channels</button>
+                      <button type="button" class="d-none action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#emailModatCenter" ><img src="@/assets/app_logo.png" style="width: 55px; height:auto">. anvil channels</button>
                       <button type="button" class="d-none action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#emailModatCenter" ><img src="@/assets/icons/icons8-email-64.png">email</button>
                       <button type="button" class="list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#textModalCenter"><img src="@/assets/icons/icons8-comments-64.png">text members</button>
 
@@ -224,7 +205,7 @@
                               </div>
                         </div>
                         <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="fetchData()">Close</button>
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                           <button type="button" class="btn btn-success " v-on:click="addMemberToGroup()">
                             <b>+</b> add member to group
                             <span v-if="adding_member"
@@ -302,6 +283,32 @@
             </div>
           </body>
 
+        <!-- bottom navigation -->
+      <div  id="bottom-actions-tab" class="bottom-action-tab bg-light shadow-lg"
+            style="border-radius: 5%">          
+        <h2 class="text-right mr-5 ">
+         <a href="javascript:void(0)" class="closebtn text-secondary" v-on:click="closeActions()">&times;</a>
+        </h2>      
+        <!-- content -->
+        <div>                          
+              <button   type="button" class="list-group-item list-group-item-action border-0" 
+                        data-toggle="modal" data-target="#textModalCenter"
+                        v-on:click="closeActions">
+                <img src="@/assets/icons/icons8-comments-64.png" style="width: 25px; height:auto">
+                text members
+              </button>              
+              <div class="text-right mr-5">
+                  <span class=" btn btn-success  d-sm-block d-md-none mx-auto"
+                     data-toggle="modal" data-target="#addMemberToGroup"
+                     v-on:click="closeActions">                                             
+                      + add member
+                    </span>
+                </div>
+
+        </div>
+      </div>
+ </div>
+
     </div>
 
   </template>
@@ -372,6 +379,15 @@ export default {
       onMemberSelected (value) {
             this.selectedMember = value
       },
+      /* Set the height of the bottom navigation to 300px */
+      openAction: function() {            
+        document.getElementById('bottom-actions-tab').style.height = "200px"                    
+      },
+
+      /* Set the height of the bottom navigation to 0 */
+      closeActions:function() {   
+        document.getElementById('bottom-actions-tab').style.height = "0px"    
+      },
       addMemberToGroup: function(){      
         if (this.selectedMember && this.role){
           var group_id
@@ -387,8 +403,9 @@ export default {
           }
           }).then(response => {
             this.adding_member = false                        
-            this.role = ''
+            this.role = ''            
             alert("member successfully added")
+            this.fetchData()
           })
           .catch((err) => {
             this.adding_member = false

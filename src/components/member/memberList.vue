@@ -47,7 +47,10 @@
               <div class="collapse"  id="collapseMoreFilters">
                   <div id="container row" >
                       <div class="accordion">
-                        <label for="tm" class="accordionitem"><b>age</b></label>                      
+                        <div class="d-flex justify-content-between">
+                            <label for="tm" class="accordionitem"><b>age</b></label> 
+                            <a href="#" v-on:click="resetAge" class="text-success">reset</a>
+                        </div>                                             
                           <div class="d-flex flex-row justify-content-about">
                             
                               <div class="form-group p-1">
@@ -63,7 +66,10 @@
                       </div>
 
                       <div class="accordion">
-                        <label for="tn" class="accordionitem"><b>gender</b></label>                        
+                          <div class="d-flex justify-content-between">
+                              <label for="tn" class="accordionitem"><b>gender</b></label>
+                              <a href="#" v-on:click="resetGender" class="text-success">reset</a>
+                          </div>                                               
                         <div class="row" style="padding : 10px">
                           <div class="col">
                             <div>
@@ -170,6 +176,12 @@
                     <tbody>
                       <tr v-for="data in members.response">
                         <th scope="row"></th>
+                        <td>                            
+                            <label class="anvil-checkbox">
+                                <input multiple type="checkbox" :value=data.member.member.id v-model="member_ids">
+                                <span class="anvil-checkmark"></span>
+                            </label>
+                          </td>
                         <td ><img v-if = "data.member.gender == 'M'" style = "height: 32px "src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
                               <img v-if = "data.member.gender == 'F'" style = "height: 32px "src="@/assets/avatars/icons8-user-female-skin-type-4-40.png">
                               <img v-if = "! data.member.gender" style = "height: 32px "src="@/assets/avatars/icons8-contacts-96.png">
@@ -427,17 +439,73 @@
       <!-- bottom navigation -->
       <div id="bottom-actions-tab" class="bottom-action-tab bg-light shadow-lg"
            style="border-radius: 5%">          
-        <h2 class="text-right mr-5">
+        <h2 class="text-right mr-5 ">
           <a href="javascript:void(0)" class="closebtn text-secondary" v-on:click="closeActions()">&times;</a>
-        </h2>        
+        </h2>      
+        <!-- filters   -->
+        <div class="form-group ml-5 mr-5">
+            <label for="searchInput">
+              <b>
+              <img style="width: 20px ;height: auto" src="@/assets/icons/icons8-search-80.png">
+              search by first name
+              </b>
+            </label>
+            <input type="text" class="form-control"  aria-describedby="searchHelp" placeholder="e.g John,Brian etc" v-model="firstnamesearch" autofocus>
+            <div style="padding: 10px 10px 10px 10px" class="text-info">{{firstnamesearch_status}}</div>
+            <small id="searchHelp" class="form-text text-muted">search members by their first names</small>
+        </div>
+        <!-- more filters -->
+        <div class="ml-5 mr-5">
+            <div id="container row" >
+                <div class="accordion">
+                  <div class="d-flex justify-content-between">
+                      <label for="tm" class="accordionitem"><b>age</b></label> 
+                      <a href="#" v-on:click="resetAge" class="text-success">reset</a>
+                  </div>                                             
+                    <div class="d-flex flex-row justify-content-about">
+                      
+                        <div class="form-group p-1">
+                            <small><b>min age :</b></small>
+                            <input type="number" class="form-control" id="searchInput"  placeholder="min age" v-model = "min_age">
+                        </div>                                                       
+                        <div class="form-group p-1 ">
+                            <small><b>max age :</b></small>
+                            <input type="number" class="form-control" id="searchInput" placeholder="max age" v-model = "max_age">
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="accordion">
+                    <div class="d-flex justify-content-between">
+                        <label for="tn" class="accordionitem"><b>gender</b></label>
+                        <a href="#" v-on:click="resetGender" class="text-success">reset</a>
+                    </div>                                               
+                  <div class="row" style="padding : 10px">
+                    <div class="col">
+                      <div>
+                          <input type="radio" name="optradio" value="M" v-model="gendersearch"> male                               
+                        </div>
+                      </div>
+                      <div class="col">
+                        <div class="radio">
+                          <input type="radio" name="optradio" value ="F" v-model="gendersearch"> female
+                        </div>
+                      </div>
+                  </div>
+                </div>
+
+              </div>
+        </div>
+
         <button type="button" class="d-none action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#anvilModal" >
           <img src="@/assets/app_logo.png" style="width: 25px; height:auto"> anvil message
         </button>  
-        <button v-on:click="closeActions()" type="button" class="list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#textModalCenter">
+        <button v-on:click="closeActions()" type="button" class="ml-4 mr-4 list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#textModalCenter">
           <img style="width: 25px; height:auto" src="@/assets/icons/icons8-comments-64.png">
           text members
         </button>
-        <button v-on:click="closeActions()" type="button" class="list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#assignModalCenter">
+        <button v-on:click="closeActions()" type="button" class="ml-4 mr-4 list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#assignModalCenter">
           <img style="width: 25px; height:auto" src="@/assets/icons/icons8-add-user-group-man-man-64.png">
           assign group
         </button>              
@@ -515,8 +583,13 @@ export default {
           this.fetchData()
       }
     },
-    gendersearch: function (){
-      this.searchByGender()
+    gendersearch: function (){      
+      if (this.min_age !=0 && this.min_age != '' && this.min_age > 0){
+        this.searchByAge()
+      }      
+      else{
+        this.searchByGender()
+      }
     },
     min_age: function(){
       if (this.min_age != '' && this.min_age > 0){
@@ -526,7 +599,7 @@ export default {
       }
     },
     max_age:function(){
-      if (this.max_age != ''){
+      if (this.max_age != '' || this.max_age != 150){
         this.searchByAge()
       }else{
         this.fetchData()
@@ -545,14 +618,23 @@ export default {
           router.push("/login")
       }
     },
-        /* Set the width of the side navigation to 250px */
+    /* Set the height of the bottom navigation to 300px */
     openAction: function() {            
-      document.getElementById('bottom-actions-tab').style.height = "250px"                    
+      document.getElementById('bottom-actions-tab').style.height = "300px"                    
     },
 
-    /* Set the width of the side navigation to 0 */
+    /* Set the height of the bottom navigation to 0 */
     closeActions:function() {   
       document.getElementById('bottom-actions-tab').style.height = "0px"    
+    },
+    resetAge: function(){
+      this.min_age= 0
+      this.max_age=150
+      this.fetchData()
+    },
+    resetGender: function(){
+      this.gendersearch =  null
+      this.fetchData()
     },
     fetchData() {
       this.all_member_ids = []
@@ -700,22 +782,26 @@ export default {
     },
     searchByAge() {
       if (this.min_age != '' && this.max_age != ''){
-      this.$store.dispatch('update_isLoading', true)
-      this.$http.get(this.$BASE_URL + '/api/members/filter-by-age/'+ this.min_age +'/' + this.max_age + '/')
-      .then(response => {        
-        this.members = {"response": response.data }
-        var array = this.members.response
-        this.foundItems = array.length
-        this.member_ids = []
-        for (var data in this.members.response){
-          this.member_ids.push(this.members.response[data].member.id)
-         }
-        this.text_button_name = "Text members between ages " + this.min_age + " and " + this.max_age
-        this.$store.dispatch('update_isLoading', false)
-      })
-      .catch((err) => {
-        this.$store.dispatch('update_isLoading', false)
-      })
+        var gender = "all"
+        if (this.gendersearch){
+          gender = this.gendersearch
+        }
+        this.$store.dispatch('update_isLoading', true)
+        this.$http.get(this.$BASE_URL + '/api/members/filter-by-age/'+ this.min_age +'/' + this.max_age + '/' + gender + "/")
+        .then(response => {        
+          this.members = {"response": response.data }
+          var array = this.members.response
+          this.foundItems = array.length
+          this.member_ids = []
+          for (var data in this.members.response){
+            this.member_ids.push(this.members.response[data].member.id)
+          }
+          this.text_button_name = "Text members between ages " + this.min_age + " and " + this.max_age
+          this.$store.dispatch('update_isLoading', false)
+        })
+        .catch((err) => {
+          this.$store.dispatch('update_isLoading', false)
+        })
       }
     },
 
