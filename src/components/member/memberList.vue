@@ -441,21 +441,11 @@
            style="border-radius: 5%">          
         <h2 class="text-right mr-5 ">
           <a href="javascript:void(0)" class="closebtn text-secondary" v-on:click="closeActions()">&times;</a>
-        </h2>      
-        <!-- filters   -->
-        <div class="form-group ml-5 mr-5">
-            <label for="searchInput">
-              <b>
-              <img style="width: 20px ;height: auto" src="@/assets/icons/icons8-search-80.png">
-              search by first name
-              </b>
-            </label>
-            <input type="text" class="form-control"  aria-describedby="searchHelp" placeholder="e.g John,Brian etc" v-model="firstnamesearch" autofocus>
-            <div style="padding: 10px 10px 10px 10px" class="text-info">{{firstnamesearch_status}}</div>
-            <small id="searchHelp" class="form-text text-muted">search members by their first names</small>
-        </div>
+        </h2>                      
         <!-- more filters -->
         <div class="ml-5 mr-5">
+            <h4>filters</h4>
+            <hr>
             <div id="container row" >
                 <div class="accordion">
                   <div class="d-flex justify-content-between">
@@ -497,19 +487,20 @@
 
               </div>
         </div>
-
+        <h4 class="ml-5">actions</h4>
+        <hr class="ml-5">
         <button type="button" class="d-none action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#anvilModal" >
           <img src="@/assets/app_logo.png" style="width: 25px; height:auto"> anvil message
         </button>  
-        <button v-on:click="closeActions()" type="button" class="ml-4 mr-4 list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#textModalCenter">
+        <button v-on:click="closeActions()" type="button" class="p-3 ml-4 mr-4 list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#textModalCenter">
           <img style="width: 25px; height:auto" src="@/assets/icons/icons8-comments-64.png">
           text members
         </button>
-        <button v-on:click="closeActions()" type="button" class="ml-4 mr-4 list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#assignModalCenter">
+        <button v-on:click="closeActions()" type="button" class="p-3 ml-4 mr-4 list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#assignModalCenter">
           <img style="width: 25px; height:auto" src="@/assets/icons/icons8-add-user-group-man-man-64.png">
           assign group
         </button>              
-        <div class="text-right mr-5">
+        <div class="text-right mr-5 mt-2 mb-5">
           <router-link :to="{name: 'memberAdd'}" class="mt-2 ml-2 mr-2">
             <div class="btn btn-success">
               + Add member

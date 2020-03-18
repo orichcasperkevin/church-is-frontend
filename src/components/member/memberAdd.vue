@@ -352,8 +352,7 @@ export default {
                 this.gender_male = false
                 this.gender_female = false
                 this.last_name = ''
-                this.first_name = ''   
-                this.added_member_id = null                                            
+                this.first_name = ''                                                             
                 this.adding_member = false
                 })
                 .catch((err) => {

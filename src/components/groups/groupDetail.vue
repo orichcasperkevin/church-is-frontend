@@ -189,25 +189,36 @@
                             <span aria-hidden="true">&times;</span>
                           </button>
                         </div>
-                        <div class="modal-body">                            
-                            <div class="form-group">
-                                <label><b>member :</b></label>
-                                <searchmember v-on:memberSelected="onMemberSelected" />
-                                <label><b>role :</b></label>
-                                <div class="container row">
-                                    <select class="col-8 form-control" v-model="role" >
-                                        <option v-for="data in roles.response" :value="data.id" >{{data.role}}</option>
-                                    </select>
-                                    <button class="ml-2 col-3 btn btn-outline-success" data-toggle="modal" data-target="#addRole">
-                                      + add
-                                    </button>
-                                </div>                                
-                              </div>
+                        <div class="modal-body">                                                        
+                              <div class="d-flex justify-content-around">
+                                  <label><b>member</b></label>           
+                                  <div class="d-flex flex-column">
+                                      <searchmember v-on:memberSelected="onMemberSelected" />
+                                      <span v-if="checking_if_in_group"
+                                        class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                                      </span>
+                                      <span v-if="member_in_group" class="text-danger">
+                                        <small>member already in group</small>
+                                      </span>
+                                  </div>                                                         
+                              </div>  
+                              <hr>
+                              <div class="mt-3 d-flex justify-content-around">
+                                  <label><b>role</b></label>
+                                  <div class="d-flex justify-content-around">
+                                      <select class="ml-4 form-control" v-model="role" >
+                                          <option v-for="data in roles.response" :value="data.id" >{{data.role}}</option>
+                                      </select>
+                                      <button class="ml-2 btn btn-outline-success" data-toggle="modal" data-target="#addRole">
+                                        add
+                                      </button>
+                                  </div> 
+                              </div>                                                         
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                           <button type="button" class="btn btn-success " v-on:click="addMemberToGroup()">
-                            <b>+</b> add member to group
+                            <b>+</b> add member
                             <span v-if="adding_member"
                                 class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
                             </span>
@@ -297,7 +308,7 @@
                 <img src="@/assets/icons/icons8-comments-64.png" style="width: 25px; height:auto">
                 text members
               </button>              
-              <div class="text-right mr-5">
+              <div class="text-right mr-5 mt-3">
                   <span class=" btn btn-success  d-sm-block d-md-none mx-auto"
                      data-toggle="modal" data-target="#addMemberToGroup"
                      v-on:click="closeActions">                                             
@@ -329,6 +340,8 @@ export default {
       group_meetings: null,
       activity_selected: false,
       //add member
+      member_in_group: null,
+      checking_if_in_group:false,
       role: null,
       selectedMember: null, 
       roles: null,
@@ -376,8 +389,9 @@ export default {
           window.history.back();
       },
       //select member
-      onMemberSelected (value) {
+      onMemberSelected (value) {            
             this.selectedMember = value
+            this.checkIfMemberIsInGroup(value,this.$route.params.id)
       },
       /* Set the height of the bottom navigation to 300px */
       openAction: function() {            
@@ -388,8 +402,20 @@ export default {
       closeActions:function() {   
         document.getElementById('bottom-actions-tab').style.height = "0px"    
       },
+      checkIfMemberIsInGroup: function(member_id,group_id){
+        this.checking_if_in_group = true
+        this.$http.get(this.$BASE_URL + '/api/groups/check-if-member/' + member_id +'/is-in-group/' + group_id +'/')
+        .then(response => {
+          this.member_in_group = response.data                  
+          this.checking_if_in_group = false
+        })
+        .catch((err) => {
+          this.checking_if_in_group = false
+          alert(err)          
+        })
+      },
       addMemberToGroup: function(){      
-        if (this.selectedMember && this.role){
+        if (this.selectedMember && this.role && ! this.member_in_group){
           var group_id
           var obj = this.group.response
           group_id = obj["0"].id

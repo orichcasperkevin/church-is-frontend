@@ -16,11 +16,11 @@
                     <!-- member -->
                     <searchmember v-if="selected_input == 'member_input'" v-on:memberSelected="onMemberSelected" />                                                                        
                     <!-- groups -->
-                    <select v-if="selected_input == 'group_input'" class="ml-4 form-control" v-model="selected_group" >                            
+                    <select v-if="selected_input == 'group_input'" class="ml-4 col-8 form-control" v-model="selected_group" >                            
                             <option v-for="data in groups.response" :value="data.id" >{{data.name}}</option>
                     </select> 
                     <!-- service                  -->                    
-                    <div v-if="selected_input == 'service_input'">
+                    <div v-if="selected_input == 'service_input'" >
                             <select class="ml-3 form-control" v-model="service_type" >
                                     <option v-for="data in service_types.response" :value="data.id" >{{data.name}}</option>
                             </select>

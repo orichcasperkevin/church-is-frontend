@@ -87,7 +87,7 @@
     <!-- loader overlay -->
     <div class="vld-parent">
         <loading :active.sync="isLoading" 
-                :can-cancel="false" 
+                :can-cancel="true" 
                 :on-cancel="onCancel"
                 :is-full-page="fullPage">
         </loading>      
@@ -151,10 +151,7 @@ export default {
       return true                 
     },
     logOut() {      
-      this.$session.destroy()
-      //patch to fix memberlist issue (remove this later)
-      localStorage.removeItem("member_list_version");
-      localStorage.removeItem("member_list");
+      this.$session.destroy()            
       router.push("/login")                 
     },
     onCancel() {

@@ -35,6 +35,10 @@
                                    role="tab" aria-controls="pill-roles" aria-selected="false">
                                         <img class="church-is-menu" src="@/assets/icons/icons8-admin-settings-male-30.png"> roles
                                 </a> 
+                                <a class="nav-link list-group-item list-group-item-action border-0" 
+                                data-toggle="modal" data-target="#deleteMemberModal">
+                                        <img class="church-is-menu" src="@/assets/icons/icons8-cancel-26.png"> delete
+                                </a> 
                         </nav>
                 </div>
                 <!-- CONTENT ON THE RIGHT -->                
@@ -343,11 +347,45 @@
                         </div>
                         </div>
                 </div>
+                   <!-- Modal -->
+                <div class="modal fade" id="deleteMemberModal" tabindex="-1" role="dialog" aria-labelledby="deleteMemberModal" aria-hidden="true">
+                        <div class=" modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" >delete member</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                            <div class="modal-body border text-danger">
+                              
+                                Are you sure you want to delete this member??
+
+                                <p class="mt-2 small">
+                                        all data about the member will be lost, 
+                                        this is unreversible
+                                </p>
+                                
+                                
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-danger" v-on:click="deleteMember()">
+                                delete
+                                <span v-if="deleting_member"
+                                    class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                                </span>
+                            </button>
+                            </div>
+                        </div>
+                        </div>
+                </div>
         </section>     
     </div>
   </template>
 
 <script>
+import router from "../../router";
 import memberdetail from '@/subcomponents/members/memberdetail'
 export default {
   components: { memberdetail },
@@ -382,7 +420,8 @@ export default {
         event_admin: false,
         projects_admin: false,
         finance_admin: false,
-        assigned_roles: [] 
+        assigned_roles: [] ,
+        deleting_member: false,
     }
   },
   created() {   
@@ -557,7 +596,23 @@ export default {
                 .catch((err) => {                    
                 }) 
             }
-        }
+        },
+        deleteMember: function(){
+                //delete member personal detail                
+                this.deleting_member = true
+                this.$http.delete(this.$BASE_URL + '/api/members/member/'+this.$route.params.id+'/')
+                .then(response => {
+                        this.deleting_member = false                                                                       
+                        alert("member deleted")                
+                        localStorage.removeItem("member_list_version");
+                        localStorage.removeItem("member_list");
+                        location.reload()
+                })
+                .catch((err)=> {
+                        alert(err)
+                        this.deleting_member = false
+                })
+        },
 
     }
 

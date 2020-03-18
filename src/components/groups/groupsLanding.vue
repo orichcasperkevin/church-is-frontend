@@ -28,7 +28,7 @@
                         Groups <b> <span class="text-secondary">
                         {{foundItems_independent}}</span> </b>
                 </div>
-                <a class="btn btn-outline-secondary dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
+                <a class="mt-2 btn btn-outline-secondary dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
                         more stats
                 </a>
             </div>            
