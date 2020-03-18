@@ -125,9 +125,9 @@
           this.$session.set('token', response.data.access)
           this.$session.set('username', this.username)
           //get logged in member data
-          this.getLoggedInMemberData()
-          location.reload()
+          this.getLoggedInMemberData()         
           router.push('/')          
+          location.reload()
         })
           .catch((err) => {
             this.login_info = []
