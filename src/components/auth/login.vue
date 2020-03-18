@@ -8,7 +8,7 @@
           <div class="card w-400" style="background-color: ghostwhite; min-width: 300px;">
             <div class="card-header text-center">
               <img class="mr-0 " style="width: 50px ;height: auto" src="@/assets/app_logo1.png">
-              <p>anvil church admin login</p>
+              <p>admin login</p>
             </div>
             <div class="card-body">
               <form>

@@ -152,6 +152,9 @@ export default {
     },
     logOut() {      
       this.$session.destroy()
+      //patch to fix memberlist issue (remove this later)
+      localStorage.removeItem("member_list_version");
+      localStorage.removeItem("member_list");
       router.push("/login")                 
     },
     onCancel() {
