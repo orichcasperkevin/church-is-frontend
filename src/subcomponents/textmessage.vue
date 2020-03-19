@@ -93,7 +93,7 @@ methods: {
     },
     //send message
     sendMessage: function (){
-        this.sending_message = true
+        this.sending_message = true      
         this.$http({
                 method: 'post',
                 url: this.$BASE_URL + '/api/sms/add-sms/',
