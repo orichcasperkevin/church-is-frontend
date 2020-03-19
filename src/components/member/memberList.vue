@@ -52,15 +52,15 @@
                             <a href="#" v-on:click="resetAge" class="text-success">reset</a>
                         </div>                                             
                           <div class="d-flex flex-row justify-content-about">
-                            
+                              <div class="form-group p-1 ">
+                                <small><b>max age :</b></small>
+                                <input type="number" class="form-control" id="searchInput" placeholder="max age" v-model = "max_age">
+                              </div>
                               <div class="form-group p-1">
                                   <small><b>min age :</b></small>
                                   <input type="number" class="form-control" id="searchInput"  placeholder="min age" v-model = "min_age">
                               </div>                                                       
-                              <div class="form-group p-1 ">
-                                  <small><b>max age :</b></small>
-                                  <input type="number" class="form-control" id="searchInput" placeholder="max age" v-model = "max_age">
-                              </div>
+                              
 
                           </div>
                       </div>
@@ -103,16 +103,11 @@
                     Members                  
                   </h3>                                  
                   <hr/>
-                <div class="mb-2 row">
-                  <p class="ml-2 mr-5">
-                      <div class="stat-item mr-2 text-muted">
-                          found <span class="text-secondary"><b>{{foundItems}}</b></span>
-                  </div>                   
-                    <t/>
+                <div class="d-flex flex-row">
+                   <span class="mt-2 mr-2 text-secondary"> found <b>{{foundItems}}</b></span>
                     <a class="btn btn-outline-secondary dropdown-toggle mr-1" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
                         more stats
-                    </a>
-                  </p>                                                                 
+                    </a>                                                                                 
                 </div>               
                 
               </div>
@@ -147,7 +142,7 @@
                     </tr>
                   </thead>
                     <tbody>
-                      <tr v-for="data in members.response">
+                      <tr v-for="data in members.response.slice(0,100)">
                         <th scope="row"></th>
                         <td>                            
                           <label class="anvil-checkbox">
@@ -174,7 +169,7 @@
                   </div>
                   <table class="table" v-if = "min_age > 0  || max_age != 150 ">
                     <tbody>
-                      <tr v-for="data in members.response">
+                      <tr v-for="data in members.response.slice(0,100)">
                         <th scope="row"></th>
                         <td>                            
                             <label class="anvil-checkbox">
@@ -268,7 +263,8 @@
                           <span aria-hidden="true">&times;</span>
                         </button>
                       </div>
-                      <div class="container mt-5 mb-5">                      
+                      <div class="container mt-5 mb-5">    
+                        <span class="d-flex fex-row"><h3 class="text-muted">{{member_ids.length}} </h3>members</span>
                         <label><b>select group :</b></label>
                         <select class=" form-control" v-model="group_id" >
                             <option v-for="data in groups.response" :value="data.id" >{{data.name}}</option>
@@ -277,7 +273,7 @@
                       <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="setAssignGroupButtonText('assign group')">Close</button>
                         <button type="button" class="btn btn-success" v-on:click="assignGroup()">
-                          {{assign_group_button_text}}
+                          assign group
                           <span v-if="adding_members_to_group"
                                 class="spinner-border spinner-border-sm" 
                                 role="status" aria-hidden="true"></span>
@@ -454,14 +450,14 @@
                   </div>                                             
                     <div class="d-flex flex-row justify-content-about">
                       
+                        <div class="form-group p-1 ">
+                          <small><b>max age :</b></small>
+                          <input type="number" class="form-control" id="searchInput" placeholder="max age" v-model = "max_age">
+                      </div>
                         <div class="form-group p-1">
                             <small><b>min age :</b></small>
                             <input type="number" class="form-control" id="searchInput"  placeholder="min age" v-model = "min_age">
-                        </div>                                                       
-                        <div class="form-group p-1 ">
-                            <small><b>max age :</b></small>
-                            <input type="number" class="form-control" id="searchInput" placeholder="max age" v-model = "max_age">
-                        </div>
+                        </div>                                                                               
 
                     </div>
                 </div>
@@ -695,24 +691,22 @@ export default {
       var group_id = this.group_id
       var member_ids = this.member_ids 
       this.assign_group_button_text = "assigning to group ..."     
-      this.adding_members_to_group = true
-      for (var member_id in this.member_ids){                       
-          this.$http({ method: 'post', url: this.$BASE_URL + '/api/groups/add-member-to-group/',
-          data: {        
-            group_id: group_id,
-            member_id: this.member_ids[member_id],
-            role_id: null            
-          }
-          }).then(response => {            
-            this.adding_members_to_group = false
-            this.assign_group_button_text = "done"                 
-          })
-          .catch((err) => {                                      
-            this.assign_group_button_text = "error"
-            this.adding_members_to_group = false                     
-                     
-          })
-        }                
+      this.adding_members_to_group = true                            
+      this.$http({ method: 'post', url: this.$BASE_URL + '/api/groups/bulk-add-member-to-group/',
+      data: {        
+        group_id: group_id,
+        member_ids: this.member_ids,
+        role_id: null            
+      }
+      }).then(response => {            
+        this.adding_members_to_group = false
+        alert("members assigned to group")                 
+      })
+      .catch((err) => {                                      
+        alert(err)                   
+                  
+      })
+                       
     },
     setAssignGroupButtonText: function(text){
       this.assign_group_button_text = text
@@ -759,12 +753,7 @@ export default {
               for (var data in this.members.response){
                 this.member_ids.push(this.members.response[data].member.id)
               }
-              if (this.gendersearch == "F"){
-                  this.text_button_name = "text all Females"
-                }
-                else{
-                  this.text_button_name = "text all Males"
-                }
+            
                 this.$store.dispatch('update_isLoading', false)
             })
             .catch((err) => {
@@ -785,7 +774,7 @@ export default {
           this.foundItems = array.length
           this.member_ids = []
           for (var data in this.members.response){
-            this.member_ids.push(this.members.response[data].member.id)
+            this.member_ids.push(this.members.response[data].member.member.id)
           }
           this.text_button_name = "Text members between ages " + this.min_age + " and " + this.max_age
           this.$store.dispatch('update_isLoading', false)

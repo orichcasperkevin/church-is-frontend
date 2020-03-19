@@ -91,7 +91,7 @@
                             <th>names</th>
                             <th>role</th>
                         </tr>
-                        <tr v-for="data in members.response">   
+                        <tr v-for="data in members.response.slice(0,100)">   
                           <td >                                  
                                 <label class="anvil-checkbox">
                                     <input multiple type="checkbox" :value=data.member.member.id v-model="member_ids">
