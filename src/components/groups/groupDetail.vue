@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div >
         <!-- this compnent requires text message modal -->
         <textmessage :memberIds="member_ids"/> 
 
@@ -9,15 +9,15 @@
                   <li class="breadcrumb-item"><span class="backButton"><router-link href="#" style="text-decoration: none" :to="{name: 'groupsLanding'}">groups</router-link></span>
                 <li class="breadcrumb-item active" aria-current="page" v-for="data in group.response">{{data.name}}</li>
             </ol>
-        </nav>
-        <body>
+        </nav>       
+        <body v-if="group.response.length">
             <div class="container">
                 <div class="row ml-2">
                   <div class="col" v-for="data in group.response">
                       <h3 class="row">
                         <b>{{data.name}}</b>
                       </h3>
-                      <p class="row small">{{data.description}}  </p>
+                      <p class="row">{{data.description}}  </p>
                   </div>
                 </div>
                 <hr>
@@ -54,12 +54,6 @@
                       <h3>
                          members
                       </h3>                      
-                    </span>                   
-                    <hr/>
-                  <div class="row mb-1">
-                      <p class="ml-4">
-                      found <span class="badge badge-pill badge-secondary">{{foundItems}}</span>
-                      </p>
                       <div class="btn-group d-sm-block d-md-none ml-2">
                           <a  v-on:click="openAction()">
                               <div class="btn btn-light">
@@ -68,9 +62,14 @@
                             </a>
                           <button v-on:click="openAction()" type="button" class="btn btn-sm btn-light dropdown-toggle dropdown-toggle-split">
                             <span class="sr-only" >Toggle Dropdown</span>
-                          </button> 
-                         
+                          </button>                          
                       </div>
+                    </span>                   
+                    <hr/>
+                  <div class="row mb-1">
+                      <p class="ml-4">
+                      found <span class="badge badge-pill badge-secondary">{{foundItems}}</span>
+                      </p>
                   </div>                  
                 </div>
                 </div>
@@ -176,7 +175,21 @@
                   <div class="list-group ">
                       <button type="button" class="d-none action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#emailModatCenter" ><img src="@/assets/app_logo.png" style="width: 55px; height:auto">. anvil channels</button>
                       <button type="button" class="d-none action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#emailModatCenter" ><img src="@/assets/icons/icons8-email-64.png">email</button>
-                      <button type="button" class="list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#textModalCenter"><img src="@/assets/icons/icons8-comments-64.png">text members</button>
+                      <button type="button" class="list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#textModalCenter">
+                        <img src="@/assets/icons/icons8-comments-64.png"  style="width: 35px; height:auto">
+                        text members
+                      </button>
+                      <button type="button" class="list-group-item list-group-item-action border-0"
+                              data-toggle="modal" data-target="#removeMembersModal">
+                          <img src="@/assets/icons/icons8-delete-64.png"  style="width: 35px; height:auto">
+                          remove members
+                      </button>
+                      <button type="button" class="ml-2 d-flex fex-row list-group-item list-group-item-action border-0"
+                              data-toggle="modal" data-target="#deleteGroupModal">
+                          <h2 class="font-weight-bold text-danger">X</h2>
+                          <span class="mt-2 ml-3">delete group</span>
+                      </button>
+
 
                   </div>
                 <!-- Modal add member to group -->
@@ -217,7 +230,8 @@
                         </div>
                         <div class="modal-footer">
                           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                          <button type="button" class="btn btn-success " v-on:click="addMemberToGroup()">
+                          <button v-if="selectedMember"
+                              type="button" class="btn btn-success " v-on:click="addMemberToGroup()">
                             <b>+</b> add member
                             <span v-if="adding_member"
                                 class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
@@ -261,38 +275,66 @@
                     </div>
                     </div>
                 </div>
-                <!-- Modal email -->
-                <div class="modal fade" id="emailModatCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                 <!-- Modal delete member-->
+                 <div class="modal fade" id="removeMembersModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                       <div class="modal-content">
                         <div class="modal-header">
-                          <h5 class="modal-title" id="exampleModalCenterTitle">new {{group.response[0].name}} channel notice</h5>
+                          <h5 class="modal-title" id="exampleModalCenterTitle">remove members</h5>
                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                           </button>
                         </div>
-                        <div class="modal-body">
-                            <div class="form-group">
-                                <label for="exampleFormControlTextarea1">message</label>
-                                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                              </div>
+                        <div class="container mt-5 mb-5">    
+                          <span class="d-flex fex-row"><h2 class="text-muted font-weight-bold">{{member_ids.length}} </h2>members</span>
+                          <h4 class="text-danger">These members alongside with all their data will be removed from the group</h4>
+                          <i>this action is irreversible, are you sure that this is what you want??</i>
                         </div>
                         <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                          <button type="button" class="btn btn-success" v-on:click="addChannelNotification()">
-                            send
-                            <span v-if="sending_message"
-                                class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
-                            </span>
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="setAssignGroupButtonText('assign group')">Close</button>
+                          <button type="button" class="btn btn-danger" v-on:click="removeMembers()">
+                            remove members
+                            <span v-if="removing_members"
+                                  class="spinner-border spinner-border-sm" 
+                                  role="status" aria-hidden="true"></span>
                           </button>
                         </div>
                       </div>
                     </div>
-                </div>              
+                </div>  
+                <!-- Modal delete member-->
+                <div class="modal fade" id="deleteGroupModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalCenterTitle">delete group</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="container mt-5 mb-5">                              
+                          <h4 class="text-danger">This Group alongside with all its data will be deleted</h4>
+                          <i>this action is irreversible, are you sure that this is what you want??</i>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="setAssignGroupButtonText('assign group')">Close</button>
+                          <button type="button" class="btn btn-danger" v-on:click="deleteGroup()">
+                            delete group
+                            <span v-if="removing_members"
+                                  class="spinner-border spinner-border-sm" 
+                                  role="status" aria-hidden="true"></span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                </div>            
               </div>
             </div>
             </div>
-          </body>
+        </body>
+        <body v-else class="text-center h1 text-muted">
+          group not found, it might be deleted
+        </body>
 
         <!-- bottom navigation -->
       <div  id="bottom-actions-tab" class="bottom-action-tab bg-light shadow-lg"
@@ -307,7 +349,19 @@
                         v-on:click="closeActions">
                 <img src="@/assets/icons/icons8-comments-64.png" style="width: 25px; height:auto">
                 text members
-              </button>              
+              </button>    
+              <button type="button" class="list-group-item list-group-item-action border-0"
+                      data-toggle="modal" data-target="#removeMembersModal"
+                      v-on:click="closeActions">
+                  <img src="@/assets/icons/icons8-delete-64.png"  style="width: 25px; height:auto">
+                  remove members
+              </button>
+              <button type="button" class="ml-2 d-flex fex-row list-group-item list-group-item-action border-0"
+                      data-toggle="modal" data-target="#deleteGroupModal"
+                      v-on:click="closeActions">
+                  <h4 class="font-weight-bold text-danger">X</h4>
+                  <span class="mt-2 ml-3">delete group</span>
+              </button>          
               <div class="text-right mr-5 mt-3">
                   <span class=" btn btn-success  d-sm-block d-md-none mx-auto"
                      data-toggle="modal" data-target="#addMemberToGroup"
@@ -358,7 +412,8 @@ export default {
       add_role_button_text: '+ add role',
       added_role: [],
       //all members
-      all_members:true
+      all_members:false,
+      removing_members:false
     }
   },
   created() {
@@ -385,9 +440,6 @@ export default {
         }
   },
   methods: {
-      goBack: function() {
-          window.history.back();
-      },
       //select member
       onMemberSelected (value) {            
             this.selectedMember = value
@@ -430,11 +482,13 @@ export default {
           }).then(response => {
             this.adding_member = false                        
             this.role = ''            
+            this.selectedMember = null
             alert("member successfully added")
             this.fetchData()
           })
           .catch((err) => {
             this.adding_member = false
+            this.selectedMember = null
             alert("an error occered while attempting to add member, check your data and try again" + err)            
           })
         }
@@ -536,7 +590,8 @@ export default {
         .then(response => {          
           this.members = {"response": response.data }
           var array = this.members.response
-          this.foundItems = array.length        
+          this.foundItems = array.length 
+          this.member_ids = []       
           for (var data in this.members.response){
             this.member_ids.push(this.members.response[data].member.id)            
           }
@@ -547,7 +602,40 @@ export default {
           this.fetch_data_error.push(err)
           this.$store.dispatch('update_isLoading', false)
         })
-  }
+      },
+      deleteGroup:function(){
+        this.removing_members = true
+        this.$http.delete(this.$BASE_URL + '/api/groups/church-group/' + this.$route.params.id + '/')
+        .then(response => {
+          alert("group deleted")
+          this.removing_members = false
+          var new_version = parseInt(localStorage.getItem('group_list_version')) + 1
+          this.$store.dispatch('update_group_list_version', new_version)                    
+        })
+        .catch((err) => {
+          this.removing_members = false
+          alert(err)          
+        })
+
+      },
+      removeMembers:function(){
+        this.removing_members = true
+        this.$http.post(this.$BASE_URL + '/api/groups/remove-members-from-group/',
+          {
+            group_id:this.$route.params.id,
+            member_ids:this.member_ids
+          }
+        )
+        .then(response => {
+          alert("members removed")  
+          this.removing_members=false        
+          this.fetchData()
+        })
+        .catch((err) => {          
+          alert(err)     
+          this.removing_members=false     
+        })
+      }
 
   }
 }

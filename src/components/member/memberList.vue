@@ -102,12 +102,22 @@
                     <img style="width: 48px ;height: auto" src="@/assets/icons/icons8-people-48.png">
                     Members                  
                   </h3>                                  
+                  <div class="btn-group d-sm-block d-md-none ml-5 mb-2">
+                      <a href="#" v-on:click="openAction()">
+                          <div class="btn btn-light">
+                            actions
+                          </div>
+                        </a>
+                      <button v-on:click="openAction()" type="button" class="btn btn-sm btn-light dropdown-toggle dropdown-toggle-split">
+                        <span class="sr-only" >Toggle Dropdown</span>
+                      </button>                           
+                  </div> 
                   <hr/>
-                <div class="d-flex flex-row">
+                <div class="mb-2 d-flex flex-row">
                    <span class="mt-2 mr-2 text-secondary"> found <b>{{foundItems}}</b></span>
                     <a class="btn btn-outline-secondary dropdown-toggle mr-1" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
                         more stats
-                    </a>                                                                                 
+                    </a>                                                                                
                 </div>               
                 
               </div>
@@ -125,17 +135,7 @@
                                   <input type="checkbox":value=true v-model="all_members">
                                   <span class="anvil-checkmark"></span>
                               </label>                              
-                        <!-- actions drop down on phone -->                       
-                        <div class="btn-group d-sm-block d-md-none ml-5 mb-2" style="text-decoration: none; position:absolute">
-                            <a href="#" v-on:click="openAction()">
-                                <div class="btn btn-light">
-                                  actions
-                                </div>
-                              </a>
-                            <button v-on:click="openAction()" type="button" class="btn btn-sm btn-light dropdown-toggle dropdown-toggle-split">
-                              <span class="sr-only" >Toggle Dropdown</span>
-                            </button>                           
-                        </div>
+                        <!-- actions drop down on phone -->                                               
                       </th>
                       <th></th>
                       <th></th>
@@ -190,6 +190,7 @@
             </div>
             <!-- ACTIONS TAB ON THE RIGHT -->
             <div class="col-12 col-sm-10 col-md-5 col-lg-3">
+              <hr class="d-sm-block d-lg-none">
               <div class="btn-group" style="padding: 0px 0px 25px 0px">
                 <router-link :to="{name: 'memberAdd'}" style="text-decoration: none">
                     <div class="add-button">
@@ -212,15 +213,21 @@
                     <button type="button" class="d-none action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#emailModatCenter" ><img src="@/assets/icons/icons8-email-64.png">
                       email ({{foundItems}})
                     </button>
-                    <button type="button" class="list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#textModalCenter"><img src="@/assets/icons/icons8-comments-64.png">
+                    <button type="button" class="list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#textModalCenter">
+                      <img src="@/assets/icons/icons8-comments-64.png" style="width: 35px; height:auto">
                       text members
                     </button>
                     <button 
                       type="button" class="list-group-item list-group-item-action border-0"  
                       data-toggle="modal" data-target="#assignModalCenter"
                       v-on:click="getGroups()">
-                      <img src="@/assets/icons/icons8-add-user-group-man-man-64.png">
+                      <img src="@/assets/icons/icons8-add-user-group-man-man-64.png" style="width: 35px; height:auto">
                       assign group
+                    </button>
+                    <button type="button" class="list-group-item list-group-item-action border-0"
+                            data-toggle="modal" data-target="#deleteMemberModal">
+                      <img src="@/assets/icons/icons8-delete-64.png" style="width: 35px; height:auto">
+                      delete members
                     </button>
                 </div>
               <!-- Modal send anvil message -->
@@ -282,6 +289,33 @@
                     </div>
                   </div>
               </div>
+                <!-- Modal delete member-->
+                <div class="modal fade" id="deleteMemberModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalCenterTitle">delete members</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="container mt-5 mb-5">    
+                          <span class="d-flex fex-row"><h2 class="text-muted font-weight-bold">{{member_ids.length}} </h2>members</span>
+                          <h4 class="text-danger">These members alongside with all their data will be deleted</h4>
+                          <i>this action is irreversible, are you sure that this is what you want??</i>
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="setAssignGroupButtonText('assign group')">Close</button>
+                          <button type="button" class="btn btn-danger" v-on:click="deleteMembers()">
+                            delete members
+                            <span v-if="deleting_member"
+                                  class="spinner-border spinner-border-sm" 
+                                  role="status" aria-hidden="true"></span>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                </div>
               <!-- Modal import CSV -->
               <div class="modal fade bd-example-modal-xl" id="importCSV" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
@@ -426,7 +460,7 @@
                       </div>
                     </div>
                   </div>
-              </div>
+              </div>              
             </div>
           </div>
         </div>
@@ -435,13 +469,24 @@
       <!-- bottom navigation -->
       <div id="bottom-actions-tab" class="bottom-action-tab bg-light shadow-lg"
            style="border-radius: 5%">          
-        <h2 class="text-right mr-5 ">
+        <h2 class="text-right mr-3 ">
           <a href="javascript:void(0)" class="closebtn text-secondary" v-on:click="closeActions()">&times;</a>
         </h2>                      
         <!-- more filters -->
         <div class="ml-5 mr-5">
             <h4>filters</h4>
             <hr>
+            <div class="form-group">
+                <label for="searchInput">
+                  <b>
+                  <img style="width: 20px ;height: auto" src="@/assets/icons/icons8-search-80.png">
+                  search by first name
+                  </b>
+                </label>
+                <input type="text" class="form-control"  aria-describedby="searchHelp" placeholder="e.g John,Brian etc" v-model="firstnamesearch" autofocus>
+                <div style="padding: 10px 10px 10px 10px" class="text-info">{{firstnamesearch_status}}</div>
+                <small id="searchHelp" class="form-text text-muted">search members by their first names</small>
+            </div>
             <div id="container row" >
                 <div class="accordion">
                   <div class="d-flex justify-content-between">
@@ -489,12 +534,17 @@
           <img src="@/assets/app_logo.png" style="width: 25px; height:auto"> anvil message
         </button>  
         <button v-on:click="closeActions()" type="button" class="p-3 ml-4 mr-4 list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#textModalCenter">
-          <img style="width: 25px; height:auto" src="@/assets/icons/icons8-comments-64.png">
+          <img style="width: 25px; height:auto" src="@/assets/icons/icons8-comments-64.png" >
           text members
         </button>
         <button v-on:click="closeActions()" type="button" class="p-3 ml-4 mr-4 list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#assignModalCenter">
           <img style="width: 25px; height:auto" src="@/assets/icons/icons8-add-user-group-man-man-64.png">
           assign group
+        </button>
+        <button type="button" class="p-3 ml-4 list-group-item list-group-item-action border-0"
+                v-on:click="closeActions()" data-toggle="modal" data-target="#deleteMemberModal">
+          <img style="width: 25px; height:auto" src="@/assets/icons/icons8-delete-64.png">
+          delete members
         </button>              
         <div class="text-right mr-5 mt-2 mb-5">
           <router-link :to="{name: 'memberAdd'}" class="mt-2 ml-2 mr-2">
@@ -547,7 +597,8 @@ export default {
       file_format_okay: false,
       csv_columns: {},
       adding_members_to_group: false,
-      assign_group_button_text: "assign group"
+      assign_group_button_text: "assign group",
+      deleting_member:false
 
     }
   },
@@ -733,6 +784,7 @@ export default {
             vm.firstnamesearch_status = ''
             var array = vm.members.response
             vm.foundItems = array.length
+            vm.closeActions()
             vm.$store.dispatch('update_isLoading', false)
           })
           .catch(function (error) {
@@ -753,8 +805,8 @@ export default {
               for (var data in this.members.response){
                 this.member_ids.push(this.members.response[data].member.id)
               }
-            
-                this.$store.dispatch('update_isLoading', false)
+              this.closeActions()
+              this.$store.dispatch('update_isLoading', false)
             })
             .catch((err) => {
               this.$store.dispatch('update_isLoading', false)
@@ -776,7 +828,7 @@ export default {
           for (var data in this.members.response){
             this.member_ids.push(this.members.response[data].member.member.id)
           }
-          this.text_button_name = "Text members between ages " + this.min_age + " and " + this.max_age
+          this.closeActions()
           this.$store.dispatch('update_isLoading', false)
         })
         .catch((err) => {
@@ -907,6 +959,25 @@ export default {
           })
       }
       
+    },
+    deleteMembers:function(){     
+        this.deleting_member = true
+        this.$http.post(this.$BASE_URL + '/api/members/bulk-delete-members/',
+          {
+            member_ids:this.member_ids
+          }
+        )
+        .then(response => {             
+            this.deleting_member = false 
+            alert("members deleted")                                                                                                                
+            localStorage.removeItem("member_list_version");
+            localStorage.removeItem("member_list");
+            this.fetchData()
+        })
+        .catch((err)=> {
+            alert(err)
+            this.deleting_member = false
+        })     
     }
 }
 
