@@ -108,7 +108,8 @@ methods: {
                         this.sms_status.push(response.data)          
                         this.sending_message = false
                 })
-                .catch((err) => {                        
+                .catch((err) => {                                                
+                        this.sms_status.push(response.data)          
                         this.sending_message = false
                 })
         },

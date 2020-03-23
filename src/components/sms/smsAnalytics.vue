@@ -10,7 +10,7 @@
                 <h3 class="font-weight-bold">SMS outbox</h3>
                 <hr>
                 <section class="row">
-                        <div class="mb-2 ml-3 text-center text-muted col-lg-2 col-sm-12 border border-secondary rounded">
+                        <div class="d-flex flex-column flex-nowrap mb-2 ml-3 text-center text-muted border border-secondary rounded">
                                 <h1 class="font-weight-bold" v-if="sms_credit_balance">
                                     {{sms_credit_balance}} 
                                 </h1>

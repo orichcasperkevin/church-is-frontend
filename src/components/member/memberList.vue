@@ -8,8 +8,7 @@
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
               <span class="backButton">
-                <router-link style="text-decoration: none" :to="{name: 'Home'}">
-                    <img style="width: 25px ;height: auto" src="@/assets/icons/icons8-church-96.png">
+                <router-link style="text-decoration: none" :to="{name: 'Home'}">                   
                   Home
               </router-link>
             </span>
@@ -98,8 +97,7 @@
               </div>
               <div v-if = "fetch_data_error.length == 0">
               <div>              
-                  <h3 class="font-weight-bold">
-                    <img style="width: 48px ;height: auto" src="@/assets/icons/icons8-people-48.png">
+                  <h3 class="font-weight-bold">                    
                     Members                  
                   </h3>                                  
                   <div class="btn-group d-sm-block d-md-none ml-5 mb-2">

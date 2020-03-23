@@ -3,8 +3,7 @@
     <nav aria-label="breadcrumb" class="container">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><span class="backButton">
-                  <router-link style="text-decoration: none" :to="{name: 'Home'}">
-                    <img style="width: 25px ;height: auto" src="@/assets/icons/icons8-church-96.png">
+                  <router-link style="text-decoration: none" :to="{name: 'Home'}">                    
                     Home
                   </router-link></span>
                 <li class="breadcrumb-item active" aria-current="page">groups</li>
@@ -14,8 +13,7 @@
       <div class="row">
         <div class="col-12 ml-3 mb-3">
             <h3 class="row">
-              <b>
-                  <img style="width: 48px ;height: auto" src="@/assets/icons/icons8-user-groups-48.png">
+              <b>                  
                 Groups
               </b>
             </h3>
