@@ -99,7 +99,7 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                         </div>
-                        <div class="modal-body"> 
+                        <div class="modal-body">                                 
                                 <customselect :fields="['member','group','service']"
                                               v-on:inputChanged="onInputChanged" 
                                               v-on:memberSelected="onMemberSelected"
@@ -135,7 +135,7 @@
                                         <div class="row form-group">
                                                 <label class="col-3"><b>narration:</b></label>
                                                 <textarea type="text" class="col-8 form-control" rows='3' v-model="tithe_narration"></textarea>                                                   
-                                        </div>                                                                                
+                                        </div>                                                                                                                        
                                 </form>
                         </div>
                         <div class="modal-footer">
@@ -199,7 +199,7 @@
       </template>
       <script>
       import tithestats from '@/subcomponents/statistics/tithestats.vue'
-      import customselect from '@/subcomponents/finances/select.vue'
+      import customselect from '@/subcomponents/finances/select.vue'      
       export default {
         name: 'about',
         components: { tithestats,customselect },
@@ -231,8 +231,7 @@
             all_members: false,
             member_ids: [],
             all_member_ids: [],
-            //sending message
-            message: " ",
+            //sending message                     
             sms_status: [],
             sending_message: false,
             //add
@@ -366,9 +365,9 @@
                             recording_member_id: this.$session.get('member_id'),                             
                             amount: this.tithe_amount,
                             service:this.service,
-                            group:this.group                                     
+                            group:this.group ,                                                                
                         }
-                        }).then(response => {
+                        }).then(response => {                            
                             this.adding_tithe = false                                                                                                                                                            
                             this.selectedMember = null,
                             this.tithe_narration = '',
@@ -376,6 +375,7 @@
                             var new_version = parseInt(localStorage.getItem('tithe_list_version')) + 1
                             this.$store.dispatch('update_tithe_list_version', new_version)        
                             alert("tithe of succesfully added, amount: " + response.data.amount )                     
+                            this.can_send_message = true
                         })
                         .catch((err) => {
                             this.adding_tithe = false

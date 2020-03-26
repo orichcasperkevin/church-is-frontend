@@ -1,7 +1,7 @@
 <!-- Child.vue -->
 <template>
     <div>
-        <!-- Modal text people -->
+        <!-- Modal text people -->        
         <div class="modal fade" id="textModalCenter" tabindex="-1" role="dialog" aria-labelledby="smsModal" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
@@ -11,8 +11,14 @@
                         <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body">                           
                             <div class="form-group" v-if="sms_status.length == 0">
+                                <label class="anvil-checkbox" v-if="context">
+                                        <input multiple type="checkbox" :value= true v-model="custom_message">
+                                        <span class="anvil-checkmark"></span>
+                                        <span class="ml-5">custom message</span>
+                                </label>  
+                                <hr v-if="context">                                
                                 <label for="exampleFormControlTextarea1">
                                     message {{memberIds.length}} members
                                     <span  class="mt-2 ml-2 small text-muted" 
@@ -26,6 +32,11 @@
                                     v-model="message" v-on:focus="getSMSCreditBalance()" rows="3">                  
                                 </textarea>
                                 <p class="mt-2 ml-2 small text-muted"><span class="font-weight-bold">{{numberOfMessages}}</span> messages | a message is 160 characters long</p>                                
+                                <p class="mt-2 ml-2 small text-muted" v-if="custom_message">
+                                    [name] ---- will be replaced by the member's name.<br/>
+                                    [amount] ---- will be replaced by the most recent recorded {{context}} amount.<br/>
+                                    [stats] ---- will be replaced by the member's recent {{context}} stats
+                                </p>
         
                             </div>
                             <div v-if="sms_status.length > 0" class="text-center">
@@ -45,7 +56,7 @@
                                         role="status" aria-hidden="true">
                                 </span>
                         </button>
-                        </span>
+                        </span>                        
                     </div>
                     </div>
                 </div>
@@ -57,21 +68,47 @@ export default {
 name: 'textmessage',
 data() {
     return {
-        memberIds:[],
+        church_detail : JSON.parse(localStorage.getItem('church_details')),
+        memberIds:[],        
         message: '',
         numberOfMessages:0,        
         sms_status: [],
         sending_message: false,
-        sms_credit_balance: null
+        sms_credit_balance: null,
+        custom_message:false,
+        context:null
     }
 },
 props: {
     memberIds: [],
+    context:null,
 },
-watch:{
+watch:{   
+    context:function(){
+        if (this.context && this.custom_message){            
+            this.message = "hello [name],\nthanks for your " + this.context + " of [amount], your stats: [stats]"
+        }
+    },
+    custom_message:function(){
+        if (this.context && this.custom_message){
+            this.message = "hello [name],\nthanks for your " + this.context + " of [amount], your stats: [stats]"
+        }  
+        if (! this.custom_message){
+            this.message = null
+        }
+    },
     message: function(){
         if (this.message.length){
-            this.numberOfMessages = parseInt(this.message.length / 130) + 1
+            if (this.church_detail){
+                //subtract length of the url that will go at the bottom of the message
+                var url = this.church_detail[0].domain_url                
+                var message_length = 160 - url.length //160 chars is one message            
+                this.numberOfMessages = parseInt(this.message.length / message_length) + 1
+            }
+            else{                
+                //assume the url will be 30 chars long
+                this.numberOfMessages = parseInt(this.message.length / 130) + 1
+            }            
         }        
         else{
             this.numberOfMessages = 0
@@ -94,22 +131,27 @@ methods: {
     //send message
     sendMessage: function (){
         this.sending_message = true      
+        var url = this.$BASE_URL + '/api/sms/add-sms/'
+        if (this.custom_message){
+            url = this.$BASE_URL + '/api/sms/add-custom-sms/'
+        }
         this.$http({
                 method: 'post',
-                url: this.$BASE_URL + '/api/sms/add-sms/',
+                url: url,
                 data: {
                         sending_member_id: this.$session.get('member_id'),
                         app: "CHURCH",
                         message: this.message,
                         website: true,
-                        receipient_member_ids: this.memberIds
+                        receipient_member_ids: this.memberIds,
+                        context:this.context
                 }
                 }).then(response => {        
-                        this.sms_status.push(response.data)          
+                        this.sms_status.push(response)          
                         this.sending_message = false
                 })
                 .catch((err) => {                                                
-                        this.sms_status.push(response.data)          
+                        this.sms_status.push(err)          
                         this.sending_message = false
                 })
         },

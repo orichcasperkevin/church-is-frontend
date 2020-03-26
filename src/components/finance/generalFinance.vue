@@ -1,7 +1,7 @@
 <template>
     <div>
         <!-- this compnent requires text message modal -->
-        <textmessage :memberIds="member_ids"/> 
+        <textmessage :memberIds="member_ids" :context="context"/> 
 
         <nav aria-label="breadcrumb" class="container">
                 <ol class="breadcrumb">
@@ -440,7 +440,10 @@ export default {
             csv_date: '',
             exporting_data:false,
         //select members
-            member_ids:[]
+            member_ids:[],
+
+        //context.
+            context:'Tithe'
         }
     },
     created () {
@@ -537,12 +540,14 @@ export default {
             this.any_other_selected = false
             this.expenditures_selected = false
             this.tithes_selected = true
+            this.context="Tithe"
         },
         getOfferings: function(){
             this.tithes_selected = false
             this.any_other_selected = false
             this.expenditures_selected = false
             this.offerings_selected = true
+            this.context="Offering"
         },
         getIncome: function(){
             this.tithes_selected = false            

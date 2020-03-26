@@ -1,8 +1,7 @@
 <template>
     <div >
         <!-- this compnent requires text message modal -->
-        <textmessage :memberIds="member_ids"/> 
-
+        <textmessage :memberIds="member_ids" :context="sms_context"/>         
         <nav aria-label="breadcrumb" class="container">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><span class="backButton"><router-link style="text-decoration: none" :to="{name: 'Home'}">Home</router-link></span> 
@@ -281,50 +280,7 @@
                         </div>
                         </div>
                 </div>
-                <!-- Modal email -->
-                <div class="modal fade" id="emailModatCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                          <div class="modal-content">
-                            <div class="modal-header">
-                              <h5 class="modal-title" id="exampleModalCenterTitle">email people</h5>
-                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                              </button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="form-group">
-                                    <p class = "text-info"> !! this feature is still under development</p>
-                                    <label for="exampleFormControlTextarea1">message</label>
-                                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                                  </div>
-                            </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                              <button type="button" class="btn btn-primary">Send email</button>
-                            </div>
-                          </div>
-                        </div>
-                </div>                                           
-                <!-- Modal assign group -->
-                <div class="modal fade" id="assignModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                        <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalCenterTitle">assign groups</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                                </button>
-                        </div>
-                        <div class="modal-body">
-                                <p class="text-info">!! this feature is under development</p>
-                        </div>
-                        <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">assign</button>
-                        </div>
-                        </div>
-                        </div>
-                </div>   
+                                          
                 <!-- add contribution Modal -->
                 <div class="modal fade" id="addContribution" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -336,15 +292,7 @@
                             </button>
                             </div>
                             <div class="modal-body">                                        
-                                    <form>
-                                            <div class="row checkbox">
-                                                    <div class="col-3"></div>
-                                                    <div class="col-8">
-                                                            <label><input type="checkbox" :value= true v-model = "non_member"> non-member </label>
-                                                    </div>                                                    
-                                            </div>
-                                            <hr/>
-
+                                    <form>                                          
                                             <div class=" row form-group" v-if="! non_member">
                                               <label class="col-3"><b>member:</b></label>
                                               <div class="col-8">
@@ -389,7 +337,7 @@
                                                     <label class="col-3"><b>amount:</b></label>
                                                     <input type="number" class=" col-3 form-control" placeholder="amount" v-model="contribution_amount">                                                    
                                                     <div class="col-6 text-success" v-if ="contribution_amount > 0"><h3>KSh {{humanize(contribution_amount)}}</h3></div> 
-                                            </div>                                                                                   
+                                            </div>                                                                                                                                                                                                          
                                     </form>
                             </div>
                             <div class="modal-footer">
@@ -421,15 +369,7 @@
                             </button>
                             </div>
                             <div class="modal-body">
-                                    <form>
-                                            <div class="row checkbox">
-                                                    <div class="col-3"></div>
-                                                    <div class="col-8">
-                                                            <label><input type="checkbox" :value= true v-model = "non_member"> non-member </label>
-                                                    </div>                                                    
-                                            </div>
-                                            <hr/>
-
+                                    <form>                                            
                                             <div class=" row form-group" v-if="! non_member">
                                               <label class="col-3"><b>member:</b></label>
                                               <div class="col-8">
@@ -673,6 +613,8 @@ export default {
         member_ids: [],
         all_member_ids: [],
         //sending message
+        sms_context:'Contribution',
+        can_send_message:false,        
         message: " ",
         sms_status: [],
         sending_message: false,
@@ -735,6 +677,8 @@ export default {
     methods: {
         onMemberSelected (value) {
             this.selectedMember = value
+            this.pledge_amount = 0
+            this.contribution_amount = 0
           },
         humanize: function(x) {
                 return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -804,8 +748,7 @@ export default {
 
         },
         getPledges: function(){                
-                this.memberSearch = ''
-                this.tab = 'pledges'
+                this.memberSearch = ''                
                 this.pledges_selected = true
                 this.$store.dispatch('update_isLoading', true)
                 this.$http.get(this.$BASE_URL +'/api/projects/pledges-for-project/'+ this.$route.params.id + '/')
@@ -825,9 +768,11 @@ export default {
         },
         getContributionsTab: function(){
             this.tab = 'contributions'
+            this.sms_context = "Contribution"
             this.all_members = false
         },
         getPledgesTab: function(){
+                this.sms_context = "Pledge"
                 this.tab='pledges'
                 this.all_members = false
         },         
@@ -848,16 +793,17 @@ export default {
                                 anonymous: true,
                                 amount: this.contribution_amount                                      
                         }
-                        }).then(response => {        
-                               this.adding_to_project = false
-                               this.enable_add_project_button = true                               
-                               this.name_if_not_member = ''
-                               this.phone_number = ''
-                               this.contribution_amount = null                                                                                                                       
-                               this.add_contribution_button_text = '+ add contribution'                                   
-                               alert("contribution succesfully added")
-
-
+                        }).then(response => {                                                                                                     
+                                alert("contribution succesfully added")
+                                if (this.auto_message ){                                  
+                                   this.can_send_message = true
+                                }
+                                this.adding_to_project = false
+                                this.enable_add_project_button = true                               
+                                this.name_if_not_member = ''
+                                this.phone_number = ''
+                                this.contribution_amount = null                                                                                                                       
+                                this.add_contribution_button_text = '+ add contribution' 
                         })
                         .catch((err) => {
                                 this.adding_to_project = false
