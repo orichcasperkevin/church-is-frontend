@@ -41,9 +41,14 @@
                             <td>{{$humanizeDate(message.sms.date)}}</td>                                                     
                             <td><p>{{message.sms.message}}</p></td>
                             <td>
-                                {{message.receipient.member.first_name}} {{message.receipient.member.first_name}}                        
+                                {{message.receipient.member.first_name}} {{message.receipient.member.last_name}}                        
                             </td>
-                            <td>{{message.status}}
+                            <td>
+                                <h5>
+                                    <span v-if="message.status == 'Success'" class="badge badge-success">{{message.status}}</span>
+                                    <span v-else class="badge badge-primary">{{message.status}}</span>
+                                </h5>
+                            </td>
                             <td>{{message.cost}}</td>                            
                           </tr>
                         </tbody>
