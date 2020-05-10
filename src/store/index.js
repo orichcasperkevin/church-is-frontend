@@ -5,6 +5,7 @@ Vue.use(Vuex)
 
 export const store = new Vuex.Store({
 state: {
+    
     isLoading: false,
     logged_in_member: '',
     member_list_version: 0,

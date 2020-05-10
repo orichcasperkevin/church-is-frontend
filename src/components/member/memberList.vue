@@ -1,14 +1,14 @@
-<template>  
+<template>
     <div>
         <!-- this compnent requires text message modal -->
-        <textmessage :memberIds="member_ids"/> 
+        <textmessage :memberIds="member_ids"/>
 
       <!-- NAVBAR -->
       <nav aria-label="breadcrumb" class="container">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
               <span class="backButton">
-                <router-link style="text-decoration: none" :to="{name: 'Home'}">                   
+                <router-link style="text-decoration: none" :to="{name: 'Home'}">
                   Home
               </router-link>
             </span>
@@ -47,9 +47,9 @@
                   <div id="container row" >
                       <div class="accordion">
                         <div class="d-flex justify-content-between">
-                            <label for="tm" class="accordionitem"><b>age</b></label> 
+                            <label for="tm" class="accordionitem"><b>age</b></label>
                             <a href="#" v-on:click="resetAge" class="text-success">reset</a>
-                        </div>                                             
+                        </div>
                           <div class="d-flex flex-row justify-content-about">
                               <div class="form-group p-1 ">
                                 <small><b>max age :</b></small>
@@ -58,8 +58,8 @@
                               <div class="form-group p-1">
                                   <small><b>min age :</b></small>
                                   <input type="number" class="form-control" id="searchInput"  placeholder="min age" v-model = "min_age">
-                              </div>                                                       
-                              
+                              </div>
+
 
                           </div>
                       </div>
@@ -68,11 +68,11 @@
                           <div class="d-flex justify-content-between">
                               <label for="tn" class="accordionitem"><b>gender</b></label>
                               <a href="#" v-on:click="resetGender" class="text-success">reset</a>
-                          </div>                                               
+                          </div>
                         <div class="row" style="padding : 10px">
                           <div class="col">
                             <div>
-                                <input type="radio" name="optradio" value="M" v-model="gendersearch"> male                               
+                                <input type="radio" name="optradio" value="M" v-model="gendersearch"> male
                               </div>
                             </div>
                             <div class="col">
@@ -96,10 +96,10 @@
                 <p class="text-info">check your connection</p>
               </div>
               <div v-if = "fetch_data_error.length == 0">
-              <div>              
-                  <h3 class="font-weight-bold">                    
-                    Members                  
-                  </h3>                                  
+              <div>
+                  <h3 class="font-weight-bold">
+                    Members
+                  </h3>
                   <div class="btn-group d-sm-block d-md-none ml-5 mb-2">
                       <a href="#" v-on:click="openAction()">
                           <div class="btn btn-light">
@@ -108,32 +108,32 @@
                         </a>
                       <button v-on:click="openAction()" type="button" class="btn btn-sm btn-light dropdown-toggle dropdown-toggle-split">
                         <span class="sr-only" >Toggle Dropdown</span>
-                      </button>                           
-                  </div> 
+                      </button>
+                  </div>
                   <hr/>
                 <div class="mb-2 d-flex flex-row">
                    <span class="mt-2 mr-2 text-secondary"> found <b>{{foundItems}}</b></span>
                     <a class="btn btn-outline-secondary dropdown-toggle mr-1" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
                         more stats
-                    </a>                                                                                
-                </div>               
-                
+                    </a>
+                </div>
+
               </div>
               <div class="collapse" id="statsTab">
                   <div class="card card-body outline-0">
                       <memberstats msg="expenditure stats"/>
                   </div>
-              </div>  
+              </div>
                 <table class="table" v-if = "(min_age == 0 || min_age == '') && (max_age == 150 || max_age  == '')">
                   <thead>
                     <tr>
                       <th></th>
-                      <th class="row ml-1">                                                      
-                              <label class="anvil-checkbox">all 
+                      <th class="row ml-1">
+                              <label class="anvil-checkbox">all
                                   <input type="checkbox":value=true v-model="all_members">
                                   <span class="anvil-checkmark"></span>
-                              </label>                              
-                        <!-- actions drop down on phone -->                                               
+                              </label>
+                        <!-- actions drop down on phone -->
                       </th>
                       <th></th>
                       <th></th>
@@ -142,7 +142,7 @@
                     <tbody>
                       <tr v-for="data in members.response.slice(0,100)">
                         <th scope="row"></th>
-                        <td>                            
+                        <td>
                           <label class="anvil-checkbox">
                               <input multiple type="checkbox" :value=data.member.id v-model="member_ids">
                               <span class="anvil-checkmark"></span>
@@ -153,8 +153,8 @@
                               <img v-if = "data.gender == 'F'" style = "height: 32px "src="@/assets/avatars/icons8-user-female-skin-type-4-40.png">
                               <img v-if = "data.gender == 'R'" style = "height: 32px "src="@/assets/avatars/icons8-contacts-96.png">
 
-                          <router-link :to="`/memberDetail/`+ data.member.id">                          
-                            <span class = "text-secondary">{{data.member.first_name}} {{data.member.last_name}}</span>                            
+                          <router-link :to="`/memberDetail/`+ data.member.id">
+                            <span class = "text-secondary">{{data.member.first_name}} {{data.member.last_name}}</span>
                             <span class="ml-4 text-secondary"><i v-if="data.phone_number">({{data.phone_number}})</i></span>
                           </router-link>
                           </td>
@@ -169,7 +169,7 @@
                     <tbody>
                       <tr v-for="data in members.response.slice(0,100)">
                         <th scope="row"></th>
-                        <td>                            
+                        <td>
                             <label class="anvil-checkbox">
                                 <input multiple type="checkbox" :value=data.member.member.id v-model="member_ids">
                                 <span class="anvil-checkmark"></span>
@@ -215,8 +215,8 @@
                       <img src="@/assets/icons/icons8-comments-64.png" style="width: 35px; height:auto">
                       text members
                     </button>
-                    <button 
-                      type="button" class="list-group-item list-group-item-action border-0"  
+                    <button
+                      type="button" class="list-group-item list-group-item-action border-0"
                       data-toggle="modal" data-target="#assignModalCenter"
                       v-on:click="getGroups()">
                       <img src="@/assets/icons/icons8-add-user-group-man-man-64.png" style="width: 35px; height:auto">
@@ -249,7 +249,7 @@
                         <button type="button" class="btn btn-success" v-on:click="sendAnvilMessage()">
                           Send message
                           <span v-if="sending_anvil_message"
-                              class="spinner-border spinner-border-sm" 
+                              class="spinner-border spinner-border-sm"
                               role="status" aria-hidden="true">
                           </span>
                         </button>
@@ -257,7 +257,7 @@
                     </div>
                   </div>
               </div>
-            
+
               <!-- Modal assign group -->
               <div class="modal fade" id="assignModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-centered" role="document">
@@ -268,7 +268,7 @@
                           <span aria-hidden="true">&times;</span>
                         </button>
                       </div>
-                      <div class="container mt-5 mb-5">    
+                      <div class="container mt-5 mb-5">
                         <span class="d-flex fex-row"><h3 class="text-muted">{{member_ids.length}} </h3>members</span>
                         <label><b>select group :</b></label>
                         <select class=" form-control" v-model="group_id" >
@@ -280,7 +280,7 @@
                         <button type="button" class="btn btn-success" v-on:click="assignGroup()">
                           assign group
                           <span v-if="adding_members_to_group"
-                                class="spinner-border spinner-border-sm" 
+                                class="spinner-border spinner-border-sm"
                                 role="status" aria-hidden="true"></span>
                         </button>
                       </div>
@@ -297,7 +297,7 @@
                             <span aria-hidden="true">&times;</span>
                           </button>
                         </div>
-                        <div class="container mt-5 mb-5">    
+                        <div class="container mt-5 mb-5">
                           <span class="d-flex fex-row"><h2 class="text-muted font-weight-bold">{{member_ids.length}} </h2>members</span>
                           <h4 class="text-danger">These members alongside with all their data will be deleted</h4>
                           <i>this action is irreversible, are you sure that this is what you want??</i>
@@ -307,7 +307,7 @@
                           <button type="button" class="btn btn-danger" v-on:click="deleteMembers()">
                             delete members
                             <span v-if="deleting_member"
-                                  class="spinner-border spinner-border-sm" 
+                                  class="spinner-border spinner-border-sm"
                                   role="status" aria-hidden="true"></span>
                           </button>
                         </div>
@@ -428,37 +428,37 @@
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-success" 
+                        <button type="button" class="btn btn-success"
                                 v-on:click="submitFile()">
                                 submit file
                                 <span v-if="submitting_file"
-                                      class="spinner-border spinner-border-sm" 
-                                      role="status" 
+                                      class="spinner-border spinner-border-sm"
+                                      role="status"
                                       aria-hidden="true">
                                 </span>
                         </button>
-                        <button type="button" class="btn btn-success" 
-                                v-if="this.uploaded_file.length != 0" 
+                        <button type="button" class="btn btn-success"
+                                v-if="this.uploaded_file.length != 0"
                                 v-on:click="checkCSV()">
                                 check CSV file
-                                <span v-if = "checking_csv"                            
-                                      class="spinner-border spinner-border-sm" 
-                                      role="status" 
+                                <span v-if = "checking_csv"
+                                      class="spinner-border spinner-border-sm"
+                                      role="status"
                                       aria-hidden="true"></span>
                         </button>
-                        <button type="button" class="btn btn-success" 
-                                v-if="file_format_okay" 
+                        <button type="button" class="btn btn-success"
+                                v-if="file_format_okay"
                                 v-on:click="extractData()">
                                 {{extract_data_button_text}}
                                 <span v-if = "extracting_data"
-                                      class="spinner-border spinner-border-sm" 
-                                      role="status" 
+                                      class="spinner-border spinner-border-sm"
+                                      role="status"
                                       aria-hidden="true"></span>
                         </button>
                       </div>
                     </div>
                   </div>
-              </div>              
+              </div>
             </div>
           </div>
         </div>
@@ -466,10 +466,10 @@
 
       <!-- bottom navigation -->
       <div id="bottom-actions-tab" class="bottom-action-tab bg-light shadow-lg"
-           style="border-radius: 5%">          
+           style="border-radius: 5%">
         <h2 class="text-right mr-3 ">
           <a href="javascript:void(0)" class="closebtn text-secondary" v-on:click="closeActions()">&times;</a>
-        </h2>                      
+        </h2>
         <!-- more filters -->
         <div class="ml-5 mr-5">
             <h4>filters</h4>
@@ -488,11 +488,11 @@
             <div id="container row" >
                 <div class="accordion">
                   <div class="d-flex justify-content-between">
-                      <label for="tm" class="accordionitem"><b>age</b></label> 
+                      <label for="tm" class="accordionitem"><b>age</b></label>
                       <a href="#" v-on:click="resetAge" class="text-success">reset</a>
-                  </div>                                             
+                  </div>
                     <div class="d-flex flex-row justify-content-about">
-                      
+
                         <div class="form-group p-1 ">
                           <small><b>max age :</b></small>
                           <input type="number" class="form-control" id="searchInput" placeholder="max age" v-model = "max_age">
@@ -500,7 +500,7 @@
                         <div class="form-group p-1">
                             <small><b>min age :</b></small>
                             <input type="number" class="form-control" id="searchInput"  placeholder="min age" v-model = "min_age">
-                        </div>                                                                               
+                        </div>
 
                     </div>
                 </div>
@@ -509,11 +509,11 @@
                     <div class="d-flex justify-content-between">
                         <label for="tn" class="accordionitem"><b>gender</b></label>
                         <a href="#" v-on:click="resetGender" class="text-success">reset</a>
-                    </div>                                               
+                    </div>
                   <div class="row" style="padding : 10px">
                     <div class="col">
                       <div>
-                          <input type="radio" name="optradio" value="M" v-model="gendersearch"> male                               
+                          <input type="radio" name="optradio" value="M" v-model="gendersearch"> male
                         </div>
                       </div>
                       <div class="col">
@@ -530,7 +530,7 @@
         <hr class="ml-5">
         <button type="button" class="d-none action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#anvilModal" >
           <img src="@/assets/app_logo.png" style="width: 25px; height:auto"> anvil message
-        </button>  
+        </button>
         <button v-on:click="closeActions()" type="button" class="p-3 ml-4 mr-4 list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#textModalCenter">
           <img style="width: 25px; height:auto" src="@/assets/icons/icons8-comments-64.png" >
           text members
@@ -543,13 +543,13 @@
                 v-on:click="closeActions()" data-toggle="modal" data-target="#deleteMemberModal">
           <img style="width: 25px; height:auto" src="@/assets/icons/icons8-delete-64.png">
           delete members
-        </button>              
+        </button>
         <div class="text-right mr-5 mt-2 mb-5">
           <router-link :to="{name: 'memberAdd'}" class="mt-2 ml-2 mr-2">
             <div class="btn btn-success">
               + Add member
             </div>
-        </router-link> 
+        </router-link>
         </div>
       </div>
     </div>
@@ -570,7 +570,7 @@ export default {
       members: null,
       foundItems: null,
       groups:null,
-      group_id:null,    
+      group_id:null,
       //search for member
       firstnamesearch: null,
       firstnamesearch_status: null,
@@ -580,9 +580,9 @@ export default {
       member_ids: [],
       //text messaging
       text_button_name: "",
-      message: " ",            
+      message: " ",
       sending_anvil_message:false,
-      // csv file upload    
+      // csv file upload
       submitting_file: false,
       checking_csv: false,
       extracting_data: false,
@@ -619,10 +619,10 @@ export default {
           this.fetchData()
       }
     },
-    gendersearch: function (){      
+    gendersearch: function (){
       if (this.min_age !=0 && this.min_age != '' && this.min_age > 0){
         this.searchByAge()
-      }      
+      }
       else{
         this.searchByGender()
       }
@@ -655,13 +655,13 @@ export default {
       }
     },
     /* Set the height of the bottom navigation to 300px */
-    openAction: function() {            
-      document.getElementById('bottom-actions-tab').style.height = "300px"                    
+    openAction: function() {
+      document.getElementById('bottom-actions-tab').style.height = "300px"
     },
 
     /* Set the height of the bottom navigation to 0 */
-    closeActions:function() {   
-      document.getElementById('bottom-actions-tab').style.height = "0px"    
+    closeActions:function() {
+      document.getElementById('bottom-actions-tab').style.height = "0px"
     },
     resetAge: function(){
       this.min_age= 0
@@ -678,7 +678,7 @@ export default {
       this.$store.dispatch('update_isLoading', true)
       // try local storage
       this.members = JSON.parse(localStorage.getItem('member_list'))
-      if (this.members){        
+      if (this.members){
         var array = this.members.response
         this.foundItems = array.length
         this.member_ids = []
@@ -717,10 +717,10 @@ export default {
       }
     },
 
-    sendAnvilMessage: function(){   
-      this.sending_anvil_message = true 
+    sendAnvilMessage: function(){
+      this.sending_anvil_message = true
       this.$http({
-        method: 'post',    
+        method: 'post',
         url: this.$BASE_URL + '/api/social/add-peer-to-peer-bulk/',
         data: {
           sender_id: this.$session.get('member_id'),
@@ -736,26 +736,26 @@ export default {
         })
     },
   //assign groups
-    assignGroup: function(){      
+    assignGroup: function(){
       var group_id = this.group_id
-      var member_ids = this.member_ids 
-      this.assign_group_button_text = "assigning to group ..."     
-      this.adding_members_to_group = true                            
+      var member_ids = this.member_ids
+      this.assign_group_button_text = "assigning to group ..."
+      this.adding_members_to_group = true
       this.$http({ method: 'post', url: this.$BASE_URL + '/api/groups/bulk-add-member-to-group/',
-      data: {        
+      data: {
         group_id: group_id,
         member_ids: this.member_ids,
-        role_id: null            
+        role_id: null
       }
-      }).then(response => {            
+      }).then(response => {
         this.adding_members_to_group = false
-        alert("members assigned to group")                 
+        alert("members assigned to group")
       })
-      .catch((err) => {                                      
-        alert(err)                   
-                  
+      .catch((err) => {
+        alert(err)
+
       })
-                       
+
     },
     setAssignGroupButtonText: function(text){
       this.assign_group_button_text = text
@@ -791,7 +791,7 @@ export default {
         }
     },
     searchByGender() {
-      this.$store.dispatch('update_isLoading', true)      
+      this.$store.dispatch('update_isLoading', true)
       this.$http.get(this.$BASE_URL + '/api/members/filter-by-gender/'+ this.gendersearch)
             .then(response => {
               this.min_age = 0
@@ -818,7 +818,7 @@ export default {
         }
         this.$store.dispatch('update_isLoading', true)
         this.$http.get(this.$BASE_URL + '/api/members/filter-by-age/'+ this.min_age +'/' + this.max_age + '/' + gender + "/")
-        .then(response => {        
+        .then(response => {
           this.members = {"response": response.data }
           var array = this.members.response
           this.foundItems = array.length
@@ -839,7 +839,7 @@ export default {
     submitFile: function(){
           this.file_format_okay = false
           this.error_500 = []
-          this.test_csv_errors = []          
+          this.test_csv_errors = []
           let formData = new FormData();
           formData.append('csv', this.file);
 
@@ -857,8 +857,8 @@ export default {
             if (! data.length){
               this.uploaded_file = data.csv
               alert("file uploaded")
-              this.previewCSV()      
-              this.submitting_file = false                      
+              this.previewCSV()
+              this.submitting_file = false
             }
           })
           .catch((err) =>{
@@ -877,17 +877,17 @@ export default {
       this.$http.get(this.$BASE_URL + '/api/members/preview-csv/'+ file_name + '/')
       .then(response => {
         this.csv_data = response.data
-        this.get_data_status = ''      
+        this.get_data_status = ''
       })
       .catch((err) => {
-        this.get_data_status = ''      
+        this.get_data_status = ''
       })
     },
   // extract data from the csv file
   // check that the csv file is of the required format
     checkCSV: function(){
       this.test_csv_errors = []
-      this.file_format_okay = false      
+      this.file_format_okay = false
       var file_name = this.uploaded_file.split("/")[1]
 
       this.checking_csv = true
@@ -913,7 +913,7 @@ export default {
         this.checking_csv = false
       })
     },
-    extractData: function(){       
+    extractData: function(){
       this.extract_data_button_text = "extracting..."
       var file_name = this.uploaded_file.split("/")[1]
 
@@ -926,7 +926,7 @@ export default {
         }
       })
       .then(response => {
-          this.extract_data_button_text = "import data"          
+          this.extract_data_button_text = "import data"
           var new_version = parseInt(localStorage.getItem('member_list_version')) + 1
           this.$store.dispatch('update_member_list_version', new_version)
           this.fetchData()
@@ -940,7 +940,7 @@ export default {
       })
     },
     getGroups: function(){
-      // get  groups           
+      // get  groups
       const currentVersion = this.$store.getters.group_list_version
       var version  = localStorage.getItem('group_list_version')
 
@@ -949,25 +949,25 @@ export default {
       if (!version || version <= currentVersion) {
         this.$http.get(this.$BASE_URL + '/api/groups/church-group-list/')
           .then(response => {
-              this.groups = {"response": response.data }  
-              localStorage.setItem('group_list_all',JSON.stringify({"response": response.data }))              
+              this.groups = {"response": response.data }
+              localStorage.setItem('group_list_all',JSON.stringify({"response": response.data }))
           })
           .catch((err) => {
-              this.fetch_data_error.push(err)          
+              this.fetch_data_error.push(err)
           })
       }
-      
+
     },
-    deleteMembers:function(){     
+    deleteMembers:function(){
         this.deleting_member = true
         this.$http.post(this.$BASE_URL + '/api/members/bulk-delete-members/',
           {
             member_ids:this.member_ids
           }
         )
-        .then(response => {             
-            this.deleting_member = false 
-            alert("members deleted")                                                                                                                
+        .then(response => {
+            this.deleting_member = false
+            alert("members deleted")
             localStorage.removeItem("member_list_version");
             localStorage.removeItem("member_list");
             this.fetchData()
@@ -975,7 +975,7 @@ export default {
         .catch((err)=> {
             alert(err)
             this.deleting_member = false
-        })     
+        })
     }
 }
 

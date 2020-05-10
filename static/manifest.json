@@ -1,8 +1,8 @@
 {
-    "name": "nano church MS",
-    "short_name": "nano",
+    "name": "anvil church MS",
+    "short_name": "anvil",
     "icons": [{
-      "src": "/src/assets/icons/icons8-contacts-208.png",
+      "src": "./src/assets/app_logo1.png",
       "sizes": "512x512",
       "type": "image/png"
     }],

@@ -94,9 +94,10 @@ export default {
     }
   },
   created() {
-    this.fetchData()
+  
   },
   mounted() {
+    this.fetchData()
     document.getElementById("anvil-side-nav").style.width = "250px";
     document.getElementById("main-app").style.marginLeft = "250px";
   },

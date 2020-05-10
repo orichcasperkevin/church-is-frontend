@@ -9,8 +9,12 @@
     <section class="navbar navbar-expand-lg navbar-light sticky-top shadow-sm bg-frost" v-if="checkLoggedIn()">
       <button class="btn btn-light ml-3" type="button" v-on:click="openNav()">
           <span class="navbar-toggler-icon"></span>
-      </button>
-      <img class="ml-4 " style="width: 150px ;height: auto" src="@/assets/text_logo.png">       
+      </button>      
+      <!-- select logo  -->
+      <img class="ml-4 " style="width: 150px ;height: auto" src="@/assets/text_logo.png" alt="logo not found"
+            v-if="$host_name == 'my-domain' || $host_name == 'anvilchurch'" > 
+      <img class="ml-4 " style="width: 100px ;height: auto ;border-radius: 5px" src="@/assets/methodist_logo3.png" alt="logo not found"
+            v-if="$host_name == 'methodistkenya' " >        
       <div class="mt-2 col-sm-12 col-lg-8">
           <generalsearch />
       </div>           
@@ -81,7 +85,8 @@
         </span>        
         </router-link>    
         <hr>
-        <div class="mb-5 ml-2 mt-5 text-center bg-dark rounded">          
+        <div class="mb-5 ml-2 mt-5 text-center bg-dark rounded"> 
+          <p class="text-white">powered by</p>
           <img class="ml-4 " style="width: 150px ;height: auto" src="@/assets/full_logo.png">
         </div> 
         <!-- icons8 -->
@@ -102,7 +107,7 @@
     </div>
   <!-- the entire app lives here -->
   <section id="main-app" >     
-      <router-view v-on:churchDetailSet="onChurchDetailSet"/>
+      <router-view />
   </section>   
   </div>
 </template>
@@ -117,7 +122,7 @@ export default {
   data () {
         return{                    
           fullPage: true,
-          client_detail_available :false,
+          client_detail_available :false,        
           church_detail : JSON.parse(localStorage.getItem('church_details')),
           // DOM
           anvil_side_nav:null,
@@ -134,16 +139,25 @@ export default {
   },
   // when DOM is ready
   mounted(){
+    //show nav menu
     this.anvil_side_nav = document.getElementById("anvil-side-nav")
     this.main_app = document.getElementById("main-app")
     this.nav_frost_overlay = document.getElementById("nav-frost-overlay")
-    var church_name_heading = document.getElementById("church-name-heading") 
-    church_name_heading.innerHTML = this.church_detail[0].name
+        
+    if (this.church_detail){
+      var church_name_heading = document.getElementById("church-name-heading") 
+      church_name_heading.innerHTML = this.church_detail[0].name
+    }   
   },
   
   computed: {
-    username(){
-      return this.$store.getters.logged_in_member      
+    username:{
+      get() {
+        return this.$store.getters.logged_in_member 
+      },      
+      set(value){
+        this.$store.commit('logged_in_member', value)
+      }
     },
     isLoading (){
       return this.$store.getters.isLoading

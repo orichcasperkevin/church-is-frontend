@@ -51,7 +51,7 @@
                     + Add folder
                    </a>
              </div>
-              <div v-if="groups" class="">
+              <div v-if="groups" class="mt-4">
                   <div class="list-group" v-for="data in groups.response">
                       <router-link :to="`/groupList/`+ data.id + `/` + data.name"class="row list-group-item list-group-item-action border-0" >
                         <span class="d-flex justify-content-between" v-on:click="scrollToElement('folder-content')">
@@ -73,7 +73,7 @@
                     + Add group
                   </a>
               </div>             
-              <div v-if="independent_groups" >
+              <div v-if="independent_groups" class="mt-4" >
                   <div class="list-group" v-for="data in independent_groups.response">
                       <router-link  :to="`/groupDetail/`+ data.id" class="list-group-item list-group-item-action border-0" >
                       <span class="d-flex justify-content-between">

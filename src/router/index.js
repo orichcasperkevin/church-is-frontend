@@ -61,13 +61,12 @@ export default new Router({
       component: adminRoles
     },
     {
-      path: 'groupsLanding',
-      name: 'groupsLanding',
+      path: 'groupsLanding',      
       component: groupsLanding,
       children: [
         {
           path: '',
-          name: 'groupList',
+          name: 'groupsLanding',
           component: groupList
         },
         {

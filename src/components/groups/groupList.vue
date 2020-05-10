@@ -7,7 +7,7 @@
             {{group_name}} / groups
         </h3>        
         <hr/>
-        <div class="col-8 center-div" v-if = "fetch_data_error.length > 0">
+        <div class="col-8 center-div" v-if = "fetch_data_error.length > 0 && group_name">
             <div class = "center-div" >
                     <img style = "height: 64px "src="@/assets/icons/icons8-wi-fi-off-64.png">
                     <p class="text-info">check your connection</p>
@@ -37,9 +37,9 @@
         </table>
         </div>
         </div>
-        <div class="col-sm-10 col-md-8 col-lg-3">
-            <button class="btn btn-success" data-toggle="modal" data-target="#addGroup">
-                <b>+</b> add to {{group_name}}
+        <div class="col-sm-10 col-md-8 col-lg-3">            
+            <button v-if="group_name" class="btn btn-success" data-toggle="modal" data-target="#addGroup">
+                <b>+</b> add to 4 {{group_name}}
             </button>           
         </div>
         </div>
