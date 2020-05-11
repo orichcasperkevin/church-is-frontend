@@ -47,7 +47,8 @@ Vue.prototype.$host_name = current_host.split('.')[1]
 
 var name = current_host.split('.')[1]
 var tld = current_host.split('.')[2]
-var api_server = `http//${name}.${tld}` //+ ":8000"
+var api_server = `http://${name}.${tld}` //+ ":8000"
+console.log(api_server)
 
 Vue.prototype.$DOMAIN = { value : api_server }
 Vue.prototype.$BASE_URL = { value :localStorage.getItem('base_url_value'),toString:function(){return this.value}}
