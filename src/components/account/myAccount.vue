@@ -23,16 +23,7 @@
                                           <h5>{{client_details[0].church_code}}</h5></span>                       
                                 </h6>
                             </div>
-                            <div class="col-lg-6 col-sm-12">   
-                                    <button disabled type="button" class="btn btn-success">
-                                            ANVIL credit
-                                    </button> 
-                                    <p>plan : 
-                                        <i v-if="sms_credentials.length" class="text-muted">{{client_details[0].tier.tier}}</i>
-                                    </p>                                    
-                                    <p>price : 
-                                        <i v-if="sms_credentials.length"class="text-muted">{{client_details[0].tier.price_per_month}}/month</i>
-                                    </p>                                
+                            <div class="col-lg-6 col-sm-12">                                                                      
                                     <button disabled type="button" class="btn btn-success">
                                         SMS credit
                                     </button> 
