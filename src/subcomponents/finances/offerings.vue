@@ -3,20 +3,7 @@
         <div>
             <!-- OFFERING CONTENT -->
             <div>
-                <!-- what to show on small devices -->
-                <div class="d-sm-block d-md-none d-lg-none btn-group" v-if = "offerings_selected">
-                        <a href="#" data-toggle="modal" data-target="#addOffering" style="text-decoration: none">
-                            <div class="add-button">
-                                <b>+</b> add offering
-                            </div>
-                        </a>
-                        <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                                <span class="sr-only">Toggle Dropdown</span>
-                        </button>
-                        <div class="dropdown-menu border-success" aria-labelledby="dropdownMenuReference">
-                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addTithe"><b>+</b> add tithe</a>
-                        </div>
-                </div>
+                <!-- what to show on small devices -->                
                 <div class="text-muted" >
                         <div class="d-flex d-flex-row justify-content-center">
                                 <div class="d-none d-lg-block stat-item mr-2 text-muted">
@@ -284,8 +271,7 @@
       import offeringstats from '@/subcomponents/statistics/offeringstats.vue'
       export default {
         created () {
-            this.getOfferings()
-            this.getServiceTypes()
+            this.getOfferings()        
         },
         data () {
           return {
@@ -299,6 +285,7 @@
             selected_offering_type:null,
             offerings: null,
             //add offering
+            adding_offering: false,
             offering_amount: null,
             name_if_not_member: ''        ,
             country_code: '+254',phone_number:'',

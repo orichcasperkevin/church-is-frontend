@@ -22,7 +22,7 @@
                                 SMS credit balance
                         </div> 
                         <div class="mb-2 ml-3 text-center text-muted col-lg-2 col-sm-12 border border-secondary rounded">
-                                <h1 class="font-weight-bold">{{client_details[0].number_of_sms}}</h1>
+                                <h1 class="font-weight-bold" v-if="client_details">{{client_details[0].number_of_sms}}</h1>
                                 sms delivered this month
                         </div>
                 </section>

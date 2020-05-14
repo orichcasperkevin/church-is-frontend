@@ -1,5 +1,5 @@
 <template>
-    <div >
+    <div v-if="context && contributions">
         <!-- this compnent requires text message modal -->
         <textmessage :memberIds="member_ids" :context="sms_context"/>         
         <nav aria-label="breadcrumb" class="container">
@@ -7,7 +7,9 @@
                     <li class="breadcrumb-item"><span class="backButton"><router-link style="text-decoration: none" :to="{name: 'Home'}">Home</router-link></span> 
                     <li class="breadcrumb-item"><span class="backButton"><router-link style="text-decoration: none" :to="{name: 'generalFinance'}">finances</router-link></span>
                     <li class="breadcrumb-item"><span class="backButton"><router-link style="text-decoration: none" :to="{name: 'projectList'}">projects</router-link></span> 
-                    <li class="breadcrumb-item active" aria-current="page"><span v-for = "data in context.response">{{data.name}}</span></li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                            <span v-if="context" v-for = "data in context.response">{{data.name}}</span>
+                    </li>
                 </ol>
         </nav>        
         <div class="container">
@@ -35,7 +37,7 @@
                                 <!-- contributions tab -->
                                 <div class="tab-pane fade show active" id="v-pills-contributions" role="tabpanel" aria-labelledby="v-pills-contributions-tab">
                                 <h3 class="font-weight-bold">
-                                        <span v-for = "data in context.response">{{data.name}} /</span> contributions                                        
+                                        <span v-if="context" v-for = "data in context.response">{{data.name}} /</span> contributions                                        
                                 </h3>
                                 <!-- what to show on small devices -->
                                 <div class="d-sm-block d-md-none btn-group" style="padding: 0px 0px 25px 10px" v-if=" tab == 'contributions'">
@@ -52,7 +54,7 @@
                                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#settlePledge"><b>+</b> settle pledge</a>                                                                                                                
                                         </div>
                                 </div>
-                                <div class=" text-muted" v-for = "data in context.response ">
+                                <div class=" text-muted" v-if="context" v-for = "data in context.response ">
                                         <div class="d-flex d-flex-row justify-content-center">
                                                 <div class="d-none d-lg-block stat-item mr-2 text-muted">
                                                         Required  <span class="text-secondary font-weight-bold">
@@ -89,7 +91,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr v-for = "data in contributions.response">                                               
+                                            <tr v-if="contributions" v-for = "data in contributions.response">                                               
                                                 <td v-if = "data.member != null">                                          
                                                    <label class="anvil-checkbox">
                                                         <input multiple type="checkbox" :value=data.member.member.id v-model="member_ids">

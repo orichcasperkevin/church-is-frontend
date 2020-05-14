@@ -93,8 +93,7 @@ export default {
 name: 'textmessage',
 components: { searchmember },
 data() {
-    return {
-       fields: [],
+    return {    
        selected_input: "member_input",   
        selectedMember:null, 
         //select group
@@ -115,7 +114,7 @@ data() {
     }
 },
 props:{
-    fields:[]
+    fields:null
 },
 created(){
     this.getGroups()

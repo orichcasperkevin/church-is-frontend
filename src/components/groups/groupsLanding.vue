@@ -26,7 +26,8 @@
                         Groups <b> <span class="text-secondary">
                         {{foundItems_independent}}</span> </b>
                 </div>
-                <a class="mt-2 btn btn-outline-secondary dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
+                <a class="stat-item mt-2 btn btn-outline-secondary dropdown-toggle"
+                   data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
                         more stats
                 </a>
             </div>            
@@ -111,7 +112,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                             <label for="addGroup"> name</label>
-                            <input type="text" class="form-control" id="addGroup" maxlength="20" v-model="name"></input>
+                            <input type="text" class="form-control" maxlength="20" v-model="name"></input>
                             <p v-if="name_errors.length">
                                     <ul>
                                             <small><li v-for="error in name_errors"><p class="text-danger">{{ error }}</p></li></small>

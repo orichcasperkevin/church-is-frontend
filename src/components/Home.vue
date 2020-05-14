@@ -89,12 +89,9 @@ export default {
   name: 'Home',
   data () {
     return {
-      pending_confirmations: null,
-      pending_confirmations_projects: null
+      pending_confirmations: [],
+      pending_confirmations_projects: []
     }
-  },
-  created() {
-  
   },
   mounted() {
     this.fetchData()

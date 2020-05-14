@@ -37,7 +37,7 @@
                                                             <th scope="col">ends</th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody>
+                                                        <tbody v-if="services_today">
                                                             <tr class="text-muted" v-for="data in services_today.response">                                                             
                                                                 <td>{{data.service.type.name}}</td>
                                                                 <td>Today</td>
@@ -64,7 +64,7 @@
                                                         <th scope="col">ends</th>
                                                         </tr>
                                                     </thead>
-                                                    <tbody>
+                                                    <tbody v-if="services_this_month">
                                                         <tr class="text-muted" v-for="data in services_this_month.response">                                                             
                                                             <td>{{data.service.type.name}}</td>
                                                             <td>{{$humanizeDate(data.service.date)}}</td>

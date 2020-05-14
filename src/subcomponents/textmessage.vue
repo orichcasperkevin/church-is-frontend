@@ -68,19 +68,17 @@ export default {
 name: 'textmessage',
 data() {
     return {
-        church_detail : JSON.parse(localStorage.getItem('church_details')),
-        memberIds:[],        
+        church_detail : JSON.parse(localStorage.getItem('church_details')),           
         message: '',
         numberOfMessages:0,        
         sms_status: [],
         sending_message: false,
         sms_credit_balance: null,
-        custom_message:false,
-        context:null
+        custom_message:false,        
     }
 },
 props: {
-    memberIds: [],
+    memberIds: null,
     context:null,
 },
 watch:{   

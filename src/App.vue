@@ -159,9 +159,15 @@ export default {
         this.$store.commit('logged_in_member', value)
       }
     },
-    isLoading (){
-      return this.$store.getters.isLoading
-    }
+    isLoading :{
+      get(){
+        return this.$store.getters.isLoading
+      },
+      set(value){
+        this.$store.commit('isLoading', value)
+      }
+
+      }      
   },
   methods: {
     checkLoggedIn() {      

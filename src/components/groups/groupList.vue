@@ -16,7 +16,7 @@
         <div v-if = "fetch_data_error.length == 0">
         found <span class="badge badge-pill badge-secondary">{{foundItems}}</span>        
         <p></p>
-        <table class="table">                     
+        <table v-if="groups" class="table">                     
             <tbody>
                 <tr v-for = "data in groups.response ">                    
                 <td>
@@ -37,9 +37,9 @@
         </table>
         </div>
         </div>
-        <div class="col-sm-10 col-md-8 col-lg-3">            
+        <div class="col-sm-10 col-md-8 col-lg-3 text-right">            
             <button v-if="group_name" class="btn btn-success" data-toggle="modal" data-target="#addGroup">
-                <b>+</b> add to 4 {{group_name}}
+                <b>+</b> add to {{group_name}}
             </button>           
         </div>
         </div>
@@ -102,7 +102,9 @@ export default {
   },
   created() {
         this.checkLoggedIn()
-        this.fetchData()
+        if (this.$route.params.id){
+            this.fetchData()
+        }        
     },
 
   watch: {
@@ -114,7 +116,7 @@ export default {
                 router.push("/login")
             }
         },
-        fetchData() {
+        fetchData() {            
             this.$store.dispatch('update_isLoading', true)
             this.group_name = this.$route.params.group_name                                
             this.fetch_data_error = []

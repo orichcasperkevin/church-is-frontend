@@ -30,7 +30,7 @@
                   </ul>
 
                 </div>
-                <div class="form-group">
+                <div class="form-group">                 
                   <label for="exampleInputEmail1" v-if="! church_code_set">church code</label>
                   <input @keyup.enter="getToken()"
                          type="number" class="form-control"                         
@@ -66,14 +66,11 @@
 </template>
 
 <script>
-
   import router from "../../router";
-
   export default {
     name: 'login',
     data() {
-      return {
-        //church_code: localStorage.getItem('church_id'),
+      return {        
         church_code: null,
         church_code_set : false,
         username: null,
@@ -84,6 +81,7 @@
       }
     },
     created(){
+      this.church_code =  localStorage.getItem('church_id')
       if (this.church_code){
         this.church_code_set = true
       }
@@ -97,7 +95,7 @@
           this.$http.get(this.$DOMAIN.value + '/api/clients/client/' + church_id + '/')
             .then(response => {              
               var data = response.data              
-              this.$BASE_URL.value = "http://"+ data[0].domain_url //+ ":8000"
+              this.$BASE_URL.value = "http://"+ data[0].domain_url + ":8000"
               localStorage.setItem('base_url_value',this.$BASE_URL.value)              
               localStorage.setItem('church_id', church_id )
               localStorage.setItem('church_details',JSON.stringify(response.data))

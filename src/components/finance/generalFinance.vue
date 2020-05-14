@@ -423,7 +423,9 @@ export default {
             offering_stats: null,
             offerings: null,
             income_stats: null,
-            incomes: null,                    
+            incomes: null,         
+        //adding.
+            adding_to_finance: false,          
         //add income type
             income_type_name: '',
             income_type_description: '',
