@@ -259,7 +259,7 @@ export default {
         this.adding_group = true
         this.$http({ method: 'post', url: this.$BASE_URL + url,
         data: {
-            group_of_groups_id: null,
+            group: null,
             name: this.name,
             description: this.description
         }

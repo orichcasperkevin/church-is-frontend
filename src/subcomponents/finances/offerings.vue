@@ -55,7 +55,7 @@
                         <tr v-for = "data in offerings.response">                             
                             <td v-if = "data.member != null">                                          
                                     <label class="anvil-checkbox">
-                                            <input multiple type="checkbox" :value=data.member.member.id v-model="member_ids">
+                                            <input multiple type="checkbox" :value=data.user_id v-model="member_ids">
                                             <span class="anvil-checkmark"></span>
                                     </label>
                             </td>
@@ -66,15 +66,15 @@
                                 </label> 
                             </td>
                             <td v-if = "data.member != null">                                      
-                                <router-link :to="`/memberDetail/`+ data.member.member.id">
-                                    <span class = "text-secondary">{{data.member.member.first_name}} {{data.member.member.last_name}}</span>
+                                <router-link :to="`/memberDetail/`+ data.user_id">
+                                    <span class = "text-secondary">{{data.member_full_name}}</span>
                                 </router-link>
                             </td>
-                            <td v-if = "data.service != null"> {{data.service.type.name}} ({{data.service.date}})</td>
+                            <td v-if = "data.service != null"> {{data.service_type_name}} ({{data.service_date}})</td>
                             <td v-if = "data.group != null">
-                                    <router-link  :to="`/groupDetail/`+ data.group.id" class="text-muted">                                    
+                                    <router-link  :to="`/groupDetail/`+ data.group_id" class="text-muted">                                    
                                           <div>                                             
-                                              {{data.group.name}}
+                                              {{data.group_name}}
                                           </div>                                                                                                                                
                                     </router-link>                                 
                             </td>
@@ -380,7 +380,7 @@
                 this.foundOfferings = array.length
                 for (var offering in array){
                     if (array[offering].member){
-                        this.all_member_ids.push(array[offering].member.member.id) 
+                        this.all_member_ids.push(array[offering].user_id) 
                     }                                          
                 } 
             }
@@ -410,7 +410,7 @@
                     this.foundOfferings = array.length
                     for (var offering in array){                         
                         if (array[offering].member){
-                            this.all_member_ids.push(array[offering].member.member.id) 
+                            this.all_member_ids.push(array[offering].user_id) 
                         }                     
                     } 
 
@@ -512,8 +512,8 @@
                             method: 'post',
                             url: this.$BASE_URL + '/api/finance/add-offering/',
                             data: {
-                                member_id: this.selectedMember,                                
-                                recording_member_id: this.$session.get('member_id'),                             
+                                member: this.selectedMember,                                
+                                recorded_by: this.$session.get('member_id'),                             
                                 name_if_not_member: this.name_if_not_member,
                                 offering_type:this.selected_offering_type,
                                 date: this.offering_date,

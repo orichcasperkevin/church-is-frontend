@@ -93,20 +93,20 @@
                         <tr v-for="data in members.response.slice(0,100)">   
                           <td >                                  
                                 <label class="anvil-checkbox">
-                                    <input multiple type="checkbox" :value=data.member.member.id v-model="member_ids">
+                                    <input multiple type="checkbox" :value=data.user_id v-model="member_ids">
                                     <span class="anvil-checkmark"></span>
                                 </label>
                           </td>                                               
                           <td >
-                            <img v-if = "data.member.gender == 'M'" style = "height: 32px "src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
-                            <img v-if = "data.member.gender == 'F'" style = "height: 32px "src="@/assets/avatars/icons8-user-female-skin-type-4-40.png">
-                            <img v-if = "data.member.gender == 'R'" style = "height: 32px "src="@/assets/avatars/icons8-contacts-96.png">
-                            <router-link :to="`/memberDetail/`+ data.member.member.id">
-                              <span class = "text-secondary">{{data.member.member.first_name}} {{data.member.member.last_name}} </span>
+                            <img v-if = "data.member_gender == 'M'" style = "height: 32px "src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
+                            <img v-if = "data.member_gender == 'F'" style = "height: 32px "src="@/assets/avatars/icons8-user-female-skin-type-4-40.png">
+                            <img v-if = "data.member_gender == 'R'" style = "height: 32px "src="@/assets/avatars/icons8-contacts-96.png">
+                            <router-link :to="`/memberDetail/`+ data.user_id">
+                              <span class = "text-secondary">{{data.member_full_name}} </span>
                             </router-link>
                            </td>
                            <td class="text-muted">
-                             {{data.role.role}}
+                             {{data.role_name}}
                            </td>
                         </tr>
                       </tbody>
@@ -475,9 +475,9 @@ export default {
           this.adding_member = true
           this.$http({ method: 'post', url: this.$BASE_URL + '/api/groups/add-member-to-group/',
           data: {           
-            group_id: group_id,
-            member_id: this.selectedMember,
-            role_id: this.role
+            church_group: group_id,
+            member: this.selectedMember,
+            role: this.role
           }
           }).then(response => {
             this.adding_member = false                        

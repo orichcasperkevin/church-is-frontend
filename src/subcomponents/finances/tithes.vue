@@ -56,7 +56,7 @@
                                 <tr v-for = "data in tithes.response">
                                     <td v-if = "data.member != null">                                          
                                             <label class="anvil-checkbox">
-                                                    <input multiple type="checkbox" :value=data.member.member.id v-model="member_ids">
+                                                    <input multiple type="checkbox" :value=data.user_id v-model="member_ids">
                                                     <span class="anvil-checkmark"></span>
                                             </label>
                                     </td>
@@ -67,15 +67,15 @@
                                             </label>
                                     </td>
                                     <td v-if = "data.member != null">
-                                            <router-link :to="`/memberDetail/`+ data.member.member.id">
-                                                    <span class = "text-secondary">{{data.member.member.first_name}} {{data.member.member.last_name}}</span>
+                                            <router-link :to="`/memberDetail/`+ data.user_id">
+                                                    <span class = "text-secondary">{{data.member_full_name}}</span>
                                             </router-link>
                                     </td>
-                                    <td v-if="data.service">{{data.service.type.name}} ({{data.service.date}})</td>
+                                    <td v-if="data.service">{{data.service_type_name}} ({{data.service_date}})</td>
                                     <td v-if="data.group">
-                                            <router-link  :to="`/groupDetail/`+ data.group.id" class="text-muted">                                    
+                                            <router-link  :to="`/groupDetail/`+ data.group_id" class="text-muted">                                    
                                                 <div>                                             
-                                                    {{data.group.name}}
+                                                    {{data.group_name}}
                                                 </div>                                                                                                                                
                                             </router-link>
                                     </td>
@@ -208,6 +208,7 @@
         },
         data () {
           return {
+            foundTithes: null,
             //fetch data
             tithe_stats: null,    
             tithes: null,
@@ -282,8 +283,8 @@
                     var array = this.tithes.response
                     this.foundTithes = array.length
                     for (var tithe in array){
-                        if (array[tithe].member){
-                            this.all_member_ids.push(array[tithe].member.member.id) 
+                        if (array[tithe].member){                            
+                            this.all_member_ids.push(array[tithe].user_id)                             
                         }                                                  
                     } 
                     this.emitToParent()
@@ -302,8 +303,8 @@
                         this.tithes = {"response": response.data }   
                         var array = this.tithes.response
                         for (var tithe in array){
-                            if (array[tithe].member){
-                                this.all_member_ids.push(array[tithe].member.member.id) 
+                            if (array[tithe].member){                                
+                                this.all_member_ids.push(array[tithe].user_id) 
                             }                         
                         }   
                         this.emitToParent()
@@ -360,9 +361,9 @@
                         method: 'post',
                         url: this.$BASE_URL + '/api/finance/add-tithe-for-member/',
                         data: {
-                            member_id: this.selectedMember,
+                            member: this.selectedMember,
                             narration: this.tithe_narration,
-                            recording_member_id: this.$session.get('member_id'),                             
+                            recorded_by: this.$session.get('member_id'),                             
                             amount: this.tithe_amount,
                             service:this.service,
                             group:this.group ,                                                                
