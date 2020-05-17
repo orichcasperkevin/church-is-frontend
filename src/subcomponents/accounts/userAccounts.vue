@@ -125,7 +125,90 @@
                     </div>
                 </div>
                 </div>
-         </div>      
+         </div> 
+         
+         <!-- add role Modal -->
+         <div class="modal fade" id="manageRolesModal" tabindex="-1" role="dialog" aria-labelledby="addRoleModal" aria-hidden="true">
+            <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">manage roles</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body ">                                                        
+                        <table class="table table-borderless table-responsive-sm">
+                            <thead>
+                              <tr>                    
+                                <th scope="col" ></th>
+                                <th scope="col" class="d-flex flex-column justify-content-start">
+                                    <div >
+                                        access level
+                                    </div>
+                                </th>
+                                <th scope="col">
+                                    <div class="col-lg-6 col-sm-12 d-flex flex-column justify-content-center">
+                                            <span>is group role</span>
+                                            <small class="text-muted">sets whether you want this role to appear 
+                                            in options when adding members to church groups</small>
+                                    </div> 
+                                </th>                                
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr v-for="role in roles" class="text-muted">                                        
+                                <td>{{role.role}}</td>
+                                <td><small>
+                                    <span class="text-primary">currently: </span>
+                                    <span v-if="role.permission_level == 0">
+                                            can view, add and edit everything
+                                    </span>
+                                    <span v-if="role.permission_level == 1">
+                                            can view, add and edit finances
+                                    </span>
+                                    <span v-if="role.permission_level == 2">
+                                            can view finances (can't edit)
+                                    </span>
+                                    <span v-if="role.permission_level == 3">
+                                            can view finances stats (can't view specifics)
+                                    </span>                                                                       
+                                    </small> 
+                                    <select class="col-8 form-control" v-model="updated_permision_levels[role.id]">
+                                        <option value=0 >can view, add and edit everything</option>
+                                        <option value=1>can view, add and edit finances</option>
+                                        <option value=2>can view finances (can't edit)</option>
+                                        <option value=3>can view finances stats (can't view specifics)</option>                                                                                
+                                    </select>
+                                </td>
+                                <td>
+                                    <label class="anvil-checkbox">
+                                            <input  type="checkbox" 
+                                                    v-if="role.is_group_role" checked
+                                                    value="false"
+                                                    v-model="updated_roles[role.id]">
+                                            <input  type="checkbox" 
+                                                    v-if="! role.is_group_role"
+                                                    value="true"
+                                                    v-model="updated_roles[role.id]">
+                                            <span class="anvil-checkmark"></span>
+                                    </label>
+                                </td>
+                                <td>
+                                    <button class="btn btn-outline-success" @click="updateRole(role.id)">
+                                        update
+                                        <span v-if="adding && updating_role_id == role.id" 
+					   	                class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                                        </span>
+                                    </button>
+                                </td>
+                              </tr>                  
+                            </tbody>
+                          </table>
+                </div>                
+            </div>
+            </div>
+     </div> 
     </div>            
 </template>
 
@@ -136,6 +219,9 @@ name: 'userAccounts',
 components: { searchmember },
 data() {
     return {            
+        test: false,
+        updated_roles:{},
+        updated_permision_levels:{},
         roles: null,
         admins: null,
 		selected_member:null,
@@ -144,6 +230,7 @@ data() {
 		role_name:null,
 		role_description:null,
 		permission_level:null,
+        updating_role_id:null,
 		//assign role to member
 		selected_role:null
     }
@@ -225,7 +312,8 @@ methods: {
             }).then(response => {                                
 				this.selected_role = null          
 				this.adding = false
-                alert("successfully assigned role")                
+                this.getMembersWithAdminRoles()
+                alert("successfully assigned role")                                
             })
             .catch((err) => {
 				alert(err)
@@ -233,6 +321,38 @@ methods: {
             }) 
         
     },
+    //update roles
+    updateRole: function(role_id){ 
+        this.updating_role_id = role_id
+        this.adding = true       
+        var data
+        if (this.updated_permision_levels[role_id] != null){
+            data = { permission_level: this.updated_permision_levels[role_id] }
+        }
+        if (this.updated_roles[role_id] != null){
+            data = {  is_group_role: this.updated_roles[role_id] }
+        }
+        if (this.updated_permision_levels[role_id] != null && this.updated_roles[role_id] != null){
+            data={
+                permission_level: this.updated_permision_levels[role_id],
+                is_group_role:this.updated_roles[role_id]
+            }
+        }
+        //add role id to data        
+        data['role_id'] = role_id        
+        this.$http({
+            method:'patch',
+            url: this.$BASE_URL + '/api/members/role-list/',
+            data:data
+        }).then(()=>{
+            this.adding = false
+            alert('update successful')
+            this.getRoles()
+        }).catch((err)=>{
+            this.adding = false
+            alert(err)
+        })
+    }
         
 
 
