@@ -371,6 +371,7 @@ methods: {
 				this.adding = false
                 this.role_name = ''
                 this.role_description = '' 
+                this.getRoles()
                 alert("role succesfuly added")                     
             })
             .catch((err) => {
