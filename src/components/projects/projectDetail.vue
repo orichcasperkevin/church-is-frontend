@@ -39,6 +39,7 @@
                                 <h3 class="font-weight-bold">
                                         <span v-if="context" v-for = "data in context.response">{{data.name}} /</span> contributions                                        
                                 </h3>
+                                <hr>
                                 <!-- what to show on small devices -->
                                 <div class="d-sm-block d-md-none btn-group" style="padding: 0px 0px 25px 10px" v-if=" tab == 'contributions'">
                                         <a href="#" data-toggle="modal" data-target="#addContribution" style="text-decoration: none">
@@ -55,7 +56,7 @@
                                         </div>
                                 </div>
                                 <div class=" text-muted" v-if="context" v-for = "data in context.response ">
-                                        <div class="d-flex d-flex-row justify-content-center">
+                                        <div class="mt-4 d-flex d-flex-row justify-content-center">
                                                 <div class="d-none d-lg-block stat-item mr-2 text-muted">
                                                         Required  <span class="text-secondary font-weight-bold">
                                                                 Ksh {{humanize(data.required_amount)}}</span>
@@ -69,14 +70,13 @@
                                                         {{data.percentage_funded}} %</span>                                        
                                                 </div>
                                         </div>                                     
-                                </div>                                 
-                                <hr/>
+                                </div>                                                                 
                                 <div class="row">
                                 <p class="col-8">
-                                        found <span class="badge badge-pill badge-secondary">{{foundItems}}</span>
+                                        found <span class="mt-5 badge badge-pill badge-secondary">{{foundItems}}</span>
                                 </p>                                                  
                                 </div>                             
-                                    <table class="table table-responsive-sm">
+                                    <table class="table table-responsive-sm table-borderless">
                                         <thead>
                                             <tr>
                                                 <th>
@@ -116,8 +116,8 @@
                                     <div v-if = "pledges_selected">
                                         <h3 class="font-weight-bold">
                                                 <span v-for = "data in context.response">{{data.name}} /</span> pledges
-
                                         </h3>
+                                        <hr>
                                         <!-- what to show on small devices -->
                                         <div class="d-sm-block d-md-none btn-group" style="padding: 0px 0px 25px 10px" v-if=" tab == 'pledges'">
                                                 <a href="#" data-toggle="modal" data-target="#addPledge" style="text-decoration: none">
@@ -136,7 +136,7 @@
                                         </div>
                                         <!-- pledges -->
                                         <div class="text-muted" v-for = "data in context.response ">
-                                                <div class="d-flex d-flex-row justify-content-center">
+                                                <div class="mt-4 d-flex d-flex-row justify-content-center">
                                                         <div class="d-none d-lg-block stat-item mr-2 text-muted">
                                                                 Pledges  <span class="text-text-secondary font-weight-bold">
                                                                         Ksh {{humanize(data.total_in_pledges)}}</span>
@@ -150,14 +150,13 @@
                                                                 Ksh   {{data.percentage_of_pledge_settled}}%</span>                                        
                                                         </div>
                                                 </div>                                                
-                                        </div>                                         
-                                           <hr/>
+                                        </div>                                                                                    
                                            <div class="row">
                                                 <p class="col-6">
-                                                        found <span class="badge badge-pill badge-secondary">{{humanize(foundPledges)}}</span>
+                                                        found <span class="mt-4 badge badge-pill badge-secondary">{{humanize(foundPledges)}}</span>
                                                 </p>                                                                                           
                                             </div>
-                                        <table class="table table-responsive-sm">
+                                        <table class="table table-responsive-sm table-borderless">
                                                 <thead>
                                                     <tr>
                                                         <th>
@@ -237,7 +236,10 @@
 
                         <!-- more actions -->                          
                         <div class="list-group font-weight-bold">
-                                <button type="button" class="list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#textModalCenter"><img src="@/assets/icons/icons8-comments-64.png">
+                                <button type="button" class="list-group-item list-group-item-action border-0"
+                                        data-toggle="modal" 
+                                        data-target="#textModalCenter">
+                                        <img src="@/assets/icons/icons8-comments-64.png">
                                         text people
                                 </button>
                                 <button type="button" class="action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#exportToCSV" >

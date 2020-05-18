@@ -21,188 +21,185 @@
         <div class="row">
         <!-- NAVIGATION ON THE LEFT -->
         <div class="col-sm-12 col-md-8 col-lg-3">                        
-                <nav class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                        <a class="nav-link active list-group-item list-group-item-action border-0" id="pill-detail-tab" data-toggle="pill" href="#pill-detail" role="tab" aria-controls="pill-detail" aria-selected="true">
-                                <img class="church-is-menu" src="@/assets/icons/icons8-contacts-208.png"> detail
-                        </a>                                                                
-                        <a class="nav-link list-group-item list-group-item-action border-0" id="pill-groups-tab" data-toggle="pill" href="#pill-groups" role="tab" aria-controls="pill-groups" aria-selected="false" v-on:click = "getMemberGroups()">
-                                <img class="church-is-menu" src="@/assets/icons/icons8-user-groups-filled-50.png"> groups
-                        </a>                        
-                        <a class="nav-link list-group-item list-group-item-action border-0" id="pill-contributions-tab" data-toggle="pill" href="#pill-contributions" role="tab" aria-controls="pill-contributions" aria-selected="false" v-on:click = "getMemberFinances()">
-                                <img class="church-is-menu" src="@/assets/icons/icons8-donate-filled-50.png"> finances
-                        </a>
-                        <a class=" d-none nav-link list-group-item list-group-item-action border-0" id="pill-roles-tab" data-toggle="pill" href="#pill-roles" 
-                                role="tab" aria-controls="pill-roles" aria-selected="false">
-                                <img class="church-is-menu" src="@/assets/icons/icons8-admin-settings-male-30.png"> roles
-                        </a> 
-                        <a class="nav-link list-group-item list-group-item-action border-0" 
-                        data-toggle="modal" data-target="#deleteMemberModal">
-                                <img class="church-is-menu" src="@/assets/icons/icons8-cancel-26.png"> delete
-                        </a> 
-                </nav>
+			<nav class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+				<a class="nav-link active list-group-item list-group-item-action border-0" id="pill-detail-tab" data-toggle="pill" href="#pill-detail" role="tab" aria-controls="pill-detail" aria-selected="true">
+					<img class="church-is-menu" src="@/assets/icons/icons8-contacts-208.png"> detail
+				</a>                                                                
+				<a class="nav-link list-group-item list-group-item-action border-0" id="pill-groups-tab" data-toggle="pill" href="#pill-groups" role="tab" aria-controls="pill-groups" aria-selected="false" v-on:click = "getMemberGroups()">
+					<img class="church-is-menu" src="@/assets/icons/icons8-user-groups-filled-50.png"> groups
+				</a>                        
+				<a class="nav-link list-group-item list-group-item-action border-0" id="pill-contributions-tab" data-toggle="pill" href="#pill-contributions" role="tab" aria-controls="pill-contributions" aria-selected="false" v-on:click = "getMemberFinances()">
+					<img class="church-is-menu" src="@/assets/icons/icons8-donate-filled-50.png"> finances
+				</a>
+				<a class=" d-none nav-link list-group-item list-group-item-action border-0" id="pill-roles-tab" data-toggle="pill" href="#pill-roles" 
+					role="tab" aria-controls="pill-roles" aria-selected="false">
+					<img class="church-is-menu" src="@/assets/icons/icons8-admin-settings-male-30.png"> roles
+				</a> 
+				<a class="nav-link list-group-item list-group-item-action border-0" 
+				data-toggle="modal" data-target="#deleteMemberModal">
+						<img class="church-is-menu" src="@/assets/icons/icons8-cancel-26.png"> delete
+				</a> 
+			</nav>
         </div>
         <!-- CONTENT ON THE RIGHT -->                
         <div class="col">
-                <div class="tab-content" id="v-pills-tabContent">
-                        <!-- member detail -->
-                        <div class="tab-pane fade show active" id="pill-detail" role="tabpanel" aria-labelledby="pill-detail-tab">                                
-                                <hr class="d-sm-block d-lg-none">
-                                <memberdetail/>                                       
-                        </div>
-                        <!-- member groups -->
-                        <div class="tab-pane fade" id="pill-groups" role="tabpanel" aria-labelledby="pill-groups-tab">
-                                <hr class="d-sm-block d-lg-none">
-                                <h3> Church Groups</h3>
-                                <table class="table table-responsive-sm" v-if = "groups_selected == true">
-                                <thead class=""  v-if = "church_groups.response.length > 0">
-                                        <tr>
-                                                <th>group</th>
-                                                <th>joined</th>
-                                                <th>role</th>
-                                        </tr>
-                                </thead>
-                                        <tr class="text-muted" v-for = "data in church_groups.response">
-                                                <td>                                                                
-                                                        <router-link class="text-secondary" :to="`/groupDetail/`+ data.church_group.id ">
-                                                                <img style="width: 30px ;height: auto" src="@/assets/icons/icons8-user-groups-48.png">                     
-                                                                {{data.church_group.name}}
-                                                        </router-link>
-                                                </td>
-                                                <td>{{$humanizeDate(data.date_joined)}}</td>
-                                                <td>{{data.role.role}}</td>
-                                        </tr>
+			<div class="tab-content" id="v-pills-tabContent">
+				<!-- member detail -->
+				<div class="tab-pane fade show active" id="pill-detail" role="tabpanel" aria-labelledby="pill-detail-tab">                                
+					<hr class="d-sm-block d-lg-none">
+					<memberdetail/>                                       
+				</div>
+				<!-- member groups -->
+				<div class="tab-pane fade" id="pill-groups" role="tabpanel" aria-labelledby="pill-groups-tab">
+						<hr class="d-sm-block d-lg-none">
+						<h3> Church Groups</h3>
+						<table class="table table-responsive-sm table-borderless" v-if = "groups_selected == true">
+						<thead class=""  v-if = "church_groups.response.length > 0">
+							<tr>
+								<th>group</th>
+								<th>joined</th>
+								<th>role</th>
+							</tr>
+						</thead>
+							<tr class="text-muted" v-for = "data in church_groups.response">
+								<td>                                                                
+									<router-link class="text-secondary" :to="`/groupDetail/`+ data.church_group.id ">
+										<img style="width: 30px ;height: auto" src="@/assets/icons/icons8-user-groups-48.png">                     
+										{{data.church_group_name}}
+									</router-link>
+								</td>
+								<td>{{$humanizeDate(data.date_joined)}}</td>
+								<td>{{data.role_name}}</td>
+							</tr>
 
-                                </table>
-                                <div v-if = "groups_selected == true">
-                                        <div v-if = "church_groups.response.length == 0 ">
-                                                <p class="text-muted">member belongs to none. </p>
-                                        </div>
-                                </div>
-                        </div>
-                        <!-- member finances -->
-                        <div class=" tab-pane fade" id="pill-contributions" role="tabpanel" aria-labelledby="pill-contributions-tab">
-                                <div class="row">
-                                <div class="col-2"></div>
-                                <div class="col-lg-8 col-sm-12">
-                                <!-- navigation -->
-                                <hr class="d-sm-block d-lg-none">
-                                <ul class="row nav nav-pills mb-3 mt-3" id="pills-tab" role="tablist">
-                                        <li class="nav-item">
-                                                <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Contributions</a>
-                                        </li>
-                                        <li class="nav-item">
-                                                <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Pledges</a>
-                                        </li>
-                                        <li class="nav-item">
-                                                <a class="nav-link" id="pills-tithes-tab" data-toggle="pill" href="#pills-tithes" role="tab" aria-controls="pills-tithes" aria-selected="false">Tithes</a>
-                                        </li>
-                                        <li class="nav-item">
-                                                <a class="nav-link" id="pills-offerings-tab" data-toggle="pill" href="#pills-offerings" role="tab" aria-controls="pills-offerings" aria-selected="false">Offerings</a>
-                                        </li>
-                                </ul>
-                                </div>
-                                <div class="col-2"></div>
-                                </div>
-                                <section class="tab-content" id="pills-tabContent">
-                                        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" v-if="finances_selected">
-                                                        <h3 >Contributions</h3>
-                                                        <table class="table table-responsive-sm">
-                                                                <thead>
-                                                                <tr>
-                                                                        <th>project</th>
-                                                                        <th>amount</th>
-                                                                        <th>date</th>
-                                                                </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                <tr v-for = "data in contribution_info.contribution">
-                                                                        <td>{{data.project.name}}</td>
-                                                                        <td><p class="text-muted">{{humanize(data.amount)}}</p></td>
-                                                                        <td>{{$humanizeDate(data.recorded_at)}}</td>
-                                                                </tr>
-                                                                </tbody>
-                                                        </table>
-                                                        <p class="text-muted" v-if="! contribution_info.contribution.length">
-                                                                found no contributions by member
-                                                        </p>
-                                        </div>
-                                        <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" v-if="finances_selected">
-                                                        <h3>Pledges</h3>
-                                                        <table class="table table-responsive-sm">
+						</table>
+						<div v-if = "groups_selected == true">
+							<div v-if = "church_groups.response.length == 0 ">
+								<p class="text-muted">member belongs to none. </p>
+							</div>
+						</div>
+				</div>
+				<!-- member finances -->
+				<div class=" tab-pane fade" id="pill-contributions" role="tabpanel" aria-labelledby="pill-contributions-tab">
+						<div class="row">
+						<div class="col-2"></div>
+						<div class="col-lg-8 col-sm-12">
+						<!-- navigation -->
+						<hr class="d-sm-block d-lg-none">
+						<ul class="row nav nav-pills mb-3 mt-3" id="pills-tab" role="tablist">
+							<li class="nav-item">
+									<a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" aria-selected="true">Contributions</a>
+							</li>
+							<li class="nav-item">
+									<a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab" aria-controls="pills-profile" aria-selected="false">Pledges</a>
+							</li>
+							<li class="nav-item">
+									<a class="nav-link" id="pills-tithes-tab" data-toggle="pill" href="#pills-tithes" role="tab" aria-controls="pills-tithes" aria-selected="false">Tithes</a>
+							</li>
+							<li class="nav-item">
+									<a class="nav-link" id="pills-offerings-tab" data-toggle="pill" href="#pills-offerings" role="tab" aria-controls="pills-offerings" aria-selected="false">Offerings</a>
+							</li>
+						</ul>
+						</div>
+						<div class="col-2"></div>
+						</div>
+						<section class="tab-content" id="pills-tabContent">
+								<div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" v-if="finances_selected">
+									<h3 >Contributions</h3>
+									<table class="table table-responsive-sm table-borderless">
+										<thead>
+										<tr>
+											<th>project</th>
+											<th>amount</th>
+											<th>date</th>
+										</tr>
+										</thead>
+										<tbody>
+										<tr v-for = "data in contribution_info.contribution">
+											<td>{{data.project.name}}</td>
+											<td><p class="text-muted">{{humanize(data.amount)}}</p></td>
+											<td>{{$humanizeDate(data.recorded_at)}}</td>
+										</tr>
+										</tbody>
+									</table>
+									<p class="text-muted" v-if="! contribution_info.contribution.length">
+											found no contributions by member
+									</p>
+								</div>
+								<div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" v-if="finances_selected">
+									<h3>Pledges</h3>
+									<table class="table table-responsive-sm table-borderless">
+											<thead>
+												<tr>
+												<th>project</th>
+												<th>pledged</th>
+												<th>raised</th>
+												<th>remaining</th>
+												<th>percentage funded</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr v-for = "data in pledges_info.pledges">
+												<td>{{data.project.name}} </td>
+												<td>{{humanize(data.amount)}}</td>
+												<td><p class="text-muted">{{humanize(data.amount_so_far)}}</p></td>
+												<td><p  class="text-danger">{{humanize(data.remaining_amount)}}</p></td>
+												<td><span class="text-muted">{{data.percentage_funded}}</span></td>
 
-                                                                <thead>
-                                                                        <tr>
-                                                                        <th>project</th>
-                                                                        <th>pledged</th>
-                                                                        <th>raised</th>
-                                                                        <th>remaining</th>
-                                                                        <th>percentage funded</th>
-                                                                        </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                        <tr v-for = "data in pledges_info.pledges">
-                                                                        <td>{{data.project.name}} </td>
-                                                                        <td>{{humanize(data.amount)}}</td>
-                                                                        <td><p class="text-muted">{{humanize(data.amount_so_far)}}</p></td>
-                                                                        <td><p  class="text-danger">{{humanize(data.remaining_amount)}}</p></td>
-                                                                        <td><span class="text-muted">{{data.percentage_funded}}</span></td>
-
-                                                                        </tr>
-                                                                </tbody>
-                                                        </table>
-                                                        <p class="text-muted" v-if="! pledges_info.pledges.length">
-                                                                found no pledges by member.
-                                                        </p>
-                                        </div>
-                                        <div class="tab-pane fade" id="pills-tithes" role="tabpanel" aria-labelledby="pills-tithes-tab" v-if = "finances_selected">
-                                                        <h3>Tithes</h3>                                                    
-                                                        <table class="table table-responsive-sm">
-                                                                <thead>
-                                                                <tr>
-                                                                        <th>amount</th>
-                                                                        <th>narration</th>
-                                                                        <th>date</th>
-                                                                </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                <tr v-for = "data in tithe_info.tithes">
-                                                                        <td><p class="text-muted">{{humanize(data.amount)}}</p></td>
-                                                                        <td > {{data.narration}}</td>
-                                                                        <td>{{$humanizeDate(data.date)}}</td>
-                                                                </tr>
-                                                                </tbody>
-                                                        </table>
-                                                        <p class="text-muted" v-if="!tithe_info.tithes.length">
-                                                                found no tithe by member this month.
-                                                        </p>
-                                        </div>
-                                        <div class="tab-pane fade" id="pills-offerings" role="tabpanel" aria-labelledby="pills-offerings-tab" v-if = "finances_selected">
-                                                        <h3>Offerings </h3>                                                                
-                                                        <table class="table table-responsive-sm">
-                                                                <thead>
-                                                                <tr>
-                                                                        <th>amount</th>
-                                                                        <th>narration</th>
-                                                                        <th>date</th>
-                                                                </tr>
-                                                                </thead>
-                                                                <tbody>
-                                                                <tr v-for = "data in offering_info.offerings">
-                                                                        <td><p class="text-muted">{{humanize(data.amount)}}</p></td>
-                                                                        <td> {{data.narration}}</td>
-                                                                        <td>{{$humanizeDate(data.date)}}</td>
-                                                                </tr>
-                                                                </tbody>
-                                                        </table>
-                                                        <p class="text-muted" v-if="!offering_info.offerings.length">
-                                                                found no offering by member.
-                                                        </p>
-
-
-                                        </div>
-                                </section>
-                        </div>                               
-                </div>
+												</tr>
+											</tbody>
+									</table>
+									<p class="text-muted" v-if="! pledges_info.pledges.length">
+										found no pledges by member.
+									</p>
+								</div>
+								<div class="tab-pane fade" id="pills-tithes" role="tabpanel" aria-labelledby="pills-tithes-tab" v-if = "finances_selected">
+									<h3>Tithes</h3>                                                    
+									<table class="table table-responsive-sm table-borderless">
+										<thead>
+										<tr>
+											<th>amount</th>
+											<th>narration</th>
+											<th>date</th>
+										</tr>
+										</thead>
+										<tbody>
+										<tr v-for = "data in tithe_info.tithes">
+											<td><p class="text-muted">{{humanize(data.amount)}}</p></td>
+											<td > {{data.narration}}</td>
+											<td>{{$humanizeDate(data.date)}}</td>
+										</tr>
+										</tbody>
+									</table>
+									<p class="text-muted" v-if="!tithe_info.tithes.length">
+										found no tithe by member this month.
+									</p>
+								</div>
+								<div class="tab-pane fade" id="pills-offerings" role="tabpanel" aria-labelledby="pills-offerings-tab" v-if = "finances_selected">
+										<h3>Offerings </h3>                                                                
+										<table class="table table-responsive-sm table-borderless">
+											<thead>
+											<tr>
+												<th>amount</th>
+												<th>narration</th>
+												<th>date</th>
+											</tr>
+											</thead>
+											<tbody>
+											<tr v-for = "data in offering_info.offerings">
+													<td><p class="text-muted">{{humanize(data.amount)}}</p></td>
+													<td> {{data.narration}}</td>
+													<td>{{$humanizeDate(data.date)}}</td>
+											</tr>
+											</tbody>
+										</table>
+										<p class="text-muted" v-if="!offering_info.offerings.length">
+											found no offering by member.
+										</p>
+								</div>
+						</section>
+				</div>                               
+			</div>
         </div>
         </div>
         </section>  
@@ -210,36 +207,36 @@
         <section>               
 			<!-- delete member Modal -->
 			<div class="modal fade" id="deleteMemberModal" tabindex="-1" role="dialog" aria-labelledby="deleteMemberModal" aria-hidden="true">
-					<div class=" modal-dialog modal-dialog-centered" role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-						<h5 class="modal-title" >delete member</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-						</div>
-						<div class="modal-body border text-danger">
-							
-							Are you sure you want to delete this member??
+							<div class=" modal-dialog modal-dialog-centered" role="document">
+							<div class="modal-content">
+									<div class="modal-header">
+									<h5 class="modal-title" >delete member</h5>
+									<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+									</button>
+									</div>
+									<div class="modal-body border text-danger">
+											
+											Are you sure you want to delete this member??
 
-							<p class="mt-2 small">
-									all data about the member will be lost, 
-									this is unreversible
-							</p>
-							
-							
-						</div>
-						<div class="modal-footer">
-						<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-danger" v-on:click="deleteMember()">
-							delete
-							<span v-if="deleting_member"
-								class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
-							</span>
-						</button>
-						</div>
-					</div>
-					</div>
+											<p class="mt-2 small">
+															all data about the member will be lost, 
+															this is unreversible
+											</p>
+											
+											
+									</div>
+									<div class="modal-footer">
+									<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+									<button type="button" class="btn btn-danger" v-on:click="deleteMember()">
+											delete
+											<span v-if="deleting_member"
+													class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+											</span>
+									</button>
+									</div>
+							</div>
+							</div>
 			</div>
         </section>     
     </div>

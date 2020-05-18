@@ -2,7 +2,6 @@
     <div>
         <!-- this compnent requires text message modal -->
         <textmessage :memberIds="member_ids"/>
-
       <!-- NAVBAR -->
       <nav aria-label="breadcrumb" class="container">
         <ol class="breadcrumb">
@@ -42,7 +41,6 @@
                     </div>
                   </a>
               </p>
-
               <div class="collapse"  id="collapseMoreFilters">
                   <div id="container row" >
                       <div class="accordion">
@@ -59,11 +57,8 @@
                                   <small><b>min age :</b></small>
                                   <input type="number" class="form-control" id="searchInput"  placeholder="min age" v-model = "min_age">
                               </div>
-
-
                           </div>
                       </div>
-
                       <div class="accordion">
                           <div class="d-flex justify-content-between">
                               <label for="tn" class="accordionitem"><b>gender</b></label>
@@ -82,11 +77,8 @@
                             </div>
                         </div>
                       </div>
-
                     </div>
               </div>
-
-
             </div>
             <!-- CONTENT TAB IN THE MIDDLE -->
             <div class="col" >
@@ -111,7 +103,7 @@
                       </button>
                   </div>
                   <hr/>
-                <div class="mb-2 d-flex flex-row">
+                <div class="mb-2 d-flex flex-row justify-content-center">
                    <span class="mt-2 mr-2 text-secondary"> found <b>{{foundItems}}</b></span>
                     <a class="btn btn-outline-secondary dropdown-toggle mr-1" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
                         more stats
@@ -124,7 +116,8 @@
                       <memberstats msg="expenditure stats"/>
                   </div>
               </div>
-                <table class="table" v-if = "(min_age == 0 || min_age == '') && (max_age == 150 || max_age  == '')">
+                <table class="table table-responsive-sm table-borderless" 
+                    v-if = "(min_age == 0 || min_age == '') && (max_age == 150 || max_age  == '')">
                   <thead>
                     <tr>
                       <th></th>
@@ -152,20 +145,17 @@
                           <img v-if = "data.gender == 'M'" style = "height: 32px "src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
                               <img v-if = "data.gender == 'F'" style = "height: 32px "src="@/assets/avatars/icons8-user-female-skin-type-4-40.png">
                               <img v-if = "data.gender == 'R'" style = "height: 32px "src="@/assets/avatars/icons8-contacts-96.png">
-
                           <router-link :to="`/memberDetail/`+ data.member.id">
                             <span class = "text-secondary">{{data.member.first_name}} {{data.member.last_name}}</span>
                             <span class="ml-4 text-secondary"><i v-if="data.phone_number">({{data.phone_number}})</i></span>
                           </router-link>
                           </td>
-
-
                       </tr>
                     </tbody>
                   </table>
 
                   </div>
-                  <table class="table" v-if = "min_age > 0  || max_age != 150 ">
+                  <table class="table table-responsive-sm table-borderless" v-if = "min_age > 0  || max_age != 150 ">
                     <tbody>
                       <tr v-for="data in members.response.slice(0,100)">
                         <th scope="row"></th>
@@ -257,7 +247,6 @@
                     </div>
                   </div>
               </div>
-
               <!-- Modal assign group -->
               <div class="modal fade" id="assignModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                   <div class="modal-dialog modal-dialog-centered" role="document">

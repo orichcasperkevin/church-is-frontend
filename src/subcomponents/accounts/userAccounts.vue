@@ -1,9 +1,11 @@
 <!-- Child.vue -->
 <template>
-    <div class="row">                         
+    <div class="row">   
+        <!-- this compnent requires text message modal -->
+        <textmessage :memberIds="member_in_focus"/>                        
         <div v-if="admins" class="col-sm-12 col-lg-9">            
-            <h3 class="font-weight-bold mb-5 ">user accounts</h3>
-            <table class="table">
+            <h3 class="font-weight-bold mb-5 ">user accounts</h3>            
+            <table class="table table-responsive-sm table-borderless">
                 <thead>
                   <tr>                    
                     <th scope="col">name</th>
@@ -16,6 +18,49 @@
                     <td>{{admin.member_full_name}}</td>
                     <td>{{admin.role_name}}</td>
                     <td>{{admin.role_description}}</td>
+                    <td v-if="access_level == 0">
+                            <div class="btn-group">
+                                <a href="#" style="text-decoration: none">
+                                    <div class="text-success">
+                                        actions
+                                    </div>
+                                </a>
+                                <button type="button" class="ml-1 btn btn-light dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
+                                        <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <div class="dropdown-menu border-success" aria-labelledby="dropdownMenuReference">                                                                
+                                    <a class="dropdown-item d-flex flex-column justify-content-center" 
+                                        href="#" data-toggle="modal"
+                                        data-target="#textModalCenter"
+                                        @click="member_in_focus = []; member_in_focus.push(admin.user_id)">
+                                        send 'made admin' message 
+                                        <small class="text-muted">send message to user to inform them<br/>
+                                            that they are now admin in the site
+                                        </small>
+                                    </a>                                
+                                    <a class="dropdown-item d-flex flex-column justify-content-center" 
+                                        href="#" data-toggle="modal"
+                                        data-target="#textModalCenter"
+                                        @click="member_in_focus = []; member_in_focus.push(admin.user_id)">
+                                        send password reset message 
+                                        <small class="text-muted">send message to user to inform them<br/>
+                                             that their password has been reset
+                                        </small>
+                                    </a>   
+                                    <a class="dropdown-item d-flex flex-column justify-content-center" 
+                                        href="#" 
+                                        data-toggle="modal"
+                                        data-target="#resetPasswordModal"
+                                        @click="member_in_focus = []; member_in_focus.push(admin.user_id)">
+                                        reset user's password
+                                        <small class="text-muted">this will reset user password back <br/>
+                                                to starter password 'changeMe'<br/>
+                                                only use this feature when a user has lost their password
+                                        </small>
+                                    </a>                                                                                           
+                                </div>
+                            </div> 
+                    </td>
                   </tr>                  
                 </tbody>
               </table>
@@ -42,7 +87,7 @@
                         manage roles
                     </a>                                                                
                 </div>
-        </div>            
+            </div>            
         </div>
 
         <!-- modals -->
@@ -126,8 +171,39 @@
                 </div>
                 </div>
          </div> 
+
+        <!-- reset password modal -->
+        <div class="modal fade" id="resetPasswordModal" tabindex="-1" role="dialog" aria-labelledby="addRoleModal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">reset password</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+                <div class="modal-body">                                
+                    <p class="text-danger">
+                        <span>this will reset user password back <br/>
+                            to starter password 'changeMe'<br/>
+                            only use this feature when a user has lost their password
+                        </span>
+                    </p>                
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>                        
+                <button type="button" class="btn btn-success" v-on:click="resetPassword(member_in_focus[0])">
+                    reset password
+                    <span v-if="adding" 
+                        class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                    </span>
+                </button>
+                </div>
+            </div>
+            </div>
+        </div>
          
-         <!-- add role Modal -->
+         <!-- manage role Modal -->
          <div class="modal fade" id="manageRolesModal" tabindex="-1" role="dialog" aria-labelledby="addRoleModal" aria-hidden="true">
             <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
             <div class="modal-content">
@@ -214,11 +290,14 @@
 
 <script>
 import searchmember from '@/subcomponents/searchmember.vue'
+import textmessage from '@/subcomponents/textmessage.vue'
 export default {
 name: 'userAccounts',   
-components: { searchmember },
+components: { searchmember,textmessage },
 data() {
     return {            
+        access_level: this.$session.get('access_level'),
+        member_in_focus: [],
         test: false,
         updated_roles:{},
         updated_permision_levels:{},
@@ -237,7 +316,7 @@ data() {
 },
 mounted(){
     this.getRoles()
-    this.getMembersWithAdminRoles()
+    this.getMembersWithAdminRoles()    
 },
 methods: { 
     onMemberSelected (value) {
@@ -313,7 +392,7 @@ methods: {
 				this.selected_role = null          
 				this.adding = false
                 this.getMembersWithAdminRoles()
-                alert("successfully assigned role")                                
+                alert("admin user added")                                
             })
             .catch((err) => {
 				alert(err)
@@ -352,10 +431,26 @@ methods: {
             this.adding = false
             alert(err)
         })
+    },
+    //reset password.
+    resetPassword: function(user_id){
+        this.adding = true
+        this.$http({
+            headers: {
+            // Set your Authorization to 'JWT', not Bearer!!!
+              Authorization: `Bearer ${this.$session.get('token')}`,              
+            },
+            method: 'post',
+            url: this.$BASE_URL + '/api/members/reset-password/',
+            data:{user_id:user_id}
+        }).then(()=>{
+            alert("password for user reset to starter password 'ChangeMe'")
+            this.adding = false
+        }).catch((err)=>{
+            alert(err)
+            this.adding = false
+        })
     }
-        
-
-
 }
 }
 </script>

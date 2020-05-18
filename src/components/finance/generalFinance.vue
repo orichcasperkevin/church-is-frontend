@@ -68,6 +68,7 @@
                                 <!-- tithes -->
                                 <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">                                                                          
                                         <h3 class="font-weight-bold">Tithes </h3>
+                                        <hr>
                                         <tithes v-on:membersSelected="setMemberIds"/>                                    
                                 </div>
                                 <!-- offerings -->
@@ -76,14 +77,16 @@
                                         <!-- offerings -->
                                         
                                         <h3 class="font-weight-bold">Offering</h3>
+                                        <hr>
                                         <offerings v-on:membersSelected="setMemberIds"/>                                        
                                     </div>
                                 </div>
                                 <!-- Income-->
                                 <div class="tab-pane fade" id="pills-anyOther" role="tabpanel" aria-labelledby="pills-anyOther-tab">                                        
                                         <div v-if = "any_other_selected">
-                                                <hr class="d-sm-block d-lg-none">  
+                                                <hr class="d-sm-block d-lg-none"> 
                                                 <h3 class="font-weight-bold">Income</h3>                                                
+                                                <hr>
                                                 <div class="text-muted" v-if="any_other_selected">
                                                         <div class="d-flex d-flex-row justify-content-center">
                                                                 <div class="d-none d-lg-block stat-item mr-2 text-muted">
@@ -119,12 +122,9 @@
                                                                 <incomestats msg="income stats"/>
                                                             </div>
                                                         </div>
-                                                </div>                                                    
-                                                <hr/>
-                                                <p class="col-8">
-                                                        <span class="badge badge-pill badge-secondary">{{foundIncomes}}</span> types found
-                                                </p>
-                                                <table class="table table-responsive-sm">
+                                                </div>                                                                                                    
+                                                
+                                                <table class="mt-4 table table-responsive-sm table-borderless">
                                                     <thead>
                                                         <tr>
                                                             <th>type</th>                                                                
@@ -133,6 +133,9 @@
                                                             <th></th>
                                                         </tr>
                                                     </thead>
+                                                    <p class="mt-4 col-8">
+                                                        <span class="badge badge-pill badge-secondary">{{foundIncomes}}</span> types found
+                                                    </p>
                                                     <tbody>
                                                         <tr v-for = "data in incomes.response">
                                                             <td>

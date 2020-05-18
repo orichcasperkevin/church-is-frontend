@@ -330,7 +330,9 @@
                                 <div v-if="groups_added_into.length">
                                         <ul>
                                                 <li class="text-muted" v-for="group in groups_added_into">
-                                                        {{group.church_group.name}}
+                                                        {{group.church_group_name}}                                                        
+                                                        as 
+                                                        {{group.role_name}}
                                                 </li>
                                         </ul>
                                 </div> 
@@ -608,9 +610,9 @@ export default {
                     method: 'post',
                     url: this.$BASE_URL + '/api/groups/add-member-to-group/',
                     data: {           
-                        group_id: parseInt(this.group_ids[group_id]),
-                        member_id: this.added_member_id,
-                        role_id: null
+                        church_group: parseInt(this.group_ids[group_id]),
+                        member: this.added_member_id,
+                        role: null
                     }
                 }).then(response => {
                    this.adding_member_detail = false                                    

@@ -14,20 +14,15 @@
                         <div class="filters col-12 col-sm-8 col-md-8 col-lg-2" style="padding: 3px 3px 3px 3px">
                                 
                             </div>
-                            <div class="col-9">
-                                    <div class="row">
-                                        <div class="col-4">
-                                                <h3>
-                                                        <span v-for="data in income_type.response">{{data.type_name}}</span>                                                        
-                                                </h3>                                             
-                                        </div>  
-                                        <div class="col-4"></div>
-                                        <div class="col-4">
-                                                <button class="btn btn-success"
-                                                        data-toggle="modal" data-target="#addIncome">
-                                                    add
-                                                </button>                                               
-                                        </div>                                        
+                            <div class="col-lg-9 col-sm-12">
+                                    <div class="d-flex justify-content-between">                                        
+                                        <h3>
+                                            <span v-for="data in income_type.response">{{data.type_name}}</span>                                                        
+                                        </h3>                                                                             
+                                        <button class="btn btn-success"
+                                                data-toggle="modal" data-target="#addIncome">
+                                            add income
+                                        </button>                                                                                                                               
                                     </div>                                   
                                     <p class="col-8">
                                             <div class="text-muted row" v-for="data in income_type.response">
@@ -45,7 +40,7 @@
                                             <hr/>
                                             <span class="badge badge-pill badge-secondary">{{foundItems}}</span> entries found
                                     </p>
-                                    <table class="table table-responsive-sm">
+                                    <table class="table table-responsive-sm table-borderless">
                                         <thead>
                                             <tr>
                                                 <th>amount</th>                                                                

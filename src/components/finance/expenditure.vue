@@ -11,41 +11,35 @@
         </nav>
         <div class = "container">  
             <div class="row">
-                    <div class="filters col-sm-8 col-md-8 col-lg-2" style="padding: 3px 3px 3px 3px">
-                           
+                    <div class="filters col-sm-8 col-md-8 col-lg-2" style="padding: 3px 3px 3px 3px">                           
                         </div>
                         <div class="col-sm-12 col-lg-9">
-                                <div class="row">
-                                    <div class="col-4">
+                                <div class="d-flex justify-content-between">                                  
                                         <h3>
                                             <span v-for="data in expenditure_type.response">{{data.type_name}}</span>
-                                        </h3>                                        
-                                    </div>
-                                    
-                                    <div class="col-4 ">
-                                            <button class="btn btn-success"
-                                                        data-toggle="modal" data-target="#addExpenditure">
-                                                    add
-                                                </button>                                                                                   
-                                    </div>                                    
+                                        </h3>                                                                                                                                                    
+                                        <button class="btn btn-success"
+                                                data-toggle="modal" data-target="#addExpenditure">
+                                            + add expenditure
+                                        </button>                                                                                                                                                       
                                 </div>                                                                
-                                <p class="col-8">
-                                        <div class="small text-muted" v-for="data in expenditure_type.response">                                               
-                                                <div class="row">
-                                                        <div class="d-none d-lg-block stat-item mr-2 text-muted">
-                                                                This month  <span class="text-secondary font-weight-bold">
-                                                                 Ksh {{humanize(data.total_this_month)}} </span>
-                                                        </div>
-                                                        <div class="d-none d-lg-block stat-item mr-2">
-                                                                This year  <span class="text-secondary font-weight-bold">
-                                                                Ksh   KSh {{humanize(data.total_this_year)}}</span>                                        
-                                                        </div>                                                               
+                                <div >
+                                    <hr>
+                                        <div class="mb-4  text-muted" v-for="data in expenditure_type.response">                                               
+                                                <div class="d-flex justify-content-center">
+                                                    <div class="stat-item mr-2 text-muted">
+                                                            This month  <span class="text-secondary font-weight-bold">
+                                                                Ksh {{humanize(data.total_this_month)}} </span>
+                                                    </div>
+                                                    <div class="stat-item mr-2">
+                                                            This year  <span class="text-secondary font-weight-bold">
+                                                            Ksh   KSh {{humanize(data.total_this_year)}}</span>                                        
+                                                    </div>                                                               
                                                 </div>
-                                        </div>
-                                        <hr/>
+                                        </div>                                        
                                         <span class="badge badge-pill badge-secondary">{{foundItems}}</span> entries found
-                                </p>
-                                <table class="table table-responsive-sm">
+                                    </div>
+                                <table class="mt-4 table table-responsive-sm table-borderless">
                                     <thead>
                                         <tr>
                                             <th>amount</th>                                                                

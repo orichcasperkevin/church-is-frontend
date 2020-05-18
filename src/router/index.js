@@ -36,6 +36,11 @@ export default new Router({
       component: login
     },
     {
+      path: '/reset-credentials/',
+      name:'credentialsReset',
+      component: () => import("@/components/auth/credentialsReset.vue")
+    },
+    {
       path: '/',
       name: 'Home',
       component: Home

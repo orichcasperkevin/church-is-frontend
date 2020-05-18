@@ -31,12 +31,13 @@
                                 <tithestats msg="tithe stats"/>
                             </div>
                         </div>
-                    </content>
-                    <hr/>
-                    <p><span class="badge badge-pill badge-secondary">{{foundTithes}}</span> entries</p> 
+                    </content>                    
                     <!-- main content-->
-                    <content>                                                
-                        <table class="table table-responsive-sm">
+                    <content>          
+                        <span class="mt-4">
+                            <p><span class="mt-4 badge badge-pill badge-secondary">{{foundTithes}}</span> entries</p>
+                        </span>                                                               
+                        <table class="mt-5 table table-responsive-sm table-borderless">
                             <thead>
                                 <tr>
                                     <th>                                     
@@ -50,9 +51,9 @@
                                     <th>time</th>
                                     <th>this month</th>
                                     <th>this year</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                                </tr>                                  
+                            </thead>                                                       
+                            <tbody >
                                 <tr v-for = "data in tithes.response">
                                     <td v-if = "data.member != null">                                          
                                             <label class="anvil-checkbox">
@@ -208,6 +209,7 @@
         },
         data () {
           return {
+            access_level: this.$session.get('access_level'),
             foundTithes: null,
             //fetch data
             tithe_stats: null,    

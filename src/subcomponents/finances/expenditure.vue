@@ -3,6 +3,7 @@
         <!-- EXPENDITURE CONTENTS -->
         <div>
             <h3 class="font-weight-bold">Expenditure</h3>                                          
+            <hr>
             <div class="text-muted" v-if="expenditure_stats">
                     <div class="d-flex d-flex-row justify-content-center">
                             <div class="d-none d-lg-block stat-item mr-2 text-muted">
@@ -28,12 +29,8 @@
                                 <expenditurestats msg="expenditure stats"/>
                             </div>
                     </div>
-                </div>
-            <hr/>
-            <p class="col-8">
-                    <span class="badge badge-pill badge-secondary">{{found_expenditure_types}}</span> entries found
-            </p>
-            <table class="table table-responsive-sm">
+                </div>                        
+            <table class="mt-4 table table-responsive-sm table-borderless">
                 <thead>
                     <tr>
                         <th>type</th>                                                   
@@ -41,6 +38,9 @@
                         <th>this year</th>
                     </tr>
                 </thead>
+                <p class="mt-4 col-8">
+                    <span class="badge badge-pill badge-secondary">{{found_expenditure_types}}</span> entries found
+                </p>
                 <tbody>
                     <tr v-for = "data in expenditure_types.response">                                           
                         <td>

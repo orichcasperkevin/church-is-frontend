@@ -24,8 +24,19 @@
 		<div class="row">            
 			<a href="javascript:void(0)" class="closebtn text-secondary" v-on:click="closeNav()">&times;</a> 
 			<h3 class="ml-4 mr-2 d-flex flex-wrap font-weight-bold" id=church-name-heading> church</h3>
-			<div class="ml-1 dropdown-item" >{{username}}</div>  
-			<a href="#" class=" ml-1 dropdown-item" v-on:click="logOut()">log out</a>                  
+			<h5 class="ml-1 dropdown-item">{{username}}</h5>  
+			<router-link class="ml-1 dropdown-item" 
+									:to="{name: 'credentialsReset'}">
+									<span  v-on:click="closeNav()">
+											change credentials
+									</span>									
+			</router-link> 
+			<a 	href="#" 			
+					class="ml-1 dropdown-item" 
+					v-on:click="logOut(); closeNav()"
+					>
+				log out
+			</a>			                 
 		</div>            
 		<hr>
 		<!-- members nav on mobile -->

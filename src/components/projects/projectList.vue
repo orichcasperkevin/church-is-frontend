@@ -26,7 +26,8 @@
             <div class="tab-content col">
                     <div class="tab-pane fade show active" id="inProgress" role="tabpanel" aria-labelledby="profile-tab"></div>
                     <h3 class="font-weight-bold"> Projects</h3>
-                    <p>
+                    <hr>
+                    <p class="text-center">
                         <a class="btn btn-sm btn-outline-secondary dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
                                 more stats
                         </a>
@@ -43,30 +44,26 @@
                                         </div>
                                     </a>
                             </div>
-                    </div>                    
-                    <hr/>                    
+                    </div>                                                          
                     <div class="col-8 center-div" v-if = "fetch_data_error.length > 0">
                         <div class = "center-div" >
                                 <img style = "height: 64px "src="@/assets/icons/icons8-wi-fi-off-64.png">
                                 <p class="text-info">check your connection</p>
                         </div>
                     </div>
-                    <div v-if = "fetch_data_error.length == 0">
-                    found <span class="badge badge-pill badge-secondary">{{foundItems}}</span>                    
-                    <table class="table table-responsive-sm">                     
-                        <thead>
-                            <th></th>
-                            <th>name</th>
+                    <div v-if = "fetch_data_error.length == 0">                                      
+                        <span>
+                                found <span class="mt-4 badge badge-pill badge-secondary">{{foundItems}}</span>
+                        </span> 
+                    <table class="mt-4 table table-responsive-sm table-borderless">                     
+                        <thead>                        
+                            <th>project name</th>
                             <th>required</th>
                             <th>percentage funded</th>
-                        </thead>
+                        </thead>                                                
                         <tbody>
                             <tr  v-for = "data in projects.response ">                    
-                            <td>
-                                <router-link class="text-secondary" style="text-decoration: none;"  :to="`/projectDetail/`+ data.id + `/`">
-                                    <img style="width: 40%; height: auto" src="@/assets/icons/icons8-group-of-projects-filled-50.png">
-                                </router-link>
-                            </td>                                
+                                                          
                             <td>
                                 <router-link class="text-secondary" style="text-decoration: none;"  :to="`/projectDetail/`+ data.id + `/`">                                                         
                                     {{data.name}}

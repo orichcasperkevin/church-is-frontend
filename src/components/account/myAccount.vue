@@ -2,14 +2,19 @@
     <div>
         <nav aria-label="breadcrumb" class="container">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><span class="backButton"><router-link style="text-decoration: none" :to="{name: 'Home'}">Home</router-link></span>  
+                        <li class="breadcrumb-item">
+                            <span class="backButton">
+                                <router-link style="text-decoration: none" :to="{name: 'Home'}">
+                                    Home
+                                </router-link>
+                            </span>            
                     <li class="breadcrumb-item active" aria-current="page">church account</li>
                 </ol>
         </nav>
         <!-- MAIN CONTAINER -->
         <section class="container">                
             <div class="row">
-                <div class="col-sm-12 col-lg-3">
+                <div class="mb-5 col-sm-12 col-lg-3">
                     <!-- spacer div -->
                     <nav class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
                             <a  
@@ -59,10 +64,9 @@
                                             <i v-if="sms_credentials.length"class="text-muted">{{sms_credentials[0].at_mpesa_acc_no}}</i>
                                         </p> 
                                 </div>                           
-                        </section>
-                        <hr>      
+                        </section>                           
                         <!-- numbers in boxes -->
-                        <section class="row">
+                        <section class="d-flex justify-content-center">
                                 <div class="row col text-left mt-2">
                                         <div class="mb-2 ml-3 text-center text-muted col-lg-2 col-sm-12 border border-secondary rounded">
                                             <h1 class="font-weight-bold">{{client_details[0].number_of_members}} </h1>
@@ -80,7 +84,7 @@
                                                                     
                                 </div> 
                         </section>
-                        <hr>
+                        
                         <!-- church statements -->
                         <section class="mt-5">
                             <h3 class="font-weight-bold text-muted">Website Management</h3>
@@ -99,7 +103,7 @@
                                     <h5 class="text-muted text-center" v-if="! church_statements.length">
                                         <p>Oops!</p>
                                         <p>You have not added your church's mission statement</p>
-                                        <button class="btn btn-success" data-toggle="modal" data-target="#addVisionAndMisionStatement">
+                                        <button class="btn btn-outline-success" data-toggle="modal" data-target="#addVisionAndMisionStatement">
                                             + add mission statement
                                             <span v-if="updating"
                                                 class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
@@ -107,7 +111,7 @@
                                         </button>
                                     </h5>
                                     <div class="text-right" v-if="church_statements.length">
-                                        <button class="btn btn-success" v-on:click="editChurchStatements()">
+                                        <button class="btn btn-outline-success" v-on:click="editChurchStatements()">
                                             save
                                             <span v-if="updating"
                                                 class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
@@ -124,7 +128,7 @@
                                     <h5 class="text-muted text-center" v-else>
                                         <p>Oops!</p>
                                         <p>You have not added your church's vision statement</p>
-                                        <button class="btn btn-success" data-toggle="modal" data-target="#addVisionAndMisionStatement">
+                                        <button class="btn btn-outline-success" data-toggle="modal" data-target="#addVisionAndMisionStatement">
                                             + add vision statement
                                             <span v-if="updating"
                                                 class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
@@ -132,7 +136,7 @@
                                         </button>
                                     </h5>
                                     <div class="text-right" v-if="church_statements.length">
-                                        <button class="btn btn-success" v-on:click="editChurchStatements()">
+                                        <button class="btn btn-outline-success" v-on:click="editChurchStatements()">
                                             save
                                             <span v-if="updating"
                                                 class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
@@ -149,7 +153,7 @@
                                                 rows="3" class="form-control mb-2" v-model="about_church">
                                     </textarea> 
                                     <div class="text-right" v-if="church_about.length">
-                                        <button class="btn btn-success" v-on:click="editAbout()">
+                                        <button class="btn btn-outline-success" v-on:click="editAbout()">
                                             save
                                             <span v-if="updating_about"
                                                 class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
@@ -159,7 +163,7 @@
                                     <h5 class="text-muted text-center" v-if="! church_about.length">
                                         <p>Oops!</p>
                                         <p>You have not added an about for your church</p>                                        
-                                        <button class="btn btn-success" data-toggle="modal" data-target="#addChurchAbout">
+                                        <button class="btn btn-outline-success" data-toggle="modal" data-target="#addChurchAbout">
                                             + add
                                             <span v-if="updating"
                                                 class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
@@ -180,7 +184,7 @@
                                             </ul>
                                         </p>
                                         <div class="text-right" v-if="church_core_values.length">
-                                                <button class="btn btn-success" data-toggle="modal" data-target="#addChurchCoreValue">
+                                                <button class="btn btn-outline-success" data-toggle="modal" data-target="#addChurchCoreValue">
                                                         + add
                                                         <span v-if="updating"
                                                             class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
@@ -190,7 +194,7 @@
                                         <h5 class="text-muted text-center" v-if="! church_core_values.length">
                                             <p>Oops!</p>
                                             <p>You have not added your church's church core values</p>
-                                            <button class="btn btn-success" data-toggle="modal" data-target="#addChurchCoreValue">
+                                            <button class="btn btn-outline-success" data-toggle="modal" data-target="#addChurchCoreValue">
                                                 + add
                                                 <span v-if="updating"
                                                     class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
@@ -213,7 +217,7 @@
                                             </ul>
                                         </p>
                                         <div class="text-right" v-if="church_periodic_themes.length">
-                                                <button class="btn btn-success" data-toggle="modal" data-target="#addThemeModal">
+                                                <button class="btn btn-outline-success" data-toggle="modal" data-target="#addThemeModal">
                                                         + add 
                                                         <span v-if="updating"
                                                             class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
@@ -223,7 +227,7 @@
                                         <h5 class="text-muted text-center"  v-if="! church_periodic_themes.length">
                                             <p>Oops!</p>
                                             <p>You have not added your church's Periodic Theme</p>
-                                            <button class="btn btn-success" data-toggle="modal" data-target="#addThemeModal">
+                                            <button class="btn btn-outline-success" data-toggle="modal" data-target="#addThemeModal">
                                                 + add theme
                                                 <span v-if="updating"
                                                     class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
@@ -276,7 +280,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-success" v-on:click="addMissionAndVisionStatements()">
+                            <button type="button" class="btn btn-outline-success" v-on:click="addMissionAndVisionStatements()">
                                 + add statements
                                 <span v-if="adding_web_content"
                                     class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
@@ -309,7 +313,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-success" v-on:click="addAboutChurch()">
+                            <button type="button" class="btn btn-outline-success" v-on:click="addAboutChurch()">
                                 + add about
                                 <span v-if="adding_web_content"
                                     class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
@@ -342,7 +346,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-success" v-on:click="addAboutChurch()">
+                        <button type="button" class="btn btn-outline-success" v-on:click="addAboutChurch()">
                             + add about
                             <span v-if="adding_web_content"
                                 class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
@@ -372,7 +376,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-success" v-on:click="addCoreValue()">
+                            <button type="button" class="btn btn-outline-success" v-on:click="addCoreValue()">
                                 + add value
                                 <span v-if="adding_web_content"
                                     class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
@@ -422,7 +426,7 @@
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="button" class="btn btn-success" v-on:click="addTheme()">
+                            <button type="button" class="btn btn-outline-success" v-on:click="addTheme()">
                                 + add theme
                                 <span v-if="adding_web_content"
                                     class="spinner-border spinner-border-sm" role="status" aria-hidden="true">

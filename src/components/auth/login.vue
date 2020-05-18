@@ -1,12 +1,11 @@
 <template>
   <div>
-    <div class="container">
-      <div class="row">
-        <div class="col"></div>
-        
-        <div style="padding: 10px">
-          <div class="card w-400" style="background-color: ghostwhite; min-width: 300px;">
-            <div class="card-header text-center">
+    <div class="container">                      
+        <div class="d-flex justify-content-center">
+          <div  class="card w-400 border-0"
+                style="background-color: ghostwhite; height: 80vh; min-width: 300px;">
+
+            <div class="card-header text-center border-0">
               <img class="mr-0 " style="width: 50px ;height: auto" src="@/assets/app_logo1.png"
                   v-if="$host_name == 'my-domain' || $host_name == 'anvilchurch'">
               <img class="ml-4 " style="width: 100px ;height: auto ;border-radius: 5px" src="@/assets/methodist_logo.jpeg" alt="logo not found"
@@ -14,6 +13,7 @@
               <p>admin login</p>
             </div>
             <div class="card-body">
+                
               <form>
                 <div>
                   <ul v-if="login_error.length">
@@ -50,17 +50,17 @@
                          id="exampleInputPassword1" placeholder="Password"
                          v-model="password">
                 </div>               
-                <a href=# v-on:click="getToken()" style="text-decoration: none">
-                  <div class="add-button">
+                <a  href=#                     
+                    v-on:click="getToken()" 
+                    style="text-decoration: none">
+                  <div class="mt-5 add-button">
                     <span>login</span>
                   </div>
                 </a>
               </form>
             </div>
           </div>
-        </div>
-        <div class="col"></div>
-      </div>
+        </div>          
     </div>
   </div>
 </template>
@@ -95,7 +95,7 @@
           this.$http.get(this.$DOMAIN.value + '/api/clients/client/' + church_id + '/')
             .then(response => {              
               var data = response.data              
-              this.$BASE_URL.value = "http://"+ data[0].domain_url + ":8000"
+              this.$BASE_URL.value = "http://"+ data[0].domain_url //+ ":8000"
               localStorage.setItem('base_url_value',this.$BASE_URL.value)              
               localStorage.setItem('church_id', church_id )
               localStorage.setItem('church_details',JSON.stringify(response.data))
@@ -107,6 +107,7 @@
       }
     },
     methods: {
+      //get access token
       getToken: function () {      
         this.login_info = []
         this.login_error = []
@@ -119,17 +120,16 @@
             password: this.password
           }
         }).then(response => {
-          this.login_info = []
-          this.login_error = []
-          this.login_info.push("logging you in...")
-          this.$session.start();
-          this.$session.set('token', response.data.access)
-          this.$session.set('username', this.username)
-          //get logged in member data
-          this.getLoggedInMemberData()         
-          router.push('/')                  
-        })
-          .catch((err) => {
+            this.login_info = []
+            this.login_error = []            
+            this.$session.start();
+            this.$session.set('token', response.data.access)
+            this.$session.set('username', this.username)
+            //get logged in member data
+            this.getLoggedInMemberData()          
+            router.push('/')                  
+
+        }).catch((err) => {
             this.login_info = []
             this.login_error = []
             if(! err.response){
@@ -139,16 +139,31 @@
               this.login_error.push("invalid credentials")
             }            
 
-          })
+        })
       },
+      //get logged in member info
       getLoggedInMemberData: function(){
-        this.$http.get(this.$BASE_URL + '/api/members/member/' + this.$session.get('username') + '/')
-            .then(response => {
-              this.$session.set('member_id', response.data[0].member.id)
-            })
-            .catch((err) => {
-              this.fetch_data_error.push(err)
-            })
+        this.$http({
+          method:'get',
+          url:this.$BASE_URL + `/api/members/member/${this.$session.get('username')}/`
+        }).then(response => {
+            this.$session.set('member_id', response.data[0].member.id)
+            this.getPermisionLevel(response.data[0].member.id)
+        }).catch((err) => {
+            this.fetch_data_error.push(err)
+        })
+      },
+      //get logged in member permision level
+      getPermisionLevel: function(member_id){
+        this.$http({
+          method:'get',
+          url: this.$BASE_URL + `/api/members/get-permision-level/${member_id}/`
+        }).then((response)=>{                  
+            var response_data = response.data            
+            this.$session.set('access_level',response_data.level)          
+        }).catch((err)=>{
+            alert(err)
+        })
       }
     }
   }

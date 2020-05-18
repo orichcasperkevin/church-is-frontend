@@ -30,12 +30,11 @@
                                 <offeringstats msg="offering stats"/>
                             </div>
                         </div>
-                </div>                     
-                <hr/>
-                <p class="col-8">
-                        <span class="badge badge-pill badge-secondary">{{foundOfferings}}</span> entries found
-                </p>
-                <table class="table table-responsive-sm">
+                </div>                         
+                <span class="mt-4">
+                        <p><span class="mt-4 badge badge-pill badge-secondary">{{foundOfferings}}</span> entries</p>
+                </span>                       
+                <table class="mt-4 table table-responsive-sm table-borderless">
                     <thead>
                         <tr>
                             <th>
@@ -50,7 +49,7 @@
                             <th>this month</th>
                             <th>this year</th>
                         </tr>
-                    </thead>
+                    </thead>                                      
                     <tbody>
                         <tr v-for = "data in offerings.response">                             
                             <td v-if = "data.member != null">                                          

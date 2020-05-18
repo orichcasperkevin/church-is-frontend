@@ -78,7 +78,7 @@
                         <h3>Group has no members added</h3>
                         <p>add members to group so that we can list them</p>
                     </div>
-                    <table class="table">
+                    <table class="table table-responsive-sm table-borderless">
                       <tbody>
                         <tr>                            
                             <th class="anvil-checkbox">                                
@@ -119,7 +119,7 @@
                 <hr>
                 <div v-if="group_meetings">
                     <div v-if="group_meetings.length">                        
-                        <table class="table table-responsive-sm">
+                        <table class="table table-responsive-sm table-borderless">
                             <thead>
                               <tr>                                
                                 <th scope="col">event</th>
@@ -418,6 +418,7 @@ export default {
   },
   created() {
         this.fetchData()  
+        this.getRoles()
     },
   watch: {
     role_name: function (){
@@ -533,12 +534,7 @@ export default {
             data: {
               role: this.role_name,
               description: this.role_description,  
-              member_admin: this.member_admin,
-              site_admin: this.site_admin,
-              group_admin: this.group_admin,
-              event_admin: this.event_admin,
-              projects_admin: this.projects_admin,
-              finance_admin: this.finance_admin               
+              is_group_role: true            
             }
           }).then(response => {
             this.getRoles()
@@ -556,8 +552,12 @@ export default {
       getRoles: function(){
       this.$store.dispatch('update_isLoading', true)
         this.$http.get(this.$BASE_URL + '/api/members/role-list/')
-        .then(response => {
-          this.roles = {"response": response.data }
+        .then(response => {                    
+          var response_data = response.data
+          var group_roles = response_data.filter((item)=>{
+            return item.is_group_role || item.role == 'member' || item.role == 'group admin'                  
+          })
+          this.roles = {"response": group_roles }
           this.$store.dispatch('update_isLoading', false)
         })
         .catch((err) => {
@@ -565,15 +565,7 @@ export default {
           this.$store.dispatch('update_isLoading', false)
         })
     },
-      fetchData() {
-        this.$store.dispatch('update_isLoading', true)
-        this.$http.get(this.$BASE_URL + '/api/members/role-list/')
-        .then(response => {
-          this.roles = {"response": response.data }          
-        })
-        .catch((err) => {
-          this.fetch_data_error.push(err)          
-        })
+      fetchData() {      
 
         this.fetch_data_error = []
         this.$store.dispatch('update_isLoading', true)
