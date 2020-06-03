@@ -43,11 +43,11 @@
                                     <span class="anvil-checkmark"></span>
                                 </label>
                             </th>
-                            <th>name</th>
-                            <th>amount</th>
-                            <th>date</th>
-                            <th>this month</th>
-                            <th>this year</th>
+                            <th>Name</th>
+                            <th>Amount</th>
+                            <th>Nate</th>
+                            <th>This month</th>
+                            <th>This year</th>
                         </tr>
                     </thead>                                      
                     <tbody>

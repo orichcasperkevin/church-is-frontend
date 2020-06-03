@@ -201,7 +201,7 @@ export default {
 	},    
 	/* Set the width of the side navigation to 250px */
 	openNav:function() {
-	  this.anvil_side_nav.style.width = "250px"      
+	  this.anvil_side_nav.style.width = "300px"      
 	  this.main_app.style.marginLeft = "100px"          
 	  this.nav_frost_overlay.classList.add("bg-frost")      
 	  this.nav_frost_overlay.classList.remove("d-none")

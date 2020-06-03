@@ -6,7 +6,7 @@
                   <router-link :to="{name: 'memberList'}">
                       <div class="home-menu-item border-0">
                           <img style = "height: 64px "src="@/assets/icons/icons8-contacts-208.png">
-                        <p>members</p>
+                        <p class="font-weight-bold">Members</p>
                       </div>
                   </router-link>
                 <div>
@@ -19,7 +19,7 @@
                   <router-link :to="{name: 'groupsLanding'}">
                       <div class="home-menu-item border-0">
                         <img style = "height: 64px "src="@/assets/icons/icons8-user-groups-208.png">
-                        <p>groups</p>
+                        <p class="font-weight-bold">Groups</p>
                       </div>
                   </router-link>
                   <div>
@@ -32,7 +32,7 @@
                     <router-link :to="{name: 'generalFinance'}">
                         <div class="home-menu-item border-0">
                             <img style = "height: 64px "src="@/assets/icons/icons8-request-money-filled-50.png">
-                          <p>Finances</p>
+                          <p class="font-weight-bold">Finances</p>
                         </div>
                     </router-link>
                     <!-- notifications -->
@@ -94,9 +94,7 @@ export default {
     }
   },
   mounted() {
-    this.fetchData()
-    document.getElementById("anvil-side-nav").style.width = "250px";
-    document.getElementById("main-app").style.marginLeft = "250px";
+    this.fetchData()   
   },
   destroyed(){
     document.getElementById("anvil-side-nav").style.width = "0";

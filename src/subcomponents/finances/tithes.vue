@@ -41,16 +41,16 @@
                             <thead>
                                 <tr>
                                     <th>                                     
-                                        <label class="anvil-checkbox">all
+                                        <label class="anvil-checkbox">All
                                             <input type="checkbox" :value=true v-model="all_members">
                                             <span class="anvil-checkmark"></span>
                                         </label>
                                     </th>
-                                    <th>name</th>
-                                    <th>amount</th>
-                                    <th>time</th>
-                                    <th>this month</th>
-                                    <th>this year</th>
+                                    <th>Name</th>
+                                    <th>Amount</th>
+                                    <th>Time</th>
+                                    <th>This month</th>
+                                    <th>This year</th>
                                 </tr>                                  
                             </thead>                                                       
                             <tbody >

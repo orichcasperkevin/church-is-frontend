@@ -28,134 +28,134 @@
                         <section class="mx-auto col-lg-8 col-sm-12" v-if= "form_in_view == 'personal_detail_form'">                               
                                 <!-- first_name last name and surname -->
                                 <div class="row">
-                                                <div class="col">
-                                                <div class="form-group">
-                                                        <label><b>first name :</b></label>
-                                                        <input type="text" class="form-control"  placeholder="first name" v-model="first_name" autofocus>
-                                                        <p v-if="first_name_errors.length">
-                                                                <ul>
-                                                                        <small><li v-for="error in first_name_errors"><p class="text-danger">{{ error }}</p></li></small>
-                                                                </ul>
-                                                        </p>
-                                                </div>
-                                                <div class="form-group">
-                                                                <label><b>middle name :</b></label>
-                                                                <input type="text" class="form-control"  placeholder="middle name" v-model="middle_name" >                                                                
-                                                </div>
-                                                <div class="form-group">
-                                                        <label><b>last name :</b></label>
-                                                        <input type="text" class="form-control"  placeholder="last name" v-model="last_name" >
-                                                        <p v-if="last_name_errors.length">
-                                                                <ul>
-                                                                        <small><li v-for="error in last_name_errors"><p class="text-danger">{{ error }}</p></li></small>
-                                                                </ul>
-                                                        </p>
-                                                </div>
-                                                </div>
+									<div class="col">
+									<div class="form-group">
+										<label><b>first name :</b></label>
+										<input type="text" class="form-control"  placeholder="first name" v-model="first_name" autofocus>
+										<p v-if="first_name_errors.length">
+											<ul>
+												<small><li v-for="error in first_name_errors"><p class="text-danger">{{ error }}</p></li></small>
+											</ul>
+										</p>
+									</div>
+									<div class="form-group">
+										<label><b>middle name :</b></label>
+										<input type="text" class="form-control"  placeholder="middle name" v-model="middle_name" >                                                                
+									</div>
+									<div class="form-group">
+										<label><b>last name :</b></label>
+										<input type="text" class="form-control"  placeholder="last name" v-model="last_name" >
+										<p v-if="last_name_errors.length">
+											<ul>
+												<small><li v-for="error in last_name_errors"><p class="text-danger">{{ error }}</p></li></small>
+											</ul>
+										</p>
+									</div>
+									</div>
                                 </div>                                
                                 <!-- gender -->
                                 <div>
-                                        <div class="row">
-                                                <div class="checkbox col">
-                                                        <div class="radio">
-                                                                <label><input type="radio" value = "M" v-model = "gender" > male</label>
-                                                        </div>
-                                                        <div class="radio">
-                                                                <label><input type="radio" value = "F" v-model = "gender"> female</label>
-                                                        </div>
-                                                        <p v-if="gender_errors.length">
-                                                        <ul>
-                                                                <small><li v-for="error in gender_errors"><p class="text-danger">{{ error }}</p></li></small>
-                                                        </ul>
-                                                        </p>
-                                                </div>
-                                        </div>
+									<div class="row">
+											<div class="checkbox col">
+													<div class="radio">
+															<label><input type="radio" value = "M" v-model = "gender" > male</label>
+													</div>
+													<div class="radio">
+															<label><input type="radio" value = "F" v-model = "gender"> female</label>
+													</div>
+													<p v-if="gender_errors.length">
+													<ul>
+															<small><li v-for="error in gender_errors"><p class="text-danger">{{ error }}</p></li></small>
+													</ul>
+													</p>
+											</div>
+									</div>
                                 </div>
                                 <!-- buttons -->
                                 <div class="mt-5 ml-2 d-flex justify-content-end">
-                                        <button class="btn btn-success" @click="addMember()">
-                                                + add member
-                                                <span   v-if="adding_member_detail"
-                                                        class="spinner-border spinner-border-sm" 
-                                                        role="status" 
-                                                        aria-hidden="true">
-                                                </span>                                                                                
-                                        </button>
-                                        <button v-if="added_member_id"
-                                                class="ml-2 btn btn-outline-success"
-                                                @click="form_in_view = 'contact_form'">
-                                                next
-                                        </button>
+									<button class="btn btn-success" @click="addMember()">
+										+ add member
+										<span   v-if="adding_member_detail"
+												class="spinner-border spinner-border-sm" 
+												role="status" 
+												aria-hidden="true">
+										</span>                                                                                
+									</button>
+									<button v-if="added_member_id"
+											class="ml-2 btn btn-outline-success"
+											@click="form_in_view = 'contact_form'">
+											next
+									</button>
                                 </div>
                         </section>   
 
                         <!-- MEMBER CONTACT -->
                         <section class="mx-auto col-lg-8 col-sm-12" v-if = "form_in_view == 'contact_form'">
-                                        <!-- head -->
-                                        <div class="ml-0 mb-3">
-                                                <a style="cursor: pointer" class="text-primary" @click="form_in_view = 'personal_detail_form'">
-                                                        <img style="height: 20px" src="@/assets/icons/icons8-back-filled-50.png" alt="back">
-                                                        back
-                                                </a>
-                                                <h4 class="mt-3 text-muted">contact for {{added_member[0].member.first_name}} {{added_member[0].member.last_name}}</h4>                                        
-                                        </div>
-                                        <!-- contact input -->
-                                        <div v-if="! added_contact">                                
-                                                <div class="row" >
-                                                        <div class="col">
-                                                        <div class="form-group">
-                                                                <label><b>email :</b></label>
-                                                                <input type="email" class="form-control"  placeholder="example@gmail.com" v-model = "email">
-                                                        </div>
-                                                        <div class="form-group">                
-                                                                <div class="row">
-                                                                        <span class="col-4">
-                                                                                <label><b>code :</b></label>
-                                                                                <input class="form-control" type="text" placeholder="+254" v-model = "country_code">
-                                                                        </span>
-                                                                        <span class="col-8">
-                                                                                <label><b>phone number :</b></label>
-                                                                                <input type="text" class="form-control"  placeholder="712345678" v-model = "phone_number">
-                                                                        </span>
-                                                                </div>
-                                                                <p v-if="phone_number_errors.length">
-                                                                        <ul>
-                                                                                <small><li v-for="error in phone_number_errors"><p class="text-danger">{{ error }}</p></li></small>
-                                                                        </ul>
-                                                                </p>
-                                                                <p v-if="phone_number_OK.length">
-                                                                        <ul>
-                                                                                <small><li v-for="error in phone_number_OK"><p class="text-success">{{ error }}</p></li></small>
-                                                                        </ul>
-                                                                </p>
-                                                        </div>
-                                                        <div class="form-group">
-                                                                <label><b>postal address :</b></label>
-                                                                <input type="text" class="form-control"  placeholder="123-456" v-model="postal_address">
-                                                        </div>
-                                                        </div>
-                                                </div>                            
-                                        </div>
-                                        <!-- added contact -->
-                                        <div v-if = "added_contact">                                                
-                                                <p>email: <span class="text-muted">{{added_contact.member.member.email}}</span></p>
-                                                <p>phone number: <span class="text-muted">{{added_contact.member.phone_number}}</span></p>
-                                        </div>
-                                        <!-- buttons -->
-                                        <div class="ml-2 d-flex justify-content-end">
-                                                <button v-if="! added_contact" class="btn btn-success" @click="addContact()">
-                                                        + add contact
-                                                        <span   v-if="adding_member_detail"
-                                                                class="spinner-border spinner-border-sm" 
-                                                                role="status" 
-                                                                aria-hidden="true">
-                                                        </span> 
-                                                </button>
-                                                <button class="ml-2 btn btn-outline-success"
-                                                        @click="form_in_view = 'age_form'">
-                                                next
-                                                </button>
-                                        </div>
+							<!-- head -->
+							<div class="ml-0 mb-3">
+								<a style="cursor: pointer" class="text-primary" @click="form_in_view = 'personal_detail_form'">
+									<img style="height: 20px" src="@/assets/icons/icons8-back-filled-50.png" alt="back">
+									back
+								</a>
+								<h4 class="mt-3 text-muted">contact for {{added_member[0].member.first_name}} {{added_member[0].member.last_name}}</h4>                                        
+							</div>
+							<!-- contact input -->
+							<div v-if="! added_contact">                                
+								<div class="row" >
+									<div class="col">
+									<div class="form-group">
+										<label><b>email :</b></label>
+										<input type="email" class="form-control"  placeholder="example@gmail.com" v-model = "email">
+									</div>
+									<div class="form-group">                
+										<div class="row">
+											<span class="col-4">
+													<label><b>code :</b></label>
+													<input class="form-control" type="text" placeholder="+254" v-model = "country_code">
+											</span>
+											<span class="col-8">
+												<label><b>phone number :</b></label>
+												<input type="text" class="form-control"  placeholder="712345678" v-model = "phone_number">
+											</span>
+										</div>
+										<p v-if="phone_number_errors.length">
+												<ul>
+														<small><li v-for="error in phone_number_errors"><p class="text-danger">{{ error }}</p></li></small>
+												</ul>
+										</p>
+										<p v-if="phone_number_OK.length">
+												<ul>
+														<small><li v-for="error in phone_number_OK"><p class="text-success">{{ error }}</p></li></small>
+												</ul>
+										</p>
+									</div>
+									<div class="form-group">
+											<label><b>postal address :</b></label>
+											<input type="text" class="form-control"  placeholder="123-456" v-model="postal_address">
+									</div>
+									</div>
+								</div>                            
+							</div>
+							<!-- added contact -->
+							<div v-if = "added_contact">                                                
+								<p>email: <span class="text-muted">{{added_contact.member.member.email}}</span></p>
+								<p>phone number: <span class="text-muted">{{added_contact.member.phone_number}}</span></p>
+							</div>
+							<!-- buttons -->
+							<div class="ml-2 d-flex justify-content-end">
+									<button v-if="! added_contact" class="btn btn-success" @click="addContact()">
+											+ add contact
+											<span   v-if="adding_member_detail"
+													class="spinner-border spinner-border-sm" 
+													role="status" 
+													aria-hidden="true">
+											</span> 
+									</button>
+									<button class="ml-2 btn btn-outline-success"
+											@click="form_in_view = 'age_form'">
+									next
+									</button>
+							</div>
                         </section> 
 
                         <!-- MEMBER AGE  -->                        
@@ -306,8 +306,7 @@
                                         next
                                         </button>
                                 </div>
-                        </section>    
-                        
+                        </section>                    
                          <!-- MEMBER GROUP   -->                        
                          <section class="mx-auto col-lg-8 col-sm-12" v-if = "form_in_view == 'groups_form' ">
                                 <!-- head -->

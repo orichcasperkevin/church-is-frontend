@@ -4,63 +4,107 @@
         <textmessage :memberIds="member_ids" :context="context"/> 
 
         <nav aria-label="breadcrumb" class="container">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><span class="backButton"><router-link style="text-decoration: none" :to="{name: 'Home'}">Home</router-link></span>  
-                    <li class="breadcrumb-item active" aria-current="page">finances</li>
-                </ol>
-        </nav>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><span class="backButton"><router-link style="text-decoration: none" :to="{name: 'Home'}">Home</router-link></span>  
+                <li class="breadcrumb-item active" aria-current="page">finances</li>
+            </ol>
+        </nav>        
         <div class = "container">
             <div class = "row">
                 <!-- NAVIGATIONS -->                
                 <div class="filters col-sm-12 col-md-8 col-lg-2" >
                         <div class="nav success flex-column nav-pills " id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                <a class="action-list list-group-item list-group-item-action border-0 active" id="v-pills-income-tab" data-toggle="pill" href="#v-pills-income" role="tab" aria-controls="v-pills-income" aria-selected="true" 
+                                <a class="action-list list-group-item list-group-item-action border-0 active" id="v-pills-envelopes-tab" data-toggle="pill" href="#v-pills-envelopes" role="tab" aria-controls="v-pills-envelopes" aria-selected="true" 
                                     v-on:click="tithes_selected = true; expenditures_selected=false">       
                                     <span class="row">
                                         <img class="d-none d-lg-block d-xl-block mr-2" style="width: 15%; height: auto" src="@/assets/icons/icons8-request-money-filled-50.png">
-                                        Income
+                                        Envelopes
+                                    </span>                                                                     
+                                </a>
+                                <a      class="action-list list-group-item list-group-item-action border-0"
+                                        id="v-pills-income-tab" data-toggle="pill" href="#v-pills-income" 
+                                        role="tab" aria-controls="v-pills-income" 
+                                        v-on:click="tithes_selected = true; expenditures_selected=false; getIncome()">       
+
+                                    <span class="row">
+                                        <img class="d-none d-lg-block d-xl-block mr-2" style="width: 15%; height: auto" src="@/assets/icons/icons8-request-money-filled-50.png">
+                                        Incomes
                                     </span>                                                                     
                                 </a>
                                 <a class="action-list list-group-item list-group-item-action border-0" id="v-pills-expenditure-tab" data-toggle="pill" href="#v-pills-expenditure" role="tab" aria-controls="v-pills-expenditure" aria-selected="false" v-on:click="getExpenditures()">
                                     <span class="row">
-                                            <img class="d-none d-lg-block d-xl-block mr-2" style="width: 15%; height: auto" src="@/assets/icons/icons8-receipt-filled-50.png">
-                                            Expenditure
+                                        <img class="d-none d-lg-block d-xl-block mr-2" style="width: 15%; height: auto" src="@/assets/icons/icons8-receipt-filled-50.png">
+                                        Expenditure
                                     </span>                                      
                                 </a>  
                                 <router-link class="action-list list-group-item list-group-item-action border-0" id="v-pills-expenditure-tab" :to="{name: 'projectList'}">
                                     <span class="row">
-                                            <img class="d-none d-lg-block d-xl-block mr-2" style="width: 15%; height: auto" src="@/assets/icons/icons8-group-of-projects-filled-50.png">
-                                            Projects 
+                                        <img class="d-none d-lg-block d-xl-block mr-2" style="width: 15%; height: auto" src="@/assets/icons/icons8-group-of-projects-filled-50.png">
+                                        Projects 
                                     </span>                                     
                                 </router-link>
                             </div>
                 </div>
                 <!-- CONTENT -->
-                <div class = "col">
+                <div class = "col-lg-7 col-sm-12">
                     <div class="tab-content" id="v-pills-tabContent">
-                       <!-- INCOME -->
-                        <div class="tab-pane fade show active" id="v-pills-income" role="tabpanel" aria-labelledby="v-pills-income-tab">
+                       <!-- ENVELOPES -->
+                        <div class="tab-pane fade show active" id="v-pills-envelopes" role="tabpanel" aria-labelledby="v-pills-envelopes-tab">
                                 <div class="container">
-                                        <div class="row">
-                                          <div class="col-2">                                            
-                                          </div>
+                                        <div class="d-flex justify-content-center">                                          
                                           <!-- nav pills for offerings,tithes and others -->
-                                          <div class="col-sm-12 col-lg-8">
+                                          <div class="col-sm-12 col-lg-10" >
                                                 <hr class="d-sm-block d-lg-none">  
-                                                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-                                                        <li class="nav-item">
-                                                          <a class="nav-link active" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab" aria-controls="pills-home" Tithe="true" v-on:click = "getTithes()">Tithe</a>
-                                                        </li>
-                                                        <li class="nav-item">
-                                                          <a class="nav-link" id="pills-offerings-tab" data-toggle="pill" href="#pills-offerings" role="tab" aria-controls="pills-offerings" aria-selected="false" v-on:click = "getOfferings()">Offering</a>
-                                                        </li>
-                                                        <li class="nav-item">
-                                                          <a class="nav-link" id="pills-anyOther-tab" data-toggle="pill" href="#pills-anyOther" role="tab" aria-controls="pills-anyOther" aria-selected="false" v-on:click = "getIncome()">Income</a>
-                                                        </li>
-                                                </ul>
-                                          </div>
-                                          <div class="col-2">                                            
-                                          </div>
+                                                <div class="d-flex flex-nowrap">
+                                                    <a href="#" class="p-2" @click=scrollRight()>
+                                                        <
+                                                    </a>
+                                                    <ul class="mb-2 d-flex flex-nowrap nav nav-pills scrollbar-none"
+                                                        id="pills-tab" role="tablist"                                                    
+                                                        style="overflow-x: scroll;white-space: nowrap">
+                                                            <li class="nav-item">
+                                                                <a class="nav-link active" id="pills-home-tab" 
+                                                                    data-toggle="pill" 
+                                                                    href="#pills-home" role="tab" 
+                                                                    aria-controls="pills-home" 
+                                                                    Tithe="true"
+                                                                    v-on:click = "getTithes(); scrollIntoView('pills-home-tab')">
+                                                                    Tithes
+                                                                </a>
+                                                            </li>
+                                                            <li class="nav-item ">
+                                                                <a  class="nav-link" id="pills-offerings-tab"
+                                                                    data-toggle="pill" href="#pills-offerings" 
+                                                                    role="tab" aria-controls="pills-offerings" 
+                                                                    aria-selected="false" 
+                                                                    v-on:click = "getOfferings(); scrollIntoView('pills-offerings-tab')">
+                                                                    Offerings
+                                                                </a>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <a class="nav-link" id="pills-anyOther-tab" 
+                                                                    data-toggle="pill" href="#pills-anyOther" role="tab" 
+                                                                    aria-controls="pills-anyOther" 
+                                                                    aria-selected="false"
+                                                                    @click="scrollToElement('pills-anyOther-tab')">
+                                                                    Thanks giving
+                                                                </a>
+                                                            </li>
+                                                            <li class="nav-item" v-for="type in test_types">
+                                                                <a class="nav-link" :id="type" 
+                                                                    data-toggle="pill" href="#pills-anyOther" role="tab" 
+                                                                    aria-controls="pills-anyOther" 
+                                                                    aria-selected="false"
+                                                                    @click="scrollToElement(type)">
+                                                                    {{type}}
+                                                                </a>
+                                                            </li>
+                                                    </ul>
+                                                    <a href="#" class="p-2" @click=scrollLeft()>
+                                                        >
+                                                    </a>
+                                                </div>                                               
+                                          </div>                                          
                                         </div>
                                 </div> 
                             <!-- income tab contents -->
@@ -76,86 +120,94 @@
                                     <div v-if = "offerings_selected">
                                         <!-- offerings -->
                                         
-                                        <h3 class="font-weight-bold">Offering</h3>
+                                        <h3 class="font-weight-bold">Offerings</h3>
                                         <hr>
                                         <offerings v-on:membersSelected="setMemberIds"/>                                        
                                     </div>
                                 </div>
                                 <!-- Income-->
                                 <div class="tab-pane fade" id="pills-anyOther" role="tabpanel" aria-labelledby="pills-anyOther-tab">                                        
-                                        <div v-if = "any_other_selected">
-                                                <hr class="d-sm-block d-lg-none"> 
-                                                <h3 class="font-weight-bold">Income</h3>                                                
-                                                <hr>
-                                                <div class="text-muted" v-if="any_other_selected">
-                                                        <div class="d-flex d-flex-row justify-content-center">
-                                                                <div class="d-none d-lg-block stat-item mr-2 text-muted">
-                                                                        This month  <span class="text-secondary font-weight-bold">
-                                                                         Ksh {{humanize(income_stats.response.total_this_month)}} </span>
-                                                                </div>
-                                                                <div class="d-none d-lg-block stat-item mr-2">
-                                                                        This year  <span class="text-secondary font-weight-bold">
-                                                                        Ksh   {{humanize(income_stats.response.total_this_year)}}</span>                                        
-                                                                </div>
-                                                                <a class="ml-2 btn btn-outline-secondary dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
-                                                                        more stats
-                                                                </a>
-
-                                                                <!-- what to show on small devices -->
-                                                                <div class="ml-2 d-sm-block d-md-none d-lg-none btn-group" v-if = "any_other_selected">
-                                                                        <a href="#" data-toggle="modal" data-target="#addIncomeType" style="text-decoration: none">
-                                                                            <div class="add-button">
-                                                                                add income type
-                                                                            </div>
-                                                                        </a>
-                                                                        <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                                                                                <span class="sr-only">Toggle Dropdown</span>
-                                                                        </button>
-                                                                        <div class="dropdown-menu border-success" aria-labelledby="dropdownMenuReference">                            
-                                                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addIncome"><b>+</b> add income</a>                                                                
-                                                                        </div>
-                                                                </div>
-                                                        </div>                                                                                                    
-                                                        </p>
-                                                        <div class="collapse" id="statsTab">
-                                                            <div class="card card-body outline-0">
-                                                                <incomestats msg="income stats"/>
-                                                            </div>
-                                                        </div>
-                                                </div>                                                                                                    
-                                                
-                                                <table class="mt-4 table table-responsive-sm table-borderless">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>type</th>                                                                
-                                                            <th>this month</th>
-                                                            <th>this year</th>
-                                                            <th></th>
-                                                        </tr>
-                                                    </thead>
-                                                    <p class="mt-4 col-8">
-                                                        <span class="badge badge-pill badge-secondary">{{foundIncomes}}</span> types found
-                                                    </p>
-                                                    <tbody>
-                                                        <tr v-for = "data in incomes.response">
-                                                            <td>
-                                                                <router-link class="text-secondary"  :to="`/income/`+ data.id + `/`">                                                         
-                                                                    {{data.type_name}}
-                                                                </router-link>
-                                                            </td>                                                               
-                                                            <td><p>{{humanize(data.total_this_month)}}</p></td>
-                                                            <td><p class="text-secondary">{{humanize(data.total_this_year)}}</p></td>                                                          
-                                                            <td>
-                                                                <router-link class="text-muted" :to="`/income/`+ data.id + `/`">                                                         
-                                                                    <img style="width: 20px ;height: auto" src="@/assets/icons/icons8-right-arrow-50.png">
-                                                                </router-link>
-                                                            </td>                                                                
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div>
+                                    <div>
+                                        other envelope types
+                                    </div>
                                 </div>
                             </div>
+                        </div>
+                        <!-- INCOME -->
+                        <div class="tab-pane fade show" id="v-pills-income" role="tabpanel" aria-labelledby="v-pills-expenditure-tab">
+                            <div>
+                                <div v-if="any_other_selected">
+                                    <hr class="d-sm-block d-lg-none"> 
+                                    <h3 class="font-weight-bold">Other incomes</h3>                                                
+                                    <hr>
+                                    <div class="text-muted" v-if="any_other_selected">
+                                            <div class="d-flex d-flex-row justify-content-center">
+                                                <div class="d-none d-lg-block stat-item mr-2 text-muted">
+                                                    This month  <span class="text-secondary font-weight-bold">
+                                                    Ksh {{humanize(income_stats.response.total_this_month)}} </span>
+                                                </div>
+                                                <div class="d-none d-lg-block stat-item mr-2">
+                                                    This year  <span class="text-secondary font-weight-bold">
+                                                    Ksh   {{humanize(income_stats.response.total_this_year)}}</span>                                        
+                                                </div>
+                                                <a class="ml-2 btn btn-outline-secondary dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
+                                                    more stats
+                                                </a>
+
+                                                <!-- what to show on small devices -->
+                                                <div class="ml-2 d-sm-block d-md-none d-lg-none btn-group">
+                                                        <a href="#" data-toggle="modal" data-target="#addIncomeType" style="text-decoration: none">
+                                                            <div class="add-button">
+                                                                add income type
+                                                            </div>
+                                                        </a>
+                                                        <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
+                                                                <span class="sr-only">Toggle Dropdown</span>
+                                                        </button>
+                                                        <div class="dropdown-menu border-success" aria-labelledby="dropdownMenuReference">                            
+                                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addIncome"><b>+</b> add income</a>                                                                
+                                                        </div>
+                                                </div>
+                                            </div>                                                                                                    
+                                            </p>
+                                            <div class="collapse" id="statsTab">
+                                                <div class="card card-body outline-0">
+                                                    <incomestats msg="income stats"/>
+                                                </div>
+                                            </div>
+                                    </div>                                                                                                    
+                                    
+                                    <table class="mt-4 table table-responsive-sm table-borderless">
+                                        <thead>
+                                            <tr>
+                                                <th>Type</th>                                                                
+                                                <th>This month</th>
+                                                <th>This year</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <p class="mt-4 col-8">
+                                            <span class="badge badge-pill badge-secondary">{{foundIncomes}}</span> types found
+                                        </p>
+                                        <tbody>
+                                            <tr v-for = "data in incomes.response">
+                                                <td>
+                                                    <router-link class="text-secondary"  :to="`/income/`+ data.id + `/`">                                                         
+                                                        {{data.type_name}}
+                                                    </router-link>
+                                                </td>                                                               
+                                                <td><p>{{humanize(data.total_this_month)}}</p></td>
+                                                <td><p class="text-secondary">{{humanize(data.total_this_year)}}</p></td>                                                          
+                                                <td>
+                                                    <router-link class="text-muted" :to="`/income/`+ data.id + `/`">                                                         
+                                                        <img style="width: 20px ;height: auto" src="@/assets/icons/icons8-right-arrow-50.png">
+                                                    </router-link>
+                                                </td>                                                                
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>                               
                         </div>
                         <!-- EXPENDITURE -->
                         <div class="tab-pane fade show " id="v-pills-expenditure" role="tabpanel" aria-labelledby="v-pills-expenditure-tab">
@@ -163,7 +215,7 @@
                                 <hr class="d-sm-block d-lg-none">  
                                 <expenditures/>
                             </div>                            
-                        </div>
+                        </div>                        
                     </div>
                 </div>
                 <!-- ACTION BUTTONS -->
@@ -410,6 +462,12 @@ export default {
 
     data () {
         return{
+        //test
+            test_types:{
+                '0':'visions_2019',
+                '1':'redeeming',
+                '2':'others'
+            },
         //get data                        
             fetch_data_error: [],
             income_types: null,
@@ -480,6 +538,19 @@ export default {
         // watch for service date and type to determine if there exists a service for that day       
      },
     methods: {
+        scrollToElement: function(element){
+            document.getElementById(element).scrollIntoView({
+                behavior: 'auto',
+                block: 'center',
+                inline: 'center'
+            });                     
+        },
+        scrollLeft:function(){
+            document.getElementById('pills-tab').scrollLeft += 50 
+        },
+        scrollRight:function(){                    
+            document.getElementById('pills-tab').scrollLeft -= 50 
+        },
         //check if member is logged in
         checkLoggedIn() {
             if (!this.$session.has("token")) {
