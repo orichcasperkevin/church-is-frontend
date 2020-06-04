@@ -40,14 +40,14 @@ Vue.prototype.$humanizeDate = function(date_time){return this.$timeAgo.format(ne
 Vue.prototype.$fileDownload = require('js-file-download');
 
 //DOMAINS
-var current_host = window.location.hostname //un comment this in production
-//var current_host = 'admin.my-domain.com'//for dev env local use only, comment out in production
+//var current_host = window.location.hostname //un comment this in production
+var current_host = 'admin.my-domain.com'//for dev env local use only, comment out in production
 
 Vue.prototype.$host_name = current_host.split('.')[1]
 
 var name = current_host.split('.')[1]
 var tld = current_host.split('.')[2]
-var api_server = `http://${name}.${tld}` //+ ":8000"
+var api_server = `http://${name}.${tld}` + ":8000"
 
 Vue.prototype.$DOMAIN = { value : api_server }
 Vue.prototype.$BASE_URL = { value :localStorage.getItem('base_url_value'),toString:function(){return this.value}}

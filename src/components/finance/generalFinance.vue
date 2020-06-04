@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div>        
         <!-- this compnent requires text message modal -->
         <textmessage :memberIds="member_ids" :context="context"/> 
 
@@ -15,7 +15,7 @@
                 <div class="filters col-sm-12 col-md-8 col-lg-2" >
                         <div class="nav success flex-column nav-pills " id="v-pills-tab" role="tablist" aria-orientation="vertical">
                                 <a class="action-list list-group-item list-group-item-action border-0 active" id="v-pills-envelopes-tab" data-toggle="pill" href="#v-pills-envelopes" role="tab" aria-controls="v-pills-envelopes" aria-selected="true" 
-                                    v-on:click="tithes_selected = true; expenditures_selected=false">       
+                                    v-on:click="getTithes()">       
                                     <span class="row">
                                         <img class="d-none d-lg-block d-xl-block mr-2" style="width: 15%; height: auto" src="@/assets/icons/icons8-request-money-filled-50.png">
                                         Envelopes
@@ -57,78 +57,65 @@
                                                 <hr class="d-sm-block d-lg-none">  
                                                 <div class="d-flex flex-nowrap">
                                                     <a href="#" class="p-2" @click=scrollRight()>
-                                                        <
+                                                       <h4><</h4> 
                                                     </a>
                                                     <ul class="mb-2 d-flex flex-nowrap nav nav-pills scrollbar-none"
                                                         id="pills-tab" role="tablist"                                                    
                                                         style="overflow-x: scroll;white-space: nowrap">
                                                             <li class="nav-item">
-                                                                <a class="nav-link active" id="pills-home-tab" 
+                                                                <a class="nav-link active" 
+                                                                    id="pills-tithe-tab" 
                                                                     data-toggle="pill" 
                                                                     href="#pills-home" role="tab" 
                                                                     aria-controls="pills-home" 
                                                                     Tithe="true"
-                                                                    v-on:click = "getTithes(); scrollIntoView('pills-home-tab')">
+                                                                    v-on:click = "getTithes(); scrollToElement('pills-tithe-tab')">
                                                                     Tithes
                                                                 </a>
-                                                            </li>
-                                                            <li class="nav-item ">
-                                                                <a  class="nav-link" id="pills-offerings-tab"
-                                                                    data-toggle="pill" href="#pills-offerings" 
-                                                                    role="tab" aria-controls="pills-offerings" 
-                                                                    aria-selected="false" 
-                                                                    v-on:click = "getOfferings(); scrollIntoView('pills-offerings-tab')">
-                                                                    Offerings
-                                                                </a>
-                                                            </li>
-                                                            <li class="nav-item">
-                                                                <a class="nav-link" id="pills-anyOther-tab" 
-                                                                    data-toggle="pill" href="#pills-anyOther" role="tab" 
-                                                                    aria-controls="pills-anyOther" 
+                                                            </li>                                                                                                                        
+                                                            <li class="nav-item" v-for="type in offering_types">
+                                                                <a class="nav-link text-capitalize" :id="`type-${type.id}`" 
+                                                                    data-toggle="pill" :href="`#pills-${type.id}`" role="tab" 
+                                                                    :aria-controls="`pills-${type.id}`" 
                                                                     aria-selected="false"
-                                                                    @click="scrollToElement('pills-anyOther-tab')">
-                                                                    Thanks giving
-                                                                </a>
-                                                            </li>
-                                                            <li class="nav-item" v-for="type in test_types">
-                                                                <a class="nav-link" :id="type" 
-                                                                    data-toggle="pill" href="#pills-anyOther" role="tab" 
-                                                                    aria-controls="pills-anyOther" 
-                                                                    aria-selected="false"
-                                                                    @click="scrollToElement(type)">
-                                                                    {{type}}
+                                                                    @click="scrollToElement(`type-${type.id}`);getOfferings(); offering_type = type.id">                                                                    
+                                                                    <span v-if="type.name != 'general offering'">{{type.name}}</span>
+                                                                    <span v-else>Offering</span>
                                                                 </a>
                                                             </li>
                                                     </ul>
                                                     <a href="#" class="p-2" @click=scrollLeft()>
-                                                        >
+                                                        <h4>></h4>
                                                     </a>
                                                 </div>                                               
                                           </div>                                          
                                         </div>
-                                </div> 
-                            <!-- income tab contents -->
+                                </div>                                
+                            <!-- ENVELOP TABS CONTENT -->
                             <div class="tab-content" id="pills-tabContent">                                                                      
                                 <!-- tithes -->
                                 <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">                                                                          
                                         <h3 class="font-weight-bold">Tithes </h3>
                                         <hr>
-                                        <tithes v-on:membersSelected="setMemberIds"/>                                    
-                                </div>
-                                <!-- offerings -->
-                                <div class="tab-pane fade" id="pills-offerings" role="tabpanel" aria-labelledby="pills-offerings-tab">                                                                                  
-                                    <div v-if = "offerings_selected">
-                                        <!-- offerings -->
-                                        
-                                        <h3 class="font-weight-bold">Offerings</h3>
-                                        <hr>
-                                        <offerings v-on:membersSelected="setMemberIds"/>                                        
-                                    </div>
-                                </div>
+                                        <tithes 
+                                            v-on:membersSelected="setMemberIds"
+                                            :payment_methods = "payment_methods"
+                                        />                                    
+                                </div>                                
                                 <!-- Income-->
-                                <div class="tab-pane fade" id="pills-anyOther" role="tabpanel" aria-labelledby="pills-anyOther-tab">                                        
+                                <div v-for="type in offering_types" 
+                                    class="tab-pane fade" 
+                                    :id="`pills-${type.id}`" role="tabpanel">                                        
                                     <div>
-                                        other envelope types
+                                        <!-- offerings -->                                        
+                                        <h3 class="font-weight-bold text-capitalize" v-if="type.name != 'general offering'">{{type.name}}</h3>
+                                        <h3 class="font-weight-bold" v-else>Offering</h3>
+                                        <hr>                                       
+                                        <offerings 
+                                            :offering_type="type"
+                                            :payment_methods = "payment_methods"
+                                            v-on:membersSelected="setMemberIds"
+                                        /> 
                                     </div>
                                 </div>
                             </div>
@@ -221,24 +208,58 @@
                 <!-- ACTION BUTTONS -->
                 <div class = "col-12 col-sm-10 col-md-8 col-lg-3">
                     <!-- add for tithes -->
-                    <div class="btn-group" style="padding: 0px 0px 25px 10px" v-if = "tithes_selected">
-                            <a href="#" data-toggle="modal" data-target="#addTithe" style="text-decoration: none">
-                                <div class="add-button" style="text-align: center">
-                                    <b>+</b> add tithe 
+                    <div class="btn-group" style="padding: 0px 0px 25px 10px" v-if = "tithes_selected || offerings_selected">
+                            <a href="#" id="dropdownMenuReference" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="false" data-reference="parent"
+                                style="text-decoration: none">
+                                <div class="add-button">
+                                    <b>+</b> new envelope
                                 </div>                                
                             </a>
-                            <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
+                            <a href="#" id="tithe-modal-button" data-toggle="modal" data-target="#addTithe">
+                                <div class="add-button d-none" style="text-align: center">
+                                    <b>+</b> add tithe
+                                </div>                                
+                            </a>
+                            <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" 
+                                    id="dropdownMenuReference" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false" data-reference="parent"
+                            >
                                 <span class="sr-only">Toggle Dropdown</span>
                             </button>
-                            <div class="dropdown-menu border-success" aria-labelledby="dropdownMenuReference">
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addOffering" v-on:click="getServiceTypes()"><b>+</b> add offering</a>
+                            <div class="dropdown-menu border-success text-capitalize" aria-labelledby="dropdownMenuReference">
+                                <a class="dropdown-item" 
+                                    href="#" @click=openTitheTab()>
+                                    Tithe
+                                </a>
+                                <a class="dropdown-item"  
+                                    v-for="type in offering_types"                                                                     
+                                    href="#" data-toggle="modal" 
+                                    data-target="#addOffering"
+                                    @click="openTab(type.id)">
+                                    {{type.name}}
+                                </a>
+                                <hr>
+                                <a class="dropdown-item" 
+                                    href="#" data-toggle="modal" 
+                                    data-target="#addOfferingType">
+                                    <b>+</b> add Envelope Type
+                                </a>
+                                <a class="dropdown-item" 
+                                    href="#" data-toggle="modal" 
+                                    data-target="#addPaymentMethod">
+                                    <b>+</b> add Payment Method
+                                </a>
                             </div>
                     </div>
                     <!-- add for offerings -->
-                    <div class="btn-group" style="padding: 0px 0px 25px 10px" v-if = "offerings_selected">
-                            <a href="#" data-toggle="modal" data-target="#addOffering" style="text-decoration: none" v-on:click="getServiceTypes()">
-                                <div class="add-button">
-                                    <b>+</b> add offering
+                    <div class="btn-group d-none" style="padding: 0px 0px 25px 10px">
+                            <a href="#" data-toggle="modal" 
+                                id = "add-offering-button"                                
+                                :data-target="`#addOffering-${offering_type}`" 
+                                style="text-decoration: none">
+                                <div class="add-button">                                
+                                    <b>+</b> add offering 
                                 </div>
                             </a>
                             <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
@@ -394,6 +415,71 @@
                 </div>
                 </div>
                 </div>  
+                <!-- add offering type-->
+                <div   class="modal fade" id="addOfferingType" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalCenterTitle">Add Envelope Type</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                            <div class="modal-body">                                                            
+                            <form>   
+                            <div class="row form-group">
+                                <label class="col-3"><b>name:</b></label>
+                                <input type="text" class="col-8 form-control" rows='3' maxlength="50" v-model="offering_type_name"/>                                                   
+                            </div>                                                                                                                                                                                                                                                                                                                                                                                                                                        
+                                <hr/>
+                                <div class="row form-group">
+                                <label class="col-3"><b>description:</b></label>
+                                <textarea type="text" class="col-8 form-control" rows='3' v-model="offering_type_description"></textarea>                                                   
+                                </div>                                                                                     
+                            </form>
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-success" v-on:click="addOfferingType()">
+                                <b>+</b> add envelope type
+                                <span v-if="adding_offering"
+                                    class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                                </span>
+                            </button>
+                            </div>
+                        </div>
+                        </div>
+                </div>
+                <!-- add payment method-->
+                <div   class="modal fade" id="addPaymentMethod" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalCenterTitle">Add Payment Method</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                            <div class="modal-body">                                                            
+                            <form>   
+                            <div class="row form-group">
+                                <label class="col-3"><b>name:</b></label>
+                                <input type="text" class="col-8 form-control" rows='3' maxlength="50" v-model="payment_method_name"/>                                                   
+                            </div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+                            </form>
+                            </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-success" v-on:click="addPaymentMethod()">
+                                <b>+</b> add payment method
+                                <span v-if="adding_offering"
+                                    class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                                </span>
+                            </button>
+                            </div>
+                        </div>
+                        </div>
+                </div>
                 <!-- export to csv format -->
                 <div class="modal fade" id="exportIncomeToCSV" tabindex="-1" role="dialog" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -462,56 +548,63 @@ export default {
 
     data () {
         return{
-        //test
-            test_types:{
-                '0':'visions_2019',
-                '1':'redeeming',
-                '2':'others'
-            },
+        //offering types
+        offering_type: null,
+        offering_types:null,
         //get data                        
-            fetch_data_error: [],
-            income_types: null,
-            foundIncomes: 0,
-            foundOfferings: 0,
-            foundTithes: 0,
-            found_expenditure_types: 0,
+        fetch_data_error: [],
+        income_types: null,
+        foundIncomes: 0,
+        foundOfferings: 0,
+        foundTithes: 0,
+        found_expenditure_types: 0,
         //select tabs
-            tithes_selected: false,
-            offerings_selected: false,
-            any_other_selected: false,
-            expenditures_selected: false,
+        tithes_selected: false,
+        offerings_selected: false,
+        any_other_selected: false,
+        expenditures_selected: false,
         //get stats data
-            offering_stats: null,
-            offerings: null,
-            income_stats: null,
-            incomes: null,         
+        offering_stats: null,
+        offerings: null,
+        income_stats: null,
+        incomes: null,         
         //adding.
-            adding_to_finance: false,          
+        adding_to_finance: false,          
         //add income type
-            income_type_name: '',
-            income_type_description: '',
-            income_type_name_errors: [],
-            added_income_type: [],
+        income_type_name: '',
+        income_type_description: '',
+        income_type_name_errors: [],
+        added_income_type: [],
         //add income
-            income_type: null,
-            income_narration: null,
-            income_type_errors: [],
-            income_amount: null,
-            income_amount_errors: [],
-            added_income: [],
+        income_type: null,
+        income_narration: null,
+        income_type_errors: [],
+        income_amount: null,
+        income_amount_errors: [],
+        added_income: [],
+
+        // add offerng type
+        adding_offering: false,
+        offering_type_name:null,
+        offering_type_description:null,
+        //payment methods
+        payment_methods: null,
+        //add payment method
+        payment_method_name:null,
         // exporting data
-            csv_date: '',
-            exporting_data:false,
+        csv_date: '',
+        exporting_data:false,
         //select members
-            member_ids:[],
+        member_ids:[],
 
         //context.
-            context:'Tithe'
+        context:'Tithe'
         }
     },
     created () {
         this.checkLoggedIn()
         this.fetchdata()
+        this.getOfferingTypes()
     },
     watch: {
         //watch for phone number input
@@ -551,6 +644,25 @@ export default {
         scrollRight:function(){                    
             document.getElementById('pills-tab').scrollLeft -= 50 
         },
+        openTab: function(type){
+            var nav_pill =  document.getElementById(`type-${type}`)
+            nav_pill.click()
+            var modal_button = document.getElementById(`add-offering-button`)
+            //wait for DOM to be ready before clicking
+            setTimeout(()=>{
+                modal_button.click()  
+            },500)            
+        },
+        openTitheTab: function(){
+            var nav_pill = document.getElementById('pills-tithe-tab')
+            nav_pill.click()
+            var tithe_modal_button = document.getElementById('tithe-modal-button')
+            //wait for DOM to be ready before clicking
+            setTimeout(()=>{
+                tithe_modal_button.click()  
+            },500)
+
+        },
         //check if member is logged in
         checkLoggedIn() {
             if (!this.$session.has("token")) {
@@ -560,15 +672,34 @@ export default {
         humanize: function(x) {
                 return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         },
-        setMemberIds (value){                                    
+        setMemberIds (value){
             this.member_ids = value 
         },
         //fetch data
         fetchdata () {
             this.tithes_selected = true
             this.getIncomeTypeList()
+            this.getPaymentMethods()
         },
-        //get the list of income types
+        //get payment methods.
+        getPaymentMethods: function(){
+            this.$http({
+                method: 'get',
+                url: this.$BASE_URL + '/api/finance/modes-of-payment/'
+            }).then((response)=>{
+                this.payment_methods = response.data
+            }).catch((err)=>{
+                alert(err)
+            })
+        },
+        //get offering types
+        getOfferingTypes: function(){
+            this.$http.get(this.$BASE_URL + '/api/finance/offering-types/')
+            .then((response)=>{            
+                this.offering_types = response.data
+            })
+        },
+        //get the list of income types        
         getIncomeTypeList: function(){
             //try local storage
             this.income_types = JSON.parse(localStorage.getItem('income_type_list'))
@@ -686,7 +817,7 @@ export default {
             this.any_other_selected = false
             this.expenditures_selected = true            
         },
-        incomeTypeFormOK: function(){  
+        incomeTypeFormOK: function(){
             this.income_type_name_errors = []
 
             if (this.income_type_description.length < 1){
@@ -700,29 +831,29 @@ export default {
                 return false
             }
         },
-        addIncomeType: function(){        
+        addIncomeType: function(){
             if (this.incomeTypeFormOK()){
                 this.adding_to_finance = true
                 this.$http({                        
-                        method: 'post',
-                        url: this.$BASE_URL + '/api/finance/income-type-list/',
-                        data: {
-                            type_name: this.income_type_name,                                
-                            description: this.income_type_description                                                                                            
-                        }
-                        }).then(response => {
-                            this.adding_to_finance = false                            
-                            this.income_type_name = '',
-                            this.income_type_description = '' 
-                            var new_version = parseInt(localStorage.getItem('income_type_list_version')) + 1
-                            this.$store.dispatch('update_income_type_list_version', new_version) 
-                            this.getIncomeTypeList()
-                            alert("income type succesfully added")                                                
-                        })
-                        .catch((err) => {
-                            this.adding_to_finance = false          
-                            alert("an error occured, try again later")                  
-                        }) 
+                    method: 'post',
+                    url: this.$BASE_URL + '/api/finance/income-type-list/',
+                    data: {
+                        type_name: this.income_type_name,                                
+                        description: this.income_type_description                                                                                            
+                    }
+                    }).then(response => {
+                        this.adding_to_finance = false                            
+                        this.income_type_name = '',
+                        this.income_type_description = '' 
+                        var new_version = parseInt(localStorage.getItem('income_type_list_version')) + 1
+                        this.$store.dispatch('update_income_type_list_version', new_version) 
+                        this.getIncomeTypeList()
+                        alert("income type succesfully added")                                                
+                    })
+                    .catch((err) => {
+                        this.adding_to_finance = false          
+                        alert("an error occured, try again later")                  
+                    }) 
             }
         },
         incomeFormOK: function(){
@@ -744,7 +875,7 @@ export default {
                 return false
             }
         },
-        addIncome: function(){           
+        addIncome: function(){
             if (this.incomeFormOK()){
                 this.adding_to_finance = true
                 this.$http({                        
@@ -771,7 +902,7 @@ export default {
             }
         },
         //export data to csv
-        exportData: function(){            
+        exportData: function(){
             //export to csv
             this.exporting_data = true
             this.$http.get(this.$BASE_URL + '/api/finance/get-income-csv/' + this.csv_date +'/' )
@@ -785,6 +916,47 @@ export default {
                 alert('error while downloading income csv')
             })
         },       
+        //add offerring type
+        addOfferingType: function(){
+            this.adding_offering = true
+            this.$http({                        
+                method: 'post',
+                url: this.$BASE_URL + '/api/finance/offering-types/',
+                data: {
+                    name:this.offering_type_name,
+                    description:this.offering_type_description                                                                  
+                }
+                }).then(response => {    
+                    this.adding_offering = false
+                    this.offering_type_name = null
+                    this.offering_type_description=null
+                    this.getOfferingTypes()
+                    alert("offering type succesfully added ")          
+                })
+                .catch((err) => {
+                    this.adding_offering = false
+                    alert("an error occured, please try again later")
+                })        
+        },
+        //add payment method.
+        addPaymentMethod: function(){
+            this.adding_offering = true
+            this.$http({
+                method: 'post',
+                url: this.$BASE_URL + '/api/finance/modes-of-payment/',
+                data:{
+                    name: this.payment_method_name
+                }                
+            }).then(()=>{
+                alert('payment method added successfully')
+                this.adding_offering = false
+                this.payment_method_name = null
+                this.getPaymentMethods()
+            }).catch((err)=>{
+                alert(err)
+                this.adding_offering = false
+            })
+        }
     },
 
 }

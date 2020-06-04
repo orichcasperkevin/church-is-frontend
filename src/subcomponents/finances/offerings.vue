@@ -1,6 +1,6 @@
 <!-- Parent.vue -->
 <template>
-        <div>
+        <div v-if="offerings && offering_stats">            
             <!-- OFFERING CONTENT -->
             <div>
                 <!-- what to show on small devices -->                
@@ -12,7 +12,7 @@
                                 </div>
                                 <div class="d-none d-lg-block stat-item mr-2">
                                         This year  <span class="text-secondary font-weight-bold">
-                                        Ksh    {{humanize(offering_stats.response.total_in_offerings_this_month)}} </span>                                        
+                                        Ksh    {{humanize(offering_stats.response.total_in_offerings_this_year)}} </span>                                        
                                 </div>
                                 <a class="ml-3 btn btn-outline-secondary dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
                                         more stats
@@ -45,7 +45,7 @@
                             </th>
                             <th>Name</th>
                             <th>Amount</th>
-                            <th>Nate</th>
+                            <th>Date</th>
                             <th>This month</th>
                             <th>This year</th>
                         </tr>
@@ -85,49 +85,13 @@
                         </tr>
                     </tbody>
                 </table>
-            </div>
-             <!-- add offering type-->
-             <div   class="modal fade" id="addOfferingType" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                         <div class="modal-dialog modal-dialog-centered" role="document">
-                         <div class="modal-content">
-                             <div class="modal-header">
-                             <h5 class="modal-title" id="exampleModalCenterTitle">add offering type</h5>
-                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                 <span aria-hidden="true">&times;</span>
-                             </button>
-                             </div>
-                             <div class="modal-body">                                                            
-                                     <form>   
-                                            <div class="row form-group">
-                                                    <label class="col-3"><b>name:</b></label>
-                                                    <input type="text" class="col-8 form-control" rows='3' maxlength="50" v-model="offering_type_name"/>                                                   
-                                            </div>                                                                                                                                                                                                                                                                                                                                                                                                                                        
-                                             <hr/>
-                                             <div class="row form-group">
-                                                     <label class="col-3"><b>description:</b></label>
-                                                     <textarea type="text" class="col-8 form-control" rows='3' v-model="offering_type_description"></textarea>                                                   
-                                             </div>                                                                                     
-                                     </form>
-                             </div>
-                             <div class="modal-footer">
-                             <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="getOfferingTypes()">Close</button>
-                             <button type="button" class="btn btn-success" v-on:click="addOfferingType()">
-                                 <b>+</b> add offering type
-                                 <span v-if="adding_offering"
-                                     class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
-                                 </span>
-                             </button>
-                             </div>
-                         </div>
-                         </div>
-             </div>
+            </div>           
              <!-- add offering -->
-             <div   class="modal fade" id="addOffering" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" 
-                    v-on:click="getOfferingTypes()">
+             <div   class="modal fade" :id="`addOffering-${offering_type.id}`" tabindex="1" role="dialog" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalCenterTitle">add offering</h5>
+                        <h5 class="modal-title">add {{offering_type.name}}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -135,35 +99,27 @@
                         <div class="modal-body">                                                            
                                 <form>                                        
                                         <customselect :fields="['member','service','group']" 
-                                              v-on:inputChanged="onInputChanged"
-                                              v-on:memberSelected="onMemberSelected"
-                                              v-on:serviceFound="onServiceFound"
-                                              v-on:groupSelected="onGroupSelected"/>
+                                            v-on:inputChanged="onInputChanged"
+                                            v-on:memberSelected="onMemberSelected"
+                                            v-on:serviceFound="onServiceFound"
+                                            v-on:groupSelected="onGroupSelected"/>
                                         <p v-if="selected_member_errors.length">
                                             <ul>
-                                                    <small><li v-for="error in selected_member_errors"><p class="text-danger">{{ error }}</p></li></small>
+                                                <small>
+                                                    <li v-for="error in selected_member_errors">
+                                                        <p class="text-danger">{{ error }}</p>
+                                                    </li>
+                                                </small>
                                             </ul>
                                         </p>  
                                         <p v-if="service_type_errors.length">
                                             <ul>
-                                                <small><li v-for="error in service_type_errors"><p class="text-danger">{{ error }}</p></li></small>
+                                                <small>
+                                                    <li v-for="error in service_type_errors">
+                                                        <p class="text-danger">{{ error }}</p>
+                                                    </li></small>
                                             </ul>
-                                        </p>                                                                                    
-                                                    
-                                        <hr>
-                                        <div class="row">                                               
-                                                <label class="col-3"><b>offering type:</b></label>
-                                                <span class="col-6">                                                    
-                                                        <span v-if="! offering_types">
-                                                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true">                                
-                                                                </span> searching ...
-                                                        </span>
-                                                        <select class="form-control" v-model="selected_offering_type" >                            
-                                                                <option v-for="data in offering_types" :value="data.id" >{{data.name}}</option>                                                        
-                                                        </select>
-                                                        <small class=" text-muted">optional</small>
-                                                </span>                                                                                                
-                                        </div> 
+                                        </p>                                                                                                                                                                              
                                         <hr>                              
                                         <div class="row form-group">
                                                 <label class="col-3"><b>amount:</b></label>
@@ -171,23 +127,38 @@
                                                 <div class="col-6 text-success" v-if ="offering_amount > 0"><h3>KSh {{humanize(offering_amount)}}</h3></div>
                                                 <p v-if="offering_amount_errors.length">
                                                     <ul>
-                                                            <small><li v-for="error in offering_amount_errors"><p class="text-danger">{{ error }}</p></li></small>
+                                                        <small>
+                                                            <li v-for="error in offering_amount_errors">
+                                                                <p class="text-danger">{{ error }}</p>
+                                                            </li>
+                                                        </small>
                                                     </ul>
                                                 </p> 
-                                        </div>                                       
+                                        </div>            
+                                        <hr/>                                                                                
+                                        <div class="row">                                                        
+                                                <label class="col-3 "><b>payment method</b></label>
+                                            <select class="col-5 form-control custom-select"
+                                                    v-model = "payment_method">
+                                                    <option v-for= "method in payment_methods"
+                                                         value="method.id" >
+                                                         {{method.name}}
+                                                    </option>                                                    
+                                            </select>                                                                                                                                                       
+                                        </div>                           
                                         <hr v-if="! non_member">
                                         <div class="form-group">
                                                 <div class="row" v-if="show_date">                                                    
-                                                        <label class="col-3 "><b>date</b></label>
-                                                        <div class="input-group form-group col-5" style="padding: 0px" >
-                                                            <input type="date" name="bday" max="3000-12-31" 
-                                                                   min="1000-01-01" class="form-control" v-model="offering_date">                                                                                                                      
-                                                        </div>
-                                                        <p v-if="offering_date_errors.length">
-                                                            <ul>
-                                                                    <small><li v-for="error in offering_date_errors"><p class="text-danger">{{ error }}</p></li></small>
-                                                            </ul>
-                                                        </p>
+                                                    <label class="col-3 "><b>date</b></label>
+                                                    <div class="input-group form-group col-5" style="padding: 0px" >
+                                                        <input type="date" name="bday" max="3000-12-31" 
+                                                            min="1000-01-01" class="form-control" v-model="offering_date">                                                                                                                      
+                                                    </div>
+                                                    <p v-if="offering_date_errors.length">
+                                                        <ul>
+                                                            <small><li v-for="error in offering_date_errors"><p class="text-danger">{{ error }}</p></li></small>
+                                                        </ul>
+                                                    </p>
                                                 </div>
                                         </div>
                                         <hr/>
@@ -225,10 +196,10 @@
                                                 <div class="row">                                                        
                                                         <label class="col-3 "><b>from :</b></label>
                                                         <div class="input-group form-group col-5" style="padding: 0px" >
-                                                                <select class="form-control" v-model="offering_from">
-                                                                        <option>members</option>
-                                                                        <option>services</option>                                                                        
-                                                                </select>                                                                                                                      
+                                                            <select class="form-control" v-model="offering_from">
+                                                                <option>members</option>
+                                                                <option>services</option>                                                                        
+                                                            </select>                                                                                                                      
                                                         </div>
                                                                                                                 
                                                 </div>
@@ -270,7 +241,11 @@
       import offeringstats from '@/subcomponents/statistics/offeringstats.vue'
       export default {
         created () {
-            this.getOfferings()        
+            this.getOfferings()                
+        },
+        props:{
+            offering_type: null,            
+            payment_methods:null,
         },
         data () {
           return {
@@ -278,15 +253,14 @@
             group: false,
             //get stats data
             offering_stats: null,
-            offering_types:null,
-            offering_type_name:null,
-            offering_type_description:null,
+            offering_types:null,            
             selected_offering_type:null,
             offerings: null,
             //add offering
             adding_offering: false,
             offering_amount: null,
-            name_if_not_member: ''        ,
+            name_if_not_member: '',
+            payment_method:null,
             country_code: '+254',phone_number:'',
             offering_narration: '',
             offering_year: '',offering_month: '',offering_day: '',
@@ -372,9 +346,29 @@
             //get offerings
             getOfferings: function(){
             //try local storage
-            this.offering_stats = JSON.parse(localStorage.getItem('offering_stats')) 
+            this.$store.dispatch('update_isLoading', true)
+                this.$http.get(this.$BASE_URL + `/api/finance/offering-stats/${this.offering_type.id}/`)
+                .then(response => {
+                    this.offering_stats = {"response": response.data }                                                     
+                    this.$store.dispatch('update_isLoading', false)
+                })
+                .catch((err) => {
+                    this.fetch_data_error.push(err)
+                    this.$store.dispatch('update_isLoading', false)
+                })
+
+
             this.offerings = JSON.parse(localStorage.getItem('offering_list'))
             if (this.offerings){
+                //filter response based on current offering type prop
+                if (this.offering_type){
+                    var offering_type_id = this.offering_type.id                    
+                    var response = this.offerings.response
+                    console.log(response)
+                    this.offerings.response = response.filter(function(offering){
+                        return offering.type == offering_type_id
+                    })
+                }
                 var array = this.offerings.response
                 this.foundOfferings = array.length
                 for (var offering in array){
@@ -390,32 +384,30 @@
             // else try the network
             if (!version || version < currentVersion){
                 this.$store.dispatch('update_isLoading', true)
-                this.$http.get(this.$BASE_URL + '/api/finance/offering-stats/')
-                .then(response => {
-                    this.offering_stats = {"response": response.data }                      
-                    localStorage.setItem('offering_stats',JSON.stringify({"response": response.data }))                
-                    this.$store.dispatch('update_isLoading', false)
-                })
-                .catch((err) => {
-                    this.fetch_data_error.push(err)
-                    this.$store.dispatch('update_isLoading', false)
-                })
-
-                this.$store.dispatch('update_isLoading', true)
                 this.$http.get(this.$BASE_URL + '/api/finance/offerings-by-members-this-month/')
-                .then(response => {
+                .then(response => {                                       
                     this.offerings = {"response": response.data } 
+
+                    localStorage.setItem('offering_list',JSON.stringify({"response": response.data }))                
+                    localStorage.setItem('offering_list_version', currentVersion)
+                    this.$store.dispatch('update_isLoading', false)
+                    
+                    //filter response based on current offering type prop
+                    if (this.offering_type){
+                        var offering_type_id = this.offering_type.id         
+                        console.log('here')           
+                        var response = this.offerings.response
+                        this.offerings.response = response.filter(function(offering){
+                            return offering.type == offering_type_id
+                        })
+                    }
                     var array = this.offerings.response
                     this.foundOfferings = array.length
                     for (var offering in array){                         
                         if (array[offering].member){
                             this.all_member_ids.push(array[offering].user_id) 
                         }                     
-                    } 
-
-                    localStorage.setItem('offering_list',JSON.stringify({"response": response.data }))                
-                    localStorage.setItem('offering_list_version', currentVersion)
-                    this.$store.dispatch('update_isLoading', false)
+                    }                     
                 })
                 .catch((err) => {
                     this.fetch_data_error.push(err)
@@ -451,27 +443,7 @@
                 }     
                 return true
             },
-            //add offerring
-            addOfferingType: function(){               
-                this.adding_offering = true
-                this.$http({                        
-                    method: 'post',
-                    url: this.$BASE_URL + '/api/finance/offering-types/',
-                    data: {
-                        name:this.offering_type_name,
-                        description:this.offering_type_description                                                                  
-                    }
-                    }).then(response => {    
-                        this.adding_offering = false
-                        this.offering_type_name = null
-                        this.offering_type_description=null
-                        alert("offering type succesfully added ")          
-                    })
-                    .catch((err) => {
-                        this.adding_offering = false
-                        alert("an error occured, please try again later")
-                    })        
-            },
+
             addOffering: function(){ 
                 if (this.addOfferingFormOK()){     
                     //if offering is by non member                           
@@ -482,8 +454,9 @@
                             url: this.$BASE_URL + '/api/finance/add-service-offering/',
                             data: {
                                 service_type_id: this.service_type, 
-                                offering_type:this.selected_offering_type,
-                                group: this.group,                                                           
+                                offering_type:this.offering_type.id,
+                                group: this.group,       
+                                mode_of_payment:this.payment_method,                                                    
                                 recording_member_id: this.$session.get('member_id'),                                 
                                 date: this.offering_date,                                
                                 narration: this.offering_narration,                        
@@ -494,6 +467,7 @@
                                 this.offering_amount = null
                                 this.offering_narration = null
                                 this.service_type = null
+                                this.payment_method = null
                                                             
                                 var new_version = parseInt(localStorage.getItem('offering_list_version')) + 1                               
                                 this.$store.dispatch('update_offering_list_version', new_version)
@@ -514,8 +488,9 @@
                                 member: this.selectedMember,                                
                                 recorded_by: this.$session.get('member_id'),                             
                                 name_if_not_member: this.name_if_not_member,
-                                offering_type:this.selected_offering_type,
+                                offering_type:this.offering_type.id,
                                 date: this.offering_date,
+                                mode_of_payment:this.payment_method, 
                                 anonymous: false,
                                 narration: this.offering_narration,                        
                                 amount: this.offering_amount                                                                   
@@ -526,6 +501,7 @@
                                 this.adding_offering = false
                                 this.offering_amount = null
                                 this.offering_narration = null
+                                this.mode_of_payment = null
                                 this.name_if_not_member = ''
                                 this.offering_date = ''
                                 this.memberSearch = ''   

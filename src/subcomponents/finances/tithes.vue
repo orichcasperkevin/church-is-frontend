@@ -125,14 +125,33 @@
                                         </div>  
                                         <div v-if="tithe_amount_error.length > 0">
                                             <ul>
-                                                    <small>
-                                                        <li v-for="error in tithe_amount_error">
-                                                            <p class="text-danger">{{ error }}</p>
-                                                        </li>
-                                                    </small>
+                                                <small>
+                                                    <li v-for="error in tithe_amount_error">
+                                                        <p class="text-danger">{{ error }}</p>
+                                                    </li>
+                                                </small>
                                             </ul>
                                         </div> 
-                                        <hr/>
+                                        <hr/>                                                                                
+                                        <div class="row">                                                        
+                                                <label class="col-3 "><b>payment method</b></label>
+                                            <select class="col-5 form-control custom-select"
+                                                    v-model = "payment_method">
+                                                    <option v-for= "method in payment_methods"
+                                                         value="method.id" >
+                                                         {{method.name}}
+                                                    </option>                                                    
+                                            </select>                                                                                                                                                       
+                                        </div>
+                                        <hr>
+                                        <div class="row">                                                        
+                                            <label class="col-3 "><b>date</b></label>
+                                            <div class="input-group form-group col-5" style="padding: 0px" >
+                                                <input type="date" name="bday" max="3000-12-31" 
+                                                    min="1000-01-01" class="form-control" v-model="tithe_date">                                                                                                                      
+                                            </div>                                                                                                        
+                                        </div>
+                                        <hr>
                                         <div class="row form-group">
                                                 <label class="col-3"><b>narration:</b></label>
                                                 <textarea type="text" class="col-8 form-control" rows='3' v-model="tithe_narration"></textarea>                                                   
@@ -207,6 +226,9 @@
         created () {
             this.getTithes()
         },
+        props:{
+            payment_methods:null,
+        },
         data () {
           return {
             access_level: this.$session.get('access_level'),
@@ -224,6 +246,8 @@
             add_tithe_button_text: '+ add tithe',
             enable_add_tithe_button: true,
             tithe_amount: null,
+            tithe_date:null,
+            payment_method:null,
             tithe_narration: '',
             tithe_amount_error: [], tithe_member_error: [],
             added_tithe: [],add_tithe_errors: [],
@@ -346,7 +370,11 @@
                 this.tithe_amount_error = []
                 if (this.tithe_narration.length < 1){                    
                         this.tithe_narration = "none given"
-                }                   
+                }   
+                if (this.tithe_date == '' || this.tithe_date == null){
+                    alert('date is required')
+                    return false
+                }
                 if (this.tithe_amount < 1){
                     alert(" enter an amount")
                     return false
@@ -367,6 +395,8 @@
                             narration: this.tithe_narration,
                             recorded_by: this.$session.get('member_id'),                             
                             amount: this.tithe_amount,
+                            date: this.tithe_date,
+                            mode_of_payment: this.payment_method,
                             service:this.service,
                             group:this.group ,                                                                
                         }
@@ -374,7 +404,10 @@
                             this.adding_tithe = false                                                                                                                                                            
                             this.selectedMember = null,
                             this.tithe_narration = '',
-                            this.tithe_amount = ''                                                                            
+                            this.tithe_amount = ''    
+                            this.tithe_date = null           
+                            this.payment_method = null                                                             
+                            
                             var new_version = parseInt(localStorage.getItem('tithe_list_version')) + 1
                             this.$store.dispatch('update_tithe_list_version', new_version)        
                             alert("tithe of succesfully added, amount: " + response.data.amount )                     
