@@ -1,11 +1,5 @@
 <template>
   <div >
-	  <!-- when this div is hovered on , display side nav -->
-	<div  v-if="checkLoggedIn()"
-		  style="position: fixed ;height: 100%; z-index: 9998;"
-		  class="d-flex flex-column justify-content-center p-1 "
-		  v-on:mouseover="openNav()">            
-	</div>
 	<section class="navbar navbar-expand-lg navbar-light sticky-top shadow-sm bg-frost" v-if="checkLoggedIn()">
 	  <button class="btn btn-light ml-3" type="button" v-on:click="openNav()">
 		  <span class="navbar-toggler-icon"></span>
@@ -107,7 +101,7 @@
 	  </div>                                
 	</nav> 
 	<!-- nav frost overlay -->
-	<div id="nav-frost-overlay" class="d-none nav-frost-overlay" v-on:mouseover="closeNav()"></div>
+	<div id="nav-frost-overlay" class="d-none nav-frost-overlay"></div>
 	<!-- loader overlay -->
 	<div class="vld-parent">
 		<loading :active.sync="isLoading" 

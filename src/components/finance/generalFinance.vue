@@ -2,6 +2,8 @@
     <div>        
         <!-- this compnent requires text message modal -->
         <textmessage :memberIds="member_ids" :context="context"/> 
+        <!-- the modal used to import finace data from csv -->
+        <importFromCSV/>
 
         <nav aria-label="breadcrumb" class="container">
             <ol class="breadcrumb">
@@ -27,7 +29,7 @@
                                         v-on:click="tithes_selected = true; expenditures_selected=false; getIncome()">       
 
                                     <span class="row">
-                                        <img class="d-none d-lg-block d-xl-block mr-2" style="width: 15%; height: auto" src="@/assets/icons/icons8-request-money-filled-50.png">
+                                        <img class="d-none d-lg-block d-xl-block mr-2" style="width: 15%; height: auto" src="@/assets/icons/icons8-expensive-filled-50.png">
                                         Incomes
                                     </span>                                                                     
                                 </a>
@@ -213,12 +215,12 @@
                                 aria-haspopup="true" aria-expanded="false" data-reference="parent"
                                 style="text-decoration: none">
                                 <div class="add-button">
-                                    <b>+</b> new envelope
+                                    <b>+</b> New Envelope
                                 </div>                                
                             </a>
                             <a href="#" id="tithe-modal-button" data-toggle="modal" data-target="#addTithe">
                                 <div class="add-button d-none" style="text-align: center">
-                                    <b>+</b> add tithe
+                                    <b>+</b> Add Tithe
                                 </div>                                
                             </a>
                             <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" 
@@ -236,24 +238,31 @@
                                     v-for="type in offering_types"                                                                     
                                     href="#" data-toggle="modal" 
                                     data-target="#addOffering"
-                                    @click="openTab(type.id)">
-                                    {{type.name}}
+                                    @click="openTab(type.id)">                                    
+                                    <span v-if="type.name != 'general offering'">{{type.name}}</span>
+                                    <span v-else>Offering</span>
+                                </a>
+                                <hr>
+                                <a class="dropdown-item" 
+                                    href="#" data-toggle="modal" 
+                                    data-target="#importFromCSV">
+                                    <b>+</b> Import from CSV
                                 </a>
                                 <hr>
                                 <a class="dropdown-item" 
                                     href="#" data-toggle="modal" 
                                     data-target="#addOfferingType">
-                                    <b>+</b> add Envelope Type
+                                    <b>+</b> Add Envelope Type
                                 </a>
                                 <a class="dropdown-item" 
                                     href="#" data-toggle="modal" 
                                     data-target="#addPaymentMethod">
-                                    <b>+</b> add Payment Method
+                                    <b>+</b> Add Payment Method
                                 </a>
                             </div>
                     </div>
                     <!-- add for offerings -->
-                    <div class="btn-group d-none" style="padding: 0px 0px 25px 10px">
+                    <div class="btn-group d-none">
                             <a href="#" data-toggle="modal" 
                                 id = "add-offering-button"                                
                                 :data-target="`#addOffering-${offering_type}`" 
@@ -311,7 +320,7 @@
                                     <img src="@/assets/icons/icons8-comments-64.png">
                                     text people
                             </button>   
-                            <button type="button" class="action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#exportOfferingsToCSV" >
+                            <button type="button" class="action-list list-group-item list-group-item-action border-0" data-toggle="modal" :data-target="`#exportOfferingsToCSV-${offering_type}`" >
                               <img src="@/assets/icons/icons8-export-csv-30.png" style="width: 35px; height:auto"> export to CSV
                             </button>                                                     
                     </div>
@@ -327,7 +336,7 @@
                     <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalCenterTitle">add income type</h5>
+                        <h5 class="modal-title font-weight-bold text-capitalize" id="exampleModalCenterTitle">add income type</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -479,7 +488,7 @@
                             </div>
                         </div>
                         </div>
-                </div>
+                </div>             
                 <!-- export to csv format -->
                 <div class="modal fade" id="exportIncomeToCSV" tabindex="-1" role="dialog" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -535,6 +544,7 @@ import incomestats from '@/subcomponents/statistics/incomestats.vue'
 import expenditures from '@/subcomponents/finances/expenditure.vue'
 import tithes from '@/subcomponents/finances/tithes.vue'
 import offerings from '@/subcomponents/finances/offerings.vue'
+import importFromCSV from '@/subcomponents/finances/importFromCSV.vue'
 import textmessage from '@/subcomponents/textmessage.vue'
 export default {
     name: 'generalFinance',
@@ -543,6 +553,7 @@ export default {
         expenditures,
         tithes,
         offerings,
+        importFromCSV,
         textmessage
     } ,
 
@@ -598,7 +609,7 @@ export default {
         member_ids:[],
 
         //context.
-        context:'Tithe'
+        context:'Tithe',
         }
     },
     created () {
@@ -956,7 +967,7 @@ export default {
                 alert(err)
                 this.adding_offering = false
             })
-        }
+        },        
     },
 
 }

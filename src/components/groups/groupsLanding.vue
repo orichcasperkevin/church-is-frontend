@@ -17,7 +17,7 @@
                 Groups
               </b>
             </h3>
-            <div class="row">
+            <div class="d-flex">
                 <div class="stat-item mr-2 text-muted">
                         Folders <b> <span class="text-secondary">
                          {{foundItems}} </span></b>
@@ -26,7 +26,7 @@
                         Groups <b> <span class="text-secondary">
                         {{foundItems_independent}}</span> </b>
                 </div>
-                <a class="stat-item mt-2 btn btn-outline-secondary dropdown-toggle"
+                <a class="stat-item btn btn-outline-secondary dropdown-toggle"
                    data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
                         more stats
                 </a>

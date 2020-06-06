@@ -91,7 +91,7 @@
                     <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                        <h5 class="modal-title">add {{offering_type.name}}</h5>
+                        <h5 class="modal-title text-capitalize">add {{offering_type.name}}</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -141,7 +141,7 @@
                                             <select class="col-5 form-control custom-select"
                                                     v-model = "payment_method">
                                                     <option v-for= "method in payment_methods"
-                                                         value="method.id" >
+                                                         :value="method.id" >
                                                          {{method.name}}
                                                     </option>                                                    
                                             </select>                                                                                                                                                       
@@ -169,9 +169,9 @@
                                 </form>
                         </div>
                         <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="getOfferings()">Close</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-success" v-on:click="addOffering()">
-                            <b>+</b> add offering
+                            <b>+</b> add {{offering_type.name}}
                             <span v-if="adding_offering"
                                 class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
                             </span>
@@ -181,7 +181,7 @@
                     </div>
             </div>
             <!-- export to csv format -->
-            <div class="modal fade" id="exportOfferingsToCSV" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal fade" :id="`exportOfferingsToCSV-${offering_type.id}`" tabindex="-1" role="dialog" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -363,8 +363,7 @@
                 //filter response based on current offering type prop
                 if (this.offering_type){
                     var offering_type_id = this.offering_type.id                    
-                    var response = this.offerings.response
-                    console.log(response)
+                    var response = this.offerings.response                    
                     this.offerings.response = response.filter(function(offering){
                         return offering.type == offering_type_id
                     })
@@ -394,8 +393,7 @@
                     
                     //filter response based on current offering type prop
                     if (this.offering_type){
-                        var offering_type_id = this.offering_type.id         
-                        console.log('here')           
+                        var offering_type_id = this.offering_type.id                                           
                         var response = this.offerings.response
                         this.offerings.response = response.filter(function(offering){
                             return offering.type == offering_type_id
@@ -454,7 +452,7 @@
                             url: this.$BASE_URL + '/api/finance/add-service-offering/',
                             data: {
                                 service_type_id: this.service_type, 
-                                offering_type:this.offering_type.id,
+                                type:this.offering_type.id,
                                 group: this.group,       
                                 mode_of_payment:this.payment_method,                                                    
                                 recording_member_id: this.$session.get('member_id'),                                 
@@ -471,11 +469,13 @@
                                                             
                                 var new_version = parseInt(localStorage.getItem('offering_list_version')) + 1                               
                                 this.$store.dispatch('update_offering_list_version', new_version)
-                                alert("offering succesfully added ")          
+
+                                this.getOfferings()
+                                alert(`${this.offering_type.name} succesfully added`)                                                                          
                             })
                             .catch((err) => {
                                 this.adding_offering = false
-                                alert("an error occured, please try again later")
+                                alert(err)
                             })               
                     }
                     // if offering is by member
@@ -488,7 +488,7 @@
                                 member: this.selectedMember,                                
                                 recorded_by: this.$session.get('member_id'),                             
                                 name_if_not_member: this.name_if_not_member,
-                                offering_type:this.offering_type.id,
+                                type:this.offering_type.id,
                                 date: this.offering_date,
                                 mode_of_payment:this.payment_method, 
                                 anonymous: false,
@@ -508,11 +508,11 @@
                                 
                                 var new_version = parseInt(localStorage.getItem('offering_list_version')) + 1                               
                                 this.$store.dispatch('update_offering_list_version', new_version)
-
-                                alert("offering succesfully added")          
+                                this.getOfferings()
+                                alert(`${this.offering_type.name} succesfully added`)                                           
                             })
                             .catch((err) => {
-                                    alert("an error occured, please try again later")
+                                    alert(err)
                                     this.adding_offering = false
                             })
                     }  

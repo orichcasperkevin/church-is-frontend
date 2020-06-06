@@ -571,6 +571,7 @@ export default {
       text_button_name: "",
       message: " ",
       sending_anvil_message:false,
+      
       // csv file upload
       submitting_file: false,
       checking_csv: false,
@@ -583,6 +584,8 @@ export default {
       csv_data: [],get_data_status: '',
       file_format_okay: false,
       csv_columns: {},
+
+      //assigning groups
       adding_members_to_group: false,
       assign_group_button_text: "assign group",
       deleting_member:false
@@ -826,34 +829,34 @@ export default {
 
   //Submits the file to the server
     submitFile: function(){
-          this.file_format_okay = false
-          this.error_500 = []
-          this.test_csv_errors = []
-          let formData = new FormData();
-          formData.append('csv', this.file);
+        this.file_format_okay = false
+		this.error_500 = []
+		this.test_csv_errors = []
+		let formData = new FormData();
+		formData.append('csv', this.file);
 
-          this.submitting_file = true
-          this.$http.post( this.$BASE_URL + '/api/members/upload-csv/',
-              formData,
-              {
-              headers: {
-                  'Content-Type': 'multipart/form-data'
-              }
-          })
-          .then(response =>{
-            var data = response.data
-            //if data is not array there are no errors
-            if (! data.length){
-              this.uploaded_file = data.csv
-              alert("file uploaded")
-              this.previewCSV()
-              this.submitting_file = false
-            }
-          })
-          .catch((err) =>{
-              this.error_500.push(err)
-              this.submitting_file = false
-          });
+		this.submitting_file = true
+		this.$http.post( this.$BASE_URL + '/api/members/upload-csv/',
+			formData,
+			{
+			headers: {
+				'Content-Type': 'multipart/form-data'
+			}
+		})
+		.then(response =>{
+			var data = response.data
+			//if data is not array there are no errors
+			if (! data.length){
+			this.uploaded_file = data.csv
+			alert("file uploaded")
+			this.previewCSV()
+			this.submitting_file = false
+			}
+		})
+		.catch((err) =>{
+			this.error_500.push(err)
+			this.submitting_file = false
+		});
     },
   // handle the case that the file changes
     handleFileUpload: function(){
@@ -861,16 +864,16 @@ export default {
     },
   //preview the csv file
     previewCSV: function(){
-      this.get_data_status = 'setting up preview ...'
-      var file_name = this.uploaded_file.split("/")[1]
-      this.$http.get(this.$BASE_URL + '/api/members/preview-csv/'+ file_name + '/')
-      .then(response => {
-        this.csv_data = response.data
-        this.get_data_status = ''
-      })
-      .catch((err) => {
-        this.get_data_status = ''
-      })
+     	this.get_data_status = 'setting up preview ...'
+		var file_name = this.uploaded_file.split("/")[1]
+		this.$http.get(this.$BASE_URL + '/api/members/preview-csv/'+ file_name + '/')
+		.then(response => {
+			this.csv_data = response.data
+			this.get_data_status = ''
+		})
+		.catch((err) => {
+			this.get_data_status = ''
+		})
     },
   // extract data from the csv file
   // check that the csv file is of the required format
@@ -880,26 +883,26 @@ export default {
       var file_name = this.uploaded_file.split("/")[1]
 
       this.checking_csv = true
-      this.$http({ method: 'post', url: this.$BASE_URL + '/api/members/check-csv/',
-      data: {
-        file_name: file_name,
-        column_config: this.csv_columns
-      },
-      })
-      .then(response => {
-        var data = response.data
-        //if data is not array there are no errors
-        if (! data.length){
-          this.file_format_okay = true
-        }
-        else{
-          this.test_csv_errors = data
-      }
-      this.checking_csv = false
-      })
-      .catch((err) => {
-        this.error_500.push(err)
-        this.checking_csv = false
+      this.$http({ 
+		  	method: 'post',
+			url: this.$BASE_URL + '/api/members/check-csv/',
+			data: {
+				file_name: file_name,
+				column_config: this.csv_columns
+			},
+      }).then(response => {
+			var data = response.data
+			//if data is not array there are no errors
+			if (! data.length){
+				this.file_format_okay = true
+			}
+			else{
+				this.test_csv_errors = data
+			}
+			this.checking_csv = false
+      }).catch((err) => {
+        	this.error_500.push(err)
+        	this.checking_csv = false
       })
     },
     extractData: function(){
@@ -908,28 +911,27 @@ export default {
 
       this.extracting_data = true
       this.$http({
-        method: 'post',
-        url: this.$BASE_URL + '/api/members/import-data-from-csv/',
-        data: {
-          file_name: file_name,
-        }
-      })
-      .then(response => {
-          this.extract_data_button_text = "import data"
-          var new_version = parseInt(localStorage.getItem('member_list_version')) + 1
-          this.$store.dispatch('update_member_list_version', new_version)
-          this.fetchData()
-          this.extracting_data = false
-          alert("data extracted succesfully")
-      })
-      .catch((err) => {
+			method: 'post',
+			url: this.$BASE_URL + '/api/members/import-data-from-csv/',
+			data: {
+			file_name: file_name,
+			}
+      }).then(response => {
+			this.extract_data_button_text = "import data"
+			var new_version = parseInt(localStorage.getItem('member_list_version')) + 1
+			this.$store.dispatch('update_member_list_version', new_version)
+			this.fetchData()
+			this.extracting_data = false
+			alert("data extracted succesfully")
+      }).catch((err) => {
         alert("something went wrong while trying to extract data.\n Check the file and try again")
         this.extract_data_button_text = "import data"
         this.extracting_data = false
       })
     },
-    getGroups: function(){
-      // get  groups
+    
+	//get groups
+	getGroups: function(){      
       const currentVersion = this.$store.getters.group_list_version
       var version  = localStorage.getItem('group_list_version')
 

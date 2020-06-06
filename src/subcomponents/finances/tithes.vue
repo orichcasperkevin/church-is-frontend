@@ -96,7 +96,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalCenterTitle">add tithing</h5>
-                        <button type="button" class="close" data-dismiss="modal" v-on:click="getTithes()" aria-label="Close">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                         </div>
@@ -138,7 +138,7 @@
                                             <select class="col-5 form-control custom-select"
                                                     v-model = "payment_method">
                                                     <option v-for= "method in payment_methods"
-                                                         value="method.id" >
+                                                         :value="method.id" >
                                                          {{method.name}}
                                                     </option>                                                    
                                             </select>                                                                                                                                                       
@@ -159,7 +159,7 @@
                                 </form>
                         </div>
                         <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="getTithes()">Close</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-success" disabled v-if= "! enable_add_tithe_button && add_tithe_button_text != 'adding tithe...'">{{add_tithe_button_text}}</button>
                         <button type="button" class="btn btn-success" v-on:click="addTithe()">
                             add tithe
@@ -409,13 +409,15 @@
                             this.payment_method = null                                                             
                             
                             var new_version = parseInt(localStorage.getItem('tithe_list_version')) + 1
-                            this.$store.dispatch('update_tithe_list_version', new_version)        
+                            this.$store.dispatch('update_tithe_list_version', new_version)                                    
+                            this.getTithes()
+
                             alert("tithe of succesfully added, amount: " + response.data.amount )                     
                             this.can_send_message = true
                         })
                         .catch((err) => {
                             this.adding_tithe = false
-                            alert('oops, an error occured \n you may be disconnected ,check your connection and try again')
+                            alert(err)
                                                             
                         })
                 }
@@ -432,7 +434,7 @@
             })
             .catch((error) => {
                 this.exporting_data = false
-                alert('error while downloading tithes csv')
+                alert(err)
             })
         },
         }

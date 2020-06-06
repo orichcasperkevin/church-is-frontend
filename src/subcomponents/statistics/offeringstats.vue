@@ -3,7 +3,7 @@
             <!-- offering by type stats -->
 
             <div v-if="data.datasets.length" >
-                <h3>offerings from members grouped by type of offering</h3>
+                <h3>Member Envelopes <small>(grouped by type of envelope)</small></h3>
                 <barchart :data='data' :options='options'/>                        
             </div>  
             <div v-else>
@@ -12,8 +12,8 @@
 
             <!-- offering from service stats -->
 
-            <div v-if="data2.datasets.length">  
-                <h3>offerings from services grouped by service type</h3>             
+            <div v-if="data2.datasets.length" class="mt-4">  
+                <h3>Envelopes from services <small>(grouped by service type)</small></h3>             
                 <barchart :data='data2' :options='options'/>  
             </div>      
             <div v-else>

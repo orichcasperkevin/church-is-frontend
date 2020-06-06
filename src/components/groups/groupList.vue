@@ -91,7 +91,7 @@ export default {
   name: 'groupList',
   data () {
     return {
-        group_name: 'ljpoik',
+        group_name: 'church',
         groups: null,
         foundItems: null,
         fetch_data_error: [],
