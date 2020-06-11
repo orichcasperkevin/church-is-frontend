@@ -3,7 +3,7 @@
         <!-- this compnent requires text message modal -->
         <textmessage :memberIds="member_ids" :context="context"/> 
         <!-- the modal used to import finace data from csv -->
-        <importFromCSV/>
+        <importFromCSV v-on:dataExtracted="csvDataExtracted"/>
 
         <nav aria-label="breadcrumb" class="container">
             <ol class="breadcrumb">
@@ -11,16 +11,24 @@
                 <li class="breadcrumb-item active" aria-current="page">finances</li>
             </ol>
         </nav>        
-        <div class = "container">
+        <div class = "container">            
             <div class = "row">
                 <!-- NAVIGATIONS -->                
                 <div class="filters col-sm-12 col-md-8 col-lg-2" >
                         <div class="nav success flex-column nav-pills " id="v-pills-tab" role="tablist" aria-orientation="vertical">
                                 <a class="action-list list-group-item list-group-item-action border-0 active" id="v-pills-envelopes-tab" data-toggle="pill" href="#v-pills-envelopes" role="tab" aria-controls="v-pills-envelopes" aria-selected="true" 
-                                    v-on:click="getTithes()">       
+                                    v-on:click=" hide_content = true">       
                                     <span class="row">
                                         <img class="d-none d-lg-block d-xl-block mr-2" style="width: 15%; height: auto" src="@/assets/icons/icons8-request-money-filled-50.png">
                                         Envelopes
+                                    </span>                                                                     
+                                </a>
+
+                                <a class="action-list list-group-item list-group-item-action border-0" id="v-pills-envelopes-tab" data-toggle="pill" href="#v-pills-envelopes" role="tab" aria-controls="v-pills-envelopes" aria-selected="true" 
+                                    v-on:click="getTithes(); hide_content=false">       
+                                    <span class="row">
+                                        <img class="d-none d-lg-block d-xl-block mr-2" style="width: 15%; height: auto" src="@/assets/icons/icons8-request-money-filled-50.png">
+                                        Reports
                                     </span>                                                                     
                                 </a>
                                 <a      class="action-list list-group-item list-group-item-action border-0"
@@ -52,71 +60,78 @@
                     <div class="tab-content" id="v-pills-tabContent">
                        <!-- ENVELOPES -->
                         <div class="tab-pane fade show active" id="v-pills-envelopes" role="tabpanel" aria-labelledby="v-pills-envelopes-tab">
-                                <div class="container">
-                                        <div class="d-flex justify-content-center">                                          
-                                          <!-- nav pills for offerings,tithes and others -->
-                                          <div class="col-sm-12 col-lg-10" >
-                                                <hr class="d-sm-block d-lg-none">  
-                                                <div class="d-flex flex-nowrap">
-                                                    <a href="#" class="p-2" @click=scrollRight()>
-                                                       <h4><</h4> 
-                                                    </a>
-                                                    <ul class="mb-2 d-flex flex-nowrap nav nav-pills scrollbar-none"
-                                                        id="pills-tab" role="tablist"                                                    
-                                                        style="overflow-x: scroll;white-space: nowrap">
-                                                            <li class="nav-item">
-                                                                <a class="nav-link active" 
-                                                                    id="pills-tithe-tab" 
-                                                                    data-toggle="pill" 
-                                                                    href="#pills-home" role="tab" 
-                                                                    aria-controls="pills-home" 
-                                                                    Tithe="true"
-                                                                    v-on:click = "getTithes(); scrollToElement('pills-tithe-tab')">
-                                                                    Tithes
-                                                                </a>
-                                                            </li>                                                                                                                        
-                                                            <li class="nav-item" v-for="type in offering_types">
-                                                                <a class="nav-link text-capitalize" :id="`type-${type.id}`" 
-                                                                    data-toggle="pill" :href="`#pills-${type.id}`" role="tab" 
-                                                                    :aria-controls="`pills-${type.id}`" 
-                                                                    aria-selected="false"
-                                                                    @click="scrollToElement(`type-${type.id}`);getOfferings(); offering_type = type.id">                                                                    
-                                                                    <span v-if="type.name != 'general offering'">{{type.name}}</span>
-                                                                    <span v-else>Offering</span>
-                                                                </a>
-                                                            </li>
-                                                    </ul>
-                                                    <a href="#" class="p-2" @click=scrollLeft()>
-                                                        <h4>></h4>
-                                                    </a>
-                                                </div>                                               
-                                          </div>                                          
-                                        </div>
-                                </div>                                
+                            <div  class="container" :class="{'d-none': hide_content}">
+                                <div class="d-flex justify-content-center">                                          
+                                    <!-- nav pills for offerings,tithes and others -->
+                                    <div class="col-sm-12 col-lg-10" >
+                                        <hr class="d-sm-block d-lg-none">  
+                                        <div class="d-flex flex-nowrap">
+                                            <a href="#" class="p-2" @click=scrollRight()>
+                                                <h4><</h4> 
+                                            </a>
+                                            <ul class="mb-2 d-flex flex-nowrap nav nav-pills scrollbar-none"
+                                                id="pills-tab" role="tablist"                                                    
+                                                style="overflow-x: scroll;white-space: nowrap">
+                                                    <li class="nav-item">
+                                                        <a class="nav-link active" 
+                                                            id="pills-tithe-tab" 
+                                                            data-toggle="pill" 
+                                                            href="#pills-home" role="tab" 
+                                                            aria-controls="pills-home" 
+                                                            Tithe="true"
+                                                            v-on:click = "getTithes(); scrollToElement('pills-tithe-tab')">
+                                                            Tithes
+                                                        </a>
+                                                    </li>                                                                                                                        
+                                                    <li class="nav-item" v-for="type in offering_types">
+                                                        <a class="nav-link text-capitalize" :id="`type-${type.id}`" 
+                                                            data-toggle="pill" :href="`#pills-${type.id}`" role="tab" 
+                                                            :aria-controls="`pills-${type.id}`" 
+                                                            aria-selected="false"
+                                                            @click="offering_type = type;scrollToElement(`type-${type.id}`);getOfferings()">                                                                    
+                                                            <span v-if="type.name != 'general offering'">{{type.name}}</span>
+                                                            <span v-else>Offering</span>
+                                                        </a>
+                                                    </li>
+                                            </ul>
+                                            <a href="#" class="p-2" @click=scrollLeft()>
+                                                <h4>></h4>
+                                            </a>
+                                        </div>                                               
+                                    </div>                                          
+                                </div>
+                            </div>                                
                             <!-- ENVELOP TABS CONTENT -->
                             <div class="tab-content" id="pills-tabContent">                                                                      
                                 <!-- tithes -->
                                 <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">                                                                          
-                                        <h3 class="font-weight-bold">Tithes </h3>
+                                        <h3 v-if="! hide_content" class="font-weight-bold">Tithes </h3>
                                         <hr>
                                         <tithes 
                                             v-on:membersSelected="setMemberIds"
                                             :payment_methods = "payment_methods"
-                                        />                                    
+                                            :reload_data = "reload_data"
+                                            :hide_content = "hide_content"
+                                      />                                    
                                 </div>                                
-                                <!-- Income-->
+                                <!-- Offerings-->
                                 <div v-for="type in offering_types" 
                                     class="tab-pane fade" 
                                     :id="`pills-${type.id}`" role="tabpanel">                                        
                                     <div>
-                                        <!-- offerings -->                                        
-                                        <h3 class="font-weight-bold text-capitalize" v-if="type.name != 'general offering'">{{type.name}}</h3>
-                                        <h3 class="font-weight-bold" v-else>Offering</h3>
+                                        <!-- offerings -->   
+                                        <div v-if="! hide_content">
+                                            <h3 class="font-weight-bold text-capitalize" 
+                                            v-if="type.name != 'general offering'">{{type.name}}</h3>
+                                            <h3 class="font-weight-bold" v-else>Offering</h3>
+                                        </div>                                                                           
                                         <hr>                                       
                                         <offerings 
                                             :offering_type="type"
                                             :payment_methods = "payment_methods"
+                                            :reload_data = "reload_data"
                                             v-on:membersSelected="setMemberIds"
+                                            :hide_content = "hide_content"
                                         /> 
                                     </div>
                                 </div>
@@ -204,13 +219,18 @@
                                 <hr class="d-sm-block d-lg-none">  
                                 <expenditures/>
                             </div>                            
-                        </div>                        
+                        </div>    
+                        <!-- TEST-->
+                        <div class="tab-pane fade show " id="v-pills-test" role="tabpanel" aria-labelledby="v-pills-test-tab">
+                           test                            
+                        </div> 
                     </div>
                 </div>
                 <!-- ACTION BUTTONS -->
                 <div class = "col-12 col-sm-10 col-md-8 col-lg-3">
                     <!-- add for tithes -->
-                    <div class="btn-group" style="padding: 0px 0px 25px 10px" v-if = "tithes_selected || offerings_selected">
+                    <div class="btn-group" style="padding: 0px 0px 25px 10px"
+                         v-if = "(tithes_selected || offerings_selected) && hide_content">
                             <a href="#" id="dropdownMenuReference" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false" data-reference="parent"
                                 style="text-decoration: none">
@@ -265,7 +285,7 @@
                     <div class="btn-group d-none">
                             <a href="#" data-toggle="modal" 
                                 id = "add-offering-button"                                
-                                :data-target="`#addOffering-${offering_type}`" 
+                                :data-target="`#addOffering-${offering_type.id}`" 
                                 style="text-decoration: none">
                                 <div class="add-button">                                
                                     <b>+</b> add offering 
@@ -302,31 +322,37 @@
 
                     <!-- actions on list  -->
                     <div class="list-group font-weight-bold"  v-if = "expenditures_selected">
-                            <button type="button" class="action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#exportEpenditureToCSV" >
-                              <img src="@/assets/icons/icons8-export-csv-30.png" style="width: 35px; height:auto"> export to CSV
+                            <button type="button" class="d-flex justify-content-about font-weight-bold text-muted action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#exportEpenditureToCSV" >
+                              <img src="@/assets/icons/icons8-export-csv-30.png" style="width: 45px; height:auto"> Export To CSV
                             </button>                            
                     </div>
-                    <div class="list-group font-weight-bold"  v-if = "tithes_selected">
-                            <button type="button" class="list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#textModalCenter">
-                                <img src="@/assets/icons/icons8-comments-64.png">
-                                text people
+                    <div class="list-group font-weight-bold"  v-if = "tithes_selected && hide_content">
+                            <button type="button" class="d-flex justify-content-about font-weight-bold text-muted list-group-item list-group-item-action border-0" 
+                                 data-toggle="modal" data-target="#textModalCenter">
+                                <img src="@/assets/icons/icons8-comments-64.png" style="width: 45px; height:auto">
+                                Text People
                             </button>
-                            <button type="button" class="action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#exportTithesToCSV" >
-                              <img src="@/assets/icons/icons8-export-csv-30.png" style="width: 35px; height:auto"> export to CSV
+                            <button type="button" class="d-flex justify-content-about font-weight-bold text-muted action-list list-group-item list-group-item-action border-0"
+                                 data-toggle="modal" data-target="#exportTithesToCSV" >
+                                <img src="@/assets/icons/icons8-export-csv-30.png" style="width: 45px; height:auto"> Export To CSV
                             </button>                            
                     </div>
-                    <div class="list-group font-weight-bold"  v-if = "offerings_selected">
-                            <button type="button" class="list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#textModalCenter">
-                                    <img src="@/assets/icons/icons8-comments-64.png">
-                                    text people
+                    <div class="list-group "  v-if = "offerings_selected && hide_content">
+                            <button type="button" class="d-flex justify-content-about font-weight-bold text-muted list-group-item list-group-item-action border-0"
+                                    data-toggle="modal" data-target="#textModalCenter">
+                                    <img src="@/assets/icons/icons8-comments-64.png"  style="width: 45px; height:auto">
+                                    Text People
                             </button>   
-                            <button type="button" class="action-list list-group-item list-group-item-action border-0" data-toggle="modal" :data-target="`#exportOfferingsToCSV-${offering_type}`" >
-                              <img src="@/assets/icons/icons8-export-csv-30.png" style="width: 35px; height:auto"> export to CSV
+                            <button type="button" class="d-flex justify-content-about font-weight-bold text-muted action-list list-group-item list-group-item-action border-0"
+                                    data-toggle="modal" :data-target="`#exportOfferingsToCSV-${offering_type.id}`" >
+                                    <img src="@/assets/icons/icons8-export-csv-30.png" style="width: 45px; height:auto"> 
+                                    Export To CSV
                             </button>                                                     
                     </div>
                     <div class="list-group font-weight-bold"  v-if = "any_other_selected">
-                            <button type="button" class="action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#exportIncomeToCSV" >
-                              <img src="@/assets/icons/icons8-export-csv-30.png" style="width: 35px; height:auto"> export to CSV
+                            <button type="button" class="d-flex justify-content-about font-weight-bold text-muted action-list list-group-item list-group-item-action border-0"
+                                 data-toggle="modal" data-target="#exportIncomeToCSV" >
+                                <img src="@/assets/icons/icons8-export-csv-30.png" style="width: 45px; height:auto"> Export To CSV
                             </button>                            
                     </div>
                 </div>
@@ -559,8 +585,12 @@ export default {
 
     data () {
         return{
+        //hide content.
+        hide_content: true,
+        //reloadind
+        reload_data: false,
         //offering types
-        offering_type: null,
+        offering_type: {'id':0},
         offering_types:null,
         //get data                        
         fetch_data_error: [],
@@ -609,7 +639,7 @@ export default {
         member_ids:[],
 
         //context.
-        context:'Tithe',
+        context:{'name':'Tithe','type':null},
         }
     },
     created () {
@@ -642,6 +672,12 @@ export default {
         // watch for service date and type to determine if there exists a service for that day       
      },
     methods: {
+        csvDataExtracted:function(){            
+            this.reload_data = true
+            setTimeout(()=>{
+                this.reload_data = false
+            },1000)
+        },
         scrollToElement: function(element){
             document.getElementById(element).scrollIntoView({
                 behavior: 'auto',
@@ -758,14 +794,14 @@ export default {
             this.any_other_selected = false
             this.expenditures_selected = false
             this.tithes_selected = true
-            this.context="Tithe"
+            this.context={'name':'Tithe','type':null}
         },
         getOfferings: function(){
             this.tithes_selected = false
             this.any_other_selected = false
             this.expenditures_selected = false
             this.offerings_selected = true
-            this.context="Offering"
+            this.context={'name':'Offering','type':this.offering_type}
         },
         getIncome: function(){
             this.tithes_selected = false            

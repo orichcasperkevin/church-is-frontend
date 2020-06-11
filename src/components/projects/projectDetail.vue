@@ -236,14 +236,15 @@
 
                         <!-- more actions -->                          
                         <div class="list-group font-weight-bold">
-                                <button type="button" class="list-group-item list-group-item-action border-0"
+                                <button type="button" class="d-flex justify-content-about font-weight-bold text-muted list-group-item list-group-item-action border-0"
                                         data-toggle="modal" 
                                         data-target="#textModalCenter">
-                                        <img src="@/assets/icons/icons8-comments-64.png">
-                                        text people
+                                        <img src="@/assets/icons/icons8-comments-64.png" style="width: 45px; height:auto">
+                                        Text People
                                 </button>
-                                <button type="button" class="action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#exportToCSV" >
-                                        <img src="@/assets/icons/icons8-export-csv-30.png" style="width: 35px; height:auto"> export to CSV
+                                <button type="button" class=" d-flex justify-content-about font-weight-bold text-muted action-list list-group-item list-group-item-action border-0" 
+                                        data-toggle="modal" data-target="#exportToCSV" >
+                                        <img src="@/assets/icons/icons8-export-csv-30.png" style="width: 45px; height:auto"> Export To CSV
                                 </button>                            
                         </div>
                       

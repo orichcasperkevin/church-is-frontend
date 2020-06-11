@@ -2,7 +2,7 @@
 <template>
         <div v-if="offerings && offering_stats">            
             <!-- OFFERING CONTENT -->
-            <div>
+            <div v-if="! hide_content">
                 <!-- what to show on small devices -->                
                 <div class="text-muted" >
                         <div class="d-flex d-flex-row justify-content-center">
@@ -32,7 +32,7 @@
                         </div>
                 </div>                         
                 <span class="mt-4">
-                        <p><span class="mt-4 badge badge-pill badge-secondary">{{foundOfferings}}</span> entries</p>
+                    <p><span class="mt-4 badge badge-pill badge-secondary">{{foundOfferings}}</span> entries</p>
                 </span>                       
                 <table class="mt-4 table table-responsive-sm table-borderless">
                     <thead>
@@ -43,11 +43,10 @@
                                     <span class="anvil-checkmark"></span>
                                 </label>
                             </th>
-                            <th>Name</th>
-                            <th>Amount</th>
                             <th>Date</th>
-                            <th>This month</th>
-                            <th>This year</th>
+                            <th>Name</th>
+                            <th>Amount</th>                            
+                            <th>Method</th>                            
                         </tr>
                     </thead>                                      
                     <tbody>
@@ -64,6 +63,7 @@
                                         <span class="anvil-checkmark"></span>
                                 </label> 
                             </td>
+                            <td >{{$humanizeDate(data.date)}}</td>  
                             <td v-if = "data.member != null">                                      
                                 <router-link :to="`/memberDetail/`+ data.user_id">
                                     <span class = "text-secondary">{{data.member_full_name}}</span>
@@ -77,11 +77,11 @@
                                           </div>                                                                                                                                
                                     </router-link>                                 
                             </td>
-                            <td v-if="! data.group && ! data.service && ! data.member">anonymous</td>
-                            <td><p class="text-secondary">{{humanize(data.amount)}}</p></td>
-                            <td >{{$humanizeDate(data.date)}}</td>                            
-                            <td><p class="text-secondary" v-if="data.total_this_month">{{humanize(data.total_this_month)}}</p></td>
-                            <td><p v-if="data.total_this_year">{{humanize(data.total_this_year)}}</p></td>                                                          
+                            <td v-if="! data.group && ! data.service && ! data.member && data.name_if_not_member">
+                                    {{data.name_if_not_member}} <small>({{data.phone_if_not_member}})</small>
+                            </td>
+                            <td><p class="text-secondary">{{humanize(data.amount)}}</p></td>                                                      
+                            <td>{{data.mode_of_payment_name}}</td>                                                         
                         </tr>
                     </tbody>
                 </table>
@@ -244,8 +244,10 @@
             this.getOfferings()                
         },
         props:{
+            reload_data:null,
             offering_type: null,            
             payment_methods:null,
+            hide_content:null
         },
         data () {
           return {
@@ -291,6 +293,11 @@
         name: 'offerings',
         components: { customselect,offeringstats },
         watch: {            
+            reload_data: function(){            
+                if (this.reload_data == true){                    
+                    this.getOfferings()
+                }                
+            },
             offering_date: function(){      
                 this.searched_for_service = false      
                 this.found_service = []

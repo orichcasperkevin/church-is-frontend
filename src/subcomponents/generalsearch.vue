@@ -24,9 +24,9 @@
                 <table class="table border-0 text-left" >                    
                     <tbody>
                     <!-- MEMBERS -->
-                    <h6 class="ml-2" v-if="found_members.response.length">Members found</h6>
+                    <h6 class="ml-2 font-weight-bold" v-if="found_members.response.length">Members found</h6>
                     <!-- if no member matching pattern was found -->                    
-                    <tr class="searchedItem border-0" v-for="data in found_members.response">   
+                    <tr class="searchedItem border-0" v-for="data in found_members.response" style="cursor:pointer">   
                         <a>                                                                             
                             <td class="border-0"  v-on:click="hideSearchResults(`/memberDetail/`+ data.member.id)">
                             
@@ -34,28 +34,30 @@
                                 <img v-if = "data.gender == 'F'" style = "height: 32px "src="@/assets/avatars/icons8-user-female-skin-type-4-40.png">
                                 <img v-if = "data.gender == 'R'" style = "height: 32px "src="@/assets/avatars/icons8-contacts-96.png">
                                 
-                                <span class = "text-secondary">{{data.member.first_name}} {{data.member.last_name}}</span>                                                                                                 
+                                <span class = "text-secondary text-capitalize">
+                                    {{data.member.first_name}} {{data.member.last_name}} 
+                                    <small>( {{data.phone_number}} )</small>
+                                </span>                                                                                                 
                             </td>    
                         </a>                                                                                                                                                    
                     </tr>
                     
                     <!-- GROUPS -->
-                    <h6 class="ml-2" v-if="found_groups.length">Groups found</h6>                    
-                    <tr class="searchedItem border-0" v-for="group in found_groups">                        
+                    <h6 class="ml-2 font-weight-bold" v-if="found_groups.length">Groups found</h6>                    
+                    <tr class="searchedItem border-0" v-for="group in found_groups" style="cursor:pointer">                        
                         <router-link class="text-secondary" style="text-decoration: none;"  :to="`/groupDetail/`+ group.id ">
-                            <td class="border-0"  v-on:click="hideSearchResults()">
-                                <img style="width: 30px ;height: auto" src="@/assets/icons/icons8-user-groups-48.png"> 
+                            <td class="d-flex justify-content-between border-0"  v-on:click="hideSearchResults()">                        
                                 {{group.name}} 
                                 <span class="badge badge-pill badge-secondary ml-4">
                                     {{group.number_of_members}}                                 
-                                </span> members in group                                                                                                                           
+                                </span>                                                                                                                        
                             </td>                       
                         </router-link>                                                                                                                                    
                     </tr>
                     
                     <!-- EVENTS -->
-                    <h6 class="ml-2" v-if="found_events.length">Events found</h6>                   
-                    <tr class="searchedItem border-0" v-for="event in found_events">    
+                    <h6 class="ml-2 font-weight-bold" v-if="found_events.length">Events found</h6>                   
+                    <tr class="searchedItem border-0" v-for="event in found_events" style="cursor:pointer">    
                         <router-link class="text-secondary" style="text-decoration: none"  :to="`/eventDetail/`+ event.id + `/`">                     
                             <td class="ml-2 border-0 row"  v-on:click="hideSearchResults()">
                                 <img style="width: 25px ;height: auto" src="@/assets/icons/icons8-schedule-64.png">

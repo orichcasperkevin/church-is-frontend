@@ -10,7 +10,7 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                         </button>
-                    </div>
+                    </div>                    
                     <div class="modal-body">                           
                             <div class="form-group" v-if="sms_status.length == 0">
                                 <label class="anvil-checkbox" v-if="context">
@@ -34,8 +34,8 @@
                                 <p class="mt-2 ml-2 small text-muted"><span class="font-weight-bold">{{numberOfMessages}}</span> messages | a message is 160 characters long</p>                                
                                 <p class="mt-2 ml-2 small text-muted" v-if="custom_message">
                                     [name] ---- will be replaced by the member's name.<br/>
-                                    [amount] ---- will be replaced by the most recent recorded {{context}} amount.<br/>
-                                    [stats] ---- will be replaced by the member's recent {{context}} stats
+                                    [amount] ---- will be replaced by the most recent recorded amount.<br/>
+                                    [date] ---- will be replaced by the date
                                 </p>
         
                             </div>
@@ -84,15 +84,22 @@ props: {
 watch:{   
     context:function(){
         if (this.context && this.custom_message){            
-            this.message = "hello [name],\nthanks for your " + this.context + " of [amount], your stats: [stats]"
+            if (! this.context.type){
+                this.message = "dear [name].\nwe have received your " + this.context.name + " of shillings [amount], on [date], thank you and God bless."
+            }  
+            else{
+                this.message = "dear [name].\nwe have received your " + this.context.type.name + " of shillings [amount], on [date],thank you and God bless."
+            }          
         }
     },
     custom_message:function(){
-        if (this.context && this.custom_message){
-            this.message = "hello [name],\nthanks for your " + this.context + " of [amount], your stats: [stats]"
-        }  
-        if (! this.custom_message){
-            this.message = null
+        if (this.context && this.custom_message){            
+            if (! this.context.type){
+                this.message = "dear [name].\nwe have received your " + this.context.name + " of shillings [amount], on [date], thank you and God bless."
+            }  
+            else{
+                this.message = "dear [name].\nwe have received your " + this.context.type.name + " of shillings [amount], on [date], thank you and God bless."
+            }          
         }
     },
     message: function(){
@@ -142,7 +149,7 @@ methods: {
                         message: this.message,
                         website: true,
                         receipient_member_ids: this.memberIds,
-                        context:this.context
+                        context:this.context.name
                 }
                 }).then(response => {        
                         this.sms_status.push(response)          

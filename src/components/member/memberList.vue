@@ -194,28 +194,23 @@
                     <router-link class="d-none dropdown-item" :to="{name: 'adminRoles'}"> assign roles</router-link>
                 </div>
               </div>
-                <div class="list-group font-weight-bold">
-                    <button type="button" class="d-none action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#anvilModal" >
-                      <img src="@/assets/app_logo.png" style="width: 55px; height:auto">. Anvil message
-                    </button>
-                    <button type="button" class="d-none action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#emailModatCenter" ><img src="@/assets/icons/icons8-email-64.png">
-                      email ({{foundItems}})
-                    </button>
-                    <button type="button" class="list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#textModalCenter">
-                      <img src="@/assets/icons/icons8-comments-64.png" style="width: 35px; height:auto">
-                      text members
+                <div class="list-group font-weight-bold">                                     
+                    <button type="button" class="d-flex justify-content-about font-weight-bold text-muted list-group-item list-group-item-action border-0"  
+                        data-toggle="modal" data-target="#textModalCenter">
+                        <img src="@/assets/icons/icons8-comments-64.png" style="width: 35px; height:auto">
+                      Text Members
                     </button>
                     <button
-                      type="button" class="list-group-item list-group-item-action border-0"
+                      type="button" class="d-flex justify-content-about font-weight-bold text-muted list-group-item list-group-item-action border-0"
                       data-toggle="modal" data-target="#assignModalCenter"
                       v-on:click="getGroups()">
                       <img src="@/assets/icons/icons8-add-user-group-man-man-64.png" style="width: 35px; height:auto">
-                      assign group
+                      Assign Group
                     </button>
-                    <button type="button" class="list-group-item list-group-item-action border-0"
+                    <button type="button" class="d-flex justify-content-about font-weight-bold text-muted list-group-item list-group-item-action border-0"
                             data-toggle="modal" data-target="#deleteMemberModal">
                       <img src="@/assets/icons/icons8-delete-64.png" style="width: 35px; height:auto">
-                      delete members
+                      Delete Members
                     </button>
                 </div>
               <!-- Modal send anvil message -->
@@ -911,23 +906,24 @@ export default {
 
       this.extracting_data = true
       this.$http({
-			method: 'post',
-			url: this.$BASE_URL + '/api/members/import-data-from-csv/',
-			data: {
+		method: 'post',
+		url: this.$BASE_URL + '/api/members/import-data-from-csv/',
+		data: {
 			file_name: file_name,
-			}
-      }).then(response => {
+			column_config: this.csv_columns
+		}
+		}).then(response => {
 			this.extract_data_button_text = "import data"
 			var new_version = parseInt(localStorage.getItem('member_list_version')) + 1
 			this.$store.dispatch('update_member_list_version', new_version)
 			this.fetchData()
 			this.extracting_data = false
 			alert("data extracted succesfully")
-      }).catch((err) => {
-        alert("something went wrong while trying to extract data.\n Check the file and try again")
-        this.extract_data_button_text = "import data"
-        this.extracting_data = false
-      })
+		}).catch((err) => {
+			alert("something went wrong while trying to extract data.\n Check the file and try again")
+			this.extract_data_button_text = "import data"
+			this.extracting_data = false
+		})
     },
     
 	//get groups

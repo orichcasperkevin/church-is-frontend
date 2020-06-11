@@ -15,7 +15,7 @@
             <!-- search for member -->
             <input type="text" class=" form-control" placeholder="type to search member" v-model="memberSearch" autofocus>                  
             <div class="pre-scrollable searchedItemsDiv border " 
-                style="min-width: 200px; 
+                style="min-width: 300px; 
                         max-height: 185px;
                         overflow-y: scroll;
                             position: absolute;
@@ -35,7 +35,10 @@
                             <img v-if = "data.gender == 'F'" style = "height: 32px "src="@/assets/avatars/icons8-user-female-skin-type-4-40.png">
                             <img v-if = "data.gender == 'R'" style = "height: 32px "src="@/assets/avatars/icons8-contacts-96.png">
                             
-                            <span class = "text-secondary">{{data.member.first_name}} {{data.member.last_name}}</span>                                                                      
+                            <span class = "text-secondary text-capitalize">
+                                {{data.member.first_name}} {{data.member.last_name}} 
+                                <small>( {{data.phone_number}} )</small>
+                           </span>                                                                      
                         </td>
                         </a>                                                                                                                                  
                     </tr>
@@ -150,8 +153,7 @@ watch:{
     memberSearch: function () {
         var array = this.memberSearch.split(" ")
         if (this.memberSearch.length > 0 && array.length == 1){
-            this.showMemberInput = true
-            this.memberSearch_status = 'typing...'
+            this.showMemberInput = true        
             this.debouncedGetAnswer()
         }else{
             this.memberSearch_status = ''

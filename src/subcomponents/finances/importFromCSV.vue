@@ -14,10 +14,10 @@
                 <div class="modal-body">
                     <h3 class="text-muted">demo</h3>
                     <div class="container">
-                        <table class="table table-borderless">
+                        <table class="table table-borderless text-capitalize">
                             <thead>
                                 <tr>
-                                <th scope="col">date <br/>(DD-MM-YYYY)</th>
+                                <th scope="col">date <br/>(DD/MM/YYYY)</th>
                                 <th scope="col">names</th>                                                                
                                 <th scope="col">phone number</th>
                                 <th scope="col">type</th>
@@ -29,7 +29,7 @@
                             <tbody>
                                 <tr>
                                     <td>23/11/2020</td>
-                                    <td>John The Baptist</td>                                                                
+                                    <td>Daniel Jones</td>                                                                
                                     <td>07********</td>
                                     <td>tithe</td>
                                     <td>Mpesa</td>
@@ -37,10 +37,10 @@
                                 </tr> 
                                 <tr>
                                     <td>23/11/2020</td>
-                                    <td>John The Baptist</td>                                                                
+                                    <td>Martha Mercy</td>                                                                
                                     <td>07********</td>
-                                    <td>tithe</td>
-                                    <td>Mpesa</td>
+                                    <td>Offering</td>
+                                    <td>cash</td>
                                     <td>300</td>
                                 </tr>                               
                             </tbody>
@@ -152,8 +152,11 @@ data () {
 },
 
 methods: {
+    emitToParent (event) {                                     
+        this.$emit('dataExtracted')
+    },
     //Submits the file to the server
-    submitFile: function(){
+    submitFile: function(){        
         this.file_format_okay = false
         this.error_500 = []
         this.test_csv_errors = []
@@ -185,7 +188,8 @@ methods: {
     },
     // handle the case that the file changes
     handleFileUpload: function(){
-    this.file = this.$refs.file.files[0];
+        this.reset()
+        this.file = this.$refs.file.files[0];        
     },
     //preview the csv file
     previewCSV: function(){
@@ -202,32 +206,32 @@ methods: {
     },        
     // check that the csv file is of the required format
     checkCSV: function(){
-    this.test_csv_errors = []
-    this.file_format_okay = false
-    var file_name = this.uploaded_file.split("/")[1]
+        this.test_csv_errors = []
+        this.file_format_okay = false
+        var file_name = this.uploaded_file.split("/")[1]
 
-    this.checking_csv = true
-    this.$http({ 
+        this.checking_csv = true
+        this.$http({ 
             method: 'post',
             url: this.$BASE_URL + '/api/finance/check-csv/',
             data: {
                 file_name: file_name,
                 column_config: this.csv_columns
             },
-    }).then(response => {
-            var data = response.data
-            //if data is not array there are no errors
-            if (! data.length){
-                this.file_format_okay = true
-            }
-            else{
-                this.test_csv_errors = data
-            }
-            this.checking_csv = false
-    }).catch((err) => {
+        }).then(response => {
+                var data = response.data
+                //if data is not array there are no errors
+                if (! data.length){
+                    this.file_format_okay = true
+                }
+                else{
+                    this.test_csv_errors = data
+                }
+                this.checking_csv = false
+        }).catch((err) => {
             this.error_500.push(err)
             this.checking_csv = false
-    })
+        })
     },
     // extract data from the csv file
     extractData: function(){
@@ -236,24 +240,52 @@ methods: {
 
         this.extracting_data = true
         this.$http({
-                method: 'post',
-                url: this.$BASE_URL + '/api/finance/import-data-from-csv/',
-                data: {
+            method: 'post',
+            url: this.$BASE_URL + '/api/finance/import-data-from-csv/',
+            data: {
                 file_name: file_name,
-                }
+                column_config: this.csv_columns
+            }
         }).then(response => {
-                this.extract_data_button_text = "import data"
-                var new_version = parseInt(localStorage.getItem('member_list_version')) + 1
-                this.$store.dispatch('update_member_list_version', new_version)                
-                this.extracting_data = false
-                alert("data extracted succesfully")
+            this.extract_data_button_text = "import data"
+            var new_version = parseInt(localStorage.getItem('member_list_version')) + 1
+            this.$store.dispatch('update_member_list_version', new_version)                
+            this.extracting_data = false
+
+            // update tithe list version
+            var new_version = parseInt(localStorage.getItem('tithe_list_version')) + 1
+            this.$store.dispatch('update_tithe_list_version', new_version)  
+
+            // update offerings list version
+            var new_version = parseInt(localStorage.getItem('offering_list_version')) + 1                               
+            this.$store.dispatch('update_offering_list_version', new_version)  
+
+            this.emitToParent()
+
+            alert("data extracted succesfully")
         }).catch((err) => {
             alert("something went wrong while trying to extract data.\n Check the file and try again")
+            this.emitToParent()
             this.extract_data_button_text = "import data"
-            this.extracting_data = false
+            this.extracting_data = false            
         })
-        }
-        
+    },
+    reset: function(){
+        // csv file upload
+        this.submitting_file = false
+        this.checking_csv = false
+        this.extracting_data = false
+        this.extract_data_button_text = "import data"
+        this.file = ''
+        this.error_500 = []
+        this.test_csv_errors = []
+        this.uploaded_file = ''
+        this.csv_data = []
+        this.get_data_status = ''
+        this.file_format_okay = false
+        this.csv_columns =  {}
+    }
+      
 }
 }
 </script>

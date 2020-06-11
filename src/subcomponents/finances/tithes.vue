@@ -1,94 +1,94 @@
 <!-- Parent.vue -->
 <template>
-        <div>  
+        <div>              
             <!-- TITHES CONTENT -->
-            <div>
-                    <!-- tithe stats -->
-                    <content class="text-muted">
-                        <div class="d-flex justify-content-center">
-                            <div class="d-none d-lg-block stat-item mr-2 text-muted">
-                                    This month  <span class="text-secondary font-weight-bold">
-                                     Ksh {{humanize(tithe_stats.response.total_in_tithe_this_month)}} </span>
-                            </div>
-                            <div class="stat-item d-none d-lg-block mr-2">
-                                    This year  <span class="text-secondary font-weight-bold">
-                                    Ksh   {{humanize(tithe_stats.response.total_in_tithe_this_year)}} </span>                                        
-                            </div>
-                            <a class="ml-2 btn btn-outline-secondary dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
-                                    more stats
-                            </a>
-                            <!-- when on a small device show this button --> 
-                            <div class="ml-3 d-sm-block d-md-none btn-group">
-                                <button class="btn btn-success" data-toggle="modal" data-target="#addTithe">                            
-                                        <b>+</b> add tithe                                           
-                                </button>                      
-                            </div>        
-                        </div> 
-                        <p>                                                    
-                        </p>
-                        <div class="collapse " id="statsTab">
-                            <div class="card card-body outline-0 ">                            
-                                <tithestats msg="tithe stats"/>
-                            </div>
+            <div v-if="! hide_content">
+                <!-- tithe stats -->
+                <content class="text-muted">
+                    <div class="d-flex justify-content-center">
+                        <div class="d-none d-lg-block stat-item mr-2 text-muted">
+                                This month  <span class="text-secondary font-weight-bold">
+                                    Ksh {{humanize(tithe_stats.response.total_in_tithe_this_month)}} </span>
                         </div>
-                    </content>                    
-                    <!-- main content-->
-                    <content>          
-                        <span class="mt-4">
-                            <p><span class="mt-4 badge badge-pill badge-secondary">{{foundTithes}}</span> entries</p>
-                        </span>                                                               
-                        <table class="mt-5 table table-responsive-sm table-borderless">
-                            <thead>
-                                <tr>
-                                    <th>                                     
-                                        <label class="anvil-checkbox">All
-                                            <input type="checkbox" :value=true v-model="all_members">
-                                            <span class="anvil-checkmark"></span>
+                        <div class="stat-item d-none d-lg-block mr-2">
+                                This year  <span class="text-secondary font-weight-bold">
+                                Ksh   {{humanize(tithe_stats.response.total_in_tithe_this_year)}} </span>                                        
+                        </div>
+                        <a class="ml-2 btn btn-outline-secondary dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
+                                more stats
+                        </a>
+                        <!-- when on a small device show this button --> 
+                        <div class="ml-3 d-sm-block d-md-none btn-group">
+                            <button class="btn btn-success" data-toggle="modal" data-target="#addTithe">                            
+                                    <b>+</b> add tithe                                           
+                            </button>                      
+                        </div>        
+                    </div> 
+                    <p>                                                    
+                    </p>
+                    <div class="collapse " id="statsTab">
+                        <div class="card card-body outline-0 ">                            
+                            <tithestats msg="tithe stats"/>
+                        </div>
+                    </div>
+                </content>                    
+                <!-- main content-->
+                <content>          
+                    <span class="mt-4">
+                        <p><span class="mt-4 badge badge-pill badge-secondary">{{foundTithes}}</span> entries</p>
+                    </span>                                                               
+                    <table class="mt-5 table table-responsive-sm table-borderless">
+                        <thead>
+                            <tr>
+                                <th>                                     
+                                    <label class="anvil-checkbox">All
+                                        <input type="checkbox" :value=true v-model="all_members">
+                                        <span class="anvil-checkmark"></span>
+                                    </label>
+                                </th>
+                                <th>Date</th>
+                                <th>Name</th>
+                                <th>Amount</th>                                
+                                <th>Method</th>                                    
+                            </tr>                                  
+                        </thead>                                                       
+                        <tbody >
+                            <tr v-for = "data in tithes.response">                                
+                                <td v-if = "data.member != null">                                          
+                                        <label class="anvil-checkbox">
+                                                <input multiple type="checkbox" :value=data.user_id v-model="member_ids">
+                                                <span class="anvil-checkmark"></span>
                                         </label>
-                                    </th>
-                                    <th>Name</th>
-                                    <th>Amount</th>
-                                    <th>Time</th>
-                                    <th>This month</th>
-                                    <th>This year</th>
-                                </tr>                                  
-                            </thead>                                                       
-                            <tbody >
-                                <tr v-for = "data in tithes.response">
-                                    <td v-if = "data.member != null">                                          
-                                            <label class="anvil-checkbox">
-                                                    <input multiple type="checkbox" :value=data.user_id v-model="member_ids">
-                                                    <span class="anvil-checkmark"></span>
-                                            </label>
-                                    </td>
-                                    <td v-else>
-                                            <label class="anvil-checkbox">
-                                                    <input multiple type="checkbox">
-                                                    <span class="anvil-checkmark"></span>
-                                            </label>
-                                    </td>
-                                    <td v-if = "data.member != null">
-                                            <router-link :to="`/memberDetail/`+ data.user_id">
-                                                    <span class = "text-secondary">{{data.member_full_name}}</span>
-                                            </router-link>
-                                    </td>
-                                    <td v-if="data.service">{{data.service_type_name}} ({{data.service_date}})</td>
-                                    <td v-if="data.group">
-                                            <router-link  :to="`/groupDetail/`+ data.group_id" class="text-muted">                                    
-                                                <div>                                             
-                                                    {{data.group_name}}
-                                                </div>                                                                                                                                
-                                            </router-link>
-                                    </td>
-                                    <td v-if="! data.group && ! data.service && ! data.member">anonymous</td>
-                                    <td><p class="text-secondary">{{humanize(data.amount)}}</p></td>
-                                    <td>{{$humanizeDate(data.date)}}</td>
-                                    <td><p class="text-secondary" v-if="data.total_this_month">{{humanize(data.total_this_month)}}</p></td>
-                                    <td><p v-if="data.total_this_year">{{humanize(data.total_this_year)}}</p></td>                                                          
-                                </tr>
-                            </tbody>
-                        </table>
-                    </content>
+                                </td>
+                                <td v-else>
+                                    <label class="anvil-checkbox">
+                                            <input multiple type="checkbox">
+                                            <span class="anvil-checkmark"></span>
+                                    </label>
+                                </td>
+                                <td>{{$humanizeDate(data.date)}}</td>
+                                <td v-if = "data.member != null">
+                                    <router-link :to="`/memberDetail/`+ data.user_id">
+                                            <span class = "text-secondary">{{data.member_full_name}}</span>
+                                    </router-link>
+                                </td>
+                                <td v-if="data.service">{{data.service_type_name}} ({{data.service_date}})</td>
+                                <td v-if="data.group">
+                                    <router-link  :to="`/groupDetail/`+ data.group_id" class="text-muted">                                    
+                                        <div>                                             
+                                            {{data.group_name}}
+                                        </div>                                                                                                                                
+                                    </router-link>
+                                </td>
+                                <td v-if="! data.group && ! data.service && ! data.member && data.name_if_not_member">
+                                    {{data.name_if_not_member}} <small>({{data.phone_if_not_member}})</small>
+                                </td>
+                                <td><p class="text-secondary">{{humanize(data.amount)}}</p></td>                                
+                                <td>{{data.mode_of_payment_name}}</td>                                                                                             
+                            </tr>
+                        </tbody>
+                    </table>
+                </content>
             </div>
             <!-- add tithe modal -->
             <div class="modal fade" id="addTithe" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -228,6 +228,8 @@
         },
         props:{
             payment_methods:null,
+            reload_data:null,
+            hide_content:null
         },
         data () {
           return {
@@ -268,6 +270,11 @@
           }
         },
         watch: {
+            reload_data: function(){                
+                if (this.reload_data == true){                    
+                    this.getTithes()
+                }                
+            },
             all_members: function(){
                 if (this.all_members != true){
                     this.member_ids = []
