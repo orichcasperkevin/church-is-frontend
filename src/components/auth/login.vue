@@ -8,7 +8,7 @@
             <div class="card-header text-center border-0">
               <img class="mr-0 " style="width: 50px ;height: auto" src="@/assets/app_logo1.png"
                   v-if="$host_name == 'my-domain' || $host_name == 'anvilchurch'">
-              <img class="ml-4 " style="width: 100px ;height: auto ;border-radius: 5px" src="@/assets/methodist_logo.jpeg" alt="logo not found"
+              <img class="ml-4 " style="width: 60px ;height: auto ;border-radius: 5px" src="@/assets/methodist_logo.jpeg" alt="logo not found"
                     v-if="$host_name == 'methodistkenya' " > 
               <p>admin login</p>
             </div>

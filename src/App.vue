@@ -7,8 +7,9 @@
 	  <!-- select logo  -->
 	  <img class="ml-4 " style="width: 150px ;height: auto" src="@/assets/text_logo.png" alt="logo not found"
 			v-if="$host_name == 'my-domain' || $host_name == 'anvilchurch'" >
-	  <img class="ml-4 " style="width: 100px ;height: auto ;border-radius: 5px" src="@/assets/methodist_logo3.png" alt="logo not found"
-			v-if="$host_name == 'methodistkenya' " >
+		<img class="ml-4 " style="width: 200px ;height: auto ;border-radius: 5px" 
+				src="@/assets/methodist_text_logo.png" alt="logo not found"
+				v-if="$host_name == 'methodistkenya' " >
 	  <div class="mt-2 col-sm-12 col-lg-8">
 		  <generalsearch />
 	  </div>
