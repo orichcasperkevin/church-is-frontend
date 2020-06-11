@@ -249,7 +249,9 @@
                             >
                                 <span class="sr-only">Toggle Dropdown</span>
                             </button>
-                            <div class="dropdown-menu border-success text-capitalize" aria-labelledby="dropdownMenuReference">
+                            <div class="dropdown-menu border-success text-capitalize" 
+                                aria-labelledby="dropdownMenuReference"
+                                style="z-index:99999">                                
                                 <a class="dropdown-item" 
                                     href="#" @click=openTitheTab()>
                                     Tithe
