@@ -49,34 +49,38 @@
                         <h3 class="text-muted">your csv :</h3>
                         <h3 class="text-muted">{{get_data_status}}</h3>
                         <small  v-if="this.csv_data.length < 0">showing only the first 5 lines</small>
+                        
+                        <div v-if="csv_data.length" style="height: 40vh; overflow-y: scroll">
+                            <table class="table table-borderless">
+                                <thead>
+                                <tr v-for="data in csv_data.slice(0,1)">
+                                    <th scope="col" v-for="(value,key) in data">
+                                        {{key}}
+                                        <select class="form-control"  v-model='csv_columns[key]'>
+                                            <option selected>import as ...</option>
+                                            <option >date</option>
+                                            <option>names</option>
+                                            <option>phone number</option>
+                                            <option>type</option>
+                                            <option>payment method</option>
+                                            <option>amount</option>
+                                        </select>
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-for="data in csv_data">
+                                    <td v-for="(value,key) in data">{{value}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>                        
 
-                        <table class="table">
-                            <thead>
-                            <tr v-for="data in csv_data.slice(0,1)">
-                                <th scope="col" v-for="(value,key) in data">
-                                    {{key}}
-                                    <select class="form-control"  v-model='csv_columns[key]'>
-                                        <option selected>import as ...</option>
-                                        <option >date</option>
-                                        <option>names</option>
-                                        <option>phone number</option>
-                                        <option>type</option>
-                                        <option>payment method</option>
-                                        <option>amount</option>
-                                    </select>
-                                </th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr v-for="data in csv_data">
-                                <td v-for="(value,key) in data">{{value}}</td>
-                            </tr>
-                            </tbody>
-                        </table>
-
-                        <div class="large-12 medium-12 small-12 cell">
+                        <div class="mt-3 large-12 medium-12 small-12 cell">
                             <label><b>file: </b>
-                            <input type="file" id="file" ref="file" v-on:change="handleFileUpload()"/>
+                            <input type="file" id="file" ref="file"                                 
+                                v-on:click="reset()"
+                                v-on:change="handleFileUpload()"/>
                             </label>
                         </div>
                         <p v-if="test_csv_errors.length">
@@ -175,10 +179,10 @@ methods: {
             var data = response.data
             //if data is not array there are no errors
             if (! data.length){
-            this.uploaded_file = data.csv
-            alert("file uploaded")
-            this.previewCSV()
-            this.submitting_file = false
+                this.uploaded_file = data.csv
+                alert("file uploaded")
+                this.previewCSV()
+                this.submitting_file = false
             }
         })
         .catch((err) =>{
@@ -187,9 +191,8 @@ methods: {
         });
     },
     // handle the case that the file changes
-    handleFileUpload: function(){
-        this.reset()
-        this.file = this.$refs.file.files[0];        
+    handleFileUpload: function(){          
+        this.file = this.$refs.file.files[0];                
     },
     //preview the csv file
     previewCSV: function(){
@@ -206,6 +209,7 @@ methods: {
     },        
     // check that the csv file is of the required format
     checkCSV: function(){
+        this.error_500 = []        
         this.test_csv_errors = []
         this.file_format_okay = false
         var file_name = this.uploaded_file.split("/")[1]
@@ -271,12 +275,12 @@ methods: {
         })
     },
     reset: function(){
+        console.log('here2')
         // csv file upload
         this.submitting_file = false
         this.checking_csv = false
         this.extracting_data = false
-        this.extract_data_button_text = "import data"
-        this.file = ''
+        this.extract_data_button_text = "import data"       
         this.error_500 = []
         this.test_csv_errors = []
         this.uploaded_file = ''

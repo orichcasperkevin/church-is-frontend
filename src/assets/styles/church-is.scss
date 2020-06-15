@@ -21,6 +21,10 @@ html {
 tr:nth-child(even) {
   background-color: #fcfcfc;
 }
+.table-borderless > thead{    
+  border-bottom: 1px solid lightgray;
+}
+
 .searchedItemsDiv{
   border-radius: 10px;
 }
