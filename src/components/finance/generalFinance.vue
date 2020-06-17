@@ -256,13 +256,14 @@
                                     href="#" @click=openTitheTab()>
                                     Tithe
                                 </a>
-                                <a class="dropdown-item"  
+                                <a class="dropdown-item d-flex justify-content-between"  
                                     v-for="type in offering_types"                                                                     
                                     href="#" data-toggle="modal" 
                                     data-target="#addOffering"
                                     @click="openTab(type.id)">                                    
                                     <span v-if="type.name != 'general offering'">{{type.name}}</span>
                                     <span v-else>Offering</span>
+                                    <span class="hidden p-1 font-weight-bold text-muted">&times;</span>
                                 </a>
                                 <hr>
                                 <a class="dropdown-item" 
@@ -748,6 +749,16 @@ export default {
                 this.offering_types = response.data
             })
         },
+        deleteOfferingType:function(id){            
+            this.$http.delete(
+                this.$BASE_URL + '/api/finance/offering-types/' + id + '/'
+            ).then(response => {                
+                alert("deleted")                
+                this.getOfferingTypes()
+            }).catch((err) => {        
+                alert(err)          
+            })
+        },
         //get the list of income types        
         getIncomeTypeList: function(){
             //try local storage
@@ -1012,5 +1023,14 @@ export default {
 </script>
 
 
-<style >
+<style scoped lang="scss">
+    .hidden{
+        
+        /* visibility: hidden; */
+    }
+    .hidden:hover{   
+        font-size: 20px;
+        visibility: visible !important;
+        color: red !important;                      
+    }
 </style>

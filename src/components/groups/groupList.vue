@@ -48,8 +48,8 @@
         <div class="modal fade" id="addGroup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalCenterTitle">add group to {{group_name}} folder</h5>
+            <div class="modal-header">                
+                <h5 class="modal-title text-capitalize" id="exampleModalCenterTitle">add group to {{group_name}} folder</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close" v-on:click="fetchData()">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -146,7 +146,7 @@ export default {
             this.adding_group = true
             this.$http({ method: 'post', url: this.$BASE_URL + '/api/groups/add-group/',
             data: {
-                group_of_groups_id: this.$route.params.id,
+                group: this.$route.params.id,
                 name: this.name,
                 description: this.description
             }

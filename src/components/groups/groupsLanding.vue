@@ -48,7 +48,10 @@
                 <b>
                     folders
                   </b>
-                  <a class="btn btn-sm btn-success " href="#" data-toggle="modal" data-target="#addModal" style="text-decoration: none" v-on:click="selectFolder()">
+                  <a class="btn btn-sm btn-success " 
+					href="#" data-toggle="modal" 
+					data-target="#addModal" 
+					style="text-decoration: none" v-on:click="switchToFolder()">
                     + Add folder
                    </a>
              </div>
@@ -70,7 +73,10 @@
               </div>             
               <div class="d-flex justify-content-between">
                 <b>groups</b>
-                  <a class="btn btn-sm btn-success" href="#" data-toggle="modal" data-target="#addModal" style="text-decoration: none">
+				  <a class="btn btn-sm btn-success" 
+					  href="#" data-toggle="modal" 
+					  v-on:click="switchToGroup()"
+					  data-target="#addModal" style="text-decoration: none">
                     + Add group
                   </a>
               </div>             
@@ -104,8 +110,8 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
                 <div class="modal-content">               
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalCenterTitle">add group</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" v-on:click="fetchData()">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">add {{group_type}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -126,7 +132,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="fetchData()">Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-success" v-on:click="addGroup()">
                       <b>+</b> add 
                       <span v-if="adding_group"
@@ -175,50 +181,50 @@ export default {
       }
     },
     scrollToElement: function(element){
-      document.getElementById(element).scrollIntoView();
+      	document.getElementById(element).scrollIntoView();
     },
     fetchData() {      
-      this.fetch_data_error = []
-      this.$store.dispatch('update_isLoading', true)
-      // try local storage
-      this.groups = JSON.parse(localStorage.getItem('group_list'))    
-      if (this.groups){        
-        var array = this.groups.response          
-        this.foundItems = array.length
-        this.$store.dispatch('update_isLoading', false)
-      }
+		this.fetch_data_error = []
+		this.$store.dispatch('update_isLoading', true)
+		// try local storage
+		this.groups = JSON.parse(localStorage.getItem('group_list'))    
+		if (this.groups){        
+				var array = this.groups.response          
+				this.foundItems = array.length
+				this.$store.dispatch('update_isLoading', false)
+		}
 
-      const currentVersion = this.$store.getters.group_list_version
-      var version  = localStorage.getItem('group_list_version')
-      
-      //else try the network
-      if (!version || version <= currentVersion) {      
-        this.$http.get(this.$BASE_URL + '/api/groups/group-of-church-groups-list')
-        .then(response => {
-            this.groups = {"response": response.data }
-            var array = this.groups.response
-            this.foundItems = array.length
+		const currentVersion = this.$store.getters.group_list_version
+		var version  = localStorage.getItem('group_list_version')
+		
+		//else try the network
+		if (!version || version <= currentVersion) {      
+			this.$http.get(this.$BASE_URL + '/api/groups/group-of-church-groups-list')
+			.then(response => {
+				this.groups = {"response": response.data }
+				var array = this.groups.response
+				this.foundItems = array.length
 
-            localStorage.setItem('group_list',JSON.stringify({"response": response.data }))
-            localStorage.setItem('group_list_version', currentVersion)
-            this.$store.dispatch('update_isLoading', false)
-        })
-        .catch((err) => {
-            this.fetch_data_error.push(err)
-            this.$store.dispatch('update_isLoading', false)
-        })
-      }
+				localStorage.setItem('group_list',JSON.stringify({"response": response.data }))
+				localStorage.setItem('group_list_version', currentVersion)
+				this.$store.dispatch('update_isLoading', false)
+			})
+			.catch((err) => {
+				this.fetch_data_error.push(err)
+				this.$store.dispatch('update_isLoading', false)
+			})
+		}
 
-      // get independent groups
-      this.$store.dispatch('update_isLoading', true)
-      this.independent_groups = JSON.parse(localStorage.getItem('group_list_independent'))
-      if (this.independent_groups){
-        var array = this.independent_groups.response
-        this.foundItems_independent = array.length
-        this.$store.dispatch('update_isLoading', false)
-      }
+		// get independent groups
+		this.$store.dispatch('update_isLoading', true)
+		this.independent_groups = JSON.parse(localStorage.getItem('group_list_independent'))
+		if (this.independent_groups){
+				var array = this.independent_groups.response
+				this.foundItems_independent = array.length
+				this.$store.dispatch('update_isLoading', false)
+		}
 
-      if (!version || version < currentVersion) {
+		if (!version || version < currentVersion) {
         this.$http.get(this.$BASE_URL + '/api/groups/church-groups-not-in-group/')
         .then(response => {
             this.independent_groups = {"response": response.data }
@@ -234,8 +240,11 @@ export default {
         })
       }
     },
-    selectFolder: function(){
-      this.group_type = 'folder'
+    switchToFolder: function(){
+      	this.group_type = 'folder'
+	},
+	switchToGroup: function(){
+      	this.group_type = 'group'
     },
     addGroup: function(){
 
@@ -265,16 +274,17 @@ export default {
         }
         }).then(response => {
             this.name = ''
-            this.description = ''
-            this.group_type = 'group'
+            this.description = ''            
             if (this.group_type == 'folder'){
               alert("folder succesfully added")
             }
             if (this.group_type == 'group'){
               this.adding_group = false
-              alert("group succesfully added")
+			  alert("group succesfully added")
+			  //update localstorage
               var new_version = parseInt(localStorage.getItem('group_list_version')) + 1
-              this.$store.dispatch('update_group_list_version', new_version)
+			  this.$store.dispatch('update_group_list_version', new_version)
+			  this.fetchData()
             }
         })
             .catch((err) => {
