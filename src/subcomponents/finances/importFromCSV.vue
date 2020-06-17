@@ -7,7 +7,7 @@
                 <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalCenterTitle">import from CSV</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button type="button" id="close-button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -47,8 +47,7 @@
                             </table>
                         <hr/>
                         <h3 class="text-muted">your csv :</h3>
-                        <h3 class="text-muted">{{get_data_status}}</h3>
-                        <small  v-if="this.csv_data.length < 0">showing only the first 5 lines</small>
+                        <h3 class="text-muted">{{get_data_status}}</h3>                    
                         
                         <div v-if="csv_data.length" style="height: 40vh; overflow-y: scroll">
                             <table class="table table-borderless">
@@ -78,31 +77,35 @@
 
                         <div class="mt-3 large-12 medium-12 small-12 cell">
                             <label><b>file: </b>
-                            <input type="file" id="file" ref="file"                                 
-                                v-on:click="reset()"
+                            <button class="mr-2 btn btn-light" v-on:click="reset()">
+                                Choose file
+                            </button>
+                            {{file_name}}
+                            <input class="d-none" type="file" id="file" ref="file"                                                                 
                                 v-on:change="handleFileUpload()"/>
                             </label>
                         </div>
                         <p v-if="test_csv_errors.length">
                             <ul>
-                                    <small><li v-for="error in test_csv_errors"><p class="text-danger">{{error}}</p></li></small>
+                                <small><li v-for="error in test_csv_errors"><p class="text-danger">{{error}}</p></li></small>
                             </ul>
                         </p>
                         <p class="text-success" v-if="file_format_okay">file okay, proceed to import</p>
                         <p v-if="error_500.length">
                             <ul>
-                                    <small><li v-for="error in error_500">
-                                        <p class="text-danger">unexpected data format in your file, make sure your CSV or EXCEL file matches the demo</p>
-                                        <p class="text-danger">select how you want to import your csv above</p>
-                                    </li></small>
+                                <small><li v-for="error in error_500">
+                                    <p class="text-danger">unexpected data format in your file, make sure your CSV or EXCEL file matches the demo</p>
+                                    <p class="text-danger">select how you want to import your csv above</p>
+                                </li></small>
                             </ul>
                         </p>                       
                         </div>
-                </div>
+                </div>                                
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-success"
-                            v-on:click="submitFile()">
+                    <button type="button" class="btn btn-success"                            
+                            v-on:click="submitFile()"
+                            v-if="file">
                             submit file
                             <span v-if="submitting_file"
                                 class="spinner-border spinner-border-sm"
@@ -111,7 +114,7 @@
                             </span>
                     </button>
                     <button type="button" class="btn btn-success"
-                            v-if="this.uploaded_file.length != 0"
+                            v-if="uploaded_file.length != 0"
                             v-on:click="checkCSV()">
                             check CSV file
                             <span v-if = "checking_csv"
@@ -139,12 +142,13 @@ export default {
 name: 'importFromCSV',
 data () {
     return {
+        file_name: "No file chosen",
         // csv file upload
         submitting_file: false,
         checking_csv: false,
         extracting_data: false,
         extract_data_button_text: "import data",
-        file: '',
+        file: null,
         error_500: [],
         test_csv_errors: [],
         uploaded_file: '',
@@ -191,8 +195,12 @@ methods: {
         });
     },
     // handle the case that the file changes
-    handleFileUpload: function(){          
-        this.file = this.$refs.file.files[0];                
+    handleFileUpload: function(){                                        
+        this.file = this.$refs.file.files[0];            
+        this.file_name = this.file.name
+        this.uploaded_file = ''
+        this.file_format_okay = false
+        this.$refs.file.value = null            
     },
     //preview the csv file
     previewCSV: function(){
@@ -265,8 +273,8 @@ methods: {
             this.$store.dispatch('update_offering_list_version', new_version)  
 
             this.emitToParent()
-
-            alert("data extracted succesfully")
+            document.getElementById('close-button').click()
+            alert("data extracted succesfully")            
         }).catch((err) => {
             alert("something went wrong while trying to extract data.\n Check the file and try again")
             this.emitToParent()
@@ -274,8 +282,7 @@ methods: {
             this.extracting_data = false            
         })
     },
-    reset: function(){
-        console.log('here2')
+    reset: function(){        
         // csv file upload
         this.submitting_file = false
         this.checking_csv = false
@@ -287,7 +294,10 @@ methods: {
         this.csv_data = []
         this.get_data_status = ''
         this.file_format_okay = false
-        this.csv_columns =  {}
+        this.csv_columns =  {}                           
+        this.file = null
+        this.file_name = "No file chosen"
+        document.getElementById('file').click()
     }
       
 }

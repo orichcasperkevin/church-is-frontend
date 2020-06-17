@@ -135,6 +135,10 @@ methods: {
     },
     //send message
     sendMessage: function (){
+        var context = null
+        if(this.context){
+            context = this.context.name
+        }
         this.sending_message = true      
         var url = this.$BASE_URL + '/api/sms/add-sms/'
         if (this.custom_message){
@@ -149,7 +153,7 @@ methods: {
                         message: this.message,
                         website: true,
                         receipient_member_ids: this.memberIds,
-                        context:this.context.name
+                        context:context
                 }
                 }).then(response => {        
                         this.sms_status.push(response)          

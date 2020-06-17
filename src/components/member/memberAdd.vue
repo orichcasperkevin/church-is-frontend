@@ -26,78 +26,65 @@
 				</div>                        
 				<!-- PERSONAL DETAILS -->                       
 				<section class="mx-auto col-lg-8 col-sm-12" v-if= "form_in_view == 'personal_detail_form'">                               
-						<!-- first_name last name and surname -->
-						<div class="row">
-							<div class="col">
-							<div class="form-group">
-								<label><b>first name :</b></label>
-								<input type="text" class="form-control"  placeholder="first name" v-model="first_name" autofocus>
-								<p v-if="first_name_errors.length">
-									<ul>
-										<small><li v-for="error in first_name_errors"><p class="text-danger">{{ error }}</p></li></small>
-									</ul>
-								</p>
-							</div>
-							<div class="form-group">
-								<label><b>middle name :</b></label>
-								<input type="text" class="form-control"  placeholder="middle name" v-model="middle_name" >                                                                
-							</div>
-							<div class="form-group">
-								<label><b>last name :</b></label>
-								<input type="text" class="form-control"  placeholder="last name" v-model="last_name" >
-								<p v-if="last_name_errors.length">
-									<ul>
-										<small><li v-for="error in last_name_errors"><p class="text-danger">{{ error }}</p></li></small>
-									</ul>
-								</p>
-							</div>
-							</div>
-						</div>                                
-						<!-- gender -->
-						<div>
+						<!-- first_name last name and surname -->						
+						<div class="ml-0 mb-3">
+							<h2 class="text-muted">Personal detail</h2>						                                       
+						</div>
+						<div v-if="! added_member.length">
 							<div class="row">
-								<div class="checkbox col">
-									<div class="radio">
-										<label><input type="radio" value = "M" v-model = "gender" > male</label>
+									<div class="col">
+									<div class="mb-3 form-group">								
+										<input type="text" class="form-control"  placeholder="First Name" v-model="first_name" autofocus>
+										<p v-if="first_name_errors.length">
+											<ul>
+												<small><li v-for="error in first_name_errors"><p class="text-danger">{{ error }}</p></li></small>
+											</ul>
+										</p>
 									</div>
-									<div class="radio">
-										<label><input type="radio" value = "F" v-model = "gender"> female</label>
+									<div class="form-group">								
+										<input type="text" class="form-control"  placeholder="Middle Name" v-model="middle_name" >                                                                
 									</div>
-									<p v-if="gender_errors.length">
-									<ul>
-										<small><li v-for="error in gender_errors"><p class="text-danger">{{ error }}</p></li></small>
-									</ul>
-									</p>
+									<div class="form-group">								
+										<input type="text" class="form-control"  placeholder="Last Name" v-model="last_name" >
+										<p v-if="last_name_errors.length">
+											<ul>
+												<small><li v-for="error in last_name_errors"><p class="text-danger">{{ error }}</p></li></small>
+											</ul>
+										</p>
+									</div>
+									</div>
+							</div>                                
+							<!-- gender -->
+							<div>
+								<div class="row">
+									<div class="checkbox col">
+										<div class="radio">
+											<label><input type="radio" value = "M" v-model = "gender" > Male</label>
+										</div>
+										<div class="radio">
+											<label><input type="radio" value = "F" v-model = "gender"> Female</label>
+										</div>
+										<p v-if="gender_errors.length">
+										<ul>
+											<small><li v-for="error in gender_errors"><p class="text-danger">{{ error }}</p></li></small>
+										</ul>
+										</p>
+									</div>
 								</div>
-							</div>
-						</div>
-						<!-- buttons -->
-						<div class="mt-5 ml-2 d-flex justify-content-end">
-							<button class="btn btn-success" @click="addMember()">
-								+ add member
-								<span   v-if="adding_member_detail"
-									class="spinner-border spinner-border-sm" 
-									role="status" 
-									aria-hidden="true">
-								</span>                                                                                
-							</button>
-							<button v-if="added_member_id"
-								class="ml-2 btn btn-outline-success"
-								@click="form_in_view = 'contact_form'">
-								next
-							</button>
-						</div>
+							</div>	
+						</div>		
+						<div v-else class="d-flex">
+							<span class="p-2">{{added_member[0].member.first_name}} {{added_member[0].member.last_name}}</span>
+							<button class="ml-4 btn btn-outline-success" @click="resetForm()">Add New</button>
+						</div>									
 				</section>   
 
 				<!-- MEMBER CONTACT -->
-				<section class="mx-auto col-lg-8 col-sm-12" v-if = "form_in_view == 'contact_form'">
+				<section class="mb-5 mx-auto col-lg-8 col-sm-12" v-if = "form_in_view == 'personal_detail_form'">
 					<!-- head -->
+					<hr>
 					<div class="ml-0 mb-3">
-						<a style="cursor: pointer" class="text-primary" @click="form_in_view = 'personal_detail_form'">
-							<img style="height: 20px" src="@/assets/icons/icons8-back-filled-50.png" alt="back">
-							back
-						</a>
-						<h4 class="mt-3 text-muted">contact for {{added_member[0].member.first_name}} {{added_member[0].member.last_name}}</h4>                                        
+						<h2 class="text-muted">Contact</h2>						                                       
 					</div>
 					<!-- contact input -->
 					<div v-if="! added_contact">                                
@@ -140,33 +127,15 @@
 					<div v-if = "added_contact">                                                
 						<p>email: <span class="text-muted">{{added_contact.member.member.email}}</span></p>
 						<p>phone number: <span class="text-muted">{{added_contact.member.phone_number}}</span></p>
-					</div>
-					<!-- buttons -->
-					<div class="ml-2 d-flex justify-content-end">
-						<button v-if="! added_contact" class="btn btn-success" @click="addContact()">
-							+ add contact
-							<span   v-if="adding_member_detail"
-								class="spinner-border spinner-border-sm" 
-								role="status" 
-								aria-hidden="true">
-							</span> 
-						</button>
-						<button class="ml-2 btn btn-outline-success"
-							@click="form_in_view = 'age_form'">
-						next
-						</button>
-					</div>
+					</div>										
 				</section> 
 
 				<!-- MEMBER AGE  -->                        
-				<section class="mx-auto col-lg-8 col-sm-12" v-if = "form_in_view == 'age_form' ">
+				<section class="mb-5 mx-auto col-lg-8 col-sm-12" v-if = "form_in_view == 'personal_detail_form' ">
 						<!-- head -->
+						<hr>
 						<div class="ml-0 mb-3">
-							<a  style="cursor: pointer" class="text-primary" @click="form_in_view = 'contact_form'">
-								<img style="height: 20px" src="@/assets/icons/icons8-back-filled-50.png" alt="back">
-								back
-							</a>
-							<h4 class="mt-3 text-muted">age for {{added_member[0].member.first_name}} {{added_member[0].member.last_name}}</h4>                                      
+							<h2 class="text-muted">Age</h2>						                                       
 						</div>
 						<!-- age input -->
 						<div v-if="! added_age" class="row">
@@ -180,27 +149,14 @@
 						</div>
 						<div v-if="added_age">
 							<p>date of birth: <span class="text-muted">{{added_age.d_o_b}}</span></p>
-						</div>
-						<!-- buttons -->
-						<div class="ml-2 d-flex justify-content-end">
-							<button v-if="! added_age" class="btn btn-success" @click="addDateOfBirth()">
-								+ add member age
-							</button>
-							<button class="ml-2 btn btn-outline-success"
-								@click="form_in_view = 'marital_status_form'">
-							next
-							</button>
-						</div>
+						</div>												
 				</section>      
 
 				<!-- MEMBER MARITAL STATUS -->
-				<section class="mx-auto col-lg-8 col-sm-12" v-if = "form_in_view == 'marital_status_form'">
+				<section class="mx-auto col-lg-8 col-sm-12" v-if = "form_in_view == 'personal_detail_form'">
+						<hr>
 						<div class="ml-0 mb-3">
-							<a  style="cursor: pointer" class="text-primary" @click="form_in_view = 'age_form'">
-								<img style="height: 20px" src="@/assets/icons/icons8-back-filled-50.png" alt="back">
-								back
-							</a>
-							<h4 class="mt-3 text-muted">marital status for {{added_member[0].member.first_name}} {{added_member[0].member.last_name}}</h4>                                       
+							<h2 class="text-muted">Marital status</h2>						                                       
 						</div>
 						<!-- marital status input -->
 						<div v-if="! added_marital_status" class="">
@@ -229,33 +185,14 @@
 								<span v-if="added_marital_status.status == 'D'">Divorced</span>
 								<span v-if="added_marital_status.status == 'W'">Widowed</span>
 							</p>
-						</div>
-
-						<!-- buttons -->
-						<div class="ml-2 d-flex justify-content-end">
-							<button v-if="! added_marital_status" class="btn btn-success" @click="addMaritalStatus()">
-								+ add marital status
-								<span   v-if="adding_member_detail"
-									class="spinner-border spinner-border-sm" 
-									role="status" 
-									aria-hidden="true">
-								</span> 
-							</button>
-							<button class="ml-2 btn btn-outline-success"
-								@click="form_in_view = 'groups_form'">
-							next
-							</button>
-						</div>
+						</div>						
 				</section>                                                       
 
 				<!-- MEMBER RESIDENCE -->
-				<section class="mx-auto col-lg-8 col-sm-12" v-if = "form_in_view == 'residence_form'">
+				<section class="mx-auto col-lg-8 col-sm-12" v-if = "form_in_view == 'personal_detail_form'">
+						<hr>
 						<div class="ml-0 mb-3">
-							<a style="cursor: pointer" class="text-primary" @click="form_in_view='marital_status_form'">
-								<img style="height: 20px" src="@/assets/icons/icons8-back-filled-50.png" alt="back">
-								back
-							</a>
-							<h4 class="mt-3 text-muted">residence for {{added_member[0].member.first_name}} {{added_member[0].member.last_name}}</h4>                                        
+							<h2 class="text-muted">Residence</h2>						                                       
 						</div>
 						<!-- residence input -->
 						<div v-if="! added_residence" class="">                                
@@ -292,8 +229,8 @@
 						</div>
 						<!-- buttons -->
 						<div class="ml-2 d-flex justify-content-end">
-							<button v-if="!added_residence" class="btn btn-success" @click="addResidence()">
-								+ add residence
+							<button v-if="!added_residence" class="btn btn-success" @click="addMember()">
+								{{add_button_text}}
 								<span   v-if="adding_member_detail"
 									class="spinner-border spinner-border-sm" 
 									role="status" 
@@ -301,27 +238,28 @@
 								</span>                                              
 							</button>
 							<button class="ml-2 btn btn-outline-success"
+								v-if="added_member.length"
 								@click="form_in_view = 'groups_form'">
-							next
+								Assign groups
 							</button>
 						</div>
 				</section>                    
 					<!-- MEMBER GROUP   -->                        
 				<section class="mx-auto col-lg-8 col-sm-12" v-if = "form_in_view == 'groups_form' ">
 					<!-- head -->
-					<div class="ml-0 mb-3">
-							<a  style="cursor: pointer" class="text-primary" @click="form_in_view='marital_status_form'">
+					<div class="ml-0 mb-5">
+							<a  style="cursor: pointer" class="text-primary" @click="form_in_view='personal_detail_form'">
 								<img style="height: 20px" src="@/assets/icons/icons8-back-filled-50.png" alt="back">
 								back
 							</a>
-							<h4 class="mt-3 text-muted">groups for
+							<h4 class="mt-3 text-muted">Assign groups for
 								{{added_member[0].member.first_name}}
 								{{added_member[0].member.last_name}}
 							</h4>
 					</div>
 					<!-- group input					 -->
 					<div v-for="folder, group in folders" v-if="! groups_added_into.length">
-						<h4>{{folder[0].folder_name}}</h4>
+						<h4 class="text-capitalize">{{folder[0].folder_name}}</h4>
 						<hr>
 						<div v-for="group in folder">													
 							<label class="anvil-checkbox">
@@ -364,6 +302,8 @@ export default {
   name: 'memberAdd',
   data () {
     return {
+		//add button text
+		add_button_text: "+ Add Member",
         //select form in view
         form_in_view: 'personal_detail_form',
         //contact
@@ -451,63 +391,94 @@ export default {
 		}
   },
   methods: {   
-    addMember: function(){
-        this.first_name_errors = []
-        this.last_name_errors = []
-        this.gender_errors = []
-
-        if (! this.first_name){
-			this.first_name_errors.push('you must enter the first name')
-			return false;
-        }
-        if (this.first_name.split(' ').length > 1){
-			this.first_name_errors.push('first name must be one word only')
-			return false;
-        }
-        if(! this.last_name){
-			this.last_name_errors.push('you must enter a last name')
-			return false;
-        }
-        if (this.last_name.split(' ').length > 1){
-			this.last_name_errors.push('last name must be one word only')
-			return false;
-        }
-        if (! this.gender ){
-			this.gender_errors.push('select gender')
-			return false;
-        }
+	resetForm: function(){
+        //contact
         this.added_contact = null
-        this.added_age = null
-        this.added_marital_status = null
+        //names and gender		
+        this.added_member = []
+        this.add_member_error = []
+        this.added_member_id = null
+        //date of birth        		
+		this.added_age = null
+        //residence       
         this.added_residence = null
-        this.adding_member_detail = true
-        this.groups_added_into = []
-        this.$http({
-			method: 'post',
-			url: this.$BASE_URL + '/api/members/add-member/',
-			data: {
-				first_name: this.first_name,
-				middle_name:this.middle_name,
-				last_name: this.last_name,
-				gender: this.gender,
-				email: this.email         
+        //marital status    
+        this.added_marital_status = null
+        //add member
+		this.adding_member_detail = false    
+		//add button text    
+		this.add_button_text = "+ Add Member"
+	},
+    addMember: function(){
+		if (! this.added_member.length){
+			this.first_name_errors = []
+			this.last_name_errors = []
+			this.gender_errors = []
+
+			if (! this.first_name){
+				this.first_name_errors.push('you must enter the first name')
+				alert('you must enter the first name')
+				return false;
 			}
+			if (this.first_name.split(' ').length > 1){
+				this.first_name_errors.push('first name must be one word only')
+				alert('first name must be one word only')
+				return false;
+			}
+			if(! this.last_name){
+				this.last_name_errors.push('you must enter a last name')
+				alert('you must enter a last name')
+				return false;
+			}
+			if (this.last_name.split(' ').length > 1){
+				this.last_name_errors.push('last name must be one word only')
+				alert('last name must be one word only')
+				return false;
+			}
+			if (! this.gender ){
+				this.gender_errors.push('select gender')
+				alert('select gender')
+				return false;
+			}
+			this.added_contact = null
+			this.added_age = null
+			this.added_marital_status = null
+			this.added_residence = null
+			this.adding_member_detail = true
+			this.groups_added_into = []
+			
+			this.$http({
+				method: 'post',
+				url: this.$BASE_URL + '/api/members/add-member/',
+				data: {
+					first_name: this.first_name,
+					middle_name:this.middle_name,
+					last_name: this.last_name,
+					gender: this.gender,
+					email: this.email         
+				}
 			}).then(response => {                
 				this.added_member.push(response.data )  
-				this.added_member_id = this.added_member[0].member.id                  
+				this.added_member_id = this.added_member[0].member.id
+				this.addOtherDetails()
+				//update local storage
 				var new_version = parseInt(localStorage.getItem('member_list_version')) + 1
 				this.$store.dispatch('update_member_list_version', new_version)
 				alert("member added succesfully")  
-						
+				//reset detail
 				this.gender_male = false
 				this.gender_female = false
 				this.last_name = ''
 				this.first_name = ''                                                             
 				this.adding_member_detail = false               
-			})
-			.catch((err) => {
+				this.add_button_text = "update details"
+			}).catch((err) => {
 				this.add_member_error.push(err)
 			})
+		}
+		else{
+			this.addOtherDetails()
+		}
         
     },
     addContact: function(){
@@ -525,9 +496,25 @@ export default {
 			}).then((response)=>{
 				this.added_contact = response.data
 				this.adding_member_detail = false
+				this.email = ''
+				this.country_code = '+254'
+				this.contact = ''
+				this.postal_address = ''
+				this.phone_number = ''
+				this.phone_number_errors = []
+				this.phone_number_OK = []
+				alert("contact added")
+
 			}).catch((err)=>{
 				alert(err)
 				this.adding_member_detail = false
+				this.email = ''
+				this.country_code = '+254'
+				this.contact = ''
+				this.postal_address = ''
+				this.phone_number = ''
+				this.phone_number_errors = []
+				this.phone_number_OK = []
 			})  
         }           
     },
@@ -544,9 +531,12 @@ export default {
 			}).then((response)=>{
 				this.added_age = response.data
 				this.adding_member_detail = false
+				this.d_o_b = ''
+				alert("date of birth added")
 			}).catch((err)=>{
 				alert(err)
 				this.adding_member_detail = false
+				this.d_o_b = ''
 			})
         }       
     },
@@ -563,9 +553,12 @@ export default {
 			}).then((response)=>{
 				this.added_marital_status = response.data
 				this.adding_member_detail = false
+				this.marital_status = ''
+				alert("marital status added")
 			}).catch((err)=>{
 				alert(err)
 				this.adding_member_detail = false
+				this.marital_status = ''
 			})
         }       
     },
@@ -587,11 +580,26 @@ export default {
 					description: this.description
 				}
 			}).then((response)=>{
-					this.added_residence = response.data
+				this.added_residence = response.data
+				this.home_town = ''
+				this.road = ''
+				this.street = ''
+				this.description = ''
+				alert("residence added")
 			}).catch((err)=>{
-					alert(err)
+				alert(err)
+				this.home_town = ''
+				this.road = ''
+				this.street = ''
+				this.description = ''
 			})
         }
+	},
+	addOtherDetails: function(){		
+		this.addContact()
+		this.addDateOfBirth()
+		this.addMaritalStatus()
+		this.addResidence()
 	},
 	groupBy: function(array, key){
 		const result = {}

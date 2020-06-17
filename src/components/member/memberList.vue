@@ -29,9 +29,8 @@
                       search by first name
                       </b>
                     </label>
-                    <input type="text" class="form-control"  aria-describedby="searchHelp" placeholder="e.g John,Brian etc" v-model="firstnamesearch" autofocus>
-                    <div style="padding: 10px 10px 10px 10px" class="text-info">{{firstnamesearch_status}}</div>
-                    <small id="searchHelp" class="form-text text-muted">search members by their first names</small>
+                    <input type="text" class="form-control"  aria-describedby="searchHelp" placeholder="Search..." v-model="firstnamesearch" autofocus>
+                    <div style="padding: 10px 10px 10px 10px" class="text-info">{{firstnamesearch_status}}</div>                    
                 </div>
               <p>
                   <a class="d-none d-lg-block" data-toggle="collapse" href="#collapseMoreFilters" role="button" aria-expanded="false" aria-controls="collapseMoreFilters">
@@ -89,7 +88,7 @@
               </div>
               <div v-if = "fetch_data_error.length == 0">
               <div>
-                  <h3 class="font-weight-bold">
+                  <h3 class="ml-5 font-weight-bold">
                     Members
                   </h3>
                   <div class="btn-group d-sm-block d-md-none ml-5 mb-2">
@@ -180,18 +179,25 @@
             <div class="col-12 col-sm-10 col-md-5 col-lg-3">
               <hr class="d-sm-block d-lg-none">
               <div class="btn-group" style="padding: 0px 0px 25px 0px">
-                <router-link :to="{name: 'memberAdd'}" style="text-decoration: none">
+				<div style="text-decoration: none; cursor: pointer;"
+					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
                     <div class="add-button">
                       + Add member
                     </div>
-                </router-link>
-                <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
+                </div>
+                <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" 
+						id="dropdownMenuReference" 
+						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
                   <span class="sr-only">Toggle Dropdown</span>
                 </button>
                 <div class="dropdown-menu border-success" aria-labelledby="dropdownMenuReference">
-                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#importCSV"><b>+</b> import from csv</a>
-                    <div class="dropdown-divider"></div>
-                    <router-link class="d-none dropdown-item" :to="{name: 'adminRoles'}"> assign roles</router-link>
+						<router-link :to="{name: 'memberAdd'}" class="dropdown-item" style="text-decoration: none">								
+							Add member						
+						</router-link>
+						<a class="dropdown-item" href="#" data-toggle="modal" data-target="#importCSV">
+							Import from CSV
+						</a>
+                    
                 </div>
               </div>
                 <div class="list-group font-weight-bold">                                     
@@ -304,19 +310,19 @@
                     <div class="modal-content">
                       <div class="modal-header">
                         <h5 class="modal-title" id="exampleModalCenterTitle">import from CSV</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <button type="button" id="close-button" class="close" data-dismiss="modal" aria-label="Close">
                           <span aria-hidden="true">&times;</span>
                         </button>
                       </div>
                       <div class="modal-body">
                         <h3 class="text-muted">demo</h3>
                           <div class="container">
-                              <table class="table">
+                              <table class="table table-borderless">
                                   <thead>
                                     <tr>
                                       <th scope="col">names</th>
                                       <th scope="col">gender</th>
-                                      <th scope="col">date of birth <br/>(YYYY-MM-DD)</th>
+                                      <th scope="col">date of birth <br/>(DD/MM/YYYY)</th>
                                       <th scope="col">phone number</th>
                                       <th scope="col">email</th>
                                       <th scope="col">marital status</th>
@@ -326,7 +332,7 @@
                                     <tr>
                                       <td>John The Baptist</td>
                                       <td>M</td>
-                                      <td>1997-07-17</td>
+                                      <td>17/07/1997</td>
                                       <td>07********</td>
                                       <td>example@nano.com</td>
                                       <td>M</td>
@@ -334,7 +340,7 @@
                                     <tr>
                                       <td>Mark Laboso</td>
                                       <td>M</td>
-                                      <td>1990-12-03</td>
+                                      <td>03/12/1980</td>
                                       <td>07********</td>
                                       <td>example@nano.com</td>
                                       <td>S</td>
@@ -342,14 +348,14 @@
                                     <tr>
                                       <td>Martha Kari</td>
                                       <td>F</td>
-                                      <td>1984-02-20</td>
+                                      <td>20/02/1998</td>
                                       <td>07********</td>
                                       <td>example@nano.com</td>
                                       <td>D</td>
                                     </tr>
                                     <td>Maria Desa malibo</td>
                                       <td>F</td>
-                                      <td>1990-07-29</td>
+                                      <td>29/07/1990</td>
                                       <td>07********</td>
                                       <td>example@nano.com</td>
                                       <td>W</td>
@@ -360,39 +366,45 @@
                               <h3 class="text-muted">your csv :</h3>
                               <h3 class="text-muted">{{get_data_status}}</h3>
                               <small  v-if="this.csv_data.length < 0">showing only the first 5 lines</small>
-
-                              <table class="table">
-                                <thead>
-                                  <tr v-for="data in csv_data.slice(0,1)">
-                                    <th scope="col" v-for="(value,key) in data">
-                                      {{key}}
-                                      <select class="form-control"  v-model='csv_columns[key]'>
-                                          <option selected disabled>import as ...</option>
-                                          <option >names</option>
-                                          <option>gender</option>
-                                          <option>date of birth</option>
-                                          <option>phone number</option>
-                                          <option>email</option>
-                                          <option>marital status</option>
-                                        </select>
-                                    </th>
-                                  </tr>
-                                </thead>
-                                <tbody>
-                                  <tr v-for="data in csv_data">
-                                    <td v-for="(value,key) in data">{{value}}</td>
-                                  </tr>
-                                </tbody>
-                              </table>
+                                <div v-if="csv_data.length" style="height: 40vh; overflow-y: scroll">
+                                    <table class="table">
+                                        <thead>
+                                          <tr v-for="data in csv_data.slice(0,1)">
+                                            <th scope="col" v-for="(value,key) in data">
+                                              {{key}}
+                                              <select class="form-control"  v-model='csv_columns[key]'>
+                                                  <option selected disabled>import as ...</option>
+                                                  <option >names</option>
+                                                  <option>gender</option>
+                                                  <option>date of birth</option>
+                                                  <option>phone number</option>
+                                                  <option>email</option>
+                                                  <option>marital status</option>
+                                                </select>
+                                            </th>
+                                          </tr>
+                                        </thead>
+                                        <tbody>
+                                          <tr v-for="data in csv_data">
+                                            <td v-for="(value,key) in data">{{value}}</td>
+                                          </tr>
+                                        </tbody>
+                                      </table>
+                                </div>                            
 
                               <div class="large-12 medium-12 small-12 cell">
-                                <label><b>file: </b>
-                                  <input type="file" id="file" ref="file" v-on:change="handleFileUpload()"/>
-                                </label>
+									<label><b>file: </b>
+										<button class="mr-2 btn btn-light" v-on:click="reset()">
+											Choose file
+										</button>
+										{{file_name}}
+										<input class="d-none" type="file" id="file" ref="file"                                                                 
+											v-on:change="handleFileUpload()"/>
+									</label>
                               </div>
                               <p v-if="test_csv_errors.length">
                                 <ul>
-                                        <small><li v-for="error in test_csv_errors"><p class="text-danger">{{error}}</p></li></small>
+                                    <small><li v-for="error in test_csv_errors"><p class="text-danger">{{error}}</p></li></small>
                                 </ul>
                               </p>
                               <p class="text-success" v-if="file_format_okay">file okay, proceed to import</p>
@@ -413,7 +425,8 @@
                       <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-success"
-                                v-on:click="submitFile()">
+								v-on:click="submitFile()"
+								v-if="file">
                                 submit file
                                 <span v-if="submitting_file"
                                       class="spinner-border spinner-border-sm"
@@ -567,12 +580,13 @@ export default {
       message: " ",
       sending_anvil_message:false,
       
-      // csv file upload
+	  // csv file upload
+	  file_name: "No file chosen",
       submitting_file: false,
       checking_csv: false,
       extracting_data: false,
       extract_data_button_text: "import data",
-      file: '',
+      file: null,
       error_500: [],
       test_csv_errors: [],
       uploaded_file: '',
@@ -855,7 +869,28 @@ export default {
     },
   // handle the case that the file changes
     handleFileUpload: function(){
-      this.file = this.$refs.file.files[0];
+		this.file = this.$refs.file.files[0]
+        this.file_name = this.file.name
+        this.uploaded_file = ''
+        this.file_format_okay = false
+        this.$refs.file.value = null   
+	},
+	// reset csv file upload
+	reset: function(){                
+        this.submitting_file = false
+        this.checking_csv = false
+        this.extracting_data = false
+        this.extract_data_button_text = "import data"       
+        this.error_500 = []
+        this.test_csv_errors = []
+        this.uploaded_file = ''
+        this.csv_data = []
+        this.get_data_status = ''
+        this.file_format_okay = false
+        this.csv_columns =  {}                           
+        this.file = null
+        this.file_name = "No file chosen"
+        document.getElementById('file').click()
     },
   //preview the csv file
     previewCSV: function(){
@@ -918,7 +953,8 @@ export default {
 			this.$store.dispatch('update_member_list_version', new_version)
 			this.fetchData()
 			this.extracting_data = false
-			alert("data extracted succesfully")
+			document.getElementById('close-button').click()
+			alert("data extracted succesfully")			
 		}).catch((err) => {
 			alert("something went wrong while trying to extract data.\n Check the file and try again")
 			this.extract_data_button_text = "import data"

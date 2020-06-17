@@ -230,7 +230,7 @@
                 <div class = "col-12 col-sm-10 col-md-8 col-lg-3">
                     <!-- add for tithes -->
                     <div class="btn-group" style="padding: 0px 0px 25px 10px"
-                         v-if = "(tithes_selected || offerings_selected) && hide_content">
+                         v-if = "(tithes_selected || offerings_selected)">
                             <a href="#" id="dropdownMenuReference" data-toggle="dropdown"
                                 aria-haspopup="true" aria-expanded="false" data-reference="parent"
                                 style="text-decoration: none">
@@ -328,7 +328,7 @@
                               <img src="@/assets/icons/icons8-export-csv-30.png" style="width: 45px; height:auto"> Export To CSV
                             </button>                            
                     </div>
-                    <div class="list-group font-weight-bold"  v-if = "tithes_selected && hide_content">
+                    <div class="list-group font-weight-bold"  v-if = "tithes_selected">
                             <button type="button" class="d-flex justify-content-about font-weight-bold text-muted list-group-item list-group-item-action border-0" 
                                  data-toggle="modal" data-target="#textModalCenter">
                                 <img src="@/assets/icons/icons8-comments-64.png" style="width: 45px; height:auto">
@@ -339,7 +339,7 @@
                                 <img src="@/assets/icons/icons8-export-csv-30.png" style="width: 45px; height:auto"> Export To CSV
                             </button>                            
                     </div>
-                    <div class="list-group "  v-if = "offerings_selected && hide_content">
+                    <div class="list-group "  v-if = "offerings_selected">
                             <button type="button" class="d-flex justify-content-about font-weight-bold text-muted list-group-item list-group-item-action border-0"
                                     data-toggle="modal" data-target="#textModalCenter">
                                     <img src="@/assets/icons/icons8-comments-64.png"  style="width: 45px; height:auto">
