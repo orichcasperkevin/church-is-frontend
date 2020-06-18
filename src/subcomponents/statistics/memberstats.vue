@@ -1,5 +1,5 @@
 <template>
-        <div class="member-stats" >    
+        <div class="member-stats col-sm-12 col-lg-8">    
             <div v-if="data.datasets.length">
                 <h3>New members </h3>
                 <barchart :data='data'/>
@@ -8,11 +8,11 @@
                 loading data ...
             </div>
             <!-- age distribution -->
-            <div v-if="age_distribution_data.datasets.length">
+            <div class = "mt-4" v-if="age_distribution_data.datasets.length">
                 <h3>Age distribution</h3>                
                 <div class="col-4" style="background-color: ghostwhite; border-radius: 5px">
-                        <h1><span class="label label-secondary text-secondary">{{recorded_ages}}</span></h1>
-                        recorded ages                        
+                    <h1><span class="label label-secondary text-secondary">{{recorded_ages}}</span></h1>
+                    recorded ages                        
                 </div>             
                 <doughnutchart :data='age_distribution_data'/>
             </div>

@@ -20,534 +20,690 @@
       <body class="main-content">
         <div class="container">
           <div class="row">
-            <!-- FILTERS TAB ON THE LEFT -->
-            <div class="filters col-12 col-sm-0 col-md-8 col-lg-2 " style="padding: 3px 3px 3px 3px">
-                <div class="form-group d-none d-lg-block">
-                    <label for="searchInput">
-                      <b>
-                      <img style="width: 20px ;height: auto" src="@/assets/icons/icons8-search-80.png">
-                      search by first name
-                      </b>
-                    </label>
-                    <input type="text" class="form-control"  aria-describedby="searchHelp" placeholder="Search..." v-model="firstnamesearch" autofocus>
-                    <div style="padding: 10px 10px 10px 10px" class="text-info">{{firstnamesearch_status}}</div>                    
+            <!-- Navigation on Left -->
+            <section class="filters col-12 col-sm-0 col-md-8 col-lg-2 " style="padding: 3px 3px 3px 3px">             
+              <div class="">
+                <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+				  <a class="nav-link active" id="v-pills-home-tab" 
+					  data-toggle="pill" 
+					  href="#v-pills-home" 
+					  role="tab" 
+					  aria-controls="v-pills-home" 
+					  aria-selected="true"
+					  @click="actions_list=false">
+					  <img style="width: 20px ;height: auto" src="@/assets/icons/icons8-present-48.png">
+					  Quick links
+				  </a>
+				  <a class="nav-link" 						  
+						  data-toggle="pill" 
+						  href="#v-pills-profile" 
+						  role="tab" 
+						  aria-controls="v-pills-profile" 
+						  aria-selected="false"
+						  @click="detail_view=false ;actions_list=true ">
+						  <img style="width: 20px ;height: auto" src="@/assets/icons/icons8-contacts-208.png">
+						  Member list
+					</a>
+				  <a class="nav-link" id="v-pills-messages-tab"					
+						data-toggle="pill" 
+						href="#v-pills-profile" 
+						role="tab" 
+						aria-controls="v-pills-profile" 
+						aria-selected="false"
+						@click="detail_view=true;actions_list=true">
+						<img style="width: 20px ;height: auto" src="@/assets/icons/icons8-admin-settings-male-30.png">
+						Detailed list
+				</a>
+				  <a class="nav-link" id="v-pills-settings-tab" 
+					  data-toggle="pill" 
+					  href="#v-pills-settings" 
+					  role="tab" 
+					  aria-controls="v-pills-settings" 
+					  aria-selected="false"
+					  @click="actions_list=false">
+					  <img style="width: 20px ;height: auto" src="@/assets/icons/icons8-group-of-projects-filled-50.png">
+					  Graphs
+					</a>
                 </div>
-              <p>
-                  <a class="d-none d-lg-block" data-toggle="collapse" href="#collapseMoreFilters" role="button" aria-expanded="false" aria-controls="collapseMoreFilters">
-                    <div class="moreButton">
-                      <img style="width: 25px ;height: auto" src="@/assets/icons/icons8-down-arrow-64.png">
-                    <b> more filters</b>
-                    </div>
-                  </a>
-              </p>
-              <div class="collapse"  id="collapseMoreFilters">
-                  <div id="container row" >
-                      <div class="accordion">
-                        <div class="d-flex justify-content-between">
-                            <label for="tm" class="accordionitem"><b>age</b></label>
-                            <a href="#" v-on:click="resetAge" class="text-success">reset</a>
-                        </div>
-                          <div class="d-flex flex-row justify-content-about">
-                              <div class="form-group p-1 ">
-                                <small><b>max age :</b></small>
-                                <input type="number" class="form-control" id="searchInput" placeholder="max age" v-model = "max_age">
-                              </div>
-                              <div class="form-group p-1">
-                                  <small><b>min age :</b></small>
-                                  <input type="number" class="form-control" id="searchInput"  placeholder="min age" v-model = "min_age">
-                              </div>
-                          </div>
-                      </div>
-                      <div class="accordion">
-                          <div class="d-flex justify-content-between">
-                              <label for="tn" class="accordionitem"><b>gender</b></label>
-                              <a href="#" v-on:click="resetGender" class="text-success">reset</a>
-                          </div>
-                        <div class="row" style="padding : 10px">
-                          <div class="col">
-                            <div>
-                                <input type="radio" name="optradio" value="M" v-model="gendersearch"> male
-                              </div>
-                            </div>
-                            <div class="col">
-                              <div class="radio">
-                                <input type="radio" name="optradio" value ="F" v-model="gendersearch"> female
-                              </div>
-                            </div>
-                        </div>
-                      </div>
-                    </div>
               </div>
-            </div>
+			</section>
+			
             <!-- CONTENT TAB IN THE MIDDLE -->
-            <div class="col" >
+            <section class="col tab-content" id="v-pills-tabContent">
+				<!-- landing -->
+				<section class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+					<div class="d-flex flex-column justify-content-center">
+					<div></div>
+					<div class="mt-5 mb-5 d-flex flex-nowrap justify-content-center">
+						<div class="p-4 d-flex flex-wrap justify-content-center">
+						<img class="mb-2 church-is-menu" src="@/assets/icons/icons8-contacts-208.png" 
+							style="width:35px;height:auto"> 
+							<router-link :to="{name: 'memberAdd'}" style="color: black">								
+							Add member						
+							</router-link>
+						</div>						
+						<div class="p-4 d-flex flex-wrap justify-content-center">
+						<img class="mb-2 church-is-menu" src="@/assets/icons/icons8-export-csv-30.png" 
+							style="width:35px;height:auto"> 
+							<a class="dropdown-item" href="#" data-toggle="modal" data-target="#importCSV">
+							Import from CSV
+							</a>
+							
+						</div>
+						<div class="p-4 d-flex flex-wrap justify-content-center ">
+						<img class="church-is-menu" src="@/assets/icons/icons8-add-user-group-man-man-64.png" 
+							style="width:45px;height:auto"> 
+							<a class="dropdown-item" href="#" data-toggle="modal" data-target="#assignGroup">
+								Assign Group
+							</a>
+						</div>
+					</div>
+					<div></div>
+					</div>
+				</section>
+				<!-- member list -->
+				<section class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+					<div class = "center-div" v-if = "fetch_data_error.length > 0">
+					<img style = "height: 64px "src="@/assets/icons/icons8-wi-fi-off-64.png">
+					<p class="text-info">check your connection</p>
+					</div>
+					<div v-if = "fetch_data_error.length == 0">
+					<div>
+						<h3 class="ml-5 font-weight-bold">
+						Members
+						</h3>
+						<div class="btn-group d-sm-block d-md-none ml-5 mb-2">
+						<a href="#" v-on:click="openAction()">
+							<div class="btn btn-light">
+							actions
+							</div>
+							</a>
+						<button v-on:click="openAction()" type="button" class="btn btn-sm btn-light dropdown-toggle dropdown-toggle-split">
+							<span class="sr-only" >Toggle Dropdown</span>
+						</button>
+						</div>
+						<hr/>
+						<div class=" mb-2 d-flex flex-row justify-content-left flex-wrap">
+						<div class="d-none d-lg-block form-group p-1">
+							<small><b>First name:</b></small>
+							<input type="text" class="form-control"  aria-describedby="searchHelp" placeholder="Search..." v-model="firstnamesearch" autofocus>
+						</div>								
+						<div class="d-none d-lg-block" v-if="detail_view">									
+							<div class="d-flex flex-row justify-content-center">										
+							<div class="form-group p-1 ">
+								<small><b>Max age : </b></small><small><a href="#" v-on:click="resetAge" class="text-success">reset</a></small>
+								<input type="number" class="form-control" id="searchInput" placeholder="max age" v-model = "max_age" style="max-width:100px">
+							</div>
+							<div class="form-group p-1">
+								<small><b>Min age : </b></small><small><a href="#" v-on:click="resetAge" class="text-success">reset</a></small>
+								<input type="number" class="form-control" id="searchInput"  placeholder="min age" v-model = "min_age" style="max-width:100px">
+							</div>										
+							</div>
+						</div>
+						<div class="d-none d-lg-block" v-if="detail_view">
+							<div class="d-flex justify-content-center">									
+							<small><a href="#" v-on:click="resetGender" class="text-success">reset</a></small>
+							</div>
+							<div class="d-flex" style="padding : 10px">										
+							<input class="ml-2" type="radio" name="optradio" value="M" v-model="gendersearch"> <span class="ml-2">Male</span>
+							<input class="ml-2" type="radio" name="optradio" value ="F" v-model="gendersearch"> <span class="ml-2">Female</span>										
+							</div>
+						</div>
+						</div>							
 
-              <div class = "center-div" v-if = "fetch_data_error.length > 0">
-                <img style = "height: 64px "src="@/assets/icons/icons8-wi-fi-off-64.png">
-                <p class="text-info">check your connection</p>
-              </div>
-              <div v-if = "fetch_data_error.length == 0">
-              <div>
-                  <h3 class="ml-5 font-weight-bold">
-                    Members
-                  </h3>
-                  <div class="btn-group d-sm-block d-md-none ml-5 mb-2">
-                      <a href="#" v-on:click="openAction()">
-                          <div class="btn btn-light">
-                            actions
-                          </div>
-                        </a>
-                      <button v-on:click="openAction()" type="button" class="btn btn-sm btn-light dropdown-toggle dropdown-toggle-split">
-                        <span class="sr-only" >Toggle Dropdown</span>
-                      </button>
-                  </div>
-                  <hr/>
-                <div class="mb-2 d-flex flex-row justify-content-center">
-                   <span class="mt-2 mr-2 text-secondary"> found <b>{{foundItems}}</b></span>
-                    <a class="btn btn-outline-secondary dropdown-toggle mr-1" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
-                        more stats
-                    </a>
-                </div>
-
-              </div>
-              <div class="collapse" id="statsTab">
-                  <div class="card card-body outline-0">
-                      <memberstats msg="expenditure stats"/>
-                  </div>
-              </div>
-                <table class="table table-responsive-sm table-borderless" 
-                    v-if = "(min_age == 0 || min_age == '') && (max_age == 150 || max_age  == '')">
-                  <thead>
-                    <tr>
-                      <th></th>
-                      <th class="row ml-1">
-                              <label class="anvil-checkbox">all
-                                  <input type="checkbox":value=true v-model="all_members">
-                                  <span class="anvil-checkmark"></span>
-                              </label>
-                        <!-- actions drop down on phone -->
-                      </th>
-                      <th></th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                    <tbody>
-                      <tr v-for="data in members.response.slice(0,100)">
-                        <th scope="row"></th>
-                        <td>
-                          <label class="anvil-checkbox">
-                              <input multiple type="checkbox" :value=data.member.id v-model="member_ids">
-                              <span class="anvil-checkmark"></span>
-                          </label>
-                        </td>
-                        <td >
-                          <img v-if = "data.gender == 'M'" style = "height: 32px "src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
-                              <img v-if = "data.gender == 'F'" style = "height: 32px "src="@/assets/avatars/icons8-user-female-skin-type-4-40.png">
-                              <img v-if = "data.gender == 'R'" style = "height: 32px "src="@/assets/avatars/icons8-contacts-96.png">
-                          <router-link :to="`/memberDetail/`+ data.member.id">
-                            <span class = "text-secondary">{{data.member.first_name}} {{data.member.last_name}}</span>
-                            <span class="ml-4 text-secondary"><i v-if="data.phone_number">({{data.phone_number}})</i></span>
-                          </router-link>
-                          </td>
-                      </tr>
-                    </tbody>
-                  </table>
-
-                  </div>
-                  <table class="table table-responsive-sm table-borderless" v-if = "min_age > 0  || max_age != 150 ">
-                    <tbody>
-                      <tr v-for="data in members.response.slice(0,100)">
-                        <th scope="row"></th>
-                        <td>
-                            <label class="anvil-checkbox">
-                                <input multiple type="checkbox" :value=data.member.member.id v-model="member_ids">
-                                <span class="anvil-checkmark"></span>
-                            </label>
-                          </td>
-                        <td ><img v-if = "data.member.gender == 'M'" style = "height: 32px "src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
-                              <img v-if = "data.member.gender == 'F'" style = "height: 32px "src="@/assets/avatars/icons8-user-female-skin-type-4-40.png">
-                              <img v-if = "! data.member.gender" style = "height: 32px "src="@/assets/avatars/icons8-contacts-96.png">
-                          <router-link :to="`/memberDetail/`+ data.member.member.id">
-                            <span class = "text-secondary">{{data.member.member.first_name}} {{data.member.member.last_name}}</span>
-                          </router-link>
-                          </td>
-                      </tr>
-                    </tbody>
-                  </table>
-            </div>
+					</div>						
+					<table class="table table-responsive-sm table-borderless" 
+						v-if = "(min_age == 0 || min_age == '') && (max_age == 150 || max_age  == '')">
+						<thead>
+						<tr>									
+						<th class="row ml-1 mb-5">
+							<label class="anvil-checkbox">
+								<input type="checkbox":value=true v-model="all_members">
+								<span class="anvil-checkmark"></span>
+							</label><span class="mt-4" style="position:absolute">All ({{foundItems}})</span>
+						<!-- actions drop down on phone -->
+						</th>															
+						<th></th>
+						<th v-if="detail_view">Gender</th>
+						<th v-if="detail_view">Phone number</th>
+						<th v-if="detail_view">Marital status</th>
+						<th v-if="detail_view">Age</th>
+						</tr>
+						</thead>
+						<tbody>
+						<tr v-for="data in members.response.slice(0,100)">									
+							<td >
+							<label class="anvil-checkbox">
+								<input multiple type="checkbox" :value=data.member.id v-model="member_ids">
+								<span class="anvil-checkmark"></span>
+							</label>
+							</td>
+							<td>
+							<img v-if = "data.gender == 'M'" style = "height: 32px "src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
+								<img v-if = "data.gender == 'F'" style = "height: 32px "src="@/assets/avatars/icons8-user-female-skin-type-4-40.png">
+								<img v-if = "data.gender == 'R'" style = "height: 32px "src="@/assets/avatars/icons8-contacts-96.png">
+							<router-link :to="`/memberDetail/`+ data.member.id">
+							<span class = "text-secondary">{{data.member.first_name}} {{data.member.last_name}}</span>										
+							</router-link>
+							</td>
+							<!-- if detail_view -->
+							<td v-if="detail_view">									
+								{{data.gender}}									
+							</td>
+							<td >
+							<span class="ml-4 text-secondary">
+								<i v-if="data.phone_number">{{data.phone_number}}</i>
+							</span>
+							</td>
+							<td v-if="detail_view">																														
+							<span v-if="data.marital_status == 'S'">Single</span>
+							<span v-if="data.marital_status == 'M'">Married</span>
+							<span v-if="data.marital_status == 'D'">Divorced</span>
+							<span v-if="data.marital_status == 'W'">Widowed</span>									
+							<span v-if="data.marital_status == ''">-</span>
+							</td>
+							<td v-if="detail_view">																				
+							<i v-if="data.age">{{data.age}}</i>	
+							<i v-else>-</i>									
+							</td>
+						</tr>
+						</tbody>
+					</table>
+					</div>
+					<table class="table table-responsive-sm table-borderless" v-if = "min_age > 0  || max_age != 150 ">
+					<thead>
+						<tr>									
+						<th class="row ml-1 mb-5">
+							<label class="anvil-checkbox">
+								<input type="checkbox":value=true v-model="all_members">
+								<span class="anvil-checkmark"></span>
+							</label><span class="mt-4" style="position:absolute">All ({{foundItems}})</span>
+						<!-- actions drop down on phone -->
+						</th>															
+						<th></th>
+						<th v-if="detail_view">Gender</th>
+						<th v-if="detail_view">Phone number</th>
+						<th v-if="detail_view">Marital status</th>
+						<th v-if="detail_view">Age</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr v-for="data in members.response.slice(0,100)">								
+						<td>
+							<label class="anvil-checkbox">
+							<input multiple type="checkbox" :value=data.member.member.id v-model="member_ids">
+							<span class="anvil-checkmark"></span>
+							</label>
+							</td>
+						<td >	
+							<img v-if = "data.member.gender == 'M'" style = "height: 32px "src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
+							<img v-if = "data.member.gender == 'F'" style = "height: 32px "src="@/assets/avatars/icons8-user-female-skin-type-4-40.png">
+							<img v-if = "! data.member.gender" style = "height: 32px "src="@/assets/avatars/icons8-contacts-96.png">
+							<router-link :to="`/memberDetail/`+ data.member.member.id">
+							<span class = "text-secondary">{{data.member.member.first_name}} {{data.member.member.last_name}}</span>
+							</router-link>									
+						</td>
+						<!-- if detail_view -->
+						<td v-if="detail_view">										
+							{{data.member.gender}}
+						</td>
+						<td>
+							<span class="ml-4 text-secondary">
+							<i v-if="data.member.phone_number">{{data.member.phone_number}}</i>
+							</span>
+						</td>
+						<td v-if="detail_view">																														
+							<span v-if="data.member.marital_status == 'S'">Single</span>
+							<span v-if="data.member.marital_status == 'M'">Married</span>
+							<span v-if="data.member.marital_status == 'D'">Divorced</span>
+							<span v-if="data.member.marital_status == 'W'">Widowed</span>									
+							<span v-if="data.member.marital_status == ''">-</span>
+						</td>
+						<td v-if="detail_view">																				
+							<i v-if="data.member.age">{{data.member.age}}</i>	
+							<i v-else>-</i>									
+						</td>
+						</tr>						
+					</tbody>
+					</table>
+				</section>				
+				<!-- detailed list -->				
+				<section class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
+					<div class="d-flex justify-content-center">
+					<memberstats msg="expenditure stats"/>
+					</div>					
+				</section>
+			</section>
+			
             <!-- ACTIONS TAB ON THE RIGHT -->
-            <div class="col-12 col-sm-10 col-md-5 col-lg-3">
-              <hr class="d-sm-block d-lg-none">
-              <div class="btn-group" style="padding: 0px 0px 25px 0px">
-				<div style="text-decoration: none; cursor: pointer;"
-					data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                    <div class="add-button">
-                      + Add member
-                    </div>
-                </div>
-                <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" 
-						id="dropdownMenuReference" 
+            <section :class="{'visibility-none': ! actions_list}" class="col-12 col-sm-10 col-md-5 col-lg-3">
+				<hr class="d-sm-block d-lg-none">
+				<div class="btn-group" style="padding: 0px 0px 25px 0px">
+					<div style="text-decoration: none; cursor: pointer;"
 						data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
-                  <span class="sr-only">Toggle Dropdown</span>
-                </button>
-                <div class="dropdown-menu border-success" aria-labelledby="dropdownMenuReference">
+						<div class="add-button">
+						+ Add member
+						</div>
+					</div>
+					<button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" 
+							id="dropdownMenuReference" 
+							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
+					<span class="sr-only">Toggle Dropdown</span>
+					</button>
+					<div class="dropdown-menu border-success" aria-labelledby="dropdownMenuReference">
 						<router-link :to="{name: 'memberAdd'}" class="dropdown-item" style="text-decoration: none">								
 							Add member						
 						</router-link>
 						<a class="dropdown-item" href="#" data-toggle="modal" data-target="#importCSV">
 							Import from CSV
-						</a>
-                    
-                </div>
-              </div>
-                <div class="list-group font-weight-bold">                                     
-                    <button type="button" class="d-flex justify-content-about font-weight-bold text-muted list-group-item list-group-item-action border-0"  
-                        data-toggle="modal" data-target="#textModalCenter">
-                        <img src="@/assets/icons/icons8-comments-64.png" style="width: 35px; height:auto">
-                      Text Members
-                    </button>
-                    <button
-                      type="button" class="d-flex justify-content-about font-weight-bold text-muted list-group-item list-group-item-action border-0"
-                      data-toggle="modal" data-target="#assignModalCenter"
-                      v-on:click="getGroups()">
-                      <img src="@/assets/icons/icons8-add-user-group-man-man-64.png" style="width: 35px; height:auto">
-                      Assign Group
-                    </button>
-                    <button type="button" class="d-flex justify-content-about font-weight-bold text-muted list-group-item list-group-item-action border-0"
-                            data-toggle="modal" data-target="#deleteMemberModal">
-                      <img src="@/assets/icons/icons8-delete-64.png" style="width: 35px; height:auto">
-                      Delete Members
-                    </button>
-                </div>
-              <!-- Modal send anvil message -->
-              <div class="modal fade " id="anvilModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                  <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalCenterTitle">send anvil message</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-                      <div class="modal-body">
-                          <div class="form-group">
-                              <label for="exampleFormControlTextarea1">message</label>
-                              <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model="message"></textarea>
-                            </div>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">close</button>
-                        <button type="button" class="btn btn-success" v-on:click="sendAnvilMessage()">
-                          Send message
-                          <span v-if="sending_anvil_message"
-                              class="spinner-border spinner-border-sm"
-                              role="status" aria-hidden="true">
-                          </span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-              </div>
-              <!-- Modal assign group -->
-              <div class="modal fade" id="assignModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                  <div class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalCenterTitle">assign selected members to group</h5>
-                        <button type="button" class="close" v-on:click="setAssignGroupButtonText('assign group')" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-                      <div class="container mt-5 mb-5">
-                        <span class="d-flex fex-row"><h3 class="text-muted">{{member_ids.length}} </h3>members</span>
-                        <label><b>select group :</b></label>
-                        <select class=" form-control" v-model="group_id" >
-                            <option v-for="data in groups.response" :value="data.id" >{{data.name}}</option>
-                        </select>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="setAssignGroupButtonText('assign group')">Close</button>
-                        <button type="button" class="btn btn-success" v-on:click="assignGroup()">
-                          assign group
-                          <span v-if="adding_members_to_group"
-                                class="spinner-border spinner-border-sm"
-                                role="status" aria-hidden="true"></span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-              </div>
-                <!-- Modal delete member-->
-                <div class="modal fade" id="deleteMemberModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                      <div class="modal-content">
-                        <div class="modal-header">
-                          <h5 class="modal-title" id="exampleModalCenterTitle">delete members</h5>
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                          </button>
-                        </div>
-                        <div class="container mt-5 mb-5">
-                          <span class="d-flex fex-row"><h2 class="text-muted font-weight-bold">{{member_ids.length}} </h2>members</span>
-                          <h4 class="text-danger">These members alongside with all their data will be deleted</h4>
-                          <i>this action is irreversible, are you sure that this is what you want??</i>
-                        </div>
-                        <div class="modal-footer">
-                          <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="setAssignGroupButtonText('assign group')">Close</button>
-                          <button type="button" class="btn btn-danger" v-on:click="deleteMembers()">
-                            delete members
-                            <span v-if="deleting_member"
-                                  class="spinner-border spinner-border-sm"
-                                  role="status" aria-hidden="true"></span>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                </div>
-              <!-- Modal import CSV -->
-              <div class="modal fade bd-example-modal-xl" id="importCSV" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                  <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-                    <div class="modal-content">
-                      <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalCenterTitle">import from CSV</h5>
-                        <button type="button" id="close-button" class="close" data-dismiss="modal" aria-label="Close">
-                          <span aria-hidden="true">&times;</span>
-                        </button>
-                      </div>
-                      <div class="modal-body">
-                        <h3 class="text-muted">demo</h3>
-                          <div class="container">
-                              <table class="table table-borderless">
-                                  <thead>
-                                    <tr>
-                                      <th scope="col">names</th>
-                                      <th scope="col">gender</th>
-                                      <th scope="col">date of birth <br/>(DD/MM/YYYY)</th>
-                                      <th scope="col">phone number</th>
-                                      <th scope="col">email</th>
-                                      <th scope="col">marital status</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <tr>
-                                      <td>John The Baptist</td>
-                                      <td>M</td>
-                                      <td>17/07/1997</td>
-                                      <td>07********</td>
-                                      <td>example@nano.com</td>
-                                      <td>M</td>
-                                    </tr>
-                                    <tr>
-                                      <td>Mark Laboso</td>
-                                      <td>M</td>
-                                      <td>03/12/1980</td>
-                                      <td>07********</td>
-                                      <td>example@nano.com</td>
-                                      <td>S</td>
-                                    </tr>
-                                    <tr>
-                                      <td>Martha Kari</td>
-                                      <td>F</td>
-                                      <td>20/02/1998</td>
-                                      <td>07********</td>
-                                      <td>example@nano.com</td>
-                                      <td>D</td>
-                                    </tr>
-                                    <td>Maria Desa malibo</td>
-                                      <td>F</td>
-                                      <td>29/07/1990</td>
-                                      <td>07********</td>
-                                      <td>example@nano.com</td>
-                                      <td>W</td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                              <hr/>
-                              <h3 class="text-muted">your csv :</h3>
-                              <h3 class="text-muted">{{get_data_status}}</h3>
-                              <small  v-if="this.csv_data.length < 0">showing only the first 5 lines</small>
-                                <div v-if="csv_data.length" style="height: 40vh; overflow-y: scroll">
-                                    <table class="table">
-                                        <thead>
-                                          <tr v-for="data in csv_data.slice(0,1)">
-                                            <th scope="col" v-for="(value,key) in data">
-                                              {{key}}
-                                              <select class="form-control"  v-model='csv_columns[key]'>
-                                                  <option selected disabled>import as ...</option>
-                                                  <option >names</option>
-                                                  <option>gender</option>
-                                                  <option>date of birth</option>
-                                                  <option>phone number</option>
-                                                  <option>email</option>
-                                                  <option>marital status</option>
-                                                </select>
-                                            </th>
-                                          </tr>
-                                        </thead>
-                                        <tbody>
-                                          <tr v-for="data in csv_data">
-                                            <td v-for="(value,key) in data">{{value}}</td>
-                                          </tr>
-                                        </tbody>
-                                      </table>
-                                </div>                            
+						</a>                    
+					</div>
+				</div>
+				<div class="list-group font-weight-bold">
+				<button type="button" class="d-flex justify-content-about font-weight-bold text-muted list-group-item list-group-item-action border-0"  
+					data-toggle="modal" data-target="#textModalCenter">
+					<img src="@/assets/icons/icons8-comments-64.png" style="width: 35px; height:auto">
+					Text Members
+				</button>
+				<button
+					type="button" class="d-flex justify-content-about font-weight-bold text-muted list-group-item list-group-item-action border-0"
+					data-toggle="modal" data-target="#assignModalCenter"
+					v-on:click="getGroups()">
+					<img src="@/assets/icons/icons8-add-user-group-man-man-64.png" style="width: 35px; height:auto">
+					Assign Group
+				</button>
+				<button type="button" class="d-flex justify-content-about font-weight-bold text-muted list-group-item list-group-item-action border-0"
+						data-toggle="modal" data-target="#deleteMemberModal">
+					<img src="@/assets/icons/icons8-delete-64.png" style="width: 35px; height:auto">
+					Delete Members
+				</button>
+				</div>             
+			</section>
 
-                              <div class="large-12 medium-12 small-12 cell">
-									<label><b>file: </b>
-										<button class="mr-2 btn btn-light" v-on:click="reset()">
-											Choose file
-										</button>
-										{{file_name}}
-										<input class="d-none" type="file" id="file" ref="file"                                                                 
-											v-on:change="handleFileUpload()"/>
-									</label>
-                              </div>
-                              <p v-if="test_csv_errors.length">
-                                <ul>
-                                    <small><li v-for="error in test_csv_errors"><p class="text-danger">{{error}}</p></li></small>
-                                </ul>
-                              </p>
-                              <p class="text-success" v-if="file_format_okay">file okay, proceed to import</p>
-                              <p v-if="error_500.length">
-                                  <ul>
-                                          <small><li v-for="error in error_500">
-                                            <p class="text-danger">unexpected data format in your file, make sure your CSV or EXCEL file matches the demo</p>
-                                            <p class="text-danger">select how you want to import your csv above</p>
-                                          </li></small>
-                                  </ul>
-                              </p>
-                              <hr>
-
-                              <p class="text-muted">gender: <b>M</b> => male, <b>F</b> => female</p>
-                              <p class="text-muted">marital status: <b>M</b> => married, <b>S</b> => single, <b>D</b> => divorced, <b>W</b> => widowed</p>
-                            </div>
-                      </div>
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-success"
-								v-on:click="submitFile()"
-								v-if="file">
-                                submit file
-                                <span v-if="submitting_file"
-                                      class="spinner-border spinner-border-sm"
-                                      role="status"
-                                      aria-hidden="true">
-                                </span>
-                        </button>
-                        <button type="button" class="btn btn-success"
-                                v-if="this.uploaded_file.length != 0"
-                                v-on:click="checkCSV()">
-                                check CSV file
-                                <span v-if = "checking_csv"
-                                      class="spinner-border spinner-border-sm"
-                                      role="status"
-                                      aria-hidden="true"></span>
-                        </button>
-                        <button type="button" class="btn btn-success"
-                                v-if="file_format_okay"
-                                v-on:click="extractData()">
-                                {{extract_data_button_text}}
-                                <span v-if = "extracting_data"
-                                      class="spinner-border spinner-border-sm"
-                                      role="status"
-                                      aria-hidden="true"></span>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-              </div>
-            </div>
+			<!-- modals -->
+			<section>
+				 <!-- Modal send anvil message -->
+				 <div class="modal fade " id="anvilModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+						<div class="modal-dialog modal-dialog-centered" role="document">
+						  <div class="modal-content">
+							<div class="modal-header">
+							  <h5 class="modal-title" id="exampleModalCenterTitle">send anvil message</h5>
+							  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							  </button>
+							</div>
+							<div class="modal-body">
+								<div class="form-group">
+									<label for="exampleFormControlTextarea1">message</label>
+									<textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model="message"></textarea>
+								  </div>
+							</div>
+							<div class="modal-footer">
+							  <button type="button" class="btn btn-secondary" data-dismiss="modal">close</button>
+							  <button type="button" class="btn btn-success" v-on:click="sendAnvilMessage()">
+								Send message
+								<span v-if="sending_anvil_message"
+									class="spinner-border spinner-border-sm"
+									role="status" aria-hidden="true">
+								</span>
+							  </button>
+							</div>
+						  </div>
+						</div>
+					</div>
+				<!-- Modal assign group -->
+				<div class="modal fade" id="assignModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered" role="document">
+						<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalCenterTitle">Assign selected members to group</h5>
+							<button type="button" class="close" v-on:click="setAssignGroupButtonText('assign group')" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="container mt-5 mb-5">
+							<span class="d-flex fex-row"><h3 class="text-muted">{{member_ids.length}} </h3>members</span>
+							<label><b>select group :</b></label>
+							<select class=" form-control" v-model="group_id" >
+								<option v-for="data in groups.response" :value="data.id" >{{data.name}}</option>
+							</select>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="setAssignGroupButtonText('assign group')">Close</button>
+							<button type="button" class="btn btn-success" v-on:click="assignGroup()">
+							assign group
+							<span v-if="adding_members_to_group"
+									class="spinner-border spinner-border-sm"
+									role="status" aria-hidden="true"></span>
+							</button>
+						</div>
+						</div>
+					</div>
+				</div>
+				<!-- Modal assign group single member -->
+				<div class="modal fade" id="assignGroup" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered" role="document">
+						<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalCenterTitle">Asign Group</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div v-if="groups" class="modal-body" style="height:60vh; overflow-y: scroll">
+							<!-- group input					 -->
+								<div class="form-group d-flex">
+									<label class="font-weight-bold">Member</label>
+									<searchmember v-on:memberSelected="onMemberSelected" class="ml-5"/> 
+								</div>		
+								
+								<label class="font-weight-bold">Groups</label>								
+								<div v-for="folder, group in folders" v-if="! groups_added_into.length">
+									<h4 class="text-muted text-capitalize">{{folder[0].folder_name}}</h4>
+									<hr>
+									<div v-for="group in folder">													
+										<label class="anvil-checkbox">
+											<input multiple type="checkbox" :value=group.id v-model="group_ids">
+											<span class="anvil-checkmark"></span>
+											<span class="text-capitalize ml-5">{{group.name}}</span>
+										</label>
+									</div>
+								</div>					
+								<div v-if="groups_added_into.length">
+									<ul>
+										<li class="text-muted" v-for="group in groups_added_into">
+											{{group.church_group_name}}
+											as 
+											{{group.role_name}}
+										</li>
+									</ul>
+								</div> 
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="setAssignGroupButtonText('assign group')">Close</button>
+							<button v-if="! groups_added_into.length" class="btn btn-success" @click="addMemberToGroup()">
+								+ add member to groups
+								<span   v-if="adding_member_detail"
+									class="spinner-border spinner-border-sm" 
+									role="status" 
+									aria-hidden="true">
+								</span> 
+							</button>   
+						</div>
+						</div>
+					</div>
+				</div>
+				<!-- Modal delete member-->
+				<div class="modal fade" id="deleteMemberModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalCenterTitle">delete members</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						</div>
+						<div class="container mt-5 mb-5">
+						<span class="d-flex fex-row"><h2 class="text-muted font-weight-bold">{{member_ids.length}} </h2>members</span>
+						<h4 class="text-danger">These members alongside with all their data will be deleted</h4>
+						<i>this action is irreversible, are you sure that this is what you want??</i>
+						</div>
+						<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="setAssignGroupButtonText('assign group')">Close</button>
+						<button type="button" class="btn btn-danger" v-on:click="deleteMembers()">
+							delete members
+							<span v-if="deleting_member"
+								class="spinner-border spinner-border-sm"
+								role="status" aria-hidden="true"></span>
+						</button>
+						</div>
+					</div>
+					</div>
+				</div>
+				<!-- Modal import CSV -->
+				<div class="modal fade bd-example-modal-xl" id="importCSV" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+						<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="exampleModalCenterTitle">import from CSV</h5>
+							<button type="button" id="close-button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div class="modal-body">
+							<h3 class="text-muted">demo</h3>
+							<div class="container">
+								<table class="table table-borderless">
+									<thead>
+										<tr>
+										<th scope="col">names</th>
+										<th scope="col">gender</th>
+										<th scope="col">date of birth <br/>(DD/MM/YYYY)</th>
+										<th scope="col">phone number</th>
+										<th scope="col">email</th>
+										<th scope="col">marital status</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+										<td>John The Baptist</td>
+										<td>M</td>
+										<td>17/07/1997</td>
+										<td>07********</td>
+										<td>example@nano.com</td>
+										<td>M</td>
+										</tr>
+										<tr>
+										<td>Mark Laboso</td>
+										<td>M</td>
+										<td>03/12/1980</td>
+										<td>07********</td>
+										<td>example@nano.com</td>
+										<td>S</td>
+										</tr>
+										<tr>
+										<td>Martha Kari</td>
+										<td>F</td>
+										<td>20/02/1998</td>
+										<td>07********</td>
+										<td>example@nano.com</td>
+										<td>D</td>
+										</tr>
+										<td>Maria Desa malibo</td>
+										<td>F</td>
+										<td>29/07/1990</td>
+										<td>07********</td>
+										<td>example@nano.com</td>
+										<td>W</td>
+										</tr>
+									</tbody>
+									</table>
+								<hr/>
+								<h3 class="text-muted">your csv :</h3>
+								<h3 class="text-muted">{{get_data_status}}</h3>
+								<small  v-if="this.csv_data.length < 0">showing only the first 5 lines</small>
+									<div v-if="csv_data.length" style="height: 40vh; overflow-y: scroll">
+										<table class="table">
+											<thead>
+											<tr v-for="data in csv_data.slice(0,1)">
+												<th scope="col" v-for="(value,key) in data">
+												{{key}}
+												<select class="form-control"  v-model='csv_columns[key]'>
+													<option selected disabled>import as ...</option>
+													<option >names</option>
+													<option>gender</option>
+													<option>date of birth</option>
+													<option>phone number</option>
+													<option>email</option>
+													<option>marital status</option>
+													</select>
+												</th>
+											</tr>
+											</thead>
+											<tbody>
+											<tr v-for="data in csv_data">
+												<td v-for="(value,key) in data">{{value}}</td>
+											</tr>
+											</tbody>
+										</table>
+									</div>                            
+	
+								<div class="large-12 medium-12 small-12 cell">
+										<label><b>file: </b>
+											<button class="mr-2 btn btn-light" v-on:click="reset()">
+												Choose file
+											</button>
+											{{file_name}}
+											<input class="d-none" type="file" id="file" ref="file"                                                                 
+												v-on:change="handleFileUpload()"/>
+										</label>
+								</div>
+								<p v-if="test_csv_errors.length">
+									<ul>
+										<small><li v-for="error in test_csv_errors"><p class="text-danger">{{error}}</p></li></small>
+									</ul>
+								</p>
+								<p class="text-success" v-if="file_format_okay">file okay, proceed to import</p>
+								<p v-if="error_500.length">
+									<ul>
+											<small><li v-for="error in error_500">
+												<p class="text-danger">unexpected data format in your file, make sure your CSV or EXCEL file matches the demo</p>
+												<p class="text-danger">select how you want to import your csv above</p>
+											</li></small>
+									</ul>
+								</p>
+								<hr>
+	
+								<p class="text-muted">gender: <b>M</b> => male, <b>F</b> => female</p>
+								<p class="text-muted">marital status: <b>M</b> => married, <b>S</b> => single, <b>D</b> => divorced, <b>W</b> => widowed</p>
+								</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-success"
+									v-on:click="submitFile()"
+									v-if="file">
+									submit file
+									<span v-if="submitting_file"
+										class="spinner-border spinner-border-sm"
+										role="status"
+										aria-hidden="true">
+									</span>
+							</button>
+							<button type="button" class="btn btn-success"
+									v-if="this.uploaded_file.length != 0"
+									v-on:click="checkCSV()">
+									check CSV file
+									<span v-if = "checking_csv"
+										class="spinner-border spinner-border-sm"
+										role="status"
+										aria-hidden="true"></span>
+							</button>
+							<button type="button" class="btn btn-success"
+									v-if="file_format_okay"
+									v-on:click="extractData()">
+									{{extract_data_button_text}}
+									<span v-if = "extracting_data"
+										class="spinner-border spinner-border-sm"
+										role="status"
+										aria-hidden="true"></span>
+							</button>
+						</div>
+						</div>
+					</div>
+				</div>
+			</section>
           </div>
         </div>
       </body>
 
       <!-- bottom navigation -->
       <div id="bottom-actions-tab" class="bottom-action-tab bg-light shadow-lg"
-           style="border-radius: 5%">
-        <h2 class="text-right mr-3 ">
-          <a href="javascript:void(0)" class="closebtn text-secondary" v-on:click="closeActions()">&times;</a>
-        </h2>
-        <!-- more filters -->
-        <div class="ml-5 mr-5">
-            <h4>filters</h4>
-            <hr>
-            <div class="form-group">
-                <label for="searchInput">
-                  <b>
-                  <img style="width: 20px ;height: auto" src="@/assets/icons/icons8-search-80.png">
-                  search by first name
-                  </b>
-                </label>
-                <input type="text" class="form-control"  aria-describedby="searchHelp" placeholder="e.g John,Brian etc" v-model="firstnamesearch" autofocus>
-                <div style="padding: 10px 10px 10px 10px" class="text-info">{{firstnamesearch_status}}</div>
-                <small id="searchHelp" class="form-text text-muted">search members by their first names</small>
-            </div>
-            <div id="container row" >
-                <div class="accordion">
-                  <div class="d-flex justify-content-between">
-                      <label for="tm" class="accordionitem"><b>age</b></label>
-                      <a href="#" v-on:click="resetAge" class="text-success">reset</a>
-                  </div>
-                    <div class="d-flex flex-row justify-content-about">
+			style="border-radius: 5%">
+			<h2 class="text-right mr-3 ">
+				<a href="javascript:void(0)" class="closebtn text-secondary" v-on:click="closeActions()">&times;</a>
+			</h2>
+			<!-- more filters -->
+			<div class="ml-5 mr-5">
+				<h4>filters</h4>
+				<hr>
+				<div class="form-group">
+					<label for="searchInput">
+					<b>
+					<img style="width: 20px ;height: auto" src="@/assets/icons/icons8-search-80.png">
+					search by first name
+					</b>
+					</label>
+					<input type="text" class="form-control"  aria-describedby="searchHelp" placeholder="e.g John,Brian etc" v-model="firstnamesearch" autofocus>
+					<div style="padding: 10px 10px 10px 10px" class="text-info">{{firstnamesearch_status}}</div>
+					<small id="searchHelp" class="form-text text-muted">search members by their first names</small>
+				</div>
+				<div id="container row" >
+					<div class="accordion">
+					<div class="d-flex justify-content-between">
+						<label for="tm" class="accordionitem"><b>age</b></label>
+						<a href="#" v-on:click="resetAge" class="text-success">reset</a>
+					</div>
+						<div class="d-flex flex-row justify-content-about">
 
-                        <div class="form-group p-1 ">
-                          <small><b>max age :</b></small>
-                          <input type="number" class="form-control" id="searchInput" placeholder="max age" v-model = "max_age">
-                      </div>
-                        <div class="form-group p-1">
-                            <small><b>min age :</b></small>
-                            <input type="number" class="form-control" id="searchInput"  placeholder="min age" v-model = "min_age">
-                        </div>
+							<div class="form-group p-1 ">
+							<small><b>max age :</b></small>
+							<input type="number" class="form-control" id="searchInput" placeholder="max age" v-model = "max_age">
+						</div>
+							<div class="form-group p-1">
+								<small><b>min age :</b></small>
+								<input type="number" class="form-control" id="searchInput"  placeholder="min age" v-model = "min_age">
+							</div>
 
-                    </div>
-                </div>
+						</div>
+					</div>
 
-                <div class="accordion">
-                    <div class="d-flex justify-content-between">
-                        <label for="tn" class="accordionitem"><b>gender</b></label>
-                        <a href="#" v-on:click="resetGender" class="text-success">reset</a>
-                    </div>
-                  <div class="row" style="padding : 10px">
-                    <div class="col">
-                      <div>
-                          <input type="radio" name="optradio" value="M" v-model="gendersearch"> male
-                        </div>
-                      </div>
-                      <div class="col">
-                        <div class="radio">
-                          <input type="radio" name="optradio" value ="F" v-model="gendersearch"> female
-                        </div>
-                      </div>
-                  </div>
-                </div>
+					<div class="accordion">
+						<div class="d-flex justify-content-between">
+							<label for="tn" class="accordionitem"><b>gender</b></label>
+							<a href="#" v-on:click="resetGender" class="text-success">reset</a>
+						</div>
+					<div class="row" style="padding : 10px">
+						<div class="col">
+						<div>
+							<input type="radio" name="optradio" value="M" v-model="gendersearch"> male
+							</div>
+						</div>
+						<div class="col">
+							<div class="radio">
+							<input type="radio" name="optradio" value ="F" v-model="gendersearch"> female
+							</div>
+						</div>
+					</div>
+					</div>
 
-              </div>
-        </div>
-        <h4 class="ml-5">actions</h4>
-        <hr class="ml-5">
-        <button type="button" class="d-none action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#anvilModal" >
-          <img src="@/assets/app_logo.png" style="width: 25px; height:auto"> anvil message
-        </button>
-        <button v-on:click="closeActions()" type="button" class="p-3 ml-4 mr-4 list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#textModalCenter">
-          <img style="width: 25px; height:auto" src="@/assets/icons/icons8-comments-64.png" >
-          text members
-        </button>
-        <button v-on:click="closeActions()" type="button" class="p-3 ml-4 mr-4 list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#assignModalCenter">
-          <img style="width: 25px; height:auto" src="@/assets/icons/icons8-add-user-group-man-man-64.png">
-          assign group
-        </button>
-        <button type="button" class="p-3 ml-4 list-group-item list-group-item-action border-0"
-                v-on:click="closeActions()" data-toggle="modal" data-target="#deleteMemberModal">
-          <img style="width: 25px; height:auto" src="@/assets/icons/icons8-delete-64.png">
-          delete members
-        </button>
-        <div class="text-right mr-5 mt-2 mb-5">
-          <router-link :to="{name: 'memberAdd'}" class="mt-2 ml-2 mr-2">
-            <div class="btn btn-success">
-              + Add member
-            </div>
-        </router-link>
-        </div>
+				</div>
+			</div>
+			<h4 class="ml-5">actions</h4>
+			<hr class="ml-5">
+			<button type="button" class="d-none action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#anvilModal" >
+				<img src="@/assets/app_logo.png" style="width: 25px; height:auto"> anvil message
+			</button>
+			<button v-on:click="closeActions()" type="button" class="p-3 ml-4 mr-4 list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#textModalCenter">
+				<img style="width: 25px; height:auto" src="@/assets/icons/icons8-comments-64.png" >
+				text members
+			</button>
+			<button v-on:click="closeActions()" type="button" class="p-3 ml-4 mr-4 list-group-item list-group-item-action border-0"  data-toggle="modal" data-target="#assignModalCenter">
+				<img style="width: 25px; height:auto" src="@/assets/icons/icons8-add-user-group-man-man-64.png">
+				assign group
+			</button>
+			<button type="button" class="p-3 ml-4 list-group-item list-group-item-action border-0"
+					v-on:click="closeActions()" data-toggle="modal" data-target="#deleteMemberModal">
+				<img style="width: 25px; height:auto" src="@/assets/icons/icons8-delete-64.png">
+				delete members
+			</button>
+			<div class="text-right mr-5 mt-2 mb-5">
+			<router-link :to="{name: 'memberAdd'}" class="mt-2 ml-2 mr-2">
+				<div class="btn btn-success">
+				+ Add member
+				</div>
+			</router-link>
+			</div>
       </div>
     </div>
   </template>
@@ -556,50 +712,63 @@
 import router from "../../router";
 import memberstats from '@/subcomponents/statistics/memberstats.vue'
 import textmessage from '@/subcomponents/textmessage.vue'
+import searchmember from '@/subcomponents/searchmember.vue'
 export default {
   name: 'memberList',
-  components: {memberstats,textmessage},
+  components: {memberstats,textmessage,searchmember},
   data () {
     return {
-      fetch_data_error: [],
-      all_members: true,
-      all_member_ids: [],
-      members: null,
-      foundItems: null,
-      groups:null,
-      group_id:null,
-      //search for member
-      firstnamesearch: null,
-      firstnamesearch_status: null,
-      gendersearch: null,
-      min_age: 0,
-      max_age:150,
-      member_ids: [],
-      //text messaging
-      text_button_name: "",
-      message: " ",
-      sending_anvil_message:false,
-      
-	  // csv file upload
-	  file_name: "No file chosen",
-      submitting_file: false,
-      checking_csv: false,
-      extracting_data: false,
-      extract_data_button_text: "import data",
-      file: null,
-      error_500: [],
-      test_csv_errors: [],
-      uploaded_file: '',
-      csv_data: [],get_data_status: '',
-      file_format_okay: false,
-      csv_columns: {},
+		detail_view:false,
+		actions_list:false,
+		fetch_data_error: [],
+		all_members: true,
+		all_member_ids: [],
+		members: null,
+		foundItems: null,
+		groups:null,
+		group_id:null,
+		//search for member
+		firstnamesearch: null,
+		firstnamesearch_status: null,
+		gendersearch: null,
+		min_age: 0,
+		max_age:150,
+		member_ids: [],
+		//text messaging
+		text_button_name: "",
+		message: " ",
+		sending_anvil_message:false,
+		
+		// csv file upload
+		file_name: "No file chosen",
+		submitting_file: false,
+		checking_csv: false,
+		extracting_data: false,
+		extract_data_button_text: "import data",
+		file: null,
+		error_500: [],
+		test_csv_errors: [],
+		uploaded_file: '',
+		csv_data: [],get_data_status: '',
+		file_format_okay: false,
+		csv_columns: {},
 
-      //assigning groups
-      adding_members_to_group: false,
-      assign_group_button_text: "assign group",
-      deleting_member:false
+		//assigning groups
+		adding_members_to_group: false,
+		assign_group_button_text: "assign group",
+		deleting_member:false,
+		//add member to group.
+		selectedMember: null,
+		adding_member_detail: false,	   	 
+        group_ids: [],
+    	groups_added_into:[]
 
     }
+  },
+  computed:{
+	folders(){		
+		return this.generateFolders(this.groups.response, 'group')
+	}
   },
   watch: {
   //search for member
@@ -961,7 +1130,10 @@ export default {
 			this.extracting_data = false
 		})
     },
-    
+	
+	onMemberSelected (value) {				
+		this.selectedMember = value
+	},
 	//get groups
 	getGroups: function(){      
       const currentVersion = this.$store.getters.group_list_version
@@ -980,6 +1152,37 @@ export default {
           })
       }
 
+	},
+	generateFolders: function(array, key){
+		const result = {}
+		array.forEach(item => {
+			if (!result[item[key]]){
+			result[item[key]] = []
+			}
+			result[item[key]].push(item)
+		})
+		return result
+	},
+	addMemberToGroup: function(){          
+        for (var group_id in this.group_ids){
+			this.adding_member_detail = true
+			this.$http({ 
+				method: 'post',
+				url: this.$BASE_URL + '/api/groups/add-member-to-group/',
+				data: {           
+					church_group: parseInt(this.group_ids[group_id]),
+					member: this.selectedMember,
+					role: null
+				}
+			}).then(response => {
+				this.adding_member_detail = false                                    
+				this.selectedMember = null
+				this.groups_added_into.push(response.data)                       
+			}).catch((err) => {
+				this.adding_member_detail = false            
+				alert(err)            
+			})
+        }                                               
     },
     deleteMembers:function(){
         this.deleting_member = true

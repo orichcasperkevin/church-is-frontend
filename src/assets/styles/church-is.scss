@@ -14,6 +14,9 @@ $dark: $dark;
 html {
   scroll-behavior: smooth;
 }
+.visibility-none{
+  visibility: hidden !important;
+}
 .bg-frost{
   background-color: rgba(56, 59, 68, 0.15);
   backdrop-filter: blur(5px);
@@ -59,6 +62,18 @@ img.church-is-menu {
 .home-menu-item:hover{
     background-color: ghostwhite;
     transition: all 0.3s ease-in-out;
+}
+.quick-link{
+  border-radius: 10px;  
+  padding: 25px 25px 25px 25px;
+  text-align: center;
+  cursor: pointer;
+}
+.cursor-pointer{
+  cursor: pointer;
+}
+.quick-link:hover{
+  background-color: ghostwhite;
 }
 .stat-item{
   border: 1px solid;

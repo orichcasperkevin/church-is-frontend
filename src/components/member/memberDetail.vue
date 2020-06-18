@@ -304,52 +304,52 @@ export default {
 			})
         },
         getMemberFinances: function() {
-                this.$store.dispatch('update_isLoading', true)
-                this.finances_selected = true
-                this.$http.get(this.$BASE_URL + '/api/projects/contributions-by-member/'+this.$route.params.id+'/')
-                .then(response => {
-                this.contribution_info = {"contribution": response.data }
+			this.$store.dispatch('update_isLoading', true)
+			this.finances_selected = true
+			this.$http.get(this.$BASE_URL + '/api/projects/contributions-by-member/'+this.$route.params.id+'/')
+			.then(response => {
+				this.contribution_info = {"contribution": response.data }
 
-                })
-                .catch(error=> {
+			})
+			.catch(error=> {
 
-                })
-                this.$http.get(this.$BASE_URL + '/api/projects/pledges-by-member/'+this.$route.params.id+'/')
-                .then(response => {
-                this.pledges_info = {"pledges": response.data }
-                })
-                .catch(error=> {
+			})
+			this.$http.get(this.$BASE_URL + '/api/projects/pledges-by-member/'+this.$route.params.id+'/')
+			.then(response => {
+				this.pledges_info = {"pledges": response.data }
+			})
+			.catch(error=> {
 
-                })
-                this.$http.get(this.$BASE_URL + '/api/finance/tithe-stats-for-member/'+this.$route.params.id+'/')
-                .then(response => {
-                this.tithe_stats = {"stats": response.data }
-                })
-                .catch(error=> {
+			})
+			this.$http.get(this.$BASE_URL + '/api/finance/tithe-stats-for-member/'+this.$route.params.id+'/')
+			.then(response => {
+			this.tithe_stats = {"stats": response.data }
+			})
+			.catch(error=> {
 
-                })
-                this.$http.get(this.$BASE_URL + '/api/finance/tithe-for-member/'+this.$route.params.id+'/')
-                .then(response => {
-                this.tithe_info = {"tithes": response.data }
-                })
-                .catch(error=> {
+			})
+			this.$http.get(this.$BASE_URL + '/api/finance/tithe-for-member/'+this.$route.params.id+'/')
+			.then(response => {
+			this.tithe_info = {"tithes": response.data }
+			})
+			.catch(error=> {
 
-                })
-                this.$http.get(this.$BASE_URL + '/api/finance/offering-stats-for-member/'+this.$route.params.id+'/')
-                .then(response => {
-                this.offering_stats = {"stats": response.data }
-                })
-                .catch(error=> {
+			})
+			this.$http.get(this.$BASE_URL + '/api/finance/offering-stats-for-member/'+this.$route.params.id+'/')
+			.then(response => {
+			this.offering_stats = {"stats": response.data }
+			})
+			.catch(error=> {
 
-                })
-                this.$http.get(this.$BASE_URL + '/api/finance/offerings-by-member/'+this.$route.params.id+'/')
-                .then(response => {
-                this.offering_info = {"offerings": response.data }
-                this.$store.dispatch('update_isLoading', false)
-                })
-                .catch(error=> {
-                this.$store.dispatch('update_isLoading', false)
-                })
+			})
+			this.$http.get(this.$BASE_URL + '/api/finance/offerings-by-member/'+this.$route.params.id+'/')
+			.then(response => {
+			this.offering_info = {"offerings": response.data }
+			this.$store.dispatch('update_isLoading', false)
+			})
+			.catch(error=> {
+			this.$store.dispatch('update_isLoading', false)
+			})
 
         },
         // roles
