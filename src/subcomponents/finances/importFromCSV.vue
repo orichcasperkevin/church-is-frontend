@@ -276,10 +276,23 @@ methods: {
             document.getElementById('close-button').click()
             alert("data extracted succesfully")            
         }).catch((err) => {
-            alert("something went wrong while trying to extract data.\n Check the file and try again")
-            this.emitToParent()
+            //fix the network timeout issue((this is a quickfix))
             this.extract_data_button_text = "import data"
-            this.extracting_data = false            
+            var new_version = parseInt(localStorage.getItem('member_list_version')) + 1
+            this.$store.dispatch('update_member_list_version', new_version)                
+            this.extracting_data = false
+
+            // update tithe list version
+            var new_version = parseInt(localStorage.getItem('tithe_list_version')) + 1
+            this.$store.dispatch('update_tithe_list_version', new_version)  
+
+            // update offerings list version
+            var new_version = parseInt(localStorage.getItem('offering_list_version')) + 1                               
+            this.$store.dispatch('update_offering_list_version', new_version)  
+
+            this.emitToParent()
+            document.getElementById('close-button').click()
+            alert("data extracted succesfully")            
         })
     },
     reset: function(){        

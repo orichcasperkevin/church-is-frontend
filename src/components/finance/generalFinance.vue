@@ -19,8 +19,10 @@
                                 <a class="action-list list-group-item list-group-item-action border-0 active" id="v-pills-envelopes-tab" data-toggle="pill" href="#v-pills-envelopes" role="tab" aria-controls="v-pills-envelopes" aria-selected="true" 
                                     v-on:click=" hide_content = true">       
                                     <span class="row">
-                                        <img class="d-none d-lg-block d-xl-block mr-2" style="width: 15%; height: auto" src="@/assets/icons/icons8-request-money-filled-50.png">
-                                        Envelopes
+                                        <img class="d-none d-lg-block d-xl-block mr-2" 
+                                            style="width: 15%; height: auto" 
+                                            src="@/assets/icons/icons8-present-48.png">                                        
+                                        Quick links
                                     </span>                                                                     
                                 </a>
 
@@ -28,7 +30,7 @@
                                     v-on:click="getTithes(); hide_content=false">       
                                     <span class="row">
                                         <img class="d-none d-lg-block d-xl-block mr-2" style="width: 15%; height: auto" src="@/assets/icons/icons8-request-money-filled-50.png">
-                                        Reports
+                                        Envelopes
                                     </span>                                                                     
                                 </a>
                                 <a      class="action-list list-group-item list-group-item-action border-0"
@@ -60,6 +62,29 @@
                     <div class="tab-content" id="v-pills-tabContent">
                        <!-- ENVELOPES -->
                         <div class="tab-pane fade show active" id="v-pills-envelopes" role="tabpanel" aria-labelledby="v-pills-envelopes-tab">
+                            <!-- on hide content -->                            
+                            <div class="mt-5 mb-5 d-flex flex-wrap justify-content-center" 
+                                v-if="hide_content">
+                                <a class="p-4 d-flex justify-content-center" 
+                                    href="#" data-toggle="modal" 
+                                    data-target="#importFromCSV">
+                                    <b>+</b>Import from CSV
+                                </a>
+                                <div class="p-4 d-flex flex-wrap justify-content-center" :class="{'d-none': hide_content}"
+                                    v-for="type in offering_types">
+                                    <img class="d-none d-lg-block d-xl-block mr-2" 
+                                        style="width: 20%; height: auto" 
+                                        src="@/assets/icons/icons8-request-money-filled-50.png">                                   
+                                    <a class=""                                          
+                                        href="#" data-toggle="modal" 
+                                        data-target="#addOffering"
+                                        @click="openTab(type.id)">                                    
+                                        <span v-if="type.name != 'general offering'">New {{type.name}}</span>
+                                        <span v-else>New Offering</span>                                
+                                    </a>
+                                </div>		                                                                                         
+                            </div>
+                            <!-- when content is to be shown -->
                             <div  class="container" :class="{'d-none': hide_content}">
                                 <div class="d-flex justify-content-center">                                          
                                     <!-- nav pills for offerings,tithes and others -->

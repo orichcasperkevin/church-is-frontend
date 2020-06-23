@@ -78,14 +78,14 @@
 						<div class="p-4 d-flex flex-wrap justify-content-center">
 						<img class="mb-2 church-is-menu" src="@/assets/icons/icons8-contacts-208.png" 
 							style="width:35px;height:auto"> 
-							<router-link :to="{name: 'memberAdd'}" style="color: black">								
+							<router-link :to="{name: 'memberAdd'}" >								
 							Add member						
 							</router-link>
 						</div>						
 						<div class="p-4 d-flex flex-wrap justify-content-center">
 						<img class="mb-2 church-is-menu" src="@/assets/icons/icons8-export-csv-30.png" 
 							style="width:35px;height:auto"> 
-							<a class="dropdown-item" href="#" data-toggle="modal" data-target="#importCSV">
+							<a class="dropdown-item text-primary" href="#" data-toggle="modal" data-target="#importCSV">
 							Import from CSV
 							</a>
 							
@@ -93,7 +93,7 @@
 						<div class="p-4 d-flex flex-wrap justify-content-center ">
 						<img class="church-is-menu" src="@/assets/icons/icons8-add-user-group-man-man-64.png" 
 							style="width:45px;height:auto"> 
-							<a class="dropdown-item" href="#" data-toggle="modal" data-target="#assignGroup">
+							<a class="dropdown-item text-primary" href="#" data-toggle="modal" data-target="#assignGroup">
 								Assign Group
 							</a>
 						</div>
@@ -1125,9 +1125,14 @@ export default {
 			document.getElementById('close-button').click()
 			alert("data extracted succesfully")			
 		}).catch((err) => {
-			alert("something went wrong while trying to extract data.\n Check the file and try again")
+			// fix the network timeout issue((this is a quick fix))
 			this.extract_data_button_text = "import data"
+			var new_version = parseInt(localStorage.getItem('member_list_version')) + 1
+			this.$store.dispatch('update_member_list_version', new_version)
+			this.fetchData()
 			this.extracting_data = false
+			document.getElementById('close-button').click()
+			alert("data extracted succesfully")	
 		})
     },
 	

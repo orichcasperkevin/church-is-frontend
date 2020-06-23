@@ -1,6 +1,6 @@
 <template>
   <div >
-	<section class="navbar navbar-expand-lg navbar-light sticky-top shadow-sm bg-frost" v-if="checkLoggedIn()">
+	<section class="navbar navbar-expand-lg navbar-light sticky-top bg-white" v-if="checkLoggedIn()">
 	  <button class="btn btn-light ml-3" type="button" v-on:click="openNav()">
 		  <span class="navbar-toggler-icon"></span>
 	  </button>

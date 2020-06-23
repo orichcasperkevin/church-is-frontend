@@ -19,7 +19,6 @@ import VueQuillEditor from 'vue-quill-editor'
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
 import 'quill/dist/quill.bubble.css'
-import { hostname } from 'os';
 
 
 Vue.use(Vuex)
@@ -47,7 +46,7 @@ Vue.prototype.$host_name = current_host.split('.')[1]
 
 var name = current_host.split('.')[1]
 var tld = current_host.split('.')[2]
-var api_server = `http://${name}.${tld}` //+ ":8000"
+var api_server = `http://${name}.${tld}`// + ":8000"
 
 Vue.prototype.$DOMAIN = { value : api_server }
 Vue.prototype.$BASE_URL = { value :localStorage.getItem('base_url_value'),toString:function(){return this.value}}
