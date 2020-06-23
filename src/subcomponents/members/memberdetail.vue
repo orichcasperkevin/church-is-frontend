@@ -303,24 +303,15 @@
                                 </button>
                             </div>
                             <div class="modal-body" v-if="contact_info.contact.length">                                    
-                                <div class="row mb-3">
-                                        <span class="col-4">
-                                                <label><b>country code :</b></label>
-                                                <input class="form-control" type="text" 
-                                                        :placeholder="+254" v-model = "country_code">
-                                        </span>
-                                        <span class="col-8">
+                                <div class="row mb-3">                                       
+                                        <span class="col-12">
                                                 <label><b>phone number 1:</b></label>
                                                 <input type="text" class="form-control" 
                                                         :placeholder="contact_info.contact[0].phone || `not given`" v-model = "phone_number1">
                                         </span>
                                 </div>
-                                <div class="row mb-5">
-                                        <span class="col-4">
-                                                <label><b>country code :</b></label>
-                                                <input class="form-control" type="text" placeholder="+254" v-model = "country_code">
-                                        </span>
-                                        <span class="col-8">
+                                <div class="row mb-5">                                        
+                                        <span class="col-12">
                                                 <label><b>phone number 2:</b></label>
                                                 <input type="text" class="form-control" 
                                                         :placeholder="contact_info.contact[0].phone2 || `not given`" v-model = "phone_number2">
@@ -345,24 +336,15 @@
                                 </div>                                                                                      
                             </div>
                             <div class="modal-body" v-else>                                    
-                                        <div class="row mb-3">
-                                                <span class="col-4">
-                                                        <label><b>country code :</b></label>
-                                                        <input class="form-control" type="text" 
-                                                                placeholder="+254" v-model = "country_code">
-                                                </span>
-                                                <span class="col-8">
+                                        <div class="row mb-3">                                                
+                                                <span class="col-12">
                                                         <label><b>phone number 1:</b></label>
                                                         <input type="text" class="form-control" 
                                                                 placeholder="not given" v-model = "phone_number1">
                                                 </span>
                                         </div>
-                                        <div class="row mb-5">
-                                                <span class="col-4">
-                                                        <label><b>country code :</b></label>
-                                                        <input class="form-control" type="text" placeholder="+254" v-model = "country_code">
-                                                </span>
-                                                <span class="col-8">
+                                        <div class="row mb-5">                                              
+                                                <span class="col-12">
                                                         <label><b>phone number 2:</b></label>
                                                         <input type="text" class="form-control" 
                                                                 placeholder="not given" v-model = "phone_number2">
@@ -449,17 +431,17 @@ export default {
                         this.phone_number_errors = []
                         this.phone_number_errors.push(" phone number should be numbers only")
                 }
-                if (this.phone_number1.length > 9){
+                if (this.phone_number1.length > 10){
                         this.phone_number_OK = []
                         this.phone_number_errors = []
                         this.phone_number_errors.push("number too long")
                 }
-                if (this.phone_number1.length < 9){
+                if (this.phone_number1.length < 10){
                         this.phone_number_OK = []
                         this.phone_number_errors = []
                         this.phone_number_errors.push("number too short")
                 }
-                if (this.phone_number1.length == 9){
+                if (this.phone_number1.length == 10){
                         this.phone_number_errors = []                       
                         this.phone_number_OK.push(" number OK")
                 }
@@ -627,13 +609,7 @@ export default {
         },
         //update contact detail
         updateContactDetail: function(){
-                this.updating_details = true
-                if (this.phone_number1){
-                        this.phone_number1 = this.country_code + this.phone_number1
-                }
-                if (this.phone_number2){
-                        this.phone_number2 = this.country_code + this.phone_number2
-                }
+                this.updating_details = true                
                 this.$http.patch(
                         this.$BASE_URL + '/api/members/update-member-contact/',
                         {

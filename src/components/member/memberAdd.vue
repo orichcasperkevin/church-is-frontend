@@ -95,14 +95,10 @@
 								<input type="email" class="form-control"  placeholder="example@gmail.com" v-model = "email">
 							</div>
 							<div class="form-group">                
-								<div class="row">
-									<span class="col-4">
-										<label><b>code :</b></label>
-										<input class="form-control" type="text" placeholder="+254" v-model = "country_code">
-									</span>
-									<span class="col-8">
+								<div class="row">									
+									<span class="col-12">
 										<label><b>phone number :</b></label>
-										<input type="text" class="form-control"  placeholder="712345678" v-model = "phone_number">
+										<input type="text" class="form-control"  placeholder="0712345678" v-model = "phone_number">
 									</span>
 								</div>
 								<p v-if="phone_number_errors.length">
@@ -308,7 +304,7 @@ export default {
         form_in_view: 'personal_detail_form',
         //contact
         email: '',
-        country_code: '+254',
+        country_code: '',
         contact: ' ',postal_address: '',
         phone_number: '',phone_number_errors: [],phone_number_OK: [],
         added_contact:null,
@@ -346,17 +342,17 @@ export default {
 				this.phone_number_errors = []
 				this.phone_number_errors.push(" phone number should be numbers only")
 			}
-			if (this.phone_number.length > 9){
+			if (this.phone_number.length > 10){
 				this.phone_number_OK = []
 				this.phone_number_errors = []
 				this.phone_number_errors.push("number too long")
 			}
-			if (this.phone_number.length < 9){
+			if (this.phone_number.length < 10){
 				this.phone_number_OK = []
 				this.phone_number_errors = []
 				this.phone_number_errors.push("number too short")
 			}
-			if (this.phone_number.length == 9){
+			if (this.phone_number.length == 10){
 				this.phone_number_errors = []
 				this.phone_number_OK.push(" number OK")
 			}
@@ -490,14 +486,14 @@ export default {
 				data: {
 					member_id: this.added_member_id,
 					postal_address: this.postal_address,
-					phone: this.country_code + this.phone_number,
+					phone: this.phone_number,
 					contact: this.contact
 				}
 			}).then((response)=>{
 				this.added_contact = response.data
 				this.adding_member_detail = false
 				this.email = ''
-				this.country_code = '+254'
+				this.country_code = ''
 				this.contact = ''
 				this.postal_address = ''
 				this.phone_number = ''
