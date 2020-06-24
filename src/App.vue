@@ -143,14 +143,20 @@ export default {
 	//clear local storage except these
 	var church_id = localStorage.getItem('church_id')
 	var church_details = localStorage.getItem('church_details')
-	var base_url_value = localStorage.getItem('base_url_value')
+	var base_url_value = localStorage.getItem('base_url_value')	
 
 	localStorage.clear()
 
-	localStorage.setItem('church_id',church_id)
-	localStorage.setItem('church_details',church_details)
-	localStorage.setItem('base_url_value',base_url_value)
-	  
+	if (church_id != null){
+		localStorage.setItem('church_id',church_id)
+	}	
+	if(church_details != null){
+		localStorage.setItem('church_details',church_details)
+	}	
+	if(base_url_value !=null){
+		localStorage.setItem('base_url_value',base_url_value)
+	}		
+		
 	this.username = this.$session.get("username")
 	this.checkLoggedIn()
   },

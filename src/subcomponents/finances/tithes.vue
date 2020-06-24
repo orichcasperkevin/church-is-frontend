@@ -356,18 +356,15 @@
                 this.getTitheStats()
             },
             // get tithe stats 
-            getTitheStats: function(){                
-                    this.$store.dispatch('update_isLoading', true)
+            getTitheStats: function(){                                    
                     this.$http.get(this.$BASE_URL + '/api/finance/tithe-stats/')
                     .then(response => {
                         this.tithe_stats = {"response": response.data } 
 
-                        localStorage.setItem('tithe_stats',JSON.stringify({"response": response.data }))                          
-                        this.$store.dispatch('update_isLoading', false)
+                        localStorage.setItem('tithe_stats',JSON.stringify({"response": response.data }))                                                  
                     })
                     .catch((err) => {
-                        this.fetch_data_error.push(err)
-                        this.$store.dispatch('update_isLoading', false)
+                        this.fetch_data_error.push(err)                       
                     })
             },
             //check that add tithe form is okay

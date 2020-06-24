@@ -352,17 +352,14 @@
             },
             //get offerings
             getOfferings: function(){
-            //try local storage
-            this.$store.dispatch('update_isLoading', true)
-                this.$http.get(this.$BASE_URL + `/api/finance/offering-stats/${this.offering_type.id}/`)
-                .then(response => {
-                    this.offering_stats = {"response": response.data }                                                     
-                    this.$store.dispatch('update_isLoading', false)
-                })
-                .catch((err) => {
-                    this.fetch_data_error.push(err)
-                    this.$store.dispatch('update_isLoading', false)
-                })
+            //try local storage           
+            this.$http.get(this.$BASE_URL + `/api/finance/offering-stats/${this.offering_type.id}/`)
+            .then(response => {
+                this.offering_stats = {"response": response.data }                                                                         
+            })
+            .catch((err) => {
+                this.fetch_data_error.push(err)                    
+            })
 
 
             this.offerings = JSON.parse(localStorage.getItem('offering_list'))
