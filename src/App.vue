@@ -147,13 +147,13 @@ export default {
 
 	localStorage.clear()
 
-	if (church_id != null){
+	if (church_id != 'null'){		
 		localStorage.setItem('church_id',church_id)
 	}	
-	if(church_details != null){
+	if(church_details != 'null'){
 		localStorage.setItem('church_details',church_details)
 	}	
-	if(base_url_value !=null){
+	if(base_url_value != 'null'){
 		localStorage.setItem('base_url_value',base_url_value)
 	}		
 		
