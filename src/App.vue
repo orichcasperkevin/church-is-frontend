@@ -140,6 +140,17 @@ export default {
 	  Loading,generalsearch
   },
   created(){
+	//clear local storage except these
+	var church_id = localStorage.getItem('church_id')
+	var church_details = localStorage.getItem('church_details')
+	var base_url_value = localStorage.getItem('base_url_value')
+
+	localStorage.clear()
+
+	localStorage.setItem('church_id',church_id)
+	localStorage.setItem('church_details',church_details)
+	localStorage.setItem('base_url_value',base_url_value)
+	  
 	this.username = this.$session.get("username")
 	this.checkLoggedIn()
   },

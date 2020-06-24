@@ -69,20 +69,7 @@
                                     href="#" data-toggle="modal" 
                                     data-target="#importFromCSV">
                                     <b>+</b>Import from CSV
-                                </a>
-                                <div class="p-4 d-flex flex-wrap justify-content-center" :class="{'d-none': hide_content}"
-                                    v-for="type in offering_types">
-                                    <img class="d-none d-lg-block d-xl-block mr-2" 
-                                        style="width: 20%; height: auto" 
-                                        src="@/assets/icons/icons8-request-money-filled-50.png">                                   
-                                    <a class=""                                          
-                                        href="#" data-toggle="modal" 
-                                        data-target="#addOffering"
-                                        @click="openTab(type.id)">                                    
-                                        <span v-if="type.name != 'general offering'">New {{type.name}}</span>
-                                        <span v-else>New Offering</span>                                
-                                    </a>
-                                </div>		                                                                                         
+                                </a>                                                                                                                       
                             </div>
                             <!-- when content is to be shown -->
                             <div  class="container" :class="{'d-none': hide_content}">
@@ -651,7 +638,6 @@ export default {
         income_amount: null,
         income_amount_errors: [],
         added_income: [],
-
         // add offerng type
         adding_offering: false,
         offering_type_name:null,
@@ -665,7 +651,6 @@ export default {
         exporting_data:false,
         //select members
         member_ids:[],
-
         //context.
         context:{'name':'Tithe','type':null},
         }
