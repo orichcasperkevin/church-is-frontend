@@ -82,7 +82,7 @@
     },
     created(){
       this.church_code =  localStorage.getItem('church_id')
-      if (this.church_code){
+      if (this.church_code != 'null'){
         this.church_code_set = true
       }
     },
