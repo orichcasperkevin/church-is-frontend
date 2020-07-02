@@ -6,9 +6,9 @@
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" >send message to selected members</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
+                        <h5 class="modal-title text-capitalize" >send message to selected members</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close" @click="closeSmsModal()">
+                            <span aria-hidden="true">&times;</span>
                         </button>
                     </div>                    
                     <div class="modal-body">                           
@@ -29,13 +29,18 @@
                                 </label>
                                     <!-- text message -->                                    
                                     <textarea  type="text" class="form-control" placeholder="type text message" 
-                                    v-model="message" v-on:focus="getSMSCreditBalance()" rows="3">                  
+                                    v-model="message" v-on:focus="getSMSCreditBalance();showChangeButton()" rows="3">                  
                                 </textarea>
+                                <div class="p-1 d-flex justify-content-end"
+                                    v-if="show_change_button">
+                                    <button class="btn btn-sm btn-success" @click="setDefaultMessage()">set as default</button>
+                                </div>
                                 <p class="mt-2 ml-2 small text-muted"><span class="font-weight-bold">{{numberOfMessages}}</span> messages | a message is 160 characters long</p>                                
                                 <p class="mt-2 ml-2 small text-muted" v-if="custom_message">
                                     [name] ---- will be replaced by the member's name.<br/>
                                     [amount] ---- will be replaced by the most recent recorded amount.<br/>
-                                    [date] ---- will be replaced by the date
+                                    [date] ---- will be replaced by the date <br>
+                                    [type] ---- will be replaced by type of envelope
                                 </p>
         
                             </div>
@@ -70,7 +75,9 @@ data() {
     return {
         church_detail : JSON.parse(localStorage.getItem('church_details')),           
         message: '',
+        default_message: "dear [name].\nwe have received your [type] of shillings [amount], on [date], thank you and God bless.",
         numberOfMessages:0,        
+        show_change_button: false,
         sms_status: [],
         sending_message: false,
         sms_credit_balance: null,
@@ -82,24 +89,17 @@ props: {
     context:null,
 },
 watch:{   
-    context:function(){
-        if (this.context && this.custom_message){            
-            if (! this.context.type){
-                this.message = "dear [name].\nwe have received your " + this.context.name + " of shillings [amount], on [date], thank you and God bless."
-            }  
-            else{
-                this.message = "dear [name].\nwe have received your " + this.context.type.name + " of shillings [amount], on [date],thank you and God bless."
-            }          
-        }
-    },
     custom_message:function(){
         if (this.context && this.custom_message){            
-            if (! this.context.type){
-                this.message = "dear [name].\nwe have received your " + this.context.name + " of shillings [amount], on [date], thank you and God bless."
-            }  
-            else{
-                this.message = "dear [name].\nwe have received your " + this.context.type.name + " of shillings [amount], on [date], thank you and God bless."
+            if ('default_message' in localStorage){
+                this.message = localStorage.getItem('default_message')                  
+            }
+            else{                    
+                this.message = this.default_message                    
             }          
+        }
+        if(! this.custom_message){
+            this.message = ''
         }
     },
     message: function(){
@@ -126,6 +126,15 @@ methods: {
     emitToParent (event) {        
         this.$emit('messageSet', this.message)
     },
+    showChangeButton: function(){        
+        if( this.custom_message){                     
+            this.show_change_button = true
+        }
+    },
+    setDefaultMessage:function(){
+        localStorage.setItem('default_message',this.message)
+        this.show_change_button = false
+    },
     //church sms balance
     getSMSCreditBalance: function(){
         this.$http.get(this.$BASE_URL + '/api/sms/sms-credit-balance')
@@ -135,36 +144,44 @@ methods: {
     },
     //send message
     sendMessage: function (){
-        var context = null
-        if(this.context){
-            context = this.context.name
-        }
+        var context = null        
+        if (this.context && this.custom_message){           
+            if (! this.context.type){                
+                this.message = this.message.replace('[type]',this.context.name)  
+                context = this.context.name                                           
+            }  
+            else{               
+                this.message = this.message.replace('[type]',this.context.type.name)  
+                context = "Offering"                                            
+            }          
+        }            
         this.sending_message = true      
         var url = this.$BASE_URL + '/api/sms/add-sms/'
         if (this.custom_message){
             url = this.$BASE_URL + '/api/sms/add-custom-sms/'
         }
         this.$http({
-                method: 'post',
-                url: url,
-                data: {
-                        sending_member_id: this.$session.get('member_id'),
-                        app: "CHURCH",
-                        message: this.message,
-                        website: true,
-                        receipient_member_ids: this.memberIds,
-                        context:context
-                }
-                }).then(response => {        
-                        this.sms_status.push(response)          
-                        this.sending_message = false
-                })
-                .catch((err) => {                                                
-                        this.sms_status.push(err)          
-                        this.sending_message = false
-                })
+            method: 'post',
+            url: url,
+            data: {
+                sending_member_id: this.$session.get('member_id'),
+                app: "CHURCH",
+                message: this.message,
+                website: true,
+                receipient_member_ids: this.memberIds,
+                context:context
+            }
+            }).then(response => {        
+                this.sms_status.push(response)          
+                this.sending_message = false
+            })
+            .catch((err) => {                                                
+                this.sms_status.push(err)          
+                this.sending_message = false
+            })
         },
         closeSmsModal: function (){
+            this.custom_message = false
             this.sms_status = []
             this.message = ""
       },

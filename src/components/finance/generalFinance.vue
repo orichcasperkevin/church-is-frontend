@@ -79,7 +79,7 @@
                                         <hr class="d-sm-block d-lg-none">  
                                         <div class="d-flex flex-nowrap">
                                             <a href="#" class="p-2" @click=scrollRight()>
-                                                <h4><</h4> 
+                                                <i class="arrow left"></i>
                                             </a>
                                             <ul class="mb-2 d-flex flex-nowrap nav nav-pills scrollbar-none"
                                                 id="pills-tab" role="tablist"                                                    
@@ -105,9 +105,9 @@
                                                             <span v-else>Offering</span>
                                                         </a>
                                                     </li>
-                                            </ul>
+                                            </ul>                                            
                                             <a href="#" class="p-2" @click=scrollLeft()>
-                                                <h4>></h4>
+                                                <i class="arrow right"></i>
                                             </a>
                                         </div>                                               
                                     </div>                                          

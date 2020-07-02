@@ -144,6 +144,7 @@ export default {
 	var church_id = localStorage.getItem('church_id')
 	var church_details = localStorage.getItem('church_details')
 	var base_url_value = localStorage.getItem('base_url_value')	
+	var default_message = localStorage.getItem('default_message')		
 
 	localStorage.clear()
 
@@ -156,6 +157,9 @@ export default {
 	if(base_url_value != 'null'){
 		localStorage.setItem('base_url_value',base_url_value)
 	}		
+	if(default_message != 'null'){
+		localStorage.setItem('default_message',default_message)
+	}
 		
 	this.username = this.$session.get("username")
 	this.checkLoggedIn()
