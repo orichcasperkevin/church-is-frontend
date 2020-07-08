@@ -43,7 +43,33 @@
                                     <span class="anvil-checkmark"></span>
                                 </label>
                             </th>
-                            <th>Date</th>
+                            <th>
+                                <div class="dropdown">
+                                    <a class="p-0 font-weight-bold btn btn-whte border-0 dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        Date
+                                    </a>
+                                    
+                                    <div class="p-2 dropdown-menu border-0 shadow">
+                                            <div class="p-2 form-group d-flex justify-content-between">
+                                                <label class="mr-2">From</label>
+                                                <input type="date" name="bday" max="3000-12-31" 
+                                                min="1000-01-01" class="col-9 form-control" v-model="from_date"> 
+                                            </div> 
+                                            <div class="p-2 form-group d-flex justify-content-between">
+                                                <label class="mr-2">To</label>
+                                                <input type="date" name="bday" max="3000-12-31" 
+                                                min="1000-01-01" class="col-9 form-control" v-model="to_date"> 
+                                            </div> 
+                                            <div class="p-2 d-flex justify-content-end">
+                                                <button class="btn btn-sm btn-success"
+                                                    :disabled = "!(from_date && to_date)"
+                                                    @click="filterOfferings()">
+                                                    Filter
+                                                </button>
+                                            </div>
+                                    </div>
+                                </div>
+                            </th>
                             <th>Name</th>
                             <th>Amount</th>                            
                             <th>Method</th>                            
@@ -254,6 +280,8 @@
             non_member: false,
             group: false,
             //get stats data
+            from_date: null,
+            to_date: null,
             offering_stats: null,
             offering_types:null,            
             selected_offering_type:null,
@@ -350,6 +378,10 @@
                     this.offering_types = response.data
                 })
             },
+            filterOfferings: function(){
+                localStorage.removeItem('offering_list_version')
+                this.getOfferings()
+            },
             //get offerings
             getOfferings: function(){
             //try local storage           
@@ -386,8 +418,16 @@
 
             // else try the network
             if (!version || version < currentVersion){
+                var params
+                if (this.from_date && this.to_date){
+                    params = {from_date : this.from_date, to_date : this.to_date}
+                }
                 this.$store.dispatch('update_isLoading', true)
-                this.$http.get(this.$BASE_URL + '/api/finance/offerings-by-members-this-month/')
+                this.$http({
+                    method : 'get',
+                    url : this.$BASE_URL + '/api/finance/offerings-by-members-this-month/',
+                    params : params
+                })
                 .then(response => {                                       
                     this.offerings = {"response": response.data } 
 

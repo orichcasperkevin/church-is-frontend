@@ -31,10 +31,10 @@
 
                 </div>
                 <div class="form-group">                 
-                  <label for="exampleInputEmail1" v-if="! church_code_set">church code</label>
+                  <label for="exampleInputEmail1">church code</label>
                   <input @keyup.enter="getToken()"
                          type="number" class="form-control"                         
-                         placeholder="000" v-model="church_code" v-if="! church_code_set">
+                         placeholder="000" v-model="church_code">
                 </div>
                 <div class="form-group">
                   <label for="exampleInputEmail1">username</label>
@@ -82,6 +82,7 @@
     },
     created(){
       this.church_code =  localStorage.getItem('church_id')
+      this.church_code = this.church_code.padStart(3, '0')
       if (this.church_code != 'null'){
         this.church_code_set = true
       }
