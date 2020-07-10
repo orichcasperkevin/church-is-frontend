@@ -27,7 +27,7 @@
                                 </a>
 
                                 <a class="action-list list-group-item list-group-item-action border-0" id="v-pills-envelopes-tab" data-toggle="pill" href="#v-pills-envelopes" role="tab" aria-controls="v-pills-envelopes" aria-selected="true" 
-                                    v-on:click="getTithes(); hide_content=false">       
+                                    v-on:click="getAll(); hide_content=false">       
                                     <span class="row">
                                         <img class="d-none d-lg-block d-xl-block mr-2" style="width: 15%; height: auto" src="@/assets/icons/icons8-request-money-filled-50.png">
                                         Envelopes
@@ -86,6 +86,17 @@
                                                 style="overflow-x: scroll;white-space: nowrap">
                                                     <li class="nav-item">
                                                         <a class="nav-link active" 
+                                                            id="pills-all-tab" 
+                                                            data-toggle="pill" 
+                                                            href="#pills-all" role="tab" 
+                                                            aria-controls="pills-all" 
+                                                            Tithe="true"
+                                                            v-on:click = "getAll(); scrollToElement('pills-tithe-tab')">
+                                                            All
+                                                        </a>
+                                                    </li> 
+                                                    <li class="nav-item">
+                                                        <a class="nav-link" 
                                                             id="pills-tithe-tab" 
                                                             data-toggle="pill" 
                                                             href="#pills-home" role="tab" 
@@ -114,9 +125,20 @@
                                 </div>
                             </div>                                
                             <!-- ENVELOP TABS CONTENT -->
-                            <div class="tab-content" id="pills-tabContent">                                                                      
+                            <div class="tab-content" id="pills-tabContent">   
                                 <!-- tithes -->
-                                <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">                                                                          
+                                <div class="tab-pane fade show active" id="pills-all" role="tabpanel" aria-labelledby="pills-all-tab">                                                                          
+                                    <h3 v-if="! hide_content" class="font-weight-bold">All</h3>
+                                    <hr>
+                                    <all
+                                        v-on:membersSelected="setMemberIds"
+                                        :payment_methods = "payment_methods"
+                                        :reload_data = "reload_data"
+                                        :hide_content = "hide_content"
+                                    />                                    
+                                </div>                                                                    
+                                <!-- tithes -->
+                                <div class="tab-pane" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">                                                                          
                                         <h3 v-if="! hide_content" class="font-weight-bold">Tithes </h3>
                                         <hr>
                                         <tithes 
@@ -583,6 +605,7 @@ import router from "../../router";
 import incomestats from '@/subcomponents/statistics/incomestats.vue'
 
 import expenditures from '@/subcomponents/finances/expenditure.vue'
+import all from '@/subcomponents/finances/all.vue'
 import tithes from '@/subcomponents/finances/tithes.vue'
 import offerings from '@/subcomponents/finances/offerings.vue'
 import importFromCSV from '@/subcomponents/finances/importFromCSV.vue'
@@ -592,6 +615,7 @@ export default {
     components: {    
         incomestats,        
         expenditures,
+        all,
         tithes,
         offerings,
         importFromCSV,
@@ -651,14 +675,16 @@ export default {
         exporting_data:false,
         //select members
         member_ids:[],
+        envelope_ids:[],
         //context.
-        context:{'name':'Tithe','type':null},
+        context:{'name':'All','type':null},
         }
     },
     created () {
         this.checkLoggedIn()
         this.fetchdata()
         this.getOfferingTypes()
+        this.getAll()
     },
     watch: {
         //watch for phone number input
@@ -811,7 +837,13 @@ export default {
                     this.$store.dispatch('update_isLoading', false)
                 })
             }
-        },    
+        },   
+        getAll: function(){
+            this.offerings_selected = false
+            this.any_other_selected = false
+            this.expenditures_selected = false        
+            this.context={'name':'All','type':null}
+        }, 
         getTithes: function(){
             this.offerings_selected = false
             this.any_other_selected = false

@@ -81,7 +81,7 @@
                                 Choose file
                             </button>
                             {{file_name}}
-                            <input class="d-none" type="file" id="file" ref="file"                                                                 
+                            <input class="d-none" type="file" accept=".csv" id="file" ref="file"                                
                                 v-on:change="handleFileUpload()"/>
                             </label>
                         </div>

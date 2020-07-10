@@ -171,16 +171,13 @@ methods: {
       
     },
     //get service types
-    getServiceTypes: function(){
-        this.$store.dispatch('update_isLoading', true)
+    getServiceTypes: function(){        
         this.$http.get(this.$BASE_URL + '/api/services/service-types/')
             .then(response => {
-                this.service_types =  {"response":response.data}
-                this.$store.dispatch('update_isLoading', false)
+                this.service_types =  {"response":response.data}                
             })
             .catch((err) => {
-                this.found_service = []
-                this.$store.dispatch('update_isLoading', false)
+                this.found_service = []                
             })
     },
     //check for service on a date

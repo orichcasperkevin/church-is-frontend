@@ -43,6 +43,7 @@
                                     <span class="anvil-checkmark"></span>
                                 </label>
                             </th>
+                            <td></td>
                             <th>
                                 <div class="dropdown">
                                     <a class="p-0 font-weight-bold btn btn-whte border-0 dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -79,7 +80,7 @@
                         <tr v-for = "data in offerings.response">                             
                             <td v-if = "data.member != null">                                          
                                     <label class="anvil-checkbox">
-                                            <input multiple type="checkbox" :value=data.user_id v-model="member_ids">
+                                            <input multiple type="checkbox" :value=data.id v-model="member_ids">
                                             <span class="anvil-checkmark"></span>
                                     </label>
                             </td>
@@ -88,6 +89,18 @@
                                         <input multiple type="checkbox">
                                         <span class="anvil-checkmark"></span>
                                 </label> 
+                            </td>
+                            <td>
+                                <h6>
+                                    <span class="badge badge-danger" style="height: 5px; width: 5px" v-if="! data.notified"
+                                        data-toggle="tooltip" data-placement="top" title="member has not been notified">
+                                        <span style="visibility: hidden">.</span>
+                                    </span>
+                                    <span class="badge badge-success" style="height: 5px; width: 5px" v-if="data.notified"
+                                        data-toggle="tooltip" data-placement="top" title="member has been notified">
+                                        <span style="visibility: hidden">.</span>
+                                    </span>
+                                </h6>
                             </td>
                             <td >{{$humanizeDate(data.date)}}</td>  
                             <td v-if = "data.member != null">                                      
@@ -408,7 +421,7 @@
                 this.foundOfferings = array.length
                 for (var offering in array){
                     if (array[offering].member){
-                        this.all_member_ids.push(array[offering].user_id) 
+                        this.all_member_ids.push(array[offering].id) 
                     }                                          
                 } 
             }
@@ -421,8 +434,8 @@
                 var params
                 if (this.from_date && this.to_date){
                     params = {from_date : this.from_date, to_date : this.to_date}
-                }
-                this.$store.dispatch('update_isLoading', true)
+                    this.$store.dispatch('update_isLoading', true)
+                }                
                 this.$http({
                     method : 'get',
                     url : this.$BASE_URL + '/api/finance/offerings-by-members-this-month/',
@@ -447,7 +460,7 @@
                     this.foundOfferings = array.length
                     for (var offering in array){                         
                         if (array[offering].member){
-                            this.all_member_ids.push(array[offering].user_id) 
+                            this.all_member_ids.push(array[offering].id) 
                         }                     
                     }                     
                 })
