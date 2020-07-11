@@ -53,20 +53,14 @@
                     </thead>                                                       
                     <tbody >
                         <tr v-for = "data in tithes_and_offerings.response">                                
-                            <td v-if = "data.member != null">                                          
-                                    <label class="anvil-checkbox">
-                                            <input multiple type="checkbox" 
-                                                :value="{'type': data.type_name,'id': data.id }"
-                                                v-model="envelope_ids">
-                                            <span class="anvil-checkmark"></span>
-                                    </label>
-                            </td>
-                            <td v-else>
+                            <td>                                          
                                 <label class="anvil-checkbox">
-                                        <input multiple type="checkbox">
-                                        <span class="anvil-checkmark"></span>
+                                    <input multiple type="checkbox" 
+                                        :value="{'type': data.type_name,'id': data.id }"
+                                        v-model="envelope_ids">
+                                    <span class="anvil-checkmark"></span>
                                 </label>
-                            </td>
+                            </td>                          
                             <td>
                                 <h6>
                                     <span class="badge badge-danger" style="height: 5px; width: 5px" v-if="! data.notified"
@@ -197,22 +191,21 @@
                     </div>
                     <div class="modal-body">
                             <form>                                                                         
-                                    <div class="form-group">                                                
-                                            <div class="row">                                                        
-                                                    <label class="col-3 "><b>date</b></label>
-                                                    <div class="input-group form-group col-5" style="padding: 0px" >
-                                                        <input type="date" name="bday" max="3000-12-31" 
-                                                            min="1000-01-01" class="form-control" v-model="csv_date">                                                                                                                      
-                                                    </div>                                       
-                                            </div>
-                                            <div class="row">                                                        
-                                                <label class="col-3 "><b></b></label>
+                                <div class="form-group">                                                
+                                        <div class="row">                                                        
+                                                <label class="col-3 "><b>date</b></label>
                                                 <div class="input-group form-group col-5" style="padding: 0px" >
-                                                        <small>export data is from selected date's month</small>                                                                                                                     
-                                                </div>
+                                                    <input type="date" name="bday" max="3000-12-31" 
+                                                        min="1000-01-01" class="form-control" v-model="csv_date">                                                                                                                      
+                                                </div>                                       
+                                        </div>
+                                        <div class="row">                                                        
+                                            <label class="col-3 "><b></b></label>
+                                            <div class="input-group form-group col-5" style="padding: 0px" >
+                                                    <small>export data is from selected date's month</small>                                                                                                                     
                                             </div>
-                                    </div>
-                                                                                                                    
+                                        </div>
+                                </div>                                                                                                
                             </form>
                     </div>
                     <div class="modal-footer">
@@ -245,6 +238,7 @@
     },
     data () {
       return {
+        reload_data:null,
         access_level: this.$session.get('access_level'),
         foundTithesAndOfferings: null,
         //fetch data
@@ -284,7 +278,7 @@
       }
     },
     watch: {
-        reload_data: function(){                
+        reload_data: function(){                           
             if (this.reload_data == true){                    
                 this.getTitheAndOfferings()
             }                
@@ -340,13 +334,11 @@
             }).then(response => {
                 this.tithes_and_offerings = {"response": response.data }   
                 var array = this.tithes_and_offerings.response
-                for (var item in array){
-                    if (array[item].member){                                                        
-                        this.all_envelope_ids.push({
-                            "type": array[item].type_name,
-                            "id" : array[item].id
-                        })                         
-                    }                         
+                for (var item in array){                    
+                    this.all_envelope_ids.push({
+                        "type": array[item].type_name,
+                        "id" : array[item].id
+                    })
                 }   
                 this.emitToParent()
                 this.foundTithesAndOfferings = array.length                  

@@ -78,18 +78,12 @@
                     </thead>                                      
                     <tbody>
                         <tr v-for = "data in offerings.response">                             
-                            <td v-if = "data.member != null">                                          
-                                    <label class="anvil-checkbox">
-                                            <input multiple type="checkbox" :value=data.id v-model="member_ids">
-                                            <span class="anvil-checkmark"></span>
-                                    </label>
-                            </td>
-                            <td v-else>
+                            <td>                                          
                                 <label class="anvil-checkbox">
-                                        <input multiple type="checkbox">
+                                        <input multiple type="checkbox" :value=data.id v-model="member_ids">
                                         <span class="anvil-checkmark"></span>
-                                </label> 
-                            </td>
+                                </label>
+                            </td> 
                             <td>
                                 <h6>
                                     <span class="badge badge-danger" style="height: 5px; width: 5px" v-if="! data.notified"
@@ -290,6 +284,7 @@
         },
         data () {
           return {
+            reload_data: null,
             non_member: false,
             group: false,
             //get stats data
@@ -335,7 +330,8 @@
         components: { customselect,offeringstats },
         watch: {            
             reload_data: function(){            
-                if (this.reload_data == true){                    
+                if (this.reload_data == true){  
+                    localStorage.removeItem('offering_list_version')                  
                     this.getOfferings()
                 }                
             },
@@ -419,10 +415,8 @@
                 }
                 var array = this.offerings.response
                 this.foundOfferings = array.length
-                for (var offering in array){
-                    if (array[offering].member){
-                        this.all_member_ids.push(array[offering].id) 
-                    }                                          
+                for (var offering in array){                    
+                    this.all_member_ids.push(array[offering].id)             
                 } 
             }
 
@@ -458,10 +452,8 @@
                     }
                     var array = this.offerings.response
                     this.foundOfferings = array.length
-                    for (var offering in array){                         
-                        if (array[offering].member){
-                            this.all_member_ids.push(array[offering].id) 
-                        }                     
+                    for (var offering in array){                                                 
+                        this.all_member_ids.push(array[offering].id)                         
                     }                     
                 })
                 .catch((err) => {

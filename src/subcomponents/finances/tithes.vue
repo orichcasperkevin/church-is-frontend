@@ -81,18 +81,12 @@
                         </thead>                                                       
                         <tbody >
                             <tr v-for = "data in tithes.response">                                
-                                <td v-if = "data.member != null">                                          
-                                        <label class="anvil-checkbox">
-                                                <input multiple type="checkbox" :value=data.id v-model="member_ids">
-                                                <span class="anvil-checkmark"></span>
-                                        </label>
-                                </td>
-                                <td v-else>
+                                <td>                                          
                                     <label class="anvil-checkbox">
-                                            <input multiple type="checkbox">
+                                            <input multiple type="checkbox" :value=data.id v-model="member_ids">
                                             <span class="anvil-checkmark"></span>
                                     </label>
-                                </td>
+                                </td>                             
                                 <td>
                                     <h6>
                                         <span class="badge badge-danger" style="height: 5px; width: 5px" v-if="! data.notified"
@@ -270,6 +264,7 @@
         },
         data () {
           return {
+            reload_data: null,
             access_level: this.$session.get('access_level'),
             foundTithes: null,
             //fetch data
@@ -310,7 +305,8 @@
         },
         watch: {
             reload_data: function(){                
-                if (this.reload_data == true){                    
+                if (this.reload_data == true){  
+                    localStorage.removeItem('tithe_list_version')                  
                     this.getTithes()
                 }                
             },
@@ -358,10 +354,8 @@
                 if (this.tithes){                    
                     var array = this.tithes.response
                     this.foundTithes = array.length
-                    for (var tithe in array){
-                        if (array[tithe].member){                            
-                            this.all_member_ids.push(array[tithe].id)                             
-                        }                                                  
+                    for (var tithe in array){                        
+                        this.all_member_ids.push(array[tithe].id)                                                                                                     
                     } 
                     this.emitToParent()
                     this.$store.dispatch('update_isLoading', false)
@@ -385,10 +379,8 @@
                     }).then(response => {
                         this.tithes = {"response": response.data }   
                         var array = this.tithes.response
-                        for (var tithe in array){
-                            if (array[tithe].member){                                
-                                this.all_member_ids.push(array[tithe].id) 
-                            }                         
+                        for (var tithe in array){                                   
+                            this.all_member_ids.push(array[tithe].id)                             
                         }   
                         this.emitToParent()
                         this.foundTithes = array.length                  

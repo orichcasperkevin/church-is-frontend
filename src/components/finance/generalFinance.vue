@@ -392,6 +392,12 @@
                                 <img src="@/assets/icons/icons8-export-csv-30.png" style="width: 45px; height:auto"> Export To CSV
                             </button>                            
                     </div>
+                    <div class="list-group font-weight-bold" v-if = "tithes_selected || offerings_selected">
+                            <button type="button" class="d-flex justify-content-about font-weight-bold text-muted action-list list-group-item list-group-item-action border-0"
+                                data-toggle="modal" data-target="#deleteEnvelopes" >
+                                <img src="@/assets/icons/icons8-delete-64.png" style="width: 35px; height:auto"> Delete Envelope
+                            </button>                            
+                    </div>
                 </div>
             </div>                               
                 <!-- add income modal -->
@@ -595,7 +601,36 @@
                             </div>
                         </div>
                         </div>
-                </div>             
+                </div>     
+                <!-- delete envelopes-->
+                <div class="modal fade" id="deleteEnvelopes" tabindex="-1" role="dialog" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Delete Envelopes</h5>
+                        <button type="button" id="closeDeleteEnvelopesButton" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container mt-5 mb-5">
+                                <span class="d-flex fex-row"><h2 class="text-muted font-weight-bold">{{member_ids.length}} </h2>envelopes</span>
+                                <h4 class="text-danger">These envelopes will be deleted</h4>
+                                <i>this action is irreversible, are you sure that this is what you want??</i>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>                       
+                        <button type="button" class="btn btn-success" v-on:click="deleteEnvelopes()">
+                            delete envelope
+                            <span v-if="adding_offering"
+                                class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+                            </span>
+                        </button>
+                        </div>
+                    </div>
+                    </div>
+            </div>         
         </div>
     </div>
 </template>
@@ -712,10 +747,10 @@ export default {
      },
     methods: {
         csvDataExtracted:function(){            
-            this.reload_data = true
+            this.reload_data = true                                                                                
             setTimeout(()=>{
                 this.reload_data = false
-            },1000)
+            },1000)        
         },
         scrollToElement: function(element){
             document.getElementById(element).scrollIntoView({
@@ -841,7 +876,8 @@ export default {
         getAll: function(){
             this.offerings_selected = false
             this.any_other_selected = false
-            this.expenditures_selected = false        
+            this.expenditures_selected = false  
+            this.tithes_selected = true      
             this.context={'name':'All','type':null}
         }, 
         getTithes: function(){
@@ -1058,8 +1094,40 @@ export default {
                 alert(err)
                 this.adding_offering = false
             })
-        },        
-    },
+        }, 
+        //delete envelopes.
+        deleteEnvelopes: function (){
+            var context = null        
+            if (this.context){           
+                if (! this.context.type){                               
+                    context = this.context.name                                           
+                }  
+                else{                               
+                    context = "Offering"                                            
+                }          
+            }            
+            this.adding_offering = true                  
+            this.$http({
+                method: 'delete',
+                url: this.$BASE_URL + '/api/finance/delete-envelopes/',
+                data: {                                                                            
+                    envelope_ids: this.member_ids,
+                    context:context
+                }
+                }).then(() => {      
+                    this.adding_offering = false  
+                    this.reload_data = true                                   
+                    document.getElementById('closeDeleteEnvelopesButton').click()                                       
+                    setTimeout(()=>{
+                        this.reload_data = false
+                    },1000)   
+                })
+                .catch((err) => {               
+                    this.adding_offering = false                      
+                    alert(err)
+                })
+            },       
+        },
 
 }
 </script>

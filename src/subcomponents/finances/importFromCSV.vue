@@ -17,7 +17,7 @@
                         <table class="table table-borderless text-capitalize">
                             <thead>
                                 <tr>
-                                <th scope="col">date <br/>(DD/MM/YYYY)</th>
+                                <th scope="col">date <br/>(DD MMMMM YYYY)</th>
                                 <th scope="col">names</th>                                                                
                                 <th scope="col">phone number</th>
                                 <th scope="col">type</th>
@@ -28,7 +28,7 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>23/11/2020</td>
+                                    <td>23 July 2020</td>
                                     <td>Daniel Jones</td>                                                                
                                     <td>07********</td>
                                     <td>tithe</td>
@@ -36,7 +36,7 @@
                                     <td>300</td>
                                 </tr> 
                                 <tr>
-                                    <td>23/11/2020</td>
+                                    <td>01 March 2020</td>
                                     <td>Martha Mercy</td>                                                                
                                     <td>07********</td>
                                     <td>Offering</td>
