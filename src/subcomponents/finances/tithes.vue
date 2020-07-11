@@ -346,7 +346,7 @@
                 localStorage.removeItem('tithe_list_version')
                 this.getTithes()
             },
-            getTithes: function(){
+            getTithes: function(){                
                 this.fetch_data_error = []
                 this.$store.dispatch('update_isLoading', true)
                 // try local storage for tithes
@@ -367,6 +367,9 @@
 
                 //else try network for tithes                
                 if (!version || version < currentVersion) {
+                    this.all_members = false
+                    this.member_ids = []
+                    this.all_member_ids = []
                     var params
                     if (this.from_date && this.to_date){
                         params = {from_date : this.from_date, to_date : this.to_date}

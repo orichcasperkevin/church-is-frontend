@@ -319,6 +319,9 @@
             this.getTitheAndOfferings()
         },
         getTitheAndOfferings: function(){
+            this.all_members = false
+            this.envelope_ids = []
+            this.all_envelope_ids = []
             this.fetch_data_error = []
             this.$store.dispatch('update_isLoading', true)                      
             

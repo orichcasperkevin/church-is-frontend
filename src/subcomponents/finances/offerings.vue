@@ -392,7 +392,7 @@
                 this.getOfferings()
             },
             //get offerings
-            getOfferings: function(){
+            getOfferings: function(){            
             //try local storage           
             this.$http.get(this.$BASE_URL + `/api/finance/offering-stats/${this.offering_type.id}/`)
             .then(response => {
@@ -425,6 +425,9 @@
 
             // else try the network
             if (!version || version < currentVersion){
+                this.all_members = false
+                this.member_ids = []
+                this.all_member_ids = []
                 var params
                 if (this.from_date && this.to_date){
                     params = {from_date : this.from_date, to_date : this.to_date}
