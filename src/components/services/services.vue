@@ -27,7 +27,7 @@
                                         </div>
                                         <div v-if = "services_available">    
                                             <h3>Services Today</h3>                                                                                  
-                                                <table class="table table-responsive-sm">
+                                                <table class="table table-responsive-sm table-borderless">
                                                         <thead>
                                                             <tr>                                                            
                                                             <th scope="col">Service type</th>
@@ -54,7 +54,7 @@
                                         <h3>All Services </h3>
                                         <div v-if = "this_month_selected">
                                                <!-- table of services  -->
-                                               <table class="table table-responsive-sm">
+                                               <table class="table table-responsive-sm table-borderless">
                                                     <thead>
                                                         <tr>                                                            
                                                         <th scope="col">Service type</th>
@@ -118,8 +118,7 @@
                                                         <small><li v-for="error in service_type_errors"><p class="text-danger">{{ error }}</p></li></small>
                                                 </ul>
                                         </p>
-                                </div>
-                                <hr/>
+                                </div>                            
                                 <div class="row form-group">
                                         <label class="col-3"><b>venue:</b></label>
                                         <input type="text" class=" col-8 form-control" placeholder="venue for the service" v-model="service_venue">                                                                                         
@@ -128,8 +127,7 @@
                                                         <small><li v-for="error in service_venue_errors"><p class="text-danger">{{ error }}</p></li></small>
                                                 </ul>
                                         </p>
-                                </div> 
-                                <hr/>
+                                </div>                                 
                                 <div class="row form-group">
                                         <label class="col-3 "><b>date:</b></label>
                                         <div class="input-group form-group col-5" style="padding: 0px" >
@@ -141,19 +139,18 @@
                                                         <small><li v-for="error in service_date_errors"><p class="text-danger">{{ error }}</p></li></small>
                                                 </ul>
                                         </p>                                 
-                                </div> 
-                                <hr/>
+                                </div>                                 
                                 <div class="row form-group">                                    
                                         <label class="col-3"><b>period:</b></label>
                                         <div class="col-8">
-                                            <div class="row form-group">
-                                                    <div class="col-6">
+                                            <div class="d-flex form-group">
+                                                    <div class="">
                                                             <label class="col-2">from</label>
-                                                            <input type="time" class=" col-10 form-control" v-model="service_start"> 
+                                                            <input type="time" class=" col-12 form-control" v-model="service_start"> 
                                                     </div>
-                                                    <div class="col-6">
+                                                    <div class="ml-1">
                                                         <label class="col-2">to</label>
-                                                        <input type="time" class=" col-10 form-control" v-model="service_end"> 
+                                                        <input type="time" class=" col-12 form-control" v-model="service_end"> 
                                                     </div>
                                             </div>
                                         </div>
@@ -162,25 +159,18 @@
                                                         <small><li v-for="error in service_period_errors"><p class="text-danger">{{ error }}</p></li></small>
                                                 </ul>
                                         </p>
-                                </div> 
-                                <hr/>
+                                </div>                                 
                                 <div class="row form-group">
                                         <label class="col-3"><b>Lesson:</b></label>
-                                        <input type="text" class=" col-8 form-control" placeholder="lesson to be taught" v-model="service_action">                                                                                         
-                                        <p v-if="service_action_errors.length">
-                                                <ul>
-                                                        <small><li v-for="error in service_action_errors"><p class="text-danger">{{ error }}</p></li></small>
-                                                </ul>
-                                        </p>
+                                        <input type="text" class=" col-8 form-control" placeholder="lesson to be taught" v-model="service_action">                                                                                                                                
                                 </div>                                                           
                                 <div class="row form-group">
                                         <label class="col-3"><b>description:</b></label>
-                                        <input type="text" class=" col-8 form-control" placeholder="brief description of the lesson" v-model="service_value">                                                                                         
-                                        <p v-if="service_value_errors.length">
-                                                <ul>
-                                                        <small><li v-for="error in service_value_errors"><p class="text-danger">{{ error }}</p></li></small>
-                                                </ul>
-                                        </p>
+                                        <input type="text" class=" col-8 form-control" placeholder="brief description of the lesson" v-model="service_value">                                                                                                                                 
+                                </div> 
+                                <div class="row form-group">
+                                        <label class="col-3"><b>max attendance:</b></label>
+                                        <input type="number" class=" col-8 form-control" v-model="service_max_attendance">                                                                                                                                
                                 </div> 
                             </div>
                             <div class="modal-footer">
@@ -270,6 +260,7 @@
                 service_end: null,
                 service_action: null,service_action_errors: [],
                 service_value: null,service_value_errors: [],
+                service_max_attendance: null,
         //add service type
                 service_type_name: '',
                 service_type_description: '',
@@ -340,9 +331,7 @@
                     && this.service_venue != null
                     && this.service_date != null
                     && this.service_start != null
-                    && this.service_end != null
-                    && this.service_action != null
-                    && this.service_value != null){
+                    && this.service_end != null){
                         return true
                     }
                 if (this.service_type == 0){
@@ -368,17 +357,7 @@
                     || this.service_end.length < 1){
                         this.service_period_errors.push("enter service ending time")
                         return false
-                }
-                if (this.service_action == null
-                    || this.service_action.length < 1){
-                        this.service_action_errors.push("enter service actio")
-                        return false
-                }
-                if (this.service_value == null
-                    || this.service_value.length < 1){
-                        this.service_value_errors.push("enter service value")
-                        return false
-                }
+                }            
             },
             //add service 
             addService: function(){
@@ -392,7 +371,8 @@
                             venue: this.service_venue,                                
                             date: this.service_date,                        
                             start: this.service_start + ':00',
-                            end: this.service_end   + ':00'                                                                
+                            end: this.service_end   + ':00',                                                   
+                            max_attendance: this.service_max_attendance
                         }
                         }).then(response => { 
                             this.adding_service = false                             
