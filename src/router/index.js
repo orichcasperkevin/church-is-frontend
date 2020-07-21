@@ -24,6 +24,7 @@ import expenditure from "@/components/finance/expenditure"
 import  dailyVerse from "@/components/daily-verses/dailyVerse"
 import sermons from "@/components/sermons/sermons"
 import services from "@/components/services/services"
+import serviceBookings from "@/components/services/serviceBookings"
 
 import login from "@/components/auth/login"
 Vue.use(Router)
@@ -135,6 +136,11 @@ export default new Router({
       path: '/services/',
       name: 'services',
       component: services
+    },
+    {
+      path: '/service-bookings/:id',
+      name: 'service-bookings',
+      component: serviceBookings
     },
     {
       path: '/sms-analytics/',

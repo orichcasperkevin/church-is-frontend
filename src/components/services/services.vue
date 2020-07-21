@@ -30,8 +30,7 @@
                                                 <table class="table table-responsive-sm table-borderless">
                                                         <thead>
                                                             <tr>                                                            
-                                                            <th scope="col">Service type</th>
-                                                            <th scope="col">date</th>
+                                                            <th scope="col">Service</th>                                                            
                                                             <th scope="col">venue</th>
                                                             <th scope="col">starts</th>
                                                             <th scope="col">ends</th>
@@ -39,11 +38,15 @@
                                                         </thead>
                                                         <tbody v-if="services_today">
                                                             <tr class="text-muted" v-for="data in services_today.response">                                                             
-                                                                <td>{{data.service.type.name}}</td>
-                                                                <td>Today</td>
+                                                                <td>
+                                                                <router-link class="text-secondary"  
+                                                                    :to="`/service-bookings/`+ data.service.id + `/`">                                                         
+                                                                    {{data.service.type.name}} (today)
+                                                                </router-link>
+                                                                </td>                                                            
                                                                 <td>{{data.service.venue}}</td>
                                                                 <td>{{data.service.start}}</td>
-                                                                <td>{{data.service.end}}</td>
+                                                                    <td>{{data.service.end}}</td>
                                                             </tr>                                                              
                                                         </tbody>
                                                     </table>   
@@ -57,8 +60,7 @@
                                                <table class="table table-responsive-sm table-borderless">
                                                     <thead>
                                                         <tr>                                                            
-                                                        <th scope="col">Service type</th>
-                                                        <th scope="col">date</th>
+                                                        <th scope="col">Service</th>                                                        
                                                         <th scope="col">venue</th>
                                                         <th scope="col">starts</th>
                                                         <th scope="col">ends</th>
@@ -66,8 +68,12 @@
                                                     </thead>
                                                     <tbody v-if="services_this_month">
                                                         <tr class="text-muted" v-for="data in services_this_month.response">                                                             
-                                                            <td>{{data.service.type.name}}</td>
-                                                            <td>{{$humanizeDate(data.service.date)}}</td>
+                                                            <td>
+                                                            <router-link class="text-secondary"  
+                                                                :to="`/service-bookings/`+ data.service.id + `/`">                                                         
+                                                                {{data.service.type.name}} ({{$humanizeDate(data.service.date)}})
+                                                            </router-link>
+                                                            </td>                                                            
                                                             <td>{{data.service.venue}}</td>
                                                             <td>{{data.service.start}}</td>
                                                             <td>{{data.service.end}}</td>

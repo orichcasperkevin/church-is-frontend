@@ -478,7 +478,7 @@
 										<tr>
 										<th scope="col">names</th>
 										<th scope="col">gender</th>
-										<th scope="col">date of birth <br/>(DD/MM/YYYY)</th>
+										<th scope="col">date of birth <br/>(DD MMMMM YYYY)</th>
 										<th scope="col">phone number</th>
 										<th scope="col">email</th>
 										<th scope="col">marital status</th>
@@ -488,7 +488,7 @@
 										<tr>
 										<td>John The Baptist</td>
 										<td>M</td>
-										<td>17/07/1997</td>
+										<td>17 July 1997</td>
 										<td>07********</td>
 										<td>example@nano.com</td>
 										<td>M</td>
@@ -496,7 +496,7 @@
 										<tr>
 										<td>Mark Laboso</td>
 										<td>M</td>
-										<td>03/12/1980</td>
+										<td>03 December 1980</td>
 										<td>07********</td>
 										<td>example@nano.com</td>
 										<td>S</td>
@@ -504,14 +504,14 @@
 										<tr>
 										<td>Martha Kari</td>
 										<td>F</td>
-										<td>20/02/1998</td>
+										<td>20 February 1998</td>
 										<td>07********</td>
 										<td>example@nano.com</td>
 										<td>D</td>
 										</tr>
 										<td>Maria Desa malibo</td>
 										<td>F</td>
-										<td>29/07/1990</td>
+										<td>29 June 1990</td>
 										<td>07********</td>
 										<td>example@nano.com</td>
 										<td>W</td>
