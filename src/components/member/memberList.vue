@@ -152,8 +152,20 @@
 						</div>							
 
 					</div>						
+					<!-- pagination -->
+					<div class="d-flex justify-content-end">
+						<button class="btn" @click="prevPage"
+							:disabled="pageNumber == 0">
+							<i class="arrow left"></i>
+						</button>
+						<span class="p-3">{{pageNumber + 1}} / {{pageCount}}</span>
+						<button class="btn" @click="nextPage"
+							:disabled="(pageNumber+1) == pageCount">
+							<i class="arrow right"></i>
+						</button>
+					</div>					
 					<table class="table table-responsive-sm table-borderless" 
-						v-if = "(min_age == 0 || min_age == '') && (max_age == 150 || max_age  == '')">
+						v-if = "(min_age == 0 || min_age == '') && (max_age == 150 || max_age  == '')">					
 						<thead>
 						<tr>									
 						<th class="row ml-1 mb-5">
@@ -163,7 +175,7 @@
 							</label><span class="mt-4" style="position:absolute">All ({{foundItems}})</span>
 						<!-- actions drop down on phone -->
 						</th>															
-						<th></th>
+						<th></th>						
 						<th v-if="detail_view">Gender</th>
 						<th v-if="detail_view">Phone number</th>
 						<th v-if="detail_view">Marital status</th>
@@ -171,20 +183,25 @@
 						</tr>
 						</thead>
 						<tbody>
-						<tr v-for="data in members.response.slice(0,100)">									
+						<tr v-for="(data,index) in paginatedData" :key="index">							
 							<td >
-							<label class="anvil-checkbox">
-								<input multiple type="checkbox" :value=data.member.id v-model="member_ids">
-								<span class="anvil-checkmark"></span>
-							</label>
-							</td>
+								<label class="anvil-checkbox">
+									<input multiple type="checkbox" :value=data.member.id v-model="member_ids">
+									<span class="anvil-checkmark"></span>
+								</label>							
+							</td>							
+							<td class="p-3 text-muted">{{ (pageNumber * size) + (index + 1)}}</td>
 							<td>
-							<img v-if = "data.gender == 'M'" style = "height: 32px "src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
-								<img v-if = "data.gender == 'F'" style = "height: 32px "src="@/assets/avatars/icons8-user-female-skin-type-4-40.png">
-								<img v-if = "data.gender == 'R'" style = "height: 32px "src="@/assets/avatars/icons8-contacts-96.png">
-							<router-link :to="`/memberDetail/`+ data.member.id">
-							<span class = "text-secondary">{{data.member.first_name}} {{data.member.last_name}}</span>										
-							</router-link>
+								<span v-if="! detail_view">
+									<img v-if = "data.gender == 'M'" style = "height: 32px "src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
+									<img v-if = "data.gender == 'F'" style = "height: 32px "src="@/assets/avatars/icons8-user-female-skin-type-4-40.png">
+									<img v-if = "data.gender != 'M' && data.gender != 'F' " style = "height: 32px "src="@/assets/avatars/icons8-contacts-96.png">
+								</span>
+								<router-link :to="`/memberDetail/`+ data.member.id">
+									<span class="text-secondary">
+										{{data.member.first_name}} {{data.member.last_name}}
+									</span>										
+								</router-link>
 							</td>
 							<!-- if detail_view -->
 							<td v-if="detail_view">									
@@ -228,13 +245,14 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr v-for="data in members.response.slice(0,100)">								
-						<td>
+						<tr v-for="(data,index) in paginatedData" :key="index">																				
+						<td>							
 							<label class="anvil-checkbox">
 							<input multiple type="checkbox" :value=data.member.member.id v-model="member_ids">
 							<span class="anvil-checkmark"></span>
 							</label>
-							</td>
+						</td>	
+						<td class="text-muted">{{ (pageNumber * size) + (index + 1)}}</td>					
 						<td >	
 							<img v-if = "data.member.gender == 'M'" style = "height: 32px "src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
 							<img v-if = "data.member.gender == 'F'" style = "height: 32px "src="@/assets/avatars/icons8-user-female-skin-type-4-40.png">
@@ -267,7 +285,7 @@
 					</tbody>
 					</table>
 				</section>				
-				<!-- detailed list -->				
+				<!-- stats -->				
 				<section class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
 					<div class="d-flex justify-content-center">
 					<memberstats msg="expenditure stats"/>
@@ -727,6 +745,9 @@ export default {
 		foundItems: null,
 		groups:null,
 		group_id:null,
+		//paginate members list
+		pageNumber: 0,  // default to page 1
+		size:100,
 		//search for member
 		firstnamesearch: null,
 		firstnamesearch_status: null,
@@ -768,6 +789,16 @@ export default {
   computed:{
 	folders(){		
 		return this.generateFolders(this.groups.response, 'group')
+	},
+	pageCount(){		
+		let l = this.members.response.length,
+			s = this.size;
+		return Math.ceil(l/s);
+	},
+	paginatedData(){
+		const start = this.pageNumber * this.size,
+			end = start + this.size;
+		return this.members.response.slice(start, end);
 	}
   },
   watch: {
@@ -832,6 +863,12 @@ export default {
     /* Set the height of the bottom navigation to 0 */
     closeActions:function() {
       document.getElementById('bottom-actions-tab').style.height = "0px"
+	},
+	nextPage(){
+        this.pageNumber++
+    },
+    prevPage(){
+        this.pageNumber--
     },
     resetAge: function(){
       this.min_age= 0

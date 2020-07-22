@@ -30,12 +30,13 @@
                         <div class="tab-content" id="v-pills-tabContent">                           
                            <!-- all bookings -->
                                 <div class="tab-pane fade show active " id="v-pills-this-month" role="tabpanel" aria-labelledby="v-pills-this-month-tab">
-                                    <h3>{{bookings[0].service_type_name}} on {{$humanizeDate(bookings[0].service_date)}} bookings</h3>
+                                    <h3 class="mt-3 mb-5">{{bookings[0].service_type_name}} ({{$humanizeDate(bookings[0].service_date)}}) bookings</h3>
                                     <div>
                                         <!-- table of services  -->
                                         <table class="table table-responsive-sm table-borderless" id="bookingsTable">
                                             <thead>
-                                                <tr>                                                            
+                                                <tr>    
+                                                <td>#</td>                                                        
                                                 <th scope="col">Names</th>                                                        
                                                 <th scope="col">Phone</th>
                                                 <th scope="col">Service</th>
@@ -44,7 +45,8 @@
                                                 </tr>
                                             </thead>
                                             <tbody v-if="bookings.length">
-                                                <tr v-for="booking in bookings">                                                             
+                                                <tr v-for="(booking,index) in bookings" :key="index">
+                                                    <td>{{index + 1}}</td>
                                                     <td>{{booking.names}}</td>
                                                     <td>{{booking.phone_number}}</td>
                                                     <td>{{booking.service_type_name}} ({{$humanizeDate(booking.service_date)}})</td>                                                                                                                                                                                                                                                                               

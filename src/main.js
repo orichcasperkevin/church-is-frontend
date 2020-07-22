@@ -10,8 +10,10 @@ import VueLodash from 'vue-lodash'
 import VueSession from 'vue-session'
 import Vuex from 'vuex'
 import { store } from './store'
-import TimeAgo from 'javascript-time-ago'
-import en from 'javascript-time-ago/locale/en'
+
+//momentjs
+import moment from 'moment'
+Vue.prototype.$moment = moment
 
 //guill vue
 import VueQuillEditor from 'vue-quill-editor' 
@@ -34,9 +36,10 @@ Vue.prototype.$store =  store
 Vue.prototype.$http = axios
 
 //helpers
-TimeAgo.addLocale(en)
-Vue.prototype.$timeAgo = new TimeAgo('en-US')
-Vue.prototype.$humanizeDate = function(date_time){return this.$timeAgo.format(new Date(date_time), 'twitter')},
+Vue.prototype.$humanizeDate = function(date_time){
+  return this.$moment((new Date(date_time))).format("DD/MMM/YY")
+},
+
 Vue.prototype.$fileDownload = require('js-file-download');
 
 //DOMAINS
