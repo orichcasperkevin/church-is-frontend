@@ -9,7 +9,7 @@
         <div class="container">
             <div class="row">
                 <h3 class="col-6">              
-                    News & announcements
+                    News and announcements
                 </h3>
                  <!--add button on smaller devices -->
                  <div class="col-6 btn-group d-sm-block d-md-none text-right">
