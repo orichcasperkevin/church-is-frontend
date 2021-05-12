@@ -12,7 +12,7 @@
   "dependencies": {
     "axios": "^0.18.1",
     "bootstrap": "^4.3.1",
-    "chart.js": "^2.9.3",
+    "chart.js": "^2.9.4",
     "jquery": "^3.4.1",
     "js-file-download": "^0.4.9",
     "moment": "^2.27.0",
