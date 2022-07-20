@@ -2,12 +2,12 @@
   <div >
 	<section class="navbar navbar-expand-lg navbar-light sticky-top bg-white" v-if="checkLoggedIn()">
 	  <button class="btn btn-light ml-3" type="button" v-on:click="openNav()">
-		  <span class="navbar-toggler-icon"></span>
+		 <i class="fas fa-bars"></i>
 	  </button>
 	  <!-- select logo  -->
 	  <img class="ml-4 " style="width: 150px ;height: auto" src="@/assets/text_logo.png" alt="logo not found"
 			v-if="$host_name == 'my-domain' || $host_name == 'anvilchurch'" >
-		<img class="ml-4 " style="width: 200px ;height: auto ;border-radius: 5px" 
+		<img class="ml-4 " style="width: 200px ;height: auto ;border-radius: 5px"
 				src="@/assets/methodist_text_logo.png" alt="logo not found"
 				v-if="$host_name == 'methodistkenya' " >
 	  <div class="mt-2 col-sm-12 col-lg-8">
@@ -23,13 +23,14 @@
 			<router-link class="ml-1 dropdown-item"
 									:to="{name: 'credentialsReset'}">
 									<span  v-on:click="closeNav()">
-											change credentials
+											<i class="far fa-edit"></i> change credentials
 									</span>
 			</router-link>
 			<a 	href="#"
 					class="ml-1 dropdown-item"
 					v-on:click="logOut(); closeNav()"
 					>
+				<i class="fas fa-sign-out-alt"></i>
 				log out
 			</a>
 		</div>
@@ -37,28 +38,28 @@
 		<!-- members nav on mobile -->
 		<router-link class="nav-link" :to="{name: 'memberList'}">
 		  <span  v-on:click="doAJAX(); closeNav()">
-			  <img style="width: 25px ;height: auto" src="@/assets/icons/icons8-contacts-208.png">
+			  <i class="text-dark far fa-user"></i>
 			  members
 		  </span>
 		</router-link>
 		<!-- groups side nav -->
 		<router-link class="nav-link" :to="{name: 'groupsLanding'}">
 		  <span  v-on:click="doAJAX(); closeNav()">
-			  <img style="width: 25px ;height: auto" src="@/assets/icons/icons8-user-groups-208.png">
+			<i class="text-dark fas fa-users"></i>
 			groups
 		  </span>
 		</router-link>
 		<!-- events side nav -->
 		<router-link class="nav-link" :to="{name: 'events'}">
 		  <span  v-on:click="doAJAX(); closeNav()">
-			<img style="width: 25px ;height: auto" src="@/assets/icons/icons8-schedule-filled-100.png">
+			<i class="text-dark fas fa-calendar-alt"></i>
 		  events
 		</span>
 		</router-link>
 		<!-- finace side nav -->
 		<router-link class="nav-link" :to="{name: 'generalFinance'}">
 		  <span  v-on:click="doAJAX(); closeNav()">
-			<img style="width: 25px ;height: auto" src="@/assets/icons/icons8-expensive-filled-50.png">
+			<i class="text-dark fas fa-money-bill-alt"></i>
 		  finances
 		</span>
 		</router-link>
@@ -66,39 +67,31 @@
 		<!-- more side nav -->
 		<router-link class="nav-link" :to="{name: 'services'}">
 		<span  v-on:click="doAJAX(); closeNav()">
-		  <img style="width: 25px ;height: auto" src="@/assets/icons/icons8-lecture-50.png">
+		  <i class="text-dark fas fa-church"></i>
 		  services
 		</span>
 		</router-link>
 		<hr>
 		<router-link class="nav-link" :to="{name: 'smsAnalytics'}">
 		<span  v-on:click="doAJAX(); closeNav()">
-			<img style="width: 25px ;height: auto" src="@/assets/icons/icons8-outbox-50.png">
+			<i class="text-dark fas fa-sms"></i>
 			sms outbox
 		</span>
 		</router-link>
 		<router-link class="nav-link" :to="{name: 'news'}">
 		<span  v-on:click="doAJAX(); closeNav()">
-			<img style="width: 25px ;height: auto" src="@/assets/icons/icons8-google-news-50.png">
+			<i class="text-dark far fa-newspaper"></i>
 		  news & announcements
 		</span>
 		</router-link>
 		<hr>
 		<router-link class="nav-link" :to="{name: 'myAccount'}">
 		<span  v-on:click="doAJAX(); closeNav()">
-		  <img style="width: 25px ;height: auto" src="@/assets/icons/icons8-resume-website-50.png">
+		 <i class="text-dark fas fa-cogs"></i>
 		  account & website
 		</span>
 		</router-link>
 		<hr>
-		<div class="mb-5 ml-2 mt-5 text-center bg-dark rounded">
-		  <p class="text-white">powered by</p>
-		  <img class="ml-4 " style="width: 150px ;height: auto" src="@/assets/full_logo.png">
-		</div>
-		<!-- icons8 -->
-		<div class="ml-4 mb-2">
-		  Icons by <a target="_blank" class="text-success" href="https://icons8.com">Icons8</a>
-		</div>
 	  </div>
 	</nav>
 	<!-- nav frost overlay -->
@@ -143,24 +136,24 @@ export default {
 	//clear local storage except these
 	var church_id = localStorage.getItem('church_id')
 	var church_details = localStorage.getItem('church_details')
-	var base_url_value = localStorage.getItem('base_url_value')	
-	var default_message = localStorage.getItem('default_message')		
+	var base_url_value = localStorage.getItem('base_url_value')
+	var default_message = localStorage.getItem('default_message')
 
 	localStorage.clear()
 
-	if (church_id != 'null'){		
+	if (church_id != 'null'){
 		localStorage.setItem('church_id',church_id)
-	}	
+	}
 	if(church_details != 'null'){
 		localStorage.setItem('church_details',church_details)
-	}	
+	}
 	if(base_url_value != 'null'){
 		localStorage.setItem('base_url_value',base_url_value)
-	}		
+	}
 	if(default_message != 'null'){
 		localStorage.setItem('default_message',default_message)
 	}
-		
+
 	this.username = this.$session.get("username")
 	this.checkLoggedIn()
   },

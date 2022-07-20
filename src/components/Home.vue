@@ -1,12 +1,12 @@
 <template>
     <div class="Home">
-        <div class="container">           
-            <div class="church-is-home row ">
-              <div class="col-sm mb-3">
+        <div class="container">
+            <div class="church-is-home row" style="position:absolute;left:50%;top:50%; transform: translate(-50%, -50%);">
+              <div class="col-sm mb-3 ">
                   <router-link :to="{name: 'memberList'}">
-                      <div class="home-menu-item border-0">
-                          <img style = "height: 64px "src="@/assets/icons/icons8-contacts-208.png">
-                        <p class="font-weight-bold">Members</p>
+                      <div class="home-menu-item">
+						   <i class="text-dark mb-4 far fa-user fa-3x"></i>
+                          	<p class="font-weight-bold">Members &rarr;</p>
                       </div>
                   </router-link>
                 <div>
@@ -17,9 +17,9 @@
               </div>
               <div class="col-sm mb-3">
                   <router-link :to="{name: 'groupsLanding'}">
-                      <div class="home-menu-item border-0">
-                        <img style = "height: 64px "src="@/assets/icons/icons8-user-groups-208.png">
-                        <p class="font-weight-bold">Groups</p>
+                      <div class="home-menu-item">
+                        <i class="text-dark mb-4  fas fa-users fa-3x"></i>
+                        <p class="font-weight-bold">Groups &rarr;</p>
                       </div>
                   </router-link>
                   <div>
@@ -30,9 +30,9 @@
                 </div>
                 <div class="col-sm mb-3">
                     <router-link :to="{name: 'generalFinance'}">
-                        <div class="home-menu-item border-0">
-                            <img style = "height: 64px "src="@/assets/icons/icons8-request-money-filled-50.png">
-                          <p class="font-weight-bold">Finances</p>
+                        <div class="home-menu-item">
+                            <i class="text-dark mb-4 fas fa-money-bill-alt fa-3x"></i>
+                          <p class="font-weight-bold">Finances &rarr;</p>
                         </div>
                     </router-link>
                     <!-- notifications -->
@@ -94,7 +94,7 @@ export default {
     }
   },
   mounted() {
-    this.fetchData()   
+    this.fetchData()
   },
   destroyed(){
     document.getElementById("anvil-side-nav").style.width = "0";

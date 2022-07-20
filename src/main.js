@@ -16,7 +16,7 @@ import moment from 'moment'
 Vue.prototype.$moment = moment
 
 //guill vue
-import VueQuillEditor from 'vue-quill-editor' 
+import VueQuillEditor from 'vue-quill-editor'
 // require styles
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
@@ -26,12 +26,12 @@ import './helpers.js'
 
 Vue.use(Vuex)
 Vue.use(VueLodash, { name: 'lodash' })
-Vue.use(VueSession) 
+Vue.use(VueSession)
 Vue.use(VueQuillEditor, /* { default global options } */) //component <quill-editor/>
 
 Vue.config.productionTip = false
 //vuex
-Vue.prototype.$store =  store 
+Vue.prototype.$store =  store
 //axios
 Vue.prototype.$http = axios
 
@@ -43,14 +43,14 @@ Vue.prototype.$humanizeDate = function(date_time){
 Vue.prototype.$fileDownload = require('js-file-download');
 
 //DOMAINS
-var current_host = window.location.hostname //un comment this in production
-//var current_host = 'admin.my-domain.com'//for dev env local use only, comment out in production
+// var current_host = window.location.hostname //un comment this in production
+var current_host = 'admin.anvil.site'//for dev env local use only, comment out in production
 
 Vue.prototype.$host_name = current_host.split('.')[1]
 
 var name = current_host.split('.')[1]
 var tld = current_host.split('.')[2]
-var api_server = `https://${name}.${tld}` //+ ":8000"
+var api_server = `http://${name}.${tld}` + ":8000"
 
 Vue.prototype.$DOMAIN = { value : api_server }
 Vue.prototype.$BASE_URL = { value :localStorage.getItem('base_url_value'),toString:function(){return this.value}}

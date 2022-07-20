@@ -24,7 +24,7 @@ html {
 tr:nth-child(even) {
   background-color: #fcfcfc;
 }
-.table-borderless > thead{    
+.table-borderless > thead{
   border-bottom: 1px solid lightgray;
 }
 
@@ -53,18 +53,22 @@ img.church-is-menu {
     font-size: 20px;
   }
 .home-menu-item{
-
-    border-radius: 10px;
+	border-style: solid;
+    border-width: 2px;
+	border-radius: 5px;
+	border-color : ghostwhite;
     background-color: ghostwhite;
     padding: 25px 25px 25px 25px;
     text-align: center;
+	text-decoration: none;
 }
 .home-menu-item:hover{
     background-color: ghostwhite;
     transition: all 0.3s ease-in-out;
+	border-color : $primary;
 }
 .quick-link{
-  border-radius: 10px;  
+  border-radius: 10px;
   padding: 25px 25px 25px 25px;
   text-align: center;
   cursor: pointer;
@@ -144,18 +148,18 @@ img.church-is-menu {
   transition: all 0.3s ease-in-out;
 }
 
-.nav-pills > li > a.active {  
+.nav-pills > li > a.active {
   font-weight: bold;
   color: black!important;
   background-color: ghostwhite!important;
 }
 
-.nav-pills > a{  
+.nav-pills > a{
   font-weight: bold !important;
   color: $primary!important;
 }
 
-.nav-pills > a.active {  
+.nav-pills > a.active {
   font-weight: bold;
   color: black!important;
   background-color: ghostwhite!important;
@@ -173,7 +177,7 @@ img.church-is-menu {
   position: fixed; /* Stay in place */
   z-index: 9999; /* Stay on top */
   top: 0; /* Stay at the top */
-  left: 0;  
+  left: 0;
   overflow-x: hidden; /* Disable horizontal scroll */
   padding-top: 60px; /* Place content 60px from the top */
   transition: 0.5s ease-in-out; /* 0.5 second transition effect to slide in the sidenav */
@@ -191,7 +195,7 @@ img.church-is-menu {
   position: fixed; /* Stay in place */
   z-index: 9999; /* Stay on top */
   bottom: 0; /* Stay at the top */
-  left: 0;  
+  left: 0;
   overflow-x: hidden; /* Disable horizontal scroll */
   padding-bottom: 5px; /* Place content 60px from the top */
   transition: 0.5s ease-in-out; /* 0.5 second transition effect to slide in the sidenav */
@@ -250,7 +254,7 @@ img.church-is-menu {
 .anvil-checkbox {
   display: block;
   position: relative;
-  
+
   margin-bottom: 12px;
   cursor: pointer;
   -webkit-user-select: none;
@@ -394,7 +398,7 @@ input[type=number] {
 }
 // arrows
 .arrow {
-  border: solid black;    
+  border: solid black;
   border-width: 0 3px 3px 0;
   display: inline-block;
   padding: 3px;
@@ -402,7 +406,7 @@ input[type=number] {
 
 .right {
   transform: rotate(-45deg);
-  -webkit-transform: rotate(-45deg);    
+  -webkit-transform: rotate(-45deg);
 }
 
 .left {

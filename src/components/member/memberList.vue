@@ -21,80 +21,77 @@
         <div class="container">
           <div class="row">
             <!-- Navigation on Left -->
-            <section class="filters col-12 col-sm-0 col-md-8 col-lg-2 " style="padding: 3px 3px 3px 3px">             
+            <section class="filters col-12 col-sm-0 col-md-8 col-lg-2 border rounded" style="height:100vh; padding: 3px 3px 3px 3px">
               <div class="">
                 <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-				  <a class="nav-link active" id="v-pills-home-tab" 
-					  data-toggle="pill" 
-					  href="#v-pills-home" 
-					  role="tab" 
-					  aria-controls="v-pills-home" 
+				  <a class="nav-link active" id="v-pills-home-tab"
+					  data-toggle="pill"
+					  href="#v-pills-home"
+					  role="tab"
+					  aria-controls="v-pills-home"
 					  aria-selected="true"
 					  @click="actions_list=false">
-					  <img style="width: 20px ;height: auto" src="@/assets/icons/icons8-present-48.png">
+					 <i class="text-dark far fa-clock"></i>
 					  Quick links
 				  </a>
-				  <a class="nav-link" 						  
-						  data-toggle="pill" 
-						  href="#v-pills-profile" 
-						  role="tab" 
-						  aria-controls="v-pills-profile" 
+				  <a class="nav-link"
+						  data-toggle="pill"
+						  href="#v-pills-profile"
+						  role="tab"
+						  aria-controls="v-pills-profile"
 						  aria-selected="false"
 						  @click="detail_view=false ;actions_list=true ">
-						  <img style="width: 20px ;height: auto" src="@/assets/icons/icons8-contacts-208.png">
+						  <i class="text-dark far fa-user"></i>
 						  Member list
 					</a>
-				  <a class="nav-link" id="v-pills-messages-tab"					
-						data-toggle="pill" 
-						href="#v-pills-profile" 
-						role="tab" 
-						aria-controls="v-pills-profile" 
+				  <a class="nav-link" id="v-pills-messages-tab"
+						data-toggle="pill"
+						href="#v-pills-profile"
+						role="tab"
+						aria-controls="v-pills-profile"
 						aria-selected="false"
 						@click="detail_view=true;actions_list=true">
-						<img style="width: 20px ;height: auto" src="@/assets/icons/icons8-admin-settings-male-30.png">
+						<i class="text-dark fas fa-users-cog"></i>
 						Detailed list
 				</a>
-				  <a class="nav-link" id="v-pills-settings-tab" 
-					  data-toggle="pill" 
-					  href="#v-pills-settings" 
-					  role="tab" 
-					  aria-controls="v-pills-settings" 
+				  <a class="nav-link" id="v-pills-settings-tab"
+					  data-toggle="pill"
+					  href="#v-pills-settings"
+					  role="tab"
+					  aria-controls="v-pills-settings"
 					  aria-selected="false"
 					  @click="actions_list=false">
-					  <img style="width: 20px ;height: auto" src="@/assets/icons/icons8-group-of-projects-filled-50.png">
+					  <i class="text-dark fas fa-chart-bar"></i>
 					  Graphs
 					</a>
                 </div>
               </div>
 			</section>
-			
+
             <!-- CONTENT TAB IN THE MIDDLE -->
             <section class="col tab-content" id="v-pills-tabContent">
 				<!-- landing -->
-				<section class="tab-pane fade show active" id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
-					<div class="d-flex flex-column justify-content-center">
+				<section class="tab-pane fade show active "  id="v-pills-home" role="tabpanel" aria-labelledby="v-pills-home-tab">
+					<div class="d-flex flex-column justify-content-center" style="position:absolute;left:20%;top:20%;transform: transalate(50%,50%)">
 					<div></div>
 					<div class="mt-5 mb-5 d-flex flex-nowrap justify-content-center">
 						<div class="p-4 d-flex flex-wrap justify-content-center">
-						<img class="mb-2 church-is-menu" src="@/assets/icons/icons8-contacts-208.png" 
-							style="width:35px;height:auto"> 
-							<router-link :to="{name: 'memberAdd'}" >								
-							Add member						
+						<i class="far fa-user fa-3x mb-4"></i>
+							<router-link :to="{name: 'memberAdd'}" style="white-space:nowrap">
+							Add member &rarr;
 							</router-link>
-						</div>						
+						</div>
 						<div class="p-4 d-flex flex-wrap justify-content-center">
-						<img class="mb-2 church-is-menu" src="@/assets/icons/icons8-export-csv-30.png" 
-							style="width:35px;height:auto"> 
+						<i class="fas fa-file-import fa-3x mb-4"></i>
 							<a class="dropdown-item text-primary" href="#" data-toggle="modal" data-target="#importCSV">
-							Import from CSV
+							Import from CSV &rarr;
 							</a>
-							
+
 						</div>
 						<div class="p-4 d-flex flex-wrap justify-content-center ">
-						<img class="church-is-menu" src="@/assets/icons/icons8-add-user-group-man-man-64.png" 
-							style="width:45px;height:auto"> 
+						<i class="fas fa-users fa-3x mb-4"></i>
 							<a class="dropdown-item text-primary" href="#" data-toggle="modal" data-target="#assignGroup">
-								Assign Group
+								Assign Group &rarr;
 							</a>
 						</div>
 					</div>
@@ -127,9 +124,9 @@
 						<div class="d-none d-lg-block form-group p-1">
 							<small><b>First name:</b></small>
 							<input type="text" class="form-control"  aria-describedby="searchHelp" placeholder="Search..." v-model="firstnamesearch" autofocus>
-						</div>								
-						<div class="d-none d-lg-block" v-if="detail_view">									
-							<div class="d-flex flex-row justify-content-center">										
+						</div>
+						<div class="d-none d-lg-block" v-if="detail_view">
+							<div class="d-flex flex-row justify-content-center">
 							<div class="form-group p-1 ">
 								<small><b>Max age : </b></small><small><a href="#" v-on:click="resetAge" class="text-success">reset</a></small>
 								<input type="number" class="form-control" id="searchInput" placeholder="max age" v-model = "max_age" style="max-width:100px">
@@ -137,21 +134,21 @@
 							<div class="form-group p-1">
 								<small><b>Min age : </b></small><small><a href="#" v-on:click="resetAge" class="text-success">reset</a></small>
 								<input type="number" class="form-control" id="searchInput"  placeholder="min age" v-model = "min_age" style="max-width:100px">
-							</div>										
+							</div>
 							</div>
 						</div>
 						<div class="d-none d-lg-block" v-if="detail_view">
-							<div class="d-flex justify-content-center">									
+							<div class="d-flex justify-content-center">
 							<small><a href="#" v-on:click="resetGender" class="text-success">reset</a></small>
 							</div>
-							<div class="d-flex" style="padding : 10px">										
+							<div class="d-flex" style="padding : 10px">
 							<input class="ml-2" type="radio" name="optradio" value="M" v-model="gendersearch"> <span class="ml-2">Male</span>
-							<input class="ml-2" type="radio" name="optradio" value ="F" v-model="gendersearch"> <span class="ml-2">Female</span>										
+							<input class="ml-2" type="radio" name="optradio" value ="F" v-model="gendersearch"> <span class="ml-2">Female</span>
 							</div>
 						</div>
-						</div>							
+						</div>
 
-					</div>						
+					</div>
 					<!-- pagination -->
 					<div class="d-flex justify-content-end">
 						<button class="btn" @click="prevPage"
@@ -163,33 +160,36 @@
 							:disabled="(pageNumber+1) == pageCount">
 							<i class="arrow right"></i>
 						</button>
-					</div>					
-					<table class="table table-responsive-sm table-borderless" 
-						v-if = "(min_age == 0 || min_age == '') && (max_age == 150 || max_age  == '')">					
+					</div>
+					<table class="table table-responsive-sm table-borderless"
+						v-if = "(min_age == 0 || min_age == '') && (max_age == 150 || max_age  == '')">
 						<thead>
-						<tr>									
+						<tr>
 						<th class="row ml-1 mb-5">
-							<label class="anvil-checkbox">
-								<input type="checkbox":value=true v-model="all_members">
-								<span class="anvil-checkmark"></span>
-							</label><span class="mt-4" style="position:absolute">All ({{foundItems}})</span>
+							<span class="border" style="white-space:nowrap">
+								<label class="anvil-checkbox">
+									<input type="checkbox":value=true v-model="all_members">
+									<span class="anvil-checkmark"></span>
+								</label>
+								<span class="mt-4" style="position:absolute">All ({{foundItems}})</span>
+							</span>
 						<!-- actions drop down on phone -->
-						</th>															
-						<th></th>						
+						</th>
+						<th></th>
 						<th v-if="detail_view">Gender</th>
-						<th v-if="detail_view">Phone number</th>
+						<th v-if="detail_view">Phone</th>
 						<th v-if="detail_view">Marital status</th>
 						<th v-if="detail_view">Age</th>
 						</tr>
 						</thead>
 						<tbody>
-						<tr v-for="(data,index) in paginatedData" :key="index">							
+						<tr v-for="(data,index) in paginatedData" :key="index">
 							<td >
 								<label class="anvil-checkbox">
 									<input multiple type="checkbox" :value=data.member.id v-model="member_ids">
 									<span class="anvil-checkmark"></span>
-								</label>							
-							</td>							
+								</label>
+							</td>
 							<td class="p-3 text-muted">{{ (pageNumber * size) + (index + 1)}}</td>
 							<td>
 								<span v-if="! detail_view">
@@ -200,28 +200,28 @@
 								<router-link :to="`/memberDetail/`+ data.member.id">
 									<span class="text-secondary">
 										{{data.member.first_name}} {{data.member.last_name}}
-									</span>										
+									</span>
 								</router-link>
 							</td>
 							<!-- if detail_view -->
-							<td v-if="detail_view">									
-								{{data.gender}}									
+							<td v-if="detail_view">
+								{{data.gender}}
 							</td>
 							<td >
 							<span class="ml-4 text-secondary">
 								<i v-if="data.phone_number">{{data.phone_number}}</i>
 							</span>
 							</td>
-							<td v-if="detail_view">																														
+							<td v-if="detail_view">
 							<span v-if="data.marital_status == 'S'">Single</span>
 							<span v-if="data.marital_status == 'M'">Married</span>
 							<span v-if="data.marital_status == 'D'">Divorced</span>
-							<span v-if="data.marital_status == 'W'">Widowed</span>									
+							<span v-if="data.marital_status == 'W'">Widowed</span>
 							<span v-if="data.marital_status == ''">-</span>
 							</td>
-							<td v-if="detail_view">																				
-							<i v-if="data.age">{{data.age}}</i>	
-							<i v-else>-</i>									
+							<td v-if="detail_view">
+							<i v-if="data.age">{{data.age}}</i>
+							<i v-else>-</i>
 							</td>
 						</tr>
 						</tbody>
@@ -229,14 +229,14 @@
 					</div>
 					<table class="table table-responsive-sm table-borderless" v-if = "min_age > 0  || max_age != 150 ">
 					<thead>
-						<tr>									
+						<tr>
 						<th class="row ml-1 mb-5">
 							<label class="anvil-checkbox">
 								<input type="checkbox":value=true v-model="all_members">
 								<span class="anvil-checkmark"></span>
 							</label><span class="mt-4" style="position:absolute">All ({{foundItems}})</span>
 						<!-- actions drop down on phone -->
-						</th>															
+						</th>
 						<th></th>
 						<th v-if="detail_view">Gender</th>
 						<th v-if="detail_view">Phone number</th>
@@ -245,24 +245,24 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr v-for="(data,index) in paginatedData" :key="index">																				
-						<td>							
+						<tr v-for="(data,index) in paginatedData" :key="index">
+						<td>
 							<label class="anvil-checkbox">
 							<input multiple type="checkbox" :value=data.member.member.id v-model="member_ids">
 							<span class="anvil-checkmark"></span>
 							</label>
-						</td>	
-						<td class="text-muted">{{ (pageNumber * size) + (index + 1)}}</td>					
-						<td >	
+						</td>
+						<td class="text-muted">{{ (pageNumber * size) + (index + 1)}}</td>
+						<td >
 							<img v-if = "data.member.gender == 'M'" style = "height: 32px "src="@/assets/avatars/icons8-user-male-skin-type-4-40.png">
 							<img v-if = "data.member.gender == 'F'" style = "height: 32px "src="@/assets/avatars/icons8-user-female-skin-type-4-40.png">
 							<img v-if = "! data.member.gender" style = "height: 32px "src="@/assets/avatars/icons8-contacts-96.png">
 							<router-link :to="`/memberDetail/`+ data.member.member.id">
 							<span class = "text-secondary">{{data.member.member.first_name}} {{data.member.member.last_name}}</span>
-							</router-link>									
+							</router-link>
 						</td>
 						<!-- if detail_view -->
-						<td v-if="detail_view">										
+						<td v-if="detail_view">
 							{{data.member.gender}}
 						</td>
 						<td>
@@ -270,29 +270,29 @@
 							<i v-if="data.member.phone_number">{{data.member.phone_number}}</i>
 							</span>
 						</td>
-						<td v-if="detail_view">																														
+						<td v-if="detail_view">
 							<span v-if="data.member.marital_status == 'S'">Single</span>
 							<span v-if="data.member.marital_status == 'M'">Married</span>
 							<span v-if="data.member.marital_status == 'D'">Divorced</span>
-							<span v-if="data.member.marital_status == 'W'">Widowed</span>									
+							<span v-if="data.member.marital_status == 'W'">Widowed</span>
 							<span v-if="data.member.marital_status == ''">-</span>
 						</td>
-						<td v-if="detail_view">																				
-							<i v-if="data.member.age">{{data.member.age}}</i>	
-							<i v-else>-</i>									
+						<td v-if="detail_view">
+							<i v-if="data.member.age">{{data.member.age}}</i>
+							<i v-else>-</i>
 						</td>
-						</tr>						
+						</tr>
 					</tbody>
 					</table>
-				</section>				
-				<!-- stats -->				
+				</section>
+				<!-- stats -->
 				<section class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
 					<div class="d-flex justify-content-center">
 					<memberstats msg="expenditure stats"/>
-					</div>					
+					</div>
 				</section>
 			</section>
-			
+
             <!-- ACTIONS TAB ON THE RIGHT -->
             <section :class="{'visibility-none': ! actions_list}" class="col-12 col-sm-10 col-md-5 col-lg-3">
 				<hr class="d-sm-block d-lg-none">
@@ -303,39 +303,45 @@
 						+ Add member
 						</div>
 					</div>
-					<button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" 
-							id="dropdownMenuReference" 
+					<button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split"
+							id="dropdownMenuReference"
 							data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
 					<span class="sr-only">Toggle Dropdown</span>
 					</button>
 					<div class="dropdown-menu border-success" aria-labelledby="dropdownMenuReference">
-						<router-link :to="{name: 'memberAdd'}" class="dropdown-item" style="text-decoration: none">								
-							Add member						
+						<router-link :to="{name: 'memberAdd'}" class="dropdown-item" style="text-decoration: none">
+							Add member
 						</router-link>
 						<a class="dropdown-item" href="#" data-toggle="modal" data-target="#importCSV">
 							Import from CSV
-						</a>                    
+						</a>
 					</div>
 				</div>
-				<div class="list-group font-weight-bold">
-				<button type="button" class="d-flex justify-content-about font-weight-bold text-muted list-group-item list-group-item-action border-0"  
-					data-toggle="modal" data-target="#textModalCenter">
-					<img src="@/assets/icons/icons8-comments-64.png" style="width: 35px; height:auto">
-					Text Members
-				</button>
-				<button
-					type="button" class="d-flex justify-content-about font-weight-bold text-muted list-group-item list-group-item-action border-0"
-					data-toggle="modal" data-target="#assignModalCenter"
-					v-on:click="getGroups()">
-					<img src="@/assets/icons/icons8-add-user-group-man-man-64.png" style="width: 35px; height:auto">
-					Assign Group
-				</button>
-				<button type="button" class="d-flex justify-content-about font-weight-bold text-muted list-group-item list-group-item-action border-0"
-						data-toggle="modal" data-target="#deleteMemberModal">
-					<img src="@/assets/icons/icons8-delete-64.png" style="width: 35px; height:auto">
-					Delete Members
-				</button>
-				</div>             
+				<div class="list-group font-weight-bold border rounded">
+					<button type="button" class="d-flex justify-content-about font-weight-bold text-muted list-group-item list-group-item-action border-0"
+						data-toggle="modal" data-target="#textModalCenter">
+						<span style="white-space:no-wrap">
+							<i class="far fa-comment"></i>
+							Text Members
+						</span>
+					</button>
+					<button
+						type="button" class="d-flex justify-content-about font-weight-bold text-muted list-group-item list-group-item-action border-0"
+						data-toggle="modal" data-target="#assignModalCenter"
+						v-on:click="getGroups()">
+						<span>
+							<i class="fas fa-users"></i>
+							Assign Group
+						</span>
+					</button>
+					<button type="button" class="d-flex justify-content-about font-weight-bold text-muted list-group-item list-group-item-action border-0"
+							data-toggle="modal" data-target="#deleteMemberModal">
+						<span>
+							<i class="fas fa-trash-alt"></i>
+							Delete Members
+						</span>
+					</button>
+				</div>
 			</section>
 
 			<!-- modals -->
@@ -412,41 +418,41 @@
 							<!-- group input					 -->
 								<div class="form-group d-flex">
 									<label class="font-weight-bold">Member</label>
-									<searchmember v-on:memberSelected="onMemberSelected" class="ml-5"/> 
-								</div>		
-								
-								<label class="font-weight-bold">Groups</label>								
+									<searchmember v-on:memberSelected="onMemberSelected" class="ml-5"/>
+								</div>
+
+								<label class="font-weight-bold">Groups</label>
 								<div v-for="folder, group in folders" v-if="! groups_added_into.length">
 									<h4 class="text-muted text-capitalize">{{folder[0].folder_name}}</h4>
 									<hr>
-									<div v-for="group in folder">													
+									<div v-for="group in folder">
 										<label class="anvil-checkbox">
 											<input multiple type="checkbox" :value=group.id v-model="group_ids">
 											<span class="anvil-checkmark"></span>
 											<span class="text-capitalize ml-5">{{group.name}}</span>
 										</label>
 									</div>
-								</div>					
+								</div>
 								<div v-if="groups_added_into.length">
 									<ul>
 										<li class="text-muted" v-for="group in groups_added_into">
 											{{group.church_group_name}}
-											as 
+											as
 											{{group.role_name}}
 										</li>
 									</ul>
-								</div> 
+								</div>
 						</div>
 						<div class="modal-footer">
 							<button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click="setAssignGroupButtonText('assign group')">Close</button>
 							<button v-if="! groups_added_into.length" class="btn btn-success" @click="addMemberToGroup()">
 								+ add member to groups
 								<span   v-if="adding_member_detail"
-									class="spinner-border spinner-border-sm" 
-									role="status" 
+									class="spinner-border spinner-border-sm"
+									role="status"
 									aria-hidden="true">
-								</span> 
-							</button>   
+								</span>
+							</button>
 						</div>
 						</div>
 					</div>
@@ -564,15 +570,15 @@
 											</tr>
 											</tbody>
 										</table>
-									</div>                            
-	
+									</div>
+
 								<div class="large-12 medium-12 small-12 cell">
 										<label><b>file: </b>
 											<button class="mr-2 btn btn-light" v-on:click="reset()">
 												Choose file
 											</button>
 											{{file_name}}
-											<input class="d-none" type="file" accept=".csv" id="file" ref="file"                                                                 
+											<input class="d-none" type="file" accept=".csv" id="file" ref="file"
 												v-on:change="handleFileUpload()"/>
 										</label>
 								</div>
@@ -591,7 +597,7 @@
 									</ul>
 								</p>
 								<hr>
-	
+
 								<p class="text-muted">gender: <b>M</b> => male, <b>F</b> => female</p>
 								<p class="text-muted">marital status: <b>M</b> => married, <b>S</b> => single, <b>D</b> => divorced, <b>W</b> => widowed</p>
 								</div>
@@ -759,7 +765,7 @@ export default {
 		text_button_name: "",
 		message: " ",
 		sending_anvil_message:false,
-		
+
 		// csv file upload
 		file_name: "No file chosen",
 		submitting_file: false,
@@ -780,17 +786,17 @@ export default {
 		deleting_member:false,
 		//add member to group.
 		selectedMember: null,
-		adding_member_detail: false,	   	 
+		adding_member_detail: false,
         group_ids: [],
     	groups_added_into:[]
 
     }
   },
   computed:{
-	folders(){		
+	folders(){
 		return this.generateFolders(this.groups.response, 'group')
 	},
-	pageCount(){		
+	pageCount(){
 		let l = this.members.response.length,
 			s = this.size;
 		return Math.ceil(l/s);
@@ -1079,21 +1085,21 @@ export default {
         this.file_name = this.file.name
         this.uploaded_file = ''
         this.file_format_okay = false
-        this.$refs.file.value = null   
+        this.$refs.file.value = null
 	},
 	// reset csv file upload
-	reset: function(){                
+	reset: function(){
         this.submitting_file = false
         this.checking_csv = false
         this.extracting_data = false
-        this.extract_data_button_text = "import data"       
+        this.extract_data_button_text = "import data"
         this.error_500 = []
         this.test_csv_errors = []
         this.uploaded_file = ''
         this.csv_data = []
         this.get_data_status = ''
         this.file_format_okay = false
-        this.csv_columns =  {}                           
+        this.csv_columns =  {}
         this.file = null
         this.file_name = "No file chosen"
         document.getElementById('file').click()
@@ -1119,7 +1125,7 @@ export default {
       var file_name = this.uploaded_file.split("/")[1]
 
       this.checking_csv = true
-      this.$http({ 
+      this.$http({
 		  	method: 'post',
 			url: this.$BASE_URL + '/api/members/check-csv/',
 			data: {
@@ -1160,7 +1166,7 @@ export default {
 			this.fetchData()
 			this.extracting_data = false
 			document.getElementById('close-button').click()
-			alert("data extracted succesfully")			
+			alert("data extracted succesfully")
 		}).catch((err) => {
 			// fix the network timeout issue((this is a quick fix))
 			this.extract_data_button_text = "import data"
@@ -1169,15 +1175,15 @@ export default {
 			this.fetchData()
 			this.extracting_data = false
 			document.getElementById('close-button').click()
-			alert("data extracted succesfully")	
+			alert("data extracted succesfully")
 		})
     },
-	
-	onMemberSelected (value) {				
+
+	onMemberSelected (value) {
 		this.selectedMember = value
 	},
 	//get groups
-	getGroups: function(){      
+	getGroups: function(){
       const currentVersion = this.$store.getters.group_list_version
       var version  = localStorage.getItem('group_list_version')
 
@@ -1205,26 +1211,26 @@ export default {
 		})
 		return result
 	},
-	addMemberToGroup: function(){          
+	addMemberToGroup: function(){
         for (var group_id in this.group_ids){
 			this.adding_member_detail = true
-			this.$http({ 
+			this.$http({
 				method: 'post',
 				url: this.$BASE_URL + '/api/groups/add-member-to-group/',
-				data: {           
+				data: {
 					church_group: parseInt(this.group_ids[group_id]),
 					member: this.selectedMember,
 					role: null
 				}
 			}).then(response => {
-				this.adding_member_detail = false                                    
+				this.adding_member_detail = false
 				this.selectedMember = null
-				this.groups_added_into.push(response.data)                       
+				this.groups_added_into.push(response.data)
 			}).catch((err) => {
-				this.adding_member_detail = false            
-				alert(err)            
+				this.adding_member_detail = false
+				alert(err)
 			})
-        }                                               
+        }
     },
     deleteMembers:function(){
         this.deleting_member = true

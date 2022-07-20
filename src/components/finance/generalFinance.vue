@@ -1,59 +1,57 @@
 <template>
-    <div>        
+    <div>
         <!-- this compnent requires text message modal -->
-        <textmessage :memberIds="member_ids" :context="context"/> 
+        <textmessage :memberIds="member_ids" :context="context"/>
         <!-- the modal used to import finace data from csv -->
         <importFromCSV v-on:dataExtracted="csvDataExtracted"/>
 
         <nav aria-label="breadcrumb" class="container">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><span class="backButton"><router-link style="text-decoration: none" :to="{name: 'Home'}">Home</router-link></span>  
+                <li class="breadcrumb-item"><span class="backButton"><router-link style="text-decoration: none" :to="{name: 'Home'}">Home</router-link></span>
                 <li class="breadcrumb-item active" aria-current="page">finances</li>
             </ol>
-        </nav>        
-        <div class = "container">            
+        </nav>
+        <div class = "container">
             <div class = "row">
-                <!-- NAVIGATIONS -->                
-                <div class="filters col-sm-12 col-md-8 col-lg-2" >
-                        <div class="nav success flex-column nav-pills " id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                <a class="action-list list-group-item list-group-item-action border-0 active" id="v-pills-envelopes-tab" data-toggle="pill" href="#v-pills-envelopes" role="tab" aria-controls="v-pills-envelopes" aria-selected="true" 
-                                    v-on:click=" hide_content = true">       
-                                    <span class="row">
-                                        <img class="d-none d-lg-block d-xl-block mr-2" 
-                                            style="width: 15%; height: auto" 
-                                            src="@/assets/icons/icons8-present-48.png">                                        
-                                        Quick links
-                                    </span>                                                                     
+                <!-- NAVIGATIONS -->
+                <div class="filters col-sm-12 col-md-8 col-lg-2 border rounded" >
+                        <div class="mt-3 nav success flex-column nav-pills" style="height:100vh" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                                <a class="action-list list-group-item list-group-item-action border-0 active" id="v-pills-envelopes-tab" data-toggle="pill" href="#v-pills-envelopes" role="tab" aria-controls="v-pills-envelopes" aria-selected="true"
+                                    v-on:click=" hide_content = true">
+                                    <span class="" style="white-space:nowrap">
+										<i class="text-dark far fa-clock"></i>
+										Quick links
+                                    </span>
                                 </a>
 
-                                <a class="action-list list-group-item list-group-item-action border-0" id="v-pills-envelopes-tab" data-toggle="pill" href="#v-pills-envelopes" role="tab" aria-controls="v-pills-envelopes" aria-selected="true" 
-                                    v-on:click="getAll(); hide_content=false">       
-                                    <span class="row">
-                                        <img class="d-none d-lg-block d-xl-block mr-2" style="width: 15%; height: auto" src="@/assets/icons/icons8-request-money-filled-50.png">
-                                        Envelopes
-                                    </span>                                                                     
+                                <a class="action-list list-group-item list-group-item-action border-0" id="v-pills-envelopes-tab" data-toggle="pill" href="#v-pills-envelopes" role="tab" aria-controls="v-pills-envelopes" aria-selected="true"
+                                    v-on:click="getAll(); hide_content=false">
+                                    <span >
+										<i class="text-dark far fa-envelope"></i>
+										Envelopes
+                                    </span>
                                 </a>
-                                <a      class="action-list list-group-item list-group-item-action border-0"
-                                        id="v-pills-income-tab" data-toggle="pill" href="#v-pills-income" 
-                                        role="tab" aria-controls="v-pills-income" 
-                                        v-on:click="tithes_selected = true; expenditures_selected=false; getIncome()">       
+                                <a     class="action-list list-group-item list-group-item-action border-0"
+                                        id="v-pills-income-tab" data-toggle="pill" href="#v-pills-income"
+                                        role="tab" aria-controls="v-pills-income"
+                                        v-on:click="tithes_selected = true; expenditures_selected=false; getIncome()">
 
-                                    <span class="row">
-                                        <img class="d-none d-lg-block d-xl-block mr-2" style="width: 15%; height: auto" src="@/assets/icons/icons8-expensive-filled-50.png">
-                                        Incomes
-                                    </span>                                                                     
+                                    <span>
+                                        <i class="text-dark fas fa-coins"></i>
+                                        Income
+                                    </span>
                                 </a>
                                 <a class="action-list list-group-item list-group-item-action border-0" id="v-pills-expenditure-tab" data-toggle="pill" href="#v-pills-expenditure" role="tab" aria-controls="v-pills-expenditure" aria-selected="false" v-on:click="getExpenditures()">
-                                    <span class="row">
-                                        <img class="d-none d-lg-block d-xl-block mr-2" style="width: 15%; height: auto" src="@/assets/icons/icons8-receipt-filled-50.png">
+                                    <span>
+                                        <i class="text-dark far fa-share-square"></i>
                                         Expenditure
-                                    </span>                                      
-                                </a>  
+                                    </span>
+                                </a>
                                 <router-link class="action-list list-group-item list-group-item-action border-0" id="v-pills-expenditure-tab" :to="{name: 'projectList'}">
-                                    <span class="row">
-                                        <img class="d-none d-lg-block d-xl-block mr-2" style="width: 15%; height: auto" src="@/assets/icons/icons8-group-of-projects-filled-50.png">
-                                        Projects 
-                                    </span>                                     
+                                    <span>
+                                        <i class="text-dark fas fa-tasks"></i>
+                                        Projects
+                                    </span>
                                 </router-link>
                             </div>
                 </div>
@@ -62,72 +60,72 @@
                     <div class="tab-content" id="v-pills-tabContent">
                        <!-- ENVELOPES -->
                         <div class="tab-pane fade show active" id="v-pills-envelopes" role="tabpanel" aria-labelledby="v-pills-envelopes-tab">
-                            <!-- on hide content -->                            
-                            <div class="mt-5 mb-5 d-flex flex-wrap justify-content-center" 
+                            <!-- on hide content -->
+                            <div class="mt-5 mb-5 d-flex flex-wrap justify-content-center"
                                 v-if="hide_content">
-                                <a class="p-4 d-flex justify-content-center" 
-                                    href="#" data-toggle="modal" 
+                                <a class="p-4 d-flex justify-content-center"
+                                    href="#" data-toggle="modal"
                                     data-target="#importFromCSV">
-                                    <b>+</b>Import from CSV
-                                </a>                                                                                                                       
+									<span><i class="text-dark fas fa-file-import"></i> Import from CSV &rarr;</span>
+                                </a>
                             </div>
                             <!-- when content is to be shown -->
                             <div  class="container" :class="{'d-none': hide_content}">
-                                <div class="d-flex justify-content-center">                                          
+                                <div class="d-flex justify-content-center">
                                     <!-- nav pills for offerings,tithes and others -->
                                     <div class="col-sm-12 col-lg-10" >
-                                        <hr class="d-sm-block d-lg-none">  
+                                        <hr class="d-sm-block d-lg-none">
                                         <div class="d-flex flex-nowrap">
                                             <a href="#" class="p-2" @click=scrollRight()>
                                                 <i class="arrow left"></i>
                                             </a>
                                             <ul class="mb-2 d-flex flex-nowrap nav nav-pills scrollbar-none"
-                                                id="pills-tab" role="tablist"                                                    
+                                                id="pills-tab" role="tablist"
                                                 style="overflow-x: scroll;white-space: nowrap">
                                                     <li class="nav-item">
-                                                        <a class="nav-link active" 
-                                                            id="pills-all-tab" 
-                                                            data-toggle="pill" 
-                                                            href="#pills-all" role="tab" 
-                                                            aria-controls="pills-all" 
+                                                        <a class="nav-link active"
+                                                            id="pills-all-tab"
+                                                            data-toggle="pill"
+                                                            href="#pills-all" role="tab"
+                                                            aria-controls="pills-all"
                                                             Tithe="true"
                                                             v-on:click = "getAll(); scrollToElement('pills-tithe-tab')">
                                                             All
                                                         </a>
-                                                    </li> 
+                                                    </li>
                                                     <li class="nav-item">
-                                                        <a class="nav-link" 
-                                                            id="pills-tithe-tab" 
-                                                            data-toggle="pill" 
-                                                            href="#pills-home" role="tab" 
-                                                            aria-controls="pills-home" 
+                                                        <a class="nav-link"
+                                                            id="pills-tithe-tab"
+                                                            data-toggle="pill"
+                                                            href="#pills-home" role="tab"
+                                                            aria-controls="pills-home"
                                                             Tithe="true"
                                                             v-on:click = "getTithes(); scrollToElement('pills-tithe-tab')">
                                                             Tithes
                                                         </a>
-                                                    </li>                                                                                                                        
+                                                    </li>
                                                     <li class="nav-item" v-for="type in offering_types">
-                                                        <a class="nav-link text-capitalize" :id="`type-${type.id}`" 
-                                                            data-toggle="pill" :href="`#pills-${type.id}`" role="tab" 
-                                                            :aria-controls="`pills-${type.id}`" 
+                                                        <a class="nav-link text-capitalize" :id="`type-${type.id}`"
+                                                            data-toggle="pill" :href="`#pills-${type.id}`" role="tab"
+                                                            :aria-controls="`pills-${type.id}`"
                                                             aria-selected="false"
-                                                            @click="offering_type = type;scrollToElement(`type-${type.id}`);getOfferings()">                                                                    
+                                                            @click="offering_type = type;scrollToElement(`type-${type.id}`);getOfferings()">
                                                             <span v-if="type.name != 'general offering'">{{type.name}}</span>
                                                             <span v-else>Offering</span>
                                                         </a>
                                                     </li>
-                                            </ul>                                            
+                                            </ul>
                                             <a href="#" class="p-2" @click=scrollLeft()>
                                                 <i class="arrow right"></i>
                                             </a>
-                                        </div>                                               
-                                    </div>                                          
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>                                
+                            </div>
                             <!-- ENVELOP TABS CONTENT -->
-                            <div class="tab-content" id="pills-tabContent">   
+                            <div class="tab-content" id="pills-tabContent">
                                 <!-- tithes -->
-                                <div class="tab-pane fade show active" id="pills-all" role="tabpanel" aria-labelledby="pills-all-tab">                                                                          
+                                <div class="tab-pane fade show active" id="pills-all" role="tabpanel" aria-labelledby="pills-all-tab">
                                     <h3 v-if="! hide_content" class="font-weight-bold">All</h3>
                                     <hr>
                                     <all
@@ -135,38 +133,38 @@
                                         :payment_methods = "payment_methods"
                                         :reload_data = "reload_data"
                                         :hide_content = "hide_content"
-                                    />                                    
-                                </div>                                                                    
+                                    />
+                                </div>
                                 <!-- tithes -->
-                                <div class="tab-pane" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">                                                                          
+                                <div class="tab-pane" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                                         <h3 v-if="! hide_content" class="font-weight-bold">Tithes </h3>
                                         <hr>
-                                        <tithes 
+                                        <tithes
                                             v-on:membersSelected="setMemberIds"
                                             :payment_methods = "payment_methods"
                                             :reload_data = "reload_data"
                                             :hide_content = "hide_content"
-                                      />                                    
-                                </div>                                
+                                      />
+                                </div>
                                 <!-- Offerings-->
-                                <div v-for="type in offering_types" 
-                                    class="tab-pane fade" 
-                                    :id="`pills-${type.id}`" role="tabpanel">                                        
+                                <div v-for="type in offering_types"
+                                    class="tab-pane fade"
+                                    :id="`pills-${type.id}`" role="tabpanel">
                                     <div>
-                                        <!-- offerings -->   
+                                        <!-- offerings -->
                                         <div v-if="! hide_content">
-                                            <h3 class="font-weight-bold text-capitalize" 
+                                            <h3 class="font-weight-bold text-capitalize"
                                             v-if="type.name != 'general offering'">{{type.name}}</h3>
                                             <h3 class="font-weight-bold" v-else>Offering</h3>
-                                        </div>                                                                           
-                                        <hr>                                       
-                                        <offerings 
+                                        </div>
+                                        <hr>
+                                        <offerings
                                             :offering_type="type"
                                             :payment_methods = "payment_methods"
                                             :reload_data = "reload_data"
                                             v-on:membersSelected="setMemberIds"
                                             :hide_content = "hide_content"
-                                        /> 
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -175,8 +173,8 @@
                         <div class="tab-pane fade show" id="v-pills-income" role="tabpanel" aria-labelledby="v-pills-expenditure-tab">
                             <div>
                                 <div v-if="any_other_selected">
-                                    <hr class="d-sm-block d-lg-none"> 
-                                    <h3 class="font-weight-bold">Other incomes</h3>                                                
+                                    <hr class="d-sm-block d-lg-none">
+                                    <h3 class="font-weight-bold">Other incomes</h3>
                                     <hr>
                                     <div class="text-muted" v-if="any_other_selected">
                                             <div class="d-flex d-flex-row justify-content-center">
@@ -186,7 +184,7 @@
                                                 </div>
                                                 <div class="d-none d-lg-block stat-item mr-2">
                                                     This year  <span class="text-secondary font-weight-bold">
-                                                    Ksh   {{humanize(income_stats.response.total_this_year)}}</span>                                        
+                                                    Ksh   {{humanize(income_stats.response.total_this_year)}}</span>
                                                 </div>
                                                 <a class="ml-2 btn btn-outline-secondary dropdown-toggle" data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
                                                     more stats
@@ -202,23 +200,23 @@
                                                         <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
                                                                 <span class="sr-only">Toggle Dropdown</span>
                                                         </button>
-                                                        <div class="dropdown-menu border-success" aria-labelledby="dropdownMenuReference">                            
-                                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addIncome"><b>+</b> add income</a>                                                                
+                                                        <div class="dropdown-menu border-success" aria-labelledby="dropdownMenuReference">
+                                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addIncome"><b>+</b> add income</a>
                                                         </div>
                                                 </div>
-                                            </div>                                                                                                    
+                                            </div>
                                             </p>
                                             <div class="collapse" id="statsTab">
                                                 <div class="card card-body outline-0">
                                                     <incomestats msg="income stats"/>
                                                 </div>
                                             </div>
-                                    </div>                                                                                                    
-                                    
+                                    </div>
+
                                     <table class="mt-4 table table-responsive-sm table-borderless">
                                         <thead>
                                             <tr>
-                                                <th>Type</th>                                                                
+                                                <th>Type</th>
                                                 <th>This month</th>
                                                 <th>This year</th>
                                                 <th></th>
@@ -230,34 +228,34 @@
                                         <tbody>
                                             <tr v-for = "data in incomes.response">
                                                 <td>
-                                                    <router-link class="text-secondary"  :to="`/income/`+ data.id + `/`">                                                         
+                                                    <router-link class="text-secondary"  :to="`/income/`+ data.id + `/`">
                                                         {{data.type_name}}
                                                     </router-link>
-                                                </td>                                                               
+                                                </td>
                                                 <td><p>{{humanize(data.total_this_month)}}</p></td>
-                                                <td><p class="text-secondary">{{humanize(data.total_this_year)}}</p></td>                                                          
+                                                <td><p class="text-secondary">{{humanize(data.total_this_year)}}</p></td>
                                                 <td>
-                                                    <router-link class="text-muted" :to="`/income/`+ data.id + `/`">                                                         
+                                                    <router-link class="text-muted" :to="`/income/`+ data.id + `/`">
                                                         <img style="width: 20px ;height: auto" src="@/assets/icons/icons8-right-arrow-50.png">
                                                     </router-link>
-                                                </td>                                                                
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
-                            </div>                               
+                            </div>
                         </div>
                         <!-- EXPENDITURE -->
                         <div class="tab-pane fade show " id="v-pills-expenditure" role="tabpanel" aria-labelledby="v-pills-expenditure-tab">
                             <div v-if = "expenditures_selected">
-                                <hr class="d-sm-block d-lg-none">  
+                                <hr class="d-sm-block d-lg-none">
                                 <expenditures/>
-                            </div>                            
-                        </div>    
+                            </div>
+                        </div>
                         <!-- TEST-->
                         <div class="tab-pane fade show " id="v-pills-test" role="tabpanel" aria-labelledby="v-pills-test-tab">
-                           test                            
-                        </div> 
+                           test
+                        </div>
                     </div>
                 </div>
                 <!-- ACTION BUTTONS -->
@@ -270,49 +268,49 @@
                                 style="text-decoration: none">
                                 <div class="add-button">
                                     <b>+</b> New Envelope
-                                </div>                                
+                                </div>
                             </a>
                             <a href="#" id="tithe-modal-button" data-toggle="modal" data-target="#addTithe">
                                 <div class="add-button d-none" style="text-align: center">
                                     <b>+</b> Add Tithe
-                                </div>                                
+                                </div>
                             </a>
-                            <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" 
+                            <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split"
                                     id="dropdownMenuReference" data-toggle="dropdown"
                                     aria-haspopup="true" aria-expanded="false" data-reference="parent"
                             >
                                 <span class="sr-only">Toggle Dropdown</span>
                             </button>
-                            <div class="dropdown-menu border-success text-capitalize" 
+                            <div class="dropdown-menu border-success text-capitalize"
                                 aria-labelledby="dropdownMenuReference"
-                                style="z-index:99999">                                
-                                <a class="dropdown-item" 
+                                style="z-index:99999">
+                                <a class="dropdown-item"
                                     href="#" @click=openTitheTab()>
                                     Tithe
                                 </a>
-                                <a class="dropdown-item d-flex justify-content-between"  
-                                    v-for="type in offering_types"                                                                     
-                                    href="#" data-toggle="modal" 
+                                <a class="dropdown-item d-flex justify-content-between"
+                                    v-for="type in offering_types"
+                                    href="#" data-toggle="modal"
                                     data-target="#addOffering"
-                                    @click="openTab(type.id)">                                    
+                                    @click="openTab(type.id)">
                                     <span v-if="type.name != 'general offering'">{{type.name}}</span>
                                     <span v-else>Offering</span>
                                     <span class="hidden p-1 font-weight-bold text-muted">&times;</span>
                                 </a>
                                 <hr>
-                                <a class="dropdown-item" 
-                                    href="#" data-toggle="modal" 
+                                <a class="dropdown-item"
+                                    href="#" data-toggle="modal"
                                     data-target="#importFromCSV">
                                     <b>+</b> Import from CSV
                                 </a>
                                 <hr>
-                                <a class="dropdown-item" 
-                                    href="#" data-toggle="modal" 
+                                <a class="dropdown-item"
+                                    href="#" data-toggle="modal"
                                     data-target="#addOfferingType">
                                     <b>+</b> Add Envelope Type
                                 </a>
-                                <a class="dropdown-item" 
-                                    href="#" data-toggle="modal" 
+                                <a class="dropdown-item"
+                                    href="#" data-toggle="modal"
                                     data-target="#addPaymentMethod">
                                     <b>+</b> Add Payment Method
                                 </a>
@@ -320,12 +318,12 @@
                     </div>
                     <!-- add for offerings -->
                     <div class="btn-group d-none">
-                            <a href="#" data-toggle="modal" 
-                                id = "add-offering-button"                                
-                                :data-target="`#addOffering-${offering_type.id}`" 
+                            <a href="#" data-toggle="modal"
+                                id = "add-offering-button"
+                                :data-target="`#addOffering-${offering_type.id}`"
                                 style="text-decoration: none">
-                                <div class="add-button">                                
-                                    <b>+</b> add offering 
+                                <div class="add-button">
+                                    <b>+</b> add offering
                                 </div>
                             </a>
                             <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
@@ -345,8 +343,8 @@
                             <button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split" id="dropdownMenuReference" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-reference="parent">
                                     <span class="sr-only">Toggle Dropdown</span>
                             </button>
-                            <div class="dropdown-menu border-success" aria-labelledby="dropdownMenuReference">                            
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addIncome"><b>+</b> add income</a>                                                                
+                            <div class="dropdown-menu border-success" aria-labelledby="dropdownMenuReference">
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#addIncome"><b>+</b> add income</a>
                             </div>
                     </div>
                     <div class="btn-group" style="padding: 0px 0px 25px 10px" v-if = "expenditures_selected">
@@ -354,52 +352,51 @@
                             <div class="btn btn-success">
                                 <b>+</b> add expenditure type
                             </div>
-                        </a>                     
+                        </a>
                     </div>
 
                     <!-- actions on list  -->
-                    <div class="list-group font-weight-bold"  v-if = "expenditures_selected">
-                            <button type="button" class="d-flex justify-content-about font-weight-bold text-muted action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#exportEpenditureToCSV" >
-                              <img src="@/assets/icons/icons8-export-csv-30.png" style="width: 45px; height:auto"> Export To CSV
-                            </button>                            
-                    </div>
-                    <div class="list-group font-weight-bold"  v-if = "tithes_selected">
-                            <button type="button" class="d-flex justify-content-about font-weight-bold text-muted list-group-item list-group-item-action border-0" 
-                                 data-toggle="modal" data-target="#textModalCenter">
-                                <img src="@/assets/icons/icons8-comments-64.png" style="width: 45px; height:auto">
-                                Text People
-                            </button>
-                            <button type="button" class="d-flex justify-content-about font-weight-bold text-muted action-list list-group-item list-group-item-action border-0"
-                                 data-toggle="modal" data-target="#exportTithesToCSV" >
-                                <img src="@/assets/icons/icons8-export-csv-30.png" style="width: 45px; height:auto"> Export To CSV
-                            </button>                            
-                    </div>
-                    <div class="list-group "  v-if = "offerings_selected">
-                            <button type="button" class="d-flex justify-content-about font-weight-bold text-muted list-group-item list-group-item-action border-0"
-                                    data-toggle="modal" data-target="#textModalCenter">
-                                    <img src="@/assets/icons/icons8-comments-64.png"  style="width: 45px; height:auto">
-                                    Text People
-                            </button>   
-                            <button type="button" class="d-flex justify-content-about font-weight-bold text-muted action-list list-group-item list-group-item-action border-0"
-                                    data-toggle="modal" :data-target="`#exportOfferingsToCSV-${offering_type.id}`" >
-                                    <img src="@/assets/icons/icons8-export-csv-30.png" style="width: 45px; height:auto"> 
-                                    Export To CSV
-                            </button>                                                     
-                    </div>
-                    <div class="list-group font-weight-bold"  v-if = "any_other_selected">
-                            <button type="button" class="d-flex justify-content-about font-weight-bold text-muted action-list list-group-item list-group-item-action border-0"
-                                 data-toggle="modal" data-target="#exportIncomeToCSV" >
-                                <img src="@/assets/icons/icons8-export-csv-30.png" style="width: 45px; height:auto"> Export To CSV
-                            </button>                            
-                    </div>
-                    <div class="list-group font-weight-bold" v-if = "tithes_selected || offerings_selected">
-                            <button type="button" class="d-flex justify-content-about font-weight-bold text-muted action-list list-group-item list-group-item-action border-0"
-                                data-toggle="modal" data-target="#deleteEnvelopes" >
-                                <img src="@/assets/icons/icons8-delete-64.png" style="width: 35px; height:auto"> Delete Envelope
-                            </button>                            
-                    </div>
+					<div class="border rounded">
+						<div class="list-group font-weight-bold"  v-if = "expenditures_selected">
+								<button type="button" class="d-flex justify-content-about font-weight-bold text-muted action-list list-group-item list-group-item-action border-0" data-toggle="modal" data-target="#exportEpenditureToCSV" >
+								  <span><i class="fas fa-file-export"></i> Export To CSV</span>
+								</button>
+						</div>
+						<div class="list-group font-weight-bold"  v-if = "tithes_selected">
+								<button type="button" class="d-flex justify-content-about font-weight-bold text-muted list-group-item list-group-item-action border-0"
+									 data-toggle="modal" data-target="#textModalCenter">
+									<span><i class="far fa-comment"></i> Text people</span>
+								</button>
+								<button type="button" class="d-flex justify-content-about font-weight-bold text-muted action-list list-group-item list-group-item-action border-0"
+									 data-toggle="modal" data-target="#exportTithesToCSV" >
+									<span><i class="fas fa-file-export"></i> Export To CSV</span>
+								</button>
+						</div>
+						<div class="list-group "  v-if = "offerings_selected">
+								<button type="button" class="d-flex justify-content-about font-weight-bold text-muted list-group-item list-group-item-action border-0"
+										data-toggle="modal" data-target="#textModalCenter">
+										<span><i class="far fa-comment"></i> Text people</span>
+								</button>
+								<button type="button" class="d-flex justify-content-about font-weight-bold text-muted action-list list-group-item list-group-item-action border-0"
+										data-toggle="modal" :data-target="`#exportOfferingsToCSV-${offering_type.id}`" >
+										<span><i class="fas fa-file-export"></i> Export To CSV</span>
+								</button>
+						</div>
+						<div class="list-group font-weight-bold"  v-if = "any_other_selected">
+								<button type="button" class="d-flex justify-content-about font-weight-bold text-muted action-list list-group-item list-group-item-action border-0"
+									 data-toggle="modal" data-target="#exportIncomeToCSV" >
+									<span><i class="fas fa-file-export"></i> Export To CSV</span>
+								</button>
+						</div>
+						<div class="list-group font-weight-bold" v-if = "tithes_selected || offerings_selected">
+								<button type="button" class="d-flex justify-content-about font-weight-bold text-muted action-list list-group-item list-group-item-action border-0"
+									data-toggle="modal" data-target="#deleteEnvelopes" >
+									<span><i class="fas fa-trash-alt"></i> Delete envelopes</span>
+								</button>
+						</div>
+					</div>
                 </div>
-            </div>                               
+            </div>
                 <!-- add income modal -->
                 <div class="modal fade" id="addIncome" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -410,35 +407,35 @@
                             <span aria-hidden="true">&times;</span>
                         </button>
                         </div>
-                        <div class="modal-body">                                                               
-                                <form>                                            
+                        <div class="modal-body">
+                                <form>
                                         <div class=" row form-group">
-                                            <label class="col-3"><b>type:</b></label>                                                                                                                                   
+                                            <label class="col-3"><b>type:</b></label>
                                             <select class="col-8 form-control" v-model="income_type" >
                                                 <option v-for="data in income_types.response" :value="data.id" >{{data.type_name}}</option>
-                                            </select>   
+                                            </select>
                                             <p v-if="income_type_errors.length">
                                                 <ul>
                                                         <small><li v-for="error in income_type_errors"><p class="text-danger">{{ error }}</p></li></small>
                                                 </ul>
-                                            </p>                                       
-                                        </div>                                                                                
+                                            </p>
+                                        </div>
                                         <hr/>
                                         <div class="row form-group">
                                                 <label class="col-3"><b>amount:</b></label>
                                                 <input type="number" class=" col-3 form-control" placeholder="amount" v-model="income_amount">
-                                                <div class="col-6 text-success" v-if ="income_amount > 0"><h3>KSh {{humanize(income_amount)}}</h3></div>                                               
+                                                <div class="col-6 text-success" v-if ="income_amount > 0"><h3>KSh {{humanize(income_amount)}}</h3></div>
                                                 <p v-if="income_amount_errors.length">
                                                     <ul>
                                                             <small><li v-for="error in income_amount_errors"><p class="text-danger">{{ error }}</p></li></small>
                                                     </ul>
-                                                </p> 
+                                                </p>
                                         </div>
-                                        <hr/>   
+                                        <hr/>
                                         <div class="row form-group">
                                             <label class="col-3"><b>narration:</b></label>
-                                            <textarea type="text" class="col-8 form-control" rows='3' v-model="income_narration"></textarea>                                                   
-                                        </div>                                                                                
+                                            <textarea type="text" class="col-8 form-control" rows='3' v-model="income_narration"></textarea>
+                                        </div>
                                 </form>
                         </div>
                         <div class="modal-footer">
@@ -463,22 +460,22 @@
                         <span aria-hidden="true">&times;</span>
                     </button>
                     </div>
-                    <div class="modal-body">  
-                            <form>                                            
+                    <div class="modal-body">
+                            <form>
                                     <div class="row form-group">
                                             <label class="col-3"><b>name:</b></label>
-                                            <input type="text" class=" col-8 form-control" placeholder="give the type a name" v-model="income_type_name">                                                    
+                                            <input type="text" class=" col-8 form-control" placeholder="give the type a name" v-model="income_type_name">
                                             <p v-if="income_type_name_errors.length">
                                                 <ul>
                                                         <small><li v-for="error in income_type_name_errors"><p class="text-danger">{{ error }}</p></li></small>
                                                 </ul>
                                             </p>
-                                    </div>                                    
-                                    <hr/>   
+                                    </div>
+                                    <hr/>
                                     <div class="row form-group">
                                         <label class="col-3"><b>describe:</b></label>
-                                        <textarea type="text" class="col-8 form-control" rows='3' v-model="income_type_description"></textarea>                                                   
-                                    </div>                                                                                
+                                        <textarea type="text" class="col-8 form-control" rows='3' v-model="income_type_description"></textarea>
+                                    </div>
                             </form>
                     </div>
                     <div class="modal-footer">
@@ -492,7 +489,7 @@
                     </div>
                 </div>
                 </div>
-                </div>  
+                </div>
                 <!-- add offering type-->
                 <div   class="modal fade" id="addOfferingType" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -503,17 +500,17 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                             </div>
-                            <div class="modal-body">                                                            
-                            <form>   
+                            <div class="modal-body">
+                            <form>
                             <div class="row form-group">
                                 <label class="col-3"><b>name:</b></label>
-                                <input type="text" class="col-8 form-control" rows='3' maxlength="50" v-model="offering_type_name"/>                                                   
-                            </div>                                                                                                                                                                                                                                                                                                                                                                                                                                        
+                                <input type="text" class="col-8 form-control" rows='3' maxlength="50" v-model="offering_type_name"/>
+                            </div>
                                 <hr/>
                                 <div class="row form-group">
                                 <label class="col-3"><b>description:</b></label>
-                                <textarea type="text" class="col-8 form-control" rows='3' v-model="offering_type_description"></textarea>                                                   
-                                </div>                                                                                     
+                                <textarea type="text" class="col-8 form-control" rows='3' v-model="offering_type_description"></textarea>
+                                </div>
                             </form>
                             </div>
                             <div class="modal-footer">
@@ -538,12 +535,12 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                             </div>
-                            <div class="modal-body">                                                            
-                            <form>   
+                            <div class="modal-body">
+                            <form>
                             <div class="row form-group">
                                 <label class="col-3"><b>name:</b></label>
-                                <input type="text" class="col-8 form-control" rows='3' maxlength="50" v-model="payment_method_name"/>                                                   
-                            </div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+                                <input type="text" class="col-8 form-control" rows='3' maxlength="50" v-model="payment_method_name"/>
+                            </div>
                             </form>
                             </div>
                             <div class="modal-footer">
@@ -557,7 +554,7 @@
                             </div>
                         </div>
                         </div>
-                </div>             
+                </div>
                 <!-- export to csv format -->
                 <div class="modal fade" id="exportIncomeToCSV" tabindex="-1" role="dialog" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -569,29 +566,29 @@
                             </button>
                             </div>
                             <div class="modal-body">
-                                    <form>                                                                         
-                                            <div class="form-group">                                                
-                                                    <div class="row">                                                        
+                                    <form>
+                                            <div class="form-group">
+                                                    <div class="row">
                                                             <label class="col-3 "><b>date</b></label>
                                                             <div class="input-group form-group col-5" style="padding: 0px" >
-                                                                <input type="date" name="bday" max="3000-12-31" 
-                                                                    min="1000-01-01" class="form-control" v-model="csv_date">                                                                                                                      
+                                                                <input type="date" name="bday" max="3000-12-31"
+                                                                    min="1000-01-01" class="form-control" v-model="csv_date">
                                                             </div>
-                                                                                                                    
+
                                                     </div>
-                                                    <div class="row">                                                        
+                                                    <div class="row">
                                                             <label class="col-3 "><b></b></label>
                                                             <div class="input-group form-group col-5" style="padding: 0px" >
-                                                                    <small>export data is from selected date's month</small>                                                                                                                     
+                                                                    <small>export data is from selected date's month</small>
                                                             </div>
-                                                                                                                    
+
                                                     </div>
                                             </div>
-                                                                                                                            
+
                                     </form>
                             </div>
                             <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>                       
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button type="button" class="btn btn-success" v-on:click="exportData()">
                                 download CSV
                                 <span v-if="exporting_data"
@@ -601,7 +598,7 @@
                             </div>
                         </div>
                         </div>
-                </div>     
+                </div>
                 <!-- delete envelopes-->
                 <div class="modal fade" id="deleteEnvelopes" tabindex="-1" role="dialog" aria-hidden="true">
                     <div class="modal-dialog modal-dialog-centered" role="document">
@@ -620,7 +617,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>                       
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-success" v-on:click="deleteEnvelopes()">
                             delete envelope
                             <span v-if="adding_offering"
@@ -630,7 +627,7 @@
                         </div>
                     </div>
                     </div>
-            </div>         
+            </div>
         </div>
     </div>
 </template>
@@ -647,8 +644,8 @@ import importFromCSV from '@/subcomponents/finances/importFromCSV.vue'
 import textmessage from '@/subcomponents/textmessage.vue'
 export default {
     name: 'generalFinance',
-    components: {    
-        incomestats,        
+    components: {
+        incomestats,
         expenditures,
         all,
         tithes,
@@ -666,7 +663,7 @@ export default {
         //offering types
         offering_type: {'id':0},
         offering_types:null,
-        //get data                        
+        //get data
         fetch_data_error: [],
         income_types: null,
         foundIncomes: 0,
@@ -682,9 +679,9 @@ export default {
         offering_stats: null,
         offerings: null,
         income_stats: null,
-        incomes: null,         
+        incomes: null,
         //adding.
-        adding_to_finance: false,          
+        adding_to_finance: false,
         //add income type
         income_type_name: '',
         income_type_description: '',
@@ -743,27 +740,27 @@ export default {
                         this.phone_number_OK.push(" number OK")
                 }
         },
-        // watch for service date and type to determine if there exists a service for that day       
+        // watch for service date and type to determine if there exists a service for that day
      },
     methods: {
-        csvDataExtracted:function(){            
-            this.reload_data = true                                                                                
+        csvDataExtracted:function(){
+            this.reload_data = true
             setTimeout(()=>{
                 this.reload_data = false
-            },1000)        
+            },1000)
         },
         scrollToElement: function(element){
             document.getElementById(element).scrollIntoView({
                 behavior: 'auto',
                 block: 'center',
                 inline: 'center'
-            });                     
+            });
         },
         scrollLeft:function(){
-            document.getElementById('pills-tab').scrollLeft += 50 
+            document.getElementById('pills-tab').scrollLeft += 50
         },
-        scrollRight:function(){                    
-            document.getElementById('pills-tab').scrollLeft -= 50 
+        scrollRight:function(){
+            document.getElementById('pills-tab').scrollLeft -= 50
         },
         openTab: function(type){
             var nav_pill =  document.getElementById(`type-${type}`)
@@ -771,8 +768,8 @@ export default {
             var modal_button = document.getElementById(`add-offering-button`)
             //wait for DOM to be ready before clicking
             setTimeout(()=>{
-                modal_button.click()  
-            },500)            
+                modal_button.click()
+            },500)
         },
         openTitheTab: function(){
             var nav_pill = document.getElementById('pills-tithe-tab')
@@ -780,7 +777,7 @@ export default {
             var tithe_modal_button = document.getElementById('tithe-modal-button')
             //wait for DOM to be ready before clicking
             setTimeout(()=>{
-                tithe_modal_button.click()  
+                tithe_modal_button.click()
             },500)
 
         },
@@ -794,7 +791,7 @@ export default {
                 return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         },
         setMemberIds (value){
-            this.member_ids = value 
+            this.member_ids = value
         },
         //fetch data
         fetchdata () {
@@ -816,21 +813,21 @@ export default {
         //get offering types
         getOfferingTypes: function(){
             this.$http.get(this.$BASE_URL + '/api/finance/offering-types/')
-            .then((response)=>{            
+            .then((response)=>{
                 this.offering_types = response.data
             })
         },
-        deleteOfferingType:function(id){            
+        deleteOfferingType:function(id){
             this.$http.delete(
                 this.$BASE_URL + '/api/finance/offering-types/' + id + '/'
-            ).then(response => {                
-                alert("deleted")                
+            ).then(response => {
+                alert("deleted")
                 this.getOfferingTypes()
-            }).catch((err) => {        
-                alert(err)          
+            }).catch((err) => {
+                alert(err)
             })
         },
-        //get the list of income types        
+        //get the list of income types
         getIncomeTypeList: function(){
             //try local storage
             this.income_types = JSON.parse(localStorage.getItem('income_type_list'))
@@ -838,7 +835,7 @@ export default {
                 var array = this.income_types.response
                 this.foundIncomes = array.length
             }
-            this.income_stats = JSON.parse(localStorage.getItem('income_stats'))            
+            this.income_stats = JSON.parse(localStorage.getItem('income_stats'))
 
             const currentVersion = this.$store.getters.income_type_list_version
             var version  = localStorage.getItem('income_type_list_version')
@@ -848,7 +845,7 @@ export default {
                 this.$store.dispatch('update_isLoading', true)
                 this.$http.get(this.$BASE_URL + '/api/finance/income-stats/')
                 .then(response => {
-                   this.income_stats = {"response": response.data } 
+                   this.income_stats = {"response": response.data }
 
                    localStorage.setItem('income_stats',JSON.stringify({"response": response.data }) )
                    this.$store.dispatch('update_isLoading', false)
@@ -861,9 +858,9 @@ export default {
                 this.$store.dispatch('update_isLoading', true)
                 this.$http.get(this.$BASE_URL + '/api/finance/income-type-list/')
                 .then(response => {
-                    this.income_types = {"response": response.data } 
+                    this.income_types = {"response": response.data }
 
-                    localStorage.setItem('income_type_list',JSON.stringify({"response": response.data }))                
+                    localStorage.setItem('income_type_list',JSON.stringify({"response": response.data }))
                     localStorage.setItem('income_type_list_version', currentVersion)
                     this.$store.dispatch('update_isLoading', false)
                 })
@@ -872,14 +869,14 @@ export default {
                     this.$store.dispatch('update_isLoading', false)
                 })
             }
-        },   
+        },
         getAll: function(){
             this.offerings_selected = false
             this.any_other_selected = false
-            this.expenditures_selected = false  
-            this.tithes_selected = true      
+            this.expenditures_selected = false
+            this.tithes_selected = true
             this.context={'name':'All','type':null}
-        }, 
+        },
         getTithes: function(){
             this.offerings_selected = false
             this.any_other_selected = false
@@ -895,14 +892,14 @@ export default {
             this.context={'name':'Offering','type':this.offering_type}
         },
         getIncome: function(){
-            this.tithes_selected = false            
+            this.tithes_selected = false
             this.offerings_selected = false
             this.expenditures_selected = false
             this.any_other_selected = true
-            
+
             const currentVersion = this.$store.getters.income_type_list_version
             var version  = localStorage.getItem('income_type_list_version')
-                        
+
             //try local storage
             this.incomes = JSON.parse(localStorage.getItem('income_type_list'))
             if (this.incomes){
@@ -914,11 +911,11 @@ export default {
                     this.$store.dispatch('update_isLoading', true)
                     this.$http.get(this.$BASE_URL + '/api/finance/income-type-list/')
                     .then(response => {
-                        this.incomes = {"response": response.data } 
+                        this.incomes = {"response": response.data }
                         var array = this.incomes.response
                         this.foundIncomes = array.length
 
-                        localStorage.setItem('income_type_list',JSON.stringify({"response": response.data }))                
+                        localStorage.setItem('income_type_list',JSON.stringify({"response": response.data }))
                         localStorage.setItem('income_type_list_version', currentVersion)
                         this.$store.dispatch('update_isLoading', false)
                     })
@@ -928,16 +925,16 @@ export default {
                     })
                 }
             }
-            this.income_stats = JSON.parse(localStorage.getItem('income_stats'))                
+            this.income_stats = JSON.parse(localStorage.getItem('income_stats'))
             if (this.income_stats){
-                
+
             }
-            else{ 
+            else{
                 if (!version || version < currentVersion) {
                     this.$store.dispatch('update_isLoading', true)
                     this.$http.get(this.$BASE_URL + '/api/finance/income-stats/')
                     .then(response => {
-                        this.income_stats = {"response": response.data } 
+                        this.income_stats = {"response": response.data }
                         localStorage.setItem('income_stats',JSON.stringify({"response": response.data }) )
                         this.$store.dispatch('update_isLoading', false)
                     })
@@ -945,26 +942,26 @@ export default {
                         this.fetch_data_error.push(err)
                         this.$store.dispatch('update_isLoading', false)
                     })
-                }                       
+                }
             }
 
         },
         getExpenditures: function(){
-            this.tithes_selected = false            
-            this.offerings_selected = false        
+            this.tithes_selected = false
+            this.offerings_selected = false
             this.any_other_selected = false
-            this.expenditures_selected = true            
+            this.expenditures_selected = true
         },
         incomeTypeFormOK: function(){
             this.income_type_name_errors = []
 
             if (this.income_type_description.length < 1){
                 this.income_type_description = "none given"
-            }        
+            }
             if (this.income_type_name.length > 0){
                 return true
             }
-            if (this.income_type_name.length < 1){                
+            if (this.income_type_name.length < 1){
                 this.income_type_name_errors.push("name required")
                 return false
             }
@@ -972,26 +969,26 @@ export default {
         addIncomeType: function(){
             if (this.incomeTypeFormOK()){
                 this.adding_to_finance = true
-                this.$http({                        
+                this.$http({
                     method: 'post',
                     url: this.$BASE_URL + '/api/finance/income-type-list/',
                     data: {
-                        type_name: this.income_type_name,                                
-                        description: this.income_type_description                                                                                            
+                        type_name: this.income_type_name,
+                        description: this.income_type_description
                     }
                     }).then(response => {
-                        this.adding_to_finance = false                            
+                        this.adding_to_finance = false
                         this.income_type_name = '',
-                        this.income_type_description = '' 
+                        this.income_type_description = ''
                         var new_version = parseInt(localStorage.getItem('income_type_list_version')) + 1
-                        this.$store.dispatch('update_income_type_list_version', new_version) 
+                        this.$store.dispatch('update_income_type_list_version', new_version)
                         this.getIncomeTypeList()
-                        alert("income type succesfully added")                                                
+                        alert("income type succesfully added")
                     })
                     .catch((err) => {
-                        this.adding_to_finance = false          
-                        alert("an error occured, try again later")                  
-                    }) 
+                        this.adding_to_finance = false
+                        alert("an error occured, try again later")
+                    })
             }
         },
         incomeFormOK: function(){
@@ -999,7 +996,7 @@ export default {
             this.income_amount_errors = []
             this.income_type_errors = []
 
-            if (this.income_type != null 
+            if (this.income_type != null
                 && this.income_amount != null){
                     return true
                 }
@@ -1016,14 +1013,14 @@ export default {
         addIncome: function(){
             if (this.incomeFormOK()){
                 this.adding_to_finance = true
-                this.$http({                        
+                this.$http({
                         method: 'post',
                         url: this.$BASE_URL + '/api/finance/add-income/',
-                        data: {                                                               
-                                recording_member_id: this.$session.get('member_id'),                             
-                                income_type_id: this.income_type,                        
-                                narration: this.income_narration,                        
-                                amount: this.income_amount                                    
+                        data: {
+                                recording_member_id: this.$session.get('member_id'),
+                                income_type_id: this.income_type,
+                                narration: this.income_narration,
+                                amount: this.income_amount
                         }
                         }).then(response => {
                             this.adding_to_finance = false
@@ -1031,7 +1028,7 @@ export default {
                             this.income_type = null,
                             this.income_amount = null,
                             this.income_narration = ''
-                            alert("income successfully added")                                             
+                            alert("income successfully added")
                         })
                         .catch((err) => {
                             this.adding_to_finance = false
@@ -1044,37 +1041,37 @@ export default {
             //export to csv
             this.exporting_data = true
             this.$http.get(this.$BASE_URL + '/api/finance/get-income-csv/' + this.csv_date +'/' )
-            .then(response => {                
+            .then(response => {
                 this.$fileDownload(response.data,"income_" + this.csv_date + ".csv");
-                this.exporting_data = false                 
+                this.exporting_data = false
                 alert("download successful")
             })
             .catch((error) => {
                 this.exporting_data = false
                 alert('error while downloading income csv')
             })
-        },       
+        },
         //add offerring type
         addOfferingType: function(){
             this.adding_offering = true
-            this.$http({                        
+            this.$http({
                 method: 'post',
                 url: this.$BASE_URL + '/api/finance/offering-types/',
                 data: {
                     name:this.offering_type_name,
-                    description:this.offering_type_description                                                                  
+                    description:this.offering_type_description
                 }
-                }).then(response => {    
+                }).then(response => {
                     this.adding_offering = false
                     this.offering_type_name = null
                     this.offering_type_description=null
                     this.getOfferingTypes()
-                    alert("offering type succesfully added ")          
+                    alert("offering type succesfully added ")
                 })
                 .catch((err) => {
                     this.adding_offering = false
                     alert("an error occured, please try again later")
-                })        
+                })
         },
         //add payment method.
         addPaymentMethod: function(){
@@ -1084,7 +1081,7 @@ export default {
                 url: this.$BASE_URL + '/api/finance/modes-of-payment/',
                 data:{
                     name: this.payment_method_name
-                }                
+                }
             }).then(()=>{
                 alert('payment method added successfully')
                 this.adding_offering = false
@@ -1094,39 +1091,39 @@ export default {
                 alert(err)
                 this.adding_offering = false
             })
-        }, 
+        },
         //delete envelopes.
         deleteEnvelopes: function (){
-            var context = null        
-            if (this.context){           
-                if (! this.context.type){                               
-                    context = this.context.name                                           
-                }  
-                else{                               
-                    context = "Offering"                                            
-                }          
-            }            
-            this.adding_offering = true                  
+            var context = null
+            if (this.context){
+                if (! this.context.type){
+                    context = this.context.name
+                }
+                else{
+                    context = "Offering"
+                }
+            }
+            this.adding_offering = true
             this.$http({
                 method: 'delete',
                 url: this.$BASE_URL + '/api/finance/delete-envelopes/',
-                data: {                                                                            
+                data: {
                     envelope_ids: this.member_ids,
                     context:context
                 }
-                }).then(() => {      
-                    this.adding_offering = false  
-                    this.reload_data = true                                   
-                    document.getElementById('closeDeleteEnvelopesButton').click()                                       
+                }).then(() => {
+                    this.adding_offering = false
+                    this.reload_data = true
+                    document.getElementById('closeDeleteEnvelopesButton').click()
                     setTimeout(()=>{
                         this.reload_data = false
-                    },1000)   
+                    },1000)
                 })
-                .catch((err) => {               
-                    this.adding_offering = false                      
+                .catch((err) => {
+                    this.adding_offering = false
                     alert(err)
                 })
-            },       
+            },
         },
 
 }
@@ -1135,12 +1132,12 @@ export default {
 
 <style scoped lang="scss">
     .hidden{
-        
+
         /* visibility: hidden; */
     }
-    .hidden:hover{   
+    .hidden:hover{
         font-size: 20px;
         visibility: visible !important;
-        color: red !important;                      
+        color: red !important;
     }
 </style>

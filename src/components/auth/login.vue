@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="container">                      
+    <div class="container">
         <div class="d-flex justify-content-center">
           <div  class="card w-400 border-0"
                 style="background-color: ghostwhite; height: 80vh; min-width: 300px;">
@@ -9,11 +9,11 @@
               <img class="mr-0 " style="width: 50px ;height: auto" src="@/assets/app_logo1.png"
                   v-if="$host_name == 'my-domain' || $host_name == 'anvilchurch'">
               <img class="ml-4 " style="width: 60px ;height: auto ;border-radius: 5px" src="@/assets/methodist_logo.jpeg" alt="logo not found"
-                    v-if="$host_name == 'methodistkenya' " > 
+                    v-if="$host_name == 'methodistkenya' " >
               <p>admin login</p>
             </div>
             <div class="card-body">
-                
+
               <form>
                 <div>
                   <ul v-if="login_error.length">
@@ -30,10 +30,10 @@
                   </ul>
 
                 </div>
-                <div class="form-group">                 
+                <div class="form-group">
                   <label for="exampleInputEmail1">church code</label>
                   <input @keyup.enter="getToken()"
-                         type="number" class="form-control"                         
+                         type="number" class="form-control"
                          placeholder="000" v-model="church_code">
                 </div>
                 <div class="form-group">
@@ -49,9 +49,9 @@
                          type="password" class="form-control"
                          id="exampleInputPassword1" placeholder="Password"
                          v-model="password">
-                </div>               
-                <a  href=#                     
-                    v-on:click="getToken()" 
+                </div>
+                <a  href=#
+                    v-on:click="getToken()"
                     style="text-decoration: none">
                   <div class="mt-5 add-button">
                     <span>login</span>
@@ -60,7 +60,7 @@
               </form>
             </div>
           </div>
-        </div>          
+        </div>
     </div>
   </div>
 </template>
@@ -70,7 +70,7 @@
   export default {
     name: 'login',
     data() {
-      return {        
+      return {
         church_code: null,
         church_code_set : false,
         username: null,
@@ -88,28 +88,28 @@
       }
     },
     watch: {
-      church_code:function(){ 
+      church_code:function(){
         this.login_info = []
-        this.login_error = []             
-        if (this.church_code.toString().length == 3){                  
+        this.login_error = []
+        if (this.church_code.toString().length == 3){
           var church_id = parseInt(this.church_code)
           this.$http.get(this.$DOMAIN.value + '/api/clients/client/' + church_id + '/')
-            .then(response => {              
-              var data = response.data              
-              this.$BASE_URL.value = "https://"+ data[0].domain_url //+ ":8000"
-              localStorage.setItem('base_url_value',this.$BASE_URL.value)              
+            .then(response => {
+              var data = response.data
+              this.$BASE_URL.value = "http://"+ data[0].domain_url + ":8000"
+              localStorage.setItem('base_url_value',this.$BASE_URL.value)
               localStorage.setItem('church_id', church_id )
               localStorage.setItem('church_details',JSON.stringify(response.data))
             })
             .catch((err) => {
-              this.login_error.push("church code not set or invalid")        
+              this.login_error.push("church code not set or invalid")
             })
         }
       }
     },
     methods: {
       //get access token
-      getToken: function () {      
+      getToken: function () {
         this.login_info = []
         this.login_error = []
         this.login_info.push("authenticating...")
@@ -122,13 +122,13 @@
           }
         }).then(response => {
             this.login_info = []
-            this.login_error = []            
+            this.login_error = []
             this.$session.start();
             this.$session.set('token', response.data.access)
             this.$session.set('username', this.username)
             //get logged in member data
-            this.getLoggedInMemberData()          
-            router.push('/')                  
+            this.getLoggedInMemberData()
+            router.push('/')
 
         }).catch((err) => {
             this.login_info = []
@@ -138,7 +138,7 @@
             }
             else{
               this.login_error.push("invalid credentials")
-            }            
+            }
 
         })
       },
@@ -159,9 +159,9 @@
         this.$http({
           method:'get',
           url: this.$BASE_URL + `/api/members/get-permision-level/${member_id}/`
-        }).then((response)=>{                  
-            var response_data = response.data            
-            this.$session.set('access_level',response_data.level)          
+        }).then((response)=>{
+            var response_data = response.data
+            this.$session.set('access_level',response_data.level)
         }).catch((err)=>{
             alert(err)
         })
