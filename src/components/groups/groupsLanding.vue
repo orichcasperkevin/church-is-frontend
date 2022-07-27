@@ -3,7 +3,7 @@
     <nav aria-label="breadcrumb" class="container">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><span class="backButton">
-                  <router-link style="text-decoration: none" :to="{name: 'Home'}">                    
+                  <router-link style="text-decoration: none" :to="{name: 'Home'}">
                     Home
                   </router-link></span>
                 <li class="breadcrumb-item active" aria-current="page">groups</li>
@@ -13,24 +13,39 @@
       <div class="row">
         <div class="col-12 ml-3 mb-3">
             <h3 class="row">
-              <b>                  
+              <b>
                 Groups
               </b>
             </h3>
-            <div class="d-flex">
-                <div class="stat-item mr-2 text-muted">
-                        Folders <b> <span class="text-secondary">
-                         {{foundItems}} </span></b>
-                </div>
-                <div class="stat-item mr-2">
-                        Groups <b> <span class="text-secondary">
-                        {{foundItems_independent}}</span> </b>
-                </div>
-                <a class="stat-item btn btn-outline-secondary dropdown-toggle"
-                   data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
-                        more stats
-                </a>
-            </div>            
+			<div class="d-flex justify-content-between">
+				<div class="d-flex">
+					<a class="stat-item btn btn-outline-secondary dropdown-toggle"
+					   data-toggle="collapse" href="#statsTab" role="button" aria-expanded="false" aria-controls="statsTab">
+						stats
+					</a>
+				</div>
+				<div class="btn-group">
+					<a class="add-button"
+						href="#" data-toggle="modal"
+						v-on:click="switchToGroup()"
+						data-target="#addModal" style="text-decoration: none">
+					  + Add group
+					</a>
+					<button type="button" class="btn btn-success dropdown-toggle dropdown-toggle-split"
+							id="dropdownMenuReference" data-toggle="dropdown"
+							aria-haspopup="true" aria-expanded="false" data-reference="parent">
+						<span class="sr-only">Toggle Dropdown</span>
+					</button>
+					<div class="dropdown-menu border-success text-capitalize"
+						aria-labelledby="dropdownMenuReference"
+						style="z-index:99999">
+						<a class="dropdown-item"
+							href="#">
+							Text random numbers
+						</a>
+					</div>
+				</div>
+			</div>
         </div>
         <section class="collapse col-12" id="statsTab" style="max-width: 500px">
             <div class="card card-body">
@@ -41,74 +56,29 @@
       <hr>
     </section>
     <div class="container">
-      <div class="row">
-        <!-- NAVIGATION ON THE LEFT -->
-        <div class="col-sm-10 col-md-5 col-lg-3">
-            <div class="d-flex justify-content-between">
-                <b>
-                    folders
-                  </b>
-                  <a class="btn btn-sm btn-success " 
-					href="#" data-toggle="modal" 
-					data-target="#addModal" 
-					style="text-decoration: none" v-on:click="switchToFolder()">
-                    + Add folder
-                   </a>
-             </div>
-              <div v-if="groups" class="mt-4">
-                  <div class="list-group" v-for="data in groups.response">
-                      <router-link :to="`/groupList/`+ data.id + `/` + data.name"class="row list-group-item list-group-item-action border-0" >
-                        <span class="d-flex justify-content-between" v-on:click="scrollToElement('folder-content')">
-                          <div>
-                              <img style="width: 20px ;height: auto" src="@/assets/icons/icons8-folder-48.png">
-                              {{data.name}}  
-                          </div>                                              
-                          <span class="font-weight-bold">
-                            {{data.number_of_groups}}
-                          </span>
-                        </span>
-                      </router-link>
-                    </div>
-                    <hr>
-              </div>             
-              <div class="d-flex justify-content-between">
-                <b>groups</b>
-				  <a class="btn btn-sm btn-success" 
-					  href="#" data-toggle="modal" 
-					  v-on:click="switchToGroup()"
-					  data-target="#addModal" style="text-decoration: none">
-                    + Add group
-                  </a>
-              </div>             
-              <div v-if="independent_groups" class="mt-4" >
-                  <div class="list-group" v-for="data in independent_groups.response">
+      <div>
+              <div v-if="independent_groups" class="mt-4 d-flex flex-wrap" >
+                  <div class="border rounded mt-3 ml-3" v-for="data in independent_groups.response">
                       <router-link  :to="`/groupDetail/`+ data.id" class="list-group-item list-group-item-action border-0" >
-                      <span class="d-flex justify-content-between">
+                      <span class="">
                         <div>
-                            <img style="width: 30px ;height: auto" src="@/assets/icons/icons8-user-groups-48.png">
-                            {{data.name}}
-                        </div>           
+                            <i class="fas fa-users"></i>
+                            <span class="text-dark">{{data.name}}</span>
+							<p>{{data.description}}</p>
+                        </div>
                         <span class="text-muted font-weight-bold">
-                          {{data.number_of_members}}
-                        </span>                                       
+                          {{data.number_of_members}} members
+                        </span>
                       </span>
                     </router-link>
                   </div>
-              </div>             
-        </div>
-        <!-- CONTENT IN THE MIDDLE -->
-        <div class="col-sm-10 col-md-8 col-lg-9">   
-            <hr class="d-sm-block d-lg-none">        
-            <router-view id="folder-content">
 
-            </router-view>
-        </div>  
-             
+        	 </div>
         <section>
           <!-- Modal add group -->
           <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">               
+                <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalCenterTitle">add {{group_type}}</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -134,7 +104,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-success" v-on:click="addGroup()">
-                      <b>+</b> add 
+                      <b>+</b> add
                       <span v-if="adding_group"
                             class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
                       </span>
@@ -156,7 +126,7 @@ export default {
   name: 'groupsLanding',
   components: { groupstats },
   data () {
-    return {      
+    return {
       groups: null,independent_groups: null,
       foundItems: null,foundItems_independent: null,
       fetch_data_error: [],
@@ -183,22 +153,22 @@ export default {
     scrollToElement: function(element){
       	document.getElementById(element).scrollIntoView();
     },
-    fetchData() {      
+    fetchData() {
 		this.fetch_data_error = []
 		this.$store.dispatch('update_isLoading', true)
 		// try local storage
-		this.groups = JSON.parse(localStorage.getItem('group_list'))    
-		if (this.groups){        
-				var array = this.groups.response          
+		this.groups = JSON.parse(localStorage.getItem('group_list'))
+		if (this.groups){
+				var array = this.groups.response
 				this.foundItems = array.length
 				this.$store.dispatch('update_isLoading', false)
 		}
 
 		const currentVersion = this.$store.getters.group_list_version
 		var version  = localStorage.getItem('group_list_version')
-		
+
 		//else try the network
-		if (!version || version <= currentVersion) {      
+		if (!version || version <= currentVersion) {
 			this.$http.get(this.$BASE_URL + '/api/groups/group-of-church-groups-list')
 			.then(response => {
 				this.groups = {"response": response.data }
@@ -274,7 +244,7 @@ export default {
         }
         }).then(response => {
             this.name = ''
-            this.description = ''            
+            this.description = ''
             if (this.group_type == 'folder'){
               alert("folder succesfully added")
             }
