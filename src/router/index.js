@@ -10,6 +10,7 @@ import adminRoles from '@/components/member/adminRoles'
 import groupsLanding from '@/components/groups/groupsLanding'
 import groupList from "@/components/groups/groupList"
 import groupDetail from "@/components/groups/groupDetail"
+import randomMessage from "@/components/groups/randomMessage"
 
 import events from "@/components/events/events"
 import eventDetail from '@/components/events/eventdetail'
@@ -88,6 +89,11 @@ export default new Router({
       name: 'groupDetail',
       component: groupDetail
     },
+	{
+	  path:'/randomMessage/',
+	  name: 'randomMessage',
+	  component: randomMessage
+	},
     {
       path:'/events/',
       name: 'events',
