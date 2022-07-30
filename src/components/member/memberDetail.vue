@@ -1,13 +1,13 @@
 <template>
     <div class="memberDetail">
-        <nav aria-label="breadcrumb" class="container">
+        <nav aria-label="breadcrumb" class="continer">
         <ol class="breadcrumb">
 			<li class="breadcrumb-item"><span class="backButton"><router-link style="text-decoration: none" :to="{name: 'Home'}">Home</router-link></span>
 			<li class="breadcrumb-item"><span class="backButton"><router-link style="text-decoration: none" :to="{name: 'memberList'}">members</router-link> </span>
 			<li class="breadcrumb-item active" aria-current="page">member detail</li>
         </ol>
         </nav>
-        <section class="container">
+        <section class="continer">
 			<div class="row">
 				<div class="col" v-if="member_info != null">
 				<h3 class="row" v-for="data in member_info.member">
@@ -17,7 +17,7 @@
 			</div>
 			<hr>
         </section>
-        <section class="container">
+        <section class="continer">
         <div class="row">
         <!-- NAVIGATION ON THE LEFT -->
         <div class="col-sm-12 col-md-8 col-lg-3">                        

@@ -3,7 +3,7 @@
         <!-- this compnent requires text message modal -->
         <textmessage :memberIds="member_ids"/>
       <!-- NAVBAR -->
-      <nav aria-label="breadcrumb" class="container">
+      <nav aria-label="breadcrumb" class="continer">
         <ol class="breadcrumb">
             <li class="breadcrumb-item">
               <span class="backButton">
@@ -18,7 +18,7 @@
       </nav>
       <!-- BOdY -->
       <body class="main-content">
-        <div class="container">
+        <div class="continer">
           <div class="row">
             <!-- Navigation on Left -->
             <section class="filters col-12 col-sm-0 col-md-8 col-lg-2 border rounded" style="height:100vh; padding: 3px 3px 3px 3px">
@@ -385,7 +385,7 @@
 							<span aria-hidden="true">&times;</span>
 							</button>
 						</div>
-						<div class="container mt-5 mb-5">
+						<div class="continer mt-5 mb-5">
 							<span class="d-flex fex-row"><h3 class="text-muted">{{member_ids.length}} </h3>members</span>
 							<label><b>select group :</b></label>
 							<select class=" form-control" v-model="group_id" >
@@ -467,7 +467,7 @@
 							<span aria-hidden="true">&times;</span>
 						</button>
 						</div>
-						<div class="container mt-5 mb-5">
+						<div class="continer mt-5 mb-5">
 						<span class="d-flex fex-row"><h2 class="text-muted font-weight-bold">{{member_ids.length}} </h2>members</span>
 						<h4 class="text-danger">These members alongside with all their data will be deleted</h4>
 						<i>this action is irreversible, are you sure that this is what you want??</i>
@@ -496,7 +496,7 @@
 						</div>
 						<div class="modal-body">
 							<h3 class="text-muted">demo</h3>
-							<div class="container">
+							<div class="continer">
 								<table class="table table-borderless">
 									<thead>
 										<tr>
@@ -662,7 +662,7 @@
 					<div style="padding: 10px 10px 10px 10px" class="text-info">{{firstnamesearch_status}}</div>
 					<small id="searchHelp" class="form-text text-muted">search members by their first names</small>
 				</div>
-				<div id="container row" >
+				<div id="continer row" >
 					<div class="accordion">
 					<div class="d-flex justify-content-between">
 						<label for="tm" class="accordionitem"><b>age</b></label>

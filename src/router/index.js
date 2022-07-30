@@ -16,6 +16,7 @@ import eventDetail from '@/components/events/eventdetail'
 
 import projectList from "@/components/projects/projectList"
 import projectDetail from "@/components/projects/projectDetail"
+import importPledgesFromCSV from "@/components/projects/importPledgesFromCSV"
 
 import generalFinance from "@/components/finance/generalFinance"
 import income from "@/components/finance/income"
@@ -67,7 +68,7 @@ export default new Router({
       component: adminRoles
     },
     {
-      path: 'groupsLanding',      
+      path: 'groupsLanding',
       component: groupsLanding,
       children: [
         {
@@ -90,7 +91,7 @@ export default new Router({
     {
       path:'/events/',
       name: 'events',
-      component: events  
+      component: events
     },
     {
     path: '/eventDetail/:id',
@@ -107,6 +108,11 @@ export default new Router({
       name: 'projectDetail',
       component: projectDetail
     },
+	{
+	  path: '/importPledgesFromCSV/',
+	  name: 'importPledgesFromCSV',
+	  component: importPledgesFromCSV
+	},
     {
       path: '/generalFinance/',
       name: 'generalFinance',
@@ -156,7 +162,7 @@ export default new Router({
       path: '/news/',
       name: 'news',
       component:  () => import('@/components/news/news.vue')
-    },      
+    },
 
   ]
 })

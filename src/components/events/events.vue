@@ -1,6 +1,6 @@
 <template>
         <div>
-            <nav aria-label="breadcrumb" class="container">
+            <nav aria-label="breadcrumb" class="continer">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item">
                             <span class="backButton">
@@ -12,7 +12,7 @@
                         <li class="breadcrumb-item active" aria-current="page">events</li>
                     </ol>
             </nav> 
-            <div class = "container">
+            <div class = "continer">
                 <div class="row">
                        <div class="col">
                            <!-- filters for events             -->

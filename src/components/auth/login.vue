@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="container">
+    <div class="continer">
         <div class="d-flex justify-content-center">
           <div  class="card w-400 border-0"
                 style="background-color: ghostwhite; height: 80vh; min-width: 300px;">

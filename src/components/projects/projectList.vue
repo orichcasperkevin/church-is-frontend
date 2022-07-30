@@ -1,13 +1,13 @@
 <template>
     <div >
-        <nav aria-label="breadcrumb" class="container">
+        <nav aria-label="breadcrumb" class="continer">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><span class="backButton"><router-link style="text-decoration: none" :to="{name: 'Home'}">Home</router-link></span>
                     <li class="breadcrumb-item"><span class="backButton"><router-link style="text-decoration: none" :to="{name: 'generalFinance'}">finances</router-link></span> 
                     <li class="breadcrumb-item active" aria-current="page">projects</li>
                 </ol>
         </nav>
-        <div class="container">        
+        <div class="continer">        
         <div class="row">
             <!-- NAVIGATION ON THE LEFT -->
             <div class="col-12 col-sm-10 col-md-8 col-lg-2">

@@ -1,13 +1,13 @@
 <template>
     <div class="memberAdd">
-    <nav aria-label="breadcrumb" class="container">
+    <nav aria-label="breadcrumb" class="continer">
 		<ol class="breadcrumb">
 			<li class="breadcrumb-item"><span class="backButton"><router-link style="text-decoration: none" :to="{name: 'Home'}">Home</router-link></span> 
 			<li class="breadcrumb-item"><span class="backButton"><router-link style="text-decoration: none" :to="{name: 'memberList'}">members</router-link></span> 
 			<li class="breadcrumb-item active" aria-current="page">add member</li>
 		</ol>
     </nav>
-    <div class="container">
+    <div class="continer">
 		<div class="row">              
 			<div class="col-12 col-sm-12 col-lg-8">                
 			<div v-if="add_member_error.length > 0 "role="alert">

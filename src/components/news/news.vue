@@ -1,12 +1,12 @@
 <template>
     <div>
-        <nav aria-label="breadcrumb" class="container">
+        <nav aria-label="breadcrumb" class="continer">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><span class="backButton"><router-link style="text-decoration: none" :to="{name: 'Home'}">Home</router-link></span>  
                     <li class="breadcrumb-item active" aria-current="page">news & announcements</li>
                 </ol>
         </nav>
-        <div class="container">
+        <div class="continer">
             <div class="row">
                 <h3 class="col-6">              
                     News and announcements

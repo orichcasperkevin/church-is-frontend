@@ -1,12 +1,12 @@
 <template>
         <div>
-            <nav aria-label="breadcrumb" class="container">
+            <nav aria-label="breadcrumb" class="continer">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><span class="backButton"><router-link style="text-decoration: none" :to="{name: 'Home'}">Home</router-link></span>  
                         <li class="breadcrumb-item active" aria-current="page">sermons</li>
                     </ol>
             </nav>        
-            <div class = "container">
+            <div class = "continer">
                 <div class="row">
                     <div  class = "col-12 col-sm-10 col-md-8 col-lg-2">
                             <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">

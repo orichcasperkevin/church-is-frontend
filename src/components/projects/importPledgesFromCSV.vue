@@ -2,14 +2,14 @@
 <template>
 <div>
     <!-- Modal import CSV -->
-    <div class="modal fade bd-example-modal-xl" id="importFromCSV" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
-                <div class="modal-content">
+    <div>
+			<nav class="container">
+				<a href="#" @click="goBack()">&larr; Back</a>
+			</nav>
+            <div class="container" role="document">
+                <div class="modal-content border-0">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalCenterTitle">import from CSV</h5>
-                    <button type="button" id="close-button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
                 </div>
                 <div class="modal-body">
                     <h3 class="text-muted">demo</h3>
@@ -20,9 +20,9 @@
                                 <th scope="col">date <br/>(DD MMMMM YYYY)</th>
                                 <th scope="col">names</th>
                                 <th scope="col">phone number</th>
-                                <th scope="col">type</th>
-                                <th scope="col">method</th>
-                                <th scope="col">amount</th>
+                                <th scope="col">project</th>
+                                <th scope="col">pledged amount</th>
+                                <th scope="col">amount payed</th>
 
                                 </tr>
                             </thead>
@@ -31,16 +31,16 @@
                                     <td>23 July 2020</td>
                                     <td>Daniel Jones</td>
                                     <td>07********</td>
-                                    <td>tithe</td>
-                                    <td>Mpesa</td>
+                                    <td>church construction</td>
+                                    <td>300000</td>
                                     <td>300</td>
                                 </tr>
                                 <tr>
                                     <td>01 March 2020</td>
                                     <td>Martha Mercy</td>
                                     <td>07********</td>
-                                    <td>Offering</td>
-                                    <td>cash</td>
+                                    <td>church construction</td>
+                                    <td>79000</td>
                                     <td>300</td>
                                 </tr>
                             </tbody>
@@ -60,8 +60,8 @@
                                             <option >date</option>
                                             <option>names</option>
                                             <option>phone number</option>
-                                            <option>type</option>
-                                            <option>payment method</option>
+                                            <option>project</option>
+                                            <option>pledge amount</option>
                                             <option>amount</option>
                                         </select>
                                     </th>
@@ -77,7 +77,7 @@
 
                         <div class="mt-3 large-12 medium-12 small-12 cell">
                             <label><b>file: </b>
-                            <button class="mr-2 btn btn-light" v-on:click="reset()">
+                            <button class="mr-2 btn btn-success" v-on:click="reset()">
                                 Choose file
                             </button>
                             {{file_name}}
@@ -90,7 +90,17 @@
                                 <small><li v-for="error in test_csv_errors"><p class="text-danger">{{error}}</p></li></small>
                             </ul>
                         </p>
-                        <p class="text-success" v-if="file_format_okay">file okay, proceed to import</p>
+						<div class=""  v-if="file_format_okay">
+							<p class="text-success">file okay, proceed to import</p>
+							<label for="">Message</label>
+							<textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model="message"></textarea>
+							<small class="mt-2 ml-2 small text-muted">[name] ---- will be replaced by the member's name.<br/>
+								[pledged_amount] ---- the amount pledged.<br/>
+								[payed_amount] ---- the amount payed.<br/>
+								[date] ---- the date <br>
+								[remaining_amount] ---- the amount remaining
+							</small>
+						</div>
                         <p v-if="error_500.length">
                             <ul>
                                 <small><li v-for="error in error_500">
@@ -102,7 +112,6 @@
                         </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     <button type="button" class="btn btn-success"
                             v-on:click="submitFile()"
                             v-if="file">
@@ -125,7 +134,7 @@
                     <button type="button" class="btn btn-success"
                             v-if="file_format_okay"
                             v-on:click="extractData()">
-                            extract Data
+                            extract Data and send message
                             <span v-if = "extracting_data"
                                 class="spinner-border spinner-border-sm"
                                 role="status"
@@ -139,7 +148,7 @@
 </template>
 <script>
 export default {
-name: 'importFromCSV',
+name: 'importPledgesFromCSV',
 data () {
     return {
         file_name: "No file chosen",
@@ -155,6 +164,7 @@ data () {
         csv_data: [],get_data_status: '',
         file_format_okay: false,
         csv_columns: {},
+		message:'[name] God bless you mighty for supporting BCA with a pledge of Ksh. [pledged_amount]/= and payment of Kshs [payed_amount]/=. your current balance is Ksh [remaining_amount]/=.'
 
     }
 },
@@ -163,6 +173,9 @@ methods: {
     emitToParent (event) {
         this.$emit('dataExtracted')
     },
+	goBack(){
+		history.back()
+	},
     //Submits the file to the server
     submitFile: function(){
         this.file_format_okay = false
@@ -172,7 +185,7 @@ methods: {
         formData.append('csv', this.file);
 
         this.submitting_file = true
-        this.$http.post( this.$BASE_URL + '/api/finance/upload-csv/',
+        this.$http.post( this.$BASE_URL + '/api/finance/upload-pledge-payments-csv/',
             formData,
             {
             headers: {
@@ -206,7 +219,7 @@ methods: {
     previewCSV: function(){
         this.get_data_status = 'setting up preview ...'
         var file_name = this.uploaded_file.split("/")[1]
-        this.$http.get(this.$BASE_URL + '/api/finance/preview-csv/'+ file_name + '/')
+        this.$http.get(this.$BASE_URL + '/api/finance/preview-pledge-payments-csv/'+ file_name + '/')
         .then(response => {
             this.csv_data = response.data
             this.get_data_status = ''
@@ -225,7 +238,7 @@ methods: {
         this.checking_csv = true
         this.$http({
             method: 'post',
-            url: this.$BASE_URL + '/api/finance/check-csv/',
+            url: this.$BASE_URL + '/api/finance/check-pledge-payments-csv/',
             data: {
                 file_name: file_name,
                 column_config: this.csv_columns
@@ -253,46 +266,18 @@ methods: {
         this.extracting_data = true
         this.$http({
             method: 'post',
-            url: this.$BASE_URL + '/api/finance/import-data-from-csv/',
+            url: this.$BASE_URL + '/api/finance/import-pledge-payments-data-from-csv/',
             data: {
                 file_name: file_name,
-                column_config: this.csv_columns
+                column_config: this.csv_columns,
+				message:this.message
             }
         }).then(response => {
-            this.extract_data_button_text = "import data"
-            var new_version = parseInt(localStorage.getItem('member_list_version')) + 1
-            this.$store.dispatch('update_member_list_version', new_version)
-            this.extracting_data = false
-
-            // update tithe list version
-            var new_version = parseInt(localStorage.getItem('tithe_list_version')) + 1
-            this.$store.dispatch('update_tithe_list_version', new_version)
-
-            // update offerings list version
-            var new_version = parseInt(localStorage.getItem('offering_list_version')) + 1
-            this.$store.dispatch('update_offering_list_version', new_version)
-
-            this.emitToParent()
-            document.getElementById('close-button').click()
+			this.reset()
             alert("data extracted succesfully")
         }).catch((err) => {
-            //fix the network timeout issue((this is a quickfix))
-            this.extract_data_button_text = "import data"
-            var new_version = parseInt(localStorage.getItem('member_list_version')) + 1
-            this.$store.dispatch('update_member_list_version', new_version)
-            this.extracting_data = false
-
-            // update tithe list version
-            var new_version = parseInt(localStorage.getItem('tithe_list_version')) + 1
-            this.$store.dispatch('update_tithe_list_version', new_version)
-
-            // update offerings list version
-            var new_version = parseInt(localStorage.getItem('offering_list_version')) + 1
-            this.$store.dispatch('update_offering_list_version', new_version)
-
-            this.emitToParent()
-            document.getElementById('close-button').click()
-            alert("data extracted succesfully")
+			this.reset()
+            alert("an error occured, check CSV and try again")
         })
     },
     reset: function(){

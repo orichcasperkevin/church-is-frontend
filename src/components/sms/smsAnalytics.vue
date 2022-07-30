@@ -1,12 +1,12 @@
 <template>
     <div>
-        <nav aria-label="breadcrumb" class="container">
+        <nav aria-label="breadcrumb" class="continer">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><span class="backButton"><router-link style="text-decoration: none" :to="{name: 'Home'}">Home</router-link></span>  
                     <li class="breadcrumb-item active" aria-current="page">SMS outbox</li>
                 </ol>
         </nav>
-        <div class="container">
+        <div class="continer">
                 <h3 class="font-weight-bold">SMS outbox</h3>
                 <hr>
                 <section class="row">

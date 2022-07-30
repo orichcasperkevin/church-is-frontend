@@ -3,7 +3,7 @@
         <!-- this compnent requires text message modal -->
         <textmessage :memberIds="member_ids"/> 
 
-        <nav aria-label="breadcrumb" class="container">
+        <nav aria-label="breadcrumb" class="continer">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><span class="backButton"><router-link style="text-decoration: none" :to="{name: 'Home'}">Home</router-link></span>
                   <li class="breadcrumb-item"><span class="backButton"><router-link href="#" style="text-decoration: none" :to="{name: 'groupsLanding'}">groups</router-link></span>
@@ -11,7 +11,7 @@
             </ol>
         </nav>       
         <body v-if="group.response.length">
-            <div class="container">
+            <div class="continer">
                 <div class="row ml-2">
                   <div class="col" v-for="data in group.response">
                       <h3 class="row">
@@ -22,7 +22,7 @@
                 </div>
                 <hr>
               </div>
-            <div class="container">
+            <div class="continer">
             <div class="row">
 
             <div class="col-sm-10 col-md-8 col-lg-2 mb-3" style="padding: 0px 0px 0px 0px">
@@ -285,7 +285,7 @@
                             <span aria-hidden="true">&times;</span>
                           </button>
                         </div>
-                        <div class="container mt-5 mb-5">    
+                        <div class="continer mt-5 mb-5">    
                           <span class="d-flex fex-row"><h2 class="text-muted font-weight-bold">{{member_ids.length}} </h2>members</span>
                           <h4 class="text-danger">These members alongside with all their data will be removed from the group</h4>
                           <i>this action is irreversible, are you sure that this is what you want??</i>
@@ -312,7 +312,7 @@
                             <span aria-hidden="true">&times;</span>
                           </button>
                         </div>
-                        <div class="container mt-5 mb-5">                              
+                        <div class="continer mt-5 mb-5">                              
                           <h4 class="text-danger">This Group alongside with all its data will be deleted</h4>
                           <i>this action is irreversible, are you sure that this is what you want??</i>
                         </div>

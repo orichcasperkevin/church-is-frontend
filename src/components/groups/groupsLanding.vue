@@ -1,6 +1,6 @@
 <template>
     <div class="groupsLanding">
-    <nav aria-label="breadcrumb" class="container">
+    <nav aria-label="breadcrumb" class="continer">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><span class="backButton">
                   <router-link style="text-decoration: none" :to="{name: 'Home'}">
@@ -9,7 +9,7 @@
                 <li class="breadcrumb-item active" aria-current="page">groups</li>
             </ol>
     </nav>
-    <section class="container">
+    <section class="continer">
       <div class="row">
         <div class="col-12 ml-3 mb-3">
             <h3 class="row">
@@ -55,7 +55,7 @@
       </div>
       <hr>
     </section>
-    <div class="container">
+    <div class="continer">
       <div>
               <div v-if="independent_groups" class="mt-4 d-flex flex-wrap" >
                   <div class="border rounded mt-3 ml-3" v-for="data in independent_groups.response">

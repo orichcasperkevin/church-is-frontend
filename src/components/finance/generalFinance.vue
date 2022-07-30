@@ -5,13 +5,13 @@
         <!-- the modal used to import finace data from csv -->
         <importFromCSV v-on:dataExtracted="csvDataExtracted"/>
 
-        <nav aria-label="breadcrumb" class="container">
+        <nav aria-label="breadcrumb" class="continer">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><span class="backButton"><router-link style="text-decoration: none" :to="{name: 'Home'}">Home</router-link></span>
                 <li class="breadcrumb-item active" aria-current="page">finances</li>
             </ol>
         </nav>
-        <div class = "container">
+        <div class = "continer">
             <div class = "row">
                 <!-- NAVIGATIONS -->
                 <div class="filters col-sm-12 col-md-8 col-lg-2 border rounded" >
@@ -70,7 +70,7 @@
                                 </a>
                             </div>
                             <!-- when content is to be shown -->
-                            <div  class="container" :class="{'d-none': hide_content}">
+                            <div  class="continer" :class="{'d-none': hide_content}">
                                 <div class="d-flex justify-content-center">
                                     <!-- nav pills for offerings,tithes and others -->
                                     <div class="col-sm-12 col-lg-10" >
@@ -610,7 +610,7 @@
                         </button>
                         </div>
                         <div class="modal-body">
-                            <div class="container mt-5 mb-5">
+                            <div class="continer mt-5 mb-5">
                                 <span class="d-flex fex-row"><h2 class="text-muted font-weight-bold">{{member_ids.length}} </h2>envelopes</span>
                                 <h4 class="text-danger">These envelopes will be deleted</h4>
                                 <i>this action is irreversible, are you sure that this is what you want??</i>

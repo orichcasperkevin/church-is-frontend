@@ -1,6 +1,6 @@
 <template>
     <div class="Home">
-        <div class="container">
+        <div class="continer">
             <div class="church-is-home row" style="position:absolute;left:50%;top:50%; transform: translate(-50%, -50%);">
               <div class="col-sm mb-3 ">
                   <router-link :to="{name: 'memberList'}">

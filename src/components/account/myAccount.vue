@@ -1,6 +1,6 @@
 <template>
     <div>
-        <nav aria-label="breadcrumb" class="container">
+        <nav aria-label="breadcrumb" class="continer">
                 <ol class="breadcrumb">
                         <li class="breadcrumb-item">
                             <span class="backButton">
@@ -11,8 +11,8 @@
                     <li class="breadcrumb-item active" aria-current="page">church account</li>
                 </ol>
         </nav>
-        <!-- MAIN CONTAINER -->
-        <section class="container">                
+        <!-- MAIN continer -->
+        <section class="continer">                
             <div class="row">
                 <div class="mb-5 col-sm-12 col-lg-3">
                     <!-- spacer div -->
@@ -248,7 +248,7 @@
                 </div>
             </div>                
         </section>
-        <!-- MODALS CONTAINER -->
+        <!-- MODALS continer -->
         <section>
             <!-- mission and vision statements modal -->
             <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" 

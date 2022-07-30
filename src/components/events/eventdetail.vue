@@ -1,6 +1,6 @@
 <template>
         <div>
-            <nav aria-label="breadcrumb" class="container">
+            <nav aria-label="breadcrumb" class="continer">
                     <ol class="breadcrumb">
                             <li class="breadcrumb-item">
                                 <span class="backButton">
@@ -19,8 +19,8 @@
                             <li class="breadcrumb-item active" aria-current="page">{{event[0].title}}</li>
                     </ol>
             </nav>        
-            <!-- CONTAINER -->
-            <div class="container">
+            <!-- continer -->
+            <div class="continer">
                 <div class="row">
                     <!-- content -->
                     <div class="col">
@@ -107,7 +107,7 @@
                             <span aria-hidden="true">&times;</span>
                           </button>
                         </div>
-                        <div class="container mt-5 mb-5" v-if="groups_list">                                           
+                        <div class="continer mt-5 mb-5" v-if="groups_list">                                           
                           <label><b>select group :</b></label>
                           <select class=" form-control" v-model="group_id" >
                               <option v-for="data in groups_list.response" :value="data.id" >{{data.name}}</option>
