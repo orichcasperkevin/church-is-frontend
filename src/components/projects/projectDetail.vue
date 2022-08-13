@@ -244,7 +244,7 @@
 										<h3 class="font-weight-bold">
 											pledge payments
 										</h3>
-										<hr>								
+										<hr>
 										<div class="">
 											<table class="table table-responsive-sm table-borderless">
 												<thead>
@@ -913,17 +913,23 @@ export default {
 			this.memberSearch = ''
 			this.pledge_payment_selected = true
 			this.$store.dispatch('update_isLoading', true)
-			this.$http.get(this.$BASE_URL +'/api/projects/pledge-payment-for-project/'+ this.$route.params.id + '/')
-				.then(response => {
-					this.pledge_payments = {"response": response.data }
-					var array = this.pledge_payments.response
-					// set up member ids for selection
-					for (var pledge of array){
-						this.all_payment_ids.push(pledge.id)
-					}
-					this.$store.dispatch('update_isLoading', false)
-				})
-				.catch((err) => {
+			var params			
+			if (this.from_date && this.to_date){
+				params = {from_date : this.from_date, to_date : this.to_date}
+			}
+			this.$http({
+				method: 'get',
+				url : `${this.$BASE_URL}/api/projects/pledge-payment-for-project/${this.$route.params.id}/`,
+				params: params
+			}).then((response) => {
+				this.pledge_payments = {"response": response.data }
+				var array = this.pledge_payments.response
+				// set up member ids for selection
+				for (var pledge of array){
+					this.all_payment_ids.push(pledge.id)
+				}
+				this.$store.dispatch('update_isLoading', false)
+			}).catch((err) => {
 					this.$store.dispatch('update_isLoading', false)
 			})
 		},
