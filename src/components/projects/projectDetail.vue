@@ -727,10 +727,10 @@
 								</small>
 							</div>
 							<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+							<button type="button" id="closeTextModal" class="btn btn-secondary" data-dismiss="modal">Close</button>
 							<button v-if="payment_ids.length > 0" type="button" class="btn btn-success" v-on:click="sendPaymentsReceivedMessage()">
 								send Message
-								<span v-if="exporting_data"
+								<span v-if="sending_message"
 									class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
 								</span>
 							</button>
@@ -774,6 +774,7 @@ export default {
 		payment_ids:[],
 		all_payment_ids:[],
 		payments_text_message:'[name] God bless you mighty for supporting our project with a pledge of Ksh. [pledged_amount]/= and payment of Kshs [payed_amount]/=. your current balance is Ksh [remaining_amount]/=.',
+		sending_message:false,
 		//add contribution
 		adding_to_project: false,
 		non_member: false,
@@ -804,8 +805,6 @@ export default {
 		can_send_message:false,
 		message: " ",
 		sms_status: [],
-		sending_message: false,
-
 		}
 	},
 	created () {
@@ -1003,184 +1002,182 @@ export default {
 		},
 		//add contribution
 		addContribution: function(){
-				if (this.non_member){
-						this.enable_add_project_button = false
-						this.adding_to_project = true
-						this.add_contribution_button_text = '+ adding contribution...'
-						this.$http({
-						method: 'post',
-						url: this.$BASE_URL + '/api/projects/add-non-member-contribution-to-project/',
-						data: {
-								project_id: this.$route.params.id,
-								names: this.name_if_not_member,
-								recording_member_id: this.$session.get('member_id'),
-								phone: this.country_code.toString() + this.phone_number.toString(),
-								anonymous: true,
-								amount: this.contribution_amount
-						}
-						}).then(response => {
-								alert("contribution succesfully added")
-								if (this.auto_message ){
-								   this.can_send_message = true
-								}
-								this.adding_to_project = false
-								this.enable_add_project_button = true
-								this.name_if_not_member = ''
-								this.phone_number = ''
-								this.contribution_amount = null
-								this.add_contribution_button_text = '+ add contribution'
-						})
-						.catch((err) => {
-								this.adding_to_project = false
-								this.enable_add_project_button = true
-								this.add_contribution_button_text = '+ add contribution'
-								alert("an error has occured, try again later")
-						})
+			if (this.non_member){
+				this.enable_add_project_button = false
+				this.adding_to_project = true
+				this.add_contribution_button_text = '+ adding contribution...'
+				this.$http({
+				method: 'post',
+				url: this.$BASE_URL + '/api/projects/add-non-member-contribution-to-project/',
+				data: {
+					project_id: this.$route.params.id,
+					names: this.name_if_not_member,
+					recording_member_id: this.$session.get('member_id'),
+					phone: this.country_code.toString() + this.phone_number.toString(),
+					anonymous: true,
+					amount: this.contribution_amount
+				}
+				}).then(response => {
+					alert("contribution succesfully added")
+					if (this.auto_message ){
+						this.can_send_message = true
+					}
+					this.adding_to_project = false
+					this.enable_add_project_button = true
+					this.name_if_not_member = ''
+					this.phone_number = ''
+					this.contribution_amount = null
+					this.add_contribution_button_text = '+ add contribution'
+				})
+				.catch((err) => {
+					this.adding_to_project = false
+					this.enable_add_project_button = true
+					this.add_contribution_button_text = '+ add contribution'
+					alert("an error has occured, try again later")
+				})
 				}
 				if (! this.non_member){
-						this.enable_add_project_button = false
-						this.adding_to_project = true
-						this.add_contribution_button_text = 'adding contribution...'
-						this.$http({
-						method: 'post',
-						url: this.$BASE_URL + '/api/projects/add-contribution-to-project/',
-						data: {
-								project_id: this.$route.params.id,
-								member_id: this.selectedMember,
-								recording_member_id: this.$session.get('member_id'),
-								anonymous: false,
-								amount: this.contribution_amount
-						}
-						}).then(response => {
-							   this.adding_to_project = false
-							   this.memberSearch = ''
-							   this.contribution_amount = null
-							   this.added_contribution.push(response.data)
-							   this.add_contribution_button_text = '+ add contribution'
-							   this.enable_add_button = true
-							   alert("contribution succesfully added")
-						})
-						.catch((err) => {
-								this.adding_to_project = false
-								this.enable_add_project_button = true
-								this.add_contribution_button_text = '+ add contribution'
-								alert("an error has occured, try agin later")
-						})
+					this.enable_add_project_button = false
+					this.adding_to_project = true
+					this.add_contribution_button_text = 'adding contribution...'
+					this.$http({
+					method: 'post',
+					url: this.$BASE_URL + '/api/projects/add-contribution-to-project/',
+					data: {
+						project_id: this.$route.params.id,
+						member_id: this.selectedMember,
+						recording_member_id: this.$session.get('member_id'),
+						anonymous: false,
+						amount: this.contribution_amount
+					}
+					}).then(response => {
+						this.adding_to_project = false
+						this.memberSearch = ''
+						this.contribution_amount = null
+						this.added_contribution.push(response.data)
+						this.add_contribution_button_text = '+ add contribution'
+						this.enable_add_button = true
+						alert("contribution succesfully added")
+					})
+					.catch((err) => {
+						this.adding_to_project = false
+						this.enable_add_project_button = true
+						this.add_contribution_button_text = '+ add contribution'
+						alert("an error has occured, try agin later")
+					})
 				}
 		},
 		pledgeFormOkay: function(){
 
-				this.pledge_amount_errrors = []
-				this.selected_member_errors = []
-				this.pledge_date_errors = []
-				this.pledge_amount_errors = []
-				this.name_if_not_member_errors = []
+			this.pledge_amount_errrors = []
+			this.selected_member_errors = []
+			this.pledge_date_errors = []
+			this.pledge_amount_errors = []
+			this.name_if_not_member_errors = []
 
-				if (     !  this.non_member
-						&& (this.pledge_amount != null
-						|| this.pledge_amount > 0)
-						&& (this.selectedMember != null
-						|| this.selectedMember != 0)
-						&& this.pledge_due_date.length == 10){
-								return true
-						}
-				if (    this.non_member
-						&& (this.pledge_amount != null
-						|| this.pledge_amount > 0)
-						&& (this.name_if_not_member != null
-						|| this.name_if_not_member != '')
-						&& this.pledge_due_date.length == 10){
-								return true
-						}
-				if (    ! this.non_member
-						&&  (this.selectedMember == null
-						|| this.selectedMember == 0)){
-								this.selected_member_errors.push("select a member")
-								return false
-				}
-				if (    this.non_member
-						&& (this.name_if_not_member.length < 1
-						|| this.name_if_not_member == null)){
-								this.name_if_not_member_errors.push("enter name of the contributor")
-								return false
-				}
-				if (this.pledge_due_date.length == 0){
-						this.pledge_date_errors.push("date input required")
-						return false
-				}
-				if (this.pledge_due_date.length != 10){
-						this.pledge_date_errors.push("incorrect date use YYYY-MM-DD format")
-						return false
-				}
-				if (this.pledge_amount < 1
-						|| this.pledge_amount == null){
-								this.pledge_amount_errors.push("pledge amount required")
-								return false
-				}
+			if (     !  this.non_member
+					&& (this.pledge_amount != null
+					|| this.pledge_amount > 0)
+					&& (this.selectedMember != null
+					|| this.selectedMember != 0)
+					&& this.pledge_due_date.length == 10){
+							return true
+					}
+			if (    this.non_member
+					&& (this.pledge_amount != null
+					|| this.pledge_amount > 0)
+					&& (this.name_if_not_member != null
+					|| this.name_if_not_member != '')
+					&& this.pledge_due_date.length == 10){
+							return true
+					}
+			if (    ! this.non_member
+					&&  (this.selectedMember == null
+					|| this.selectedMember == 0)){
+							this.selected_member_errors.push("select a member")
+							return false
+			}
+			if (    this.non_member
+					&& (this.name_if_not_member.length < 1
+					|| this.name_if_not_member == null)){
+							this.name_if_not_member_errors.push("enter name of the contributor")
+							return false
+			}
+			if (this.pledge_due_date.length == 0){
+					this.pledge_date_errors.push("date input required")
+					return false
+			}
+			if (this.pledge_due_date.length != 10){
+					this.pledge_date_errors.push("incorrect date use YYYY-MM-DD format")
+					return false
+			}
+			if (this.pledge_amount < 1
+					|| this.pledge_amount == null){
+							this.pledge_amount_errors.push("pledge amount required")
+							return false
+			}
 		},
 		addPledge: function(){
-				if (this.pledgeFormOkay()){
-						if (! this.non_member){
-								this.adding_to_project = true
-								this.$http({
-										method: 'post',
-										url: this.$BASE_URL + '/api/projects/add-pledge-to-project/',
-										data: {
-												project_id: this.$route.params.id,
-												member_id: this.selectedMember,
-												recording_member_id: this.$session.get('member_id'),
-												amount: this.pledge_amount,
-												date: this.pledge_due_date
-										}
-										}).then(response => {
-												this.selectedMember = null
-												this.pledge_amount = null
-												this.adding_to_project = false
-												this.enable_add_pledge_button = true
-												this.memberSearch = ''
-												alert("pledge of amount " + response.data.amount + "\n"
-														+ "added for " + response.data.member.member.first_name)
-										})
-										.catch((err) => {
-												this.adding_to_project = false
-												alert("an error occured while attempting to add pledge. \n"
-														+ "check your connection and try again")
+			if (this.pledgeFormOkay()){
+				if (! this.non_member){
+					this.adding_to_project = true
+					this.$http({
+							method: 'post',
+							url: this.$BASE_URL + '/api/projects/add-pledge-to-project/',
+							data: {
+								project_id: this.$route.params.id,
+								member_id: this.selectedMember,
+								recording_member_id: this.$session.get('member_id'),
+								amount: this.pledge_amount,
+								date: this.pledge_due_date
+							}
+							}).then(response => {
+								this.selectedMember = null
+								this.pledge_amount = null
+								this.adding_to_project = false
+								this.enable_add_pledge_button = true
+								this.memberSearch = ''
+								alert("pledge of amount " + response.data.amount + "\n" + "added for " + response.data.member.member.first_name)
+							})
+							.catch((err) => {
+								this.adding_to_project = false
+								alert("an error occured while attempting to add pledge. \n"
+										+ "check your connection and try again")
 
-										})
-						}
-						if (this.non_member){
-								this.adding_to_project = true
-								this.$http({
-										method: 'post',
-										url: this.$BASE_URL + '/api/projects/add-anonymous-pledge-to-project/',
-										data: {
-												project_id: this.$route.params.id,
-												recording_member_id: this.$session.get('member_id'),
-												phone: this.country_code + this.phone_number,
-												names: this.name_if_not_member,
-												amount: this.pledge_amount,
-												date: this.pledge_due_date
-										}
-										}).then(response => {
-												this.adding_to_project = false
-												this.selectedMember = null
-												this.name_if_not_member = null
-												this.phone_number = null
-												this.phone_number_errors = []
-												this.pledge_amount = null
-												this.enable_add_pledge_button = true
-												this.memberSearch = ''
-												alert("pledge of amount " + response.data.amount + "\n"
-														+ "added for " + response.data.names)
-										})
-										.catch((err) => {
-												this.adding_to_project = false
-												alert("an error occured while attempting to add pledge. \n"
-														+ "check your connection and try again")
-
-										})
-						}
+							})
 				}
+				if (this.non_member){
+					this.adding_to_project = true
+					this.$http({
+						method: 'post',
+						url: this.$BASE_URL + '/api/projects/add-anonymous-pledge-to-project/',
+						data: {
+							project_id: this.$route.params.id,
+							recording_member_id: this.$session.get('member_id'),
+							phone: this.country_code + this.phone_number,
+							names: this.name_if_not_member,
+							amount: this.pledge_amount,
+							date: this.pledge_due_date
+						}
+						}).then(response => {
+							this.adding_to_project = false
+							this.selectedMember = null
+							this.name_if_not_member = null
+							this.phone_number = null
+							this.phone_number_errors = []
+							this.pledge_amount = null
+							this.enable_add_pledge_button = true
+							this.memberSearch = ''
+							alert("pledge of amount " + response.data.amount + "\n"
+									+ "added for " + response.data.names)
+						})
+						.catch((err) => {
+							this.adding_to_project = false
+							alert("an error occured while attempting to add pledge. \n"
+									+ "check your connection and try again")
+						})
+					}
+			}
 		},
 		settlePledgeFormOkay: function(){
 
@@ -1224,39 +1221,55 @@ export default {
 				}
 				},
 		settlePledge: function(){
-				if (this.settlePledgeFormOkay()){
-						if (! this.non_member){
-								this.adding_to_project = true
-								this.$http({
-										method: 'post',
-										url: this.$BASE_URL + '/api/projects/service-pledge/',
-										data: {
-												project_id: this.$route.params.id,
-												member_id: this.selectedMember,
-												recording_member_id: this.$session.get('member_id'),
-												amount: this.pledge_amount
-										}
-										}).then(response => {
-												this.selectedMember = null
-												this.pledge_amount = null
-												this.adding_to_project = false
-												this.enable_add_pledge_button = true
-												this.memberSearch = ''
-												alert("amount " + response.data.payment_amount+ " "
-														+ "settled for pledge by " + response.data.pledge.member.member.first_name
-														+ "\n remaining amount is " + response.data.pledge.remaining_amount
-														+ "\n percentage settled is "
-														+ response.data.pledge.percentage_funded )
-										})
-										.catch((err) => {
-												this.adding_to_project = false
-												alert("error, this may be because the member you selected has not pledged for this project")
-
-										})
+			if (this.settlePledgeFormOkay()){
+				if (! this.non_member){
+					this.adding_to_project = true
+					this.$http({
+						method: 'post',
+						url: this.$BASE_URL + '/api/projects/service-pledge/',
+						data: {
+							project_id: this.$route.params.id,
+							member_id: this.selectedMember,
+							recording_member_id: this.$session.get('member_id'),
+							amount: this.pledge_amount
 						}
-
+						}).then(response => {
+							this.selectedMember = null
+							this.pledge_amount = null
+							this.adding_to_project = false
+							this.enable_add_pledge_button = true
+							this.memberSearch = ''
+							alert("amount " + response.data.payment_amount+ " "
+								+ "settled for pledge by " + response.data.pledge.member.member.first_name
+								+ "\n remaining amount is " + response.data.pledge.remaining_amount
+								+ "\n percentage settled is "
+								+ response.data.pledge.percentage_funded )
+						})
+						.catch((err) => {
+							this.adding_to_project = false
+							alert("error, this may be because the member you selected has not pledged for this project")
+						})
 				}
-
+			}
+		},
+		sendPaymentsReceivedMessage: function(){
+			this.sending_message = true
+			this.$http({
+				method: 'post',
+				url: this.$BASE_URL + '/api/projects/send-pledge-payment-received-message/',
+				data: {
+					payment_ids: this.payment_ids,
+					message: this.payments_text_message,
+				}
+				}).then(response => {
+					document.getElementById('closeTextModal').click()
+					this.getPledgePayments()
+					this.sending_message = false
+				})
+				.catch((err) => {
+					this.sending_message = false
+					alert("an error occured")
+				})
 		}
 	}
 
