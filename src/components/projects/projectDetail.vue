@@ -244,14 +244,14 @@
 										<h3 class="font-weight-bold">
 											pledge payments
 										</h3>
-										<hr>
+										<hr>								
 										<div class="">
 											<table class="table table-responsive-sm table-borderless">
 												<thead>
 													<tr>
 														<th>
 															<label class="anvil-checkbox">all
-																<input type="checkbox" :value=true v-model="all_members">
+																<input type="checkbox" :value=true v-model="all_payments">
 																<span class="anvil-checkmark"></span>
 															</label>
 														</th>
@@ -276,14 +276,14 @@
 																	<div class="p-2 d-flex justify-content-end">
 																		<button class="btn btn-sm btn-success"
 																			:disabled = "!(from_date && to_date)"
-																			@click="filterTithes()">
+																			@click="getPledgePayments()">
 																			Filter
 																		</button>
 																	</div>
 															</div>
 															</div>
 														</th>
-														<th>paid</th>
+														<th>this payment</th>
 														<th>target</th>
 														<th>remaining</th>
 													</tr>
@@ -345,7 +345,7 @@
 										<span class="sr-only">Toggle Dropdown</span>
 								</button>
 								<div class="dropdown-menu border-success" aria-labelledby="dropdownMenuReference">
-										<a class="dropdown-item" href="#" data-toggle="modal" data-target="#settlePledge"><b>+</b> settle pledgefff</a>
+										<a class="dropdown-item" href="#" data-toggle="modal" data-target="#settlePledge"><b>+</b> settle pledge</a>
 										<div class="dropdown-divider"></div>
 										<a class="dropdown-item" href="#" data-toggle="modal" data-target="#addContribution"><b>+</b> add contribution</a>
 										<div class="dropdown-item"><router-link style="text-decoration: none" :to="{name: 'importPledgesFromCSV'}">+ Import from CSV</router-link></div>
@@ -357,12 +357,17 @@
 								<button type="button" class="d-flex justify-content-about font-weight-bold text-muted list-group-item list-group-item-action border-0"
 										data-toggle="modal"
 										data-target="#textModalCenter">
-										<img src="@/assets/icons/icons8-comments-64.png" style="width: 45px; height:auto">
-										Text People
+										<span>
+											<i class="fas fa-comment"></i>
+											Text People
+										</span>
 								</button>
 								<button type="button" class=" d-flex justify-content-about font-weight-bold text-muted action-list list-group-item list-group-item-action border-0"
 										data-toggle="modal" data-target="#exportToCSV" >
-										<img src="@/assets/icons/icons8-export-csv-30.png" style="width: 45px; height:auto"> Export To CSV
+										<span>
+											<i class="fas fa-file-export"></i>
+											Export to CSV
+										</span>
 								</button>
 						</div>
 
@@ -714,8 +719,9 @@ export default {
 		// This value is set to the value emitted by the child
 		selectedMember: null,
 		member_ids: [],
+		all_payments:false,
 		payment_ids:[],
-		all_pledgepayments_ids:[],
+		all_payment_ids:[],
 		//add contribution
 		adding_to_project: false,
 		non_member: false,
@@ -756,50 +762,58 @@ export default {
 	watch: {
 		'$route': 'fetchdata',
 		all_members: function(){
-				if (this.all_members != true){
-						this.member_ids = []
-				}
-				else{
-						this.member_ids = this.all_member_ids
-				}
+			if (this.all_members != true){
+				this.member_ids = []
+			}
+			else{
+				this.member_ids = this.all_member_ids
+			}
+		},
+		all_payments:function(){
+			if (this.all_payments != true){
+				this.payment_ids = []
+			}
+			else{
+				this.payment_ids = this.all_payment_ids
+			}
 		},
 	//add contribution
 		name_if_not_member: function(){
-				if (this.name_if_not_member.length > 0
-					&& this.non_member
-					&& this.contribution_amount > 0){
-						this.added_contribution = []
-						this.enable_add_button = true
-				}
+			if (this.name_if_not_member.length > 0
+				&& this.non_member
+				&& this.contribution_amount > 0){
+					this.added_contribution = []
+					this.enable_add_button = true
+			}
 		},
 		contribution_amount: function(){
-				this.add_contribution_button_text = '+ add contribution'
-				if (this.contribution_amount > 0
-					&& this.selectedMember > 0
-					|| this.name_if_not_member.length > 0){
-						this.added_contribution = []
-						this.enable_add_button = true
-				}
+			this.add_contribution_button_text = '+ add contribution'
+			if (this.contribution_amount > 0
+				&& this.selectedMember > 0
+				|| this.name_if_not_member.length > 0){
+					this.added_contribution = []
+					this.enable_add_button = true
+			}
 		},
 		phone_number: function(){
-				if (this.phone_number.isNaN){
-						this.phone_number_errors = []
-						this.phone_number_errors.push(" phone number should be numbers only")
-				}
-				if (this.phone_number.length > 9){
-						this.phone_number_OK = []
-						this.phone_number_errors = []
-						this.phone_number_errors.push("number too long")
-				}
-				if (this.phone_number.length < 9){
-						this.phone_number_OK = []
-						this.phone_number_errors = []
-						this.phone_number_errors.push("number too short")
-				}
-				if (this.phone_number.length == 9){
-						this.phone_number_errors = []
-						this.phone_number_OK.push(" number OK")
-				}
+			if (this.phone_number.isNaN){
+					this.phone_number_errors = []
+					this.phone_number_errors.push(" phone number should be numbers only")
+			}
+			if (this.phone_number.length > 9){
+					this.phone_number_OK = []
+					this.phone_number_errors = []
+					this.phone_number_errors.push("number too long")
+			}
+			if (this.phone_number.length < 9){
+					this.phone_number_OK = []
+					this.phone_number_errors = []
+					this.phone_number_errors.push("number too short")
+			}
+			if (this.phone_number.length == 9){
+					this.phone_number_errors = []
+					this.phone_number_OK.push(" number OK")
+			}
 		},
 
 	 },
@@ -905,9 +919,7 @@ export default {
 					var array = this.pledge_payments.response
 					// set up member ids for selection
 					for (var pledge of array){
-						if (pledge.member){
-							this.all_pledgepayments_ids.push(pledge.id)
-						}
+						this.all_payment_ids.push(pledge.id)
 					}
 					this.$store.dispatch('update_isLoading', false)
 				})
