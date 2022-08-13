@@ -255,6 +255,7 @@
 																<span class="anvil-checkmark"></span>
 															</label>
 														</th>
+														<th></th>
 														<th>name</th>
 														<th>
 															<div class="dropdown">
@@ -296,6 +297,18 @@
 																<span class="anvil-checkmark"></span>
 														   </label>
 														</td>
+														<td>
+						                                    <h6>
+						                                        <span class="badge badge-danger" style="height: 5px; width: 5px" v-if="! data.notified"
+						                                            data-toggle="tooltip" data-placement="top" title="member has not been notified">
+						                                            <span style="visibility: hidden">.</span>
+						                                        </span>
+						                                        <span class="badge badge-success" style="height: 5px; width: 5px" v-if="data.notified"
+						                                            data-toggle="tooltip" data-placement="top" title="member has been notified">
+						                                            <span style="visibility: hidden">.</span>
+						                                        </span>
+						                                    </h6>
+						                                </td>
 														<td v-if = "data.pledge.member != null">
 																<router-link :to="`/memberDetail/`+ data.pledge.member.member.id">
 																		<span class = "text-secondary">{{data.pledge.member.member.first_name}} {{data.pledge.member.member.last_name}}</span>
@@ -354,9 +367,17 @@
 
 						<!-- more actions -->
 						<div class="list-group font-weight-bold">
-								<button type="button" class="d-flex justify-content-about font-weight-bold text-muted list-group-item list-group-item-action border-0"
+								<button v-if="tab != 'pledges' && tab != 'pledge_payments'" type="button" class="d-flex justify-content-about font-weight-bold text-muted list-group-item list-group-item-action border-0"
 										data-toggle="modal"
 										data-target="#textModalCenter">
+										<span>
+											<i class="fas fa-comment"></i>
+											Text People
+										</span>
+								</button>
+								<button v-else type="button" class="d-flex justify-content-about font-weight-bold text-muted list-group-item list-group-item-action border-0"
+										data-toggle="modal"
+										data-target="#paymentstextModal">
 										<span>
 											<i class="fas fa-comment"></i>
 											Text People
@@ -408,7 +429,6 @@
 						</div>
 						</div>
 				</div>
-
 				<!-- add contribution Modal -->
 				<div class="modal fade" id="addContribution" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 						<div class="modal-dialog modal-dialog-centered" role="document">
@@ -687,6 +707,37 @@
 						</div>
 						</div>
 				</div>
+				<!-- export to csv modal -->
+				<div class="modal fade" id="paymentstextModal" tabindex="-1" role="dialog" aria-hidden="true">
+						<div class="modal-dialog modal-dialog-centered" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalCenterTitle">export data to CSV</h5>
+							</div>
+							<div class="modal-body">
+								<label for="">Message ({{payment_ids.length}} payments selected)</label>
+								<textarea rows="5" class="form-control" placeholder="Text message" v-model="payments_text_message">
+								</textarea>
+								<small class="mt-2 small text-muted">
+									[name] ---- will be replaced by the member's name.<br/>
+									[pledged_amount] ---- the amount pledged.<br/>
+									[payed_amount] ---- the amount payed.<br/>
+									[date] ---- the date <br>
+									[remaining_amount] ---- the amount remaining
+								</small>
+							</div>
+							<div class="modal-footer">
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+							<button v-if="payment_ids.length > 0" type="button" class="btn btn-success" v-on:click="sendPaymentsReceivedMessage()">
+								send Message
+								<span v-if="exporting_data"
+									class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+								</span>
+							</button>
+							</div>
+						</div>
+						</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -722,6 +773,7 @@ export default {
 		all_payments:false,
 		payment_ids:[],
 		all_payment_ids:[],
+		payments_text_message:'[name] God bless you mighty for supporting our project with a pledge of Ksh. [pledged_amount]/= and payment of Kshs [payed_amount]/=. your current balance is Ksh [remaining_amount]/=.',
 		//add contribution
 		adding_to_project: false,
 		non_member: false,
@@ -913,7 +965,7 @@ export default {
 			this.memberSearch = ''
 			this.pledge_payment_selected = true
 			this.$store.dispatch('update_isLoading', true)
-			var params			
+			var params
 			if (this.from_date && this.to_date){
 				params = {from_date : this.from_date, to_date : this.to_date}
 			}
