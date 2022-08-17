@@ -31,7 +31,7 @@
 								</a>
 								<a class="action-list list-group-item list-group-item-action border-0" id="v-pills-pledgepayment-tab" data-toggle="pill" href="#v-pills-pledgepayment" role="tab" aria-controls="v-pills-pledgepayment" aria-selected="false" v-on:click="getPledgePaymentsTab()">
 										<span class="">
-												<i class="fas fa-bullseye"></i>
+												<i class="fas fa-receipt"></i>
 												pledge payments
 										</span>
 								</a>
@@ -973,6 +973,7 @@ export default {
 				url : `${this.$BASE_URL}/api/projects/pledge-payment-for-project/${this.$route.params.id}/`,
 				params: params
 			}).then((response) => {
+				this.all_payment_ids = []
 				this.pledge_payments = {"response": response.data }
 				var array = this.pledge_payments.response
 				// set up member ids for selection

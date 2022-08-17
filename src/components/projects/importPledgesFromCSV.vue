@@ -90,17 +90,6 @@
                                 <small><li v-for="error in test_csv_errors"><p class="text-danger">{{error}}</p></li></small>
                             </ul>
                         </p>
-						<div class=""  v-if="file_format_okay">
-							<p class="text-success">file okay, proceed to import</p>
-							<label for="">Message</label>
-							<textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model="message"></textarea>
-							<small class="mt-2 ml-2 small text-muted">[name] ---- will be replaced by the member's name.<br/>
-								[pledged_amount] ---- the amount pledged.<br/>
-								[payed_amount] ---- the amount payed.<br/>
-								[date] ---- the date <br>
-								[remaining_amount] ---- the amount remaining
-							</small>
-						</div>
                         <p v-if="error_500.length">
                             <ul>
                                 <small><li v-for="error in error_500">
@@ -134,7 +123,7 @@
                     <button type="button" class="btn btn-success"
                             v-if="file_format_okay"
                             v-on:click="extractData()">
-                            extract Data and send message
+                            extract Data
                             <span v-if = "extracting_data"
                                 class="spinner-border spinner-border-sm"
                                 role="status"
@@ -163,10 +152,8 @@ data () {
         uploaded_file: '',
         csv_data: [],get_data_status: '',
         file_format_okay: false,
-        csv_columns: {},
-		message:'[name] God bless you mighty for supporting BCA with a pledge of Ksh. [pledged_amount]/= and payment of Kshs [payed_amount]/=. your current balance is Ksh [remaining_amount]/=.'
-
-    }
+        csv_columns: {}
+	}
 },
 
 methods: {
@@ -269,12 +256,11 @@ methods: {
             url: this.$BASE_URL + '/api/finance/import-pledge-payments-data-from-csv/',
             data: {
                 file_name: file_name,
-                column_config: this.csv_columns,
-				message:this.message
+                column_config: this.csv_columns
             }
         }).then(response => {
-			this.reset()
             alert("data extracted succesfully")
+			this.reset()
         }).catch((err) => {
 			this.reset()
             alert("an error occured, check CSV and try again")
