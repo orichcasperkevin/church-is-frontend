@@ -20,19 +20,19 @@
 								<a class="action-list list-group-item list-group-item-action border-0 active" id="v-pills-contributions-tab" data-toggle="pill" href="#v-pills-contributions" role="tab" aria-controls="v-pills-contributions" aria-selected="true" v-on:click="getContributionsTab()">
 										<span class="">
 												<i class="fas fa-donate"></i>
-												contributions
+												Contributions
 										</span>
 								</a>
-								<a class="action-list list-group-item list-group-item-action border-0" id="v-pills-pledges-tab" data-toggle="pill" href="#v-pills-pledges" role="tab" aria-controls="v-pills-pledges" aria-selected="false" v-on:click="getPledgesTab()">
+								<!-- <a class="action-list list-group-item list-group-item-action border-0" id="v-pills-pledges-tab" data-toggle="pill" href="#v-pills-pledges" role="tab" aria-controls="v-pills-pledges" aria-selected="false" v-on:click="getPledgesTab()">
 										<span class="">
 												<i class="fas fa-bullseye"></i>
 												pledges
 										</span>
-								</a>
+								</a> -->
 								<a class="action-list list-group-item list-group-item-action border-0" id="v-pills-pledgepayment-tab" data-toggle="pill" href="#v-pills-pledgepayment" role="tab" aria-controls="v-pills-pledgepayment" aria-selected="false" v-on:click="getPledgePaymentsTab()">
 										<span class="">
-												<i class="fas fa-receipt"></i>
-												pledge payments
+												<i class="fas fa-bullseye"></i>
+												Pledges
 										</span>
 								</a>
 
@@ -242,7 +242,7 @@
 								<div class="tab-pane fade" id="v-pills-pledgepayment" role="tabpanel" aria-labelledby="v-pills-pledgepayment-tab">
 									<div v-if="pledge_payment_selected">
 										<h3 class="font-weight-bold">
-											pledge payments
+											Pledges
 										</h3>
 										<hr>
 										<div class="">
@@ -367,7 +367,7 @@
 
 						<!-- more actions -->
 						<div class="list-group font-weight-bold">
-								<button v-if="tab != 'pledges' && tab != 'pledge_payments'" type="button" class="d-flex justify-content-about font-weight-bold text-muted list-group-item list-group-item-action border-0"
+								<button v-if="tab == 'contributions'" type="button" class="d-flex justify-content-about font-weight-bold text-muted list-group-item list-group-item-action border-0"
 										data-toggle="modal"
 										data-target="#textModalCenter">
 										<span>
@@ -375,7 +375,7 @@
 											Text People
 										</span>
 								</button>
-								<button v-else type="button" class="d-flex justify-content-about font-weight-bold text-muted list-group-item list-group-item-action border-0"
+								<button v-if="tab == 'pledge_payments'" type="button" class="d-flex justify-content-about font-weight-bold text-muted list-group-item list-group-item-action border-0"
 										data-toggle="modal"
 										data-target="#paymentstextModal">
 										<span>
@@ -733,6 +733,10 @@
 								<span v-if="sending_message"
 									class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
 								</span>
+							</button>
+							<button disabled v-if="payment_ids.length == 0" type="button" class="btn btn-outline-secondary"
+								data-toggle="tooltip" data-placement="top" title="No members selected. Select members to send message.">
+								Nothing selected
 							</button>
 							</div>
 						</div>
