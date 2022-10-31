@@ -321,7 +321,8 @@
 														<td>{{$humanizeDate(data.payment_recorded_on)}}</td>
 														<td><p class="text-muted">{{humanize(data.payment_amount)}}</p></td>
 														<td><p class="text-muted">{{humanize(data.pledge.amount)}}</p></td>
-														<td><p class="text-muted">{{humanize(data.pledge.remaining_amount)}}</p></td>
+														<td><p class="text-muted">{{humanize(data.remaining_amount)}}</p></td>														
+
 													</tr>
 												</tbody>
 											</table>
