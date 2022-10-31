@@ -16,22 +16,22 @@
 			<div class="row">
 				<div class="col-12 col-sm-10 col-md-8 col-lg-2 border rounded">
 						<div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-							<a class="action-list list-group-item list-group-item-action active border-0" id="v-pills-pledgepayment-tab" data-toggle="pill" href="#v-pills-pledgepayment" role="tab" aria-controls="v-pills-pledgepayment" aria-selected="false" v-on:click="getPledgePaymentsTab()">
-									<span class="text-nowrap">
-											<i class="fas fa-bullseye"></i>
-											Pledge Payments
-									</span>
-							</a>
-							<a class="action-list list-group-item list-group-item-action border-0" id="v-pills-contributions-tab" data-toggle="pill" href="#v-pills-contributions" role="tab" aria-controls="v-pills-contributions" aria-selected="true" v-on:click="getContributionsTab()">
+							<!-- <a class="action-list list-group-item list-group-item-action border-0" id="v-pills-contributions-tab" data-toggle="pill" href="#v-pills-contributions" role="tab" aria-controls="v-pills-contributions" aria-selected="true" v-on:click="getContributionsTab()">
 									<span class="">
 											<i class="fas fa-donate"></i>
 											Contributions
 									</span>
-							</a>
-							<a class="action-list list-group-item list-group-item-action border-0" id="v-pills-pledges-tab" data-toggle="pill" href="#v-pills-pledges" role="tab" aria-controls="v-pills-pledges" aria-selected="false" v-on:click="getPledgesTab()">
+							</a> -->
+							<a class="action-list list-group-item list-group-item-action active border-0" id="v-pills-pledges-tab" data-toggle="pill" href="#v-pills-pledges" role="tab" aria-controls="v-pills-pledges" aria-selected="false" v-on:click="getPledgesTab()">
 									<span class="">
 											<i class="fas fa-bullseye"></i>
 											pledges
+									</span>
+							</a>
+							<a class="action-list list-group-item list-group-item-action  border-0" id="v-pills-pledgepayment-tab" data-toggle="pill" href="#v-pills-pledgepayment" role="tab" aria-controls="v-pills-pledgepayment" aria-selected="false" v-on:click="getPledgePaymentsTab()">
+									<span class="text-nowrap">
+											<i class="fas fa-donate"></i>
+											Pledge Payments
 									</span>
 							</a>
 
@@ -40,7 +40,7 @@
 				<div class="col">
 						<div class="tab-content" id="v-pills-tabContent">
 								<!-- contributions tab -->
-								<div class="tab-pane fade show active" id="v-pills-contributions" role="tabpanel" aria-labelledby="v-pills-contributions-tab">
+								<div class="tab-pane fade" id="v-pills-contributions" role="tabpanel" aria-labelledby="v-pills-contributions-tab">
 									<h3 class="font-weight-bold">
 											<span v-if="context" v-for = "data in context.response">{{data.name}} /</span> contributions
 									</h3>
@@ -143,7 +143,7 @@
 									</table>
 								</div>
 								<!-- pledges tab -->
-								<div class="tab-pane fade" id="v-pills-pledges" role="tabpanel" aria-labelledby="v-pills-pledges-tab">
+								<div class="tab-pane fade show active" id="v-pills-pledges" role="tabpanel" aria-labelledby="v-pills-pledges-tab">
 									<div v-if = "pledges_selected">
 										<h3 class="font-weight-bold">
 												<span v-for = "data in context.response">{{data.name}} /</span> pledges
@@ -243,8 +243,10 @@
 										<h3 class="font-weight-bold">
 											Pledges
 										</h3>
-										<hr>
 										<div class="">
+											<div class="p-3">
+												<span class="badge badge-pill badge-secondary">{{payment_ids.length}}</span> selected
+											</div>
 											<table class="table table-responsive-sm table-borderless">
 												<thead>
 													<tr>
@@ -817,7 +819,6 @@ export default {
 	},
 	created () {
 		this.fetchdata()
-		this.getPledgePaymentsTab()
 	},
 	watch: {
 		'$route': 'fetchdata',
