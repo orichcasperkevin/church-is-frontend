@@ -16,25 +16,24 @@
 			<div class="row">
 				<div class="col-12 col-sm-10 col-md-8 col-lg-2 border rounded">
 						<div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-
-								<a class="action-list list-group-item list-group-item-action border-0 active" id="v-pills-contributions-tab" data-toggle="pill" href="#v-pills-contributions" role="tab" aria-controls="v-pills-contributions" aria-selected="true" v-on:click="getContributionsTab()">
-										<span class="">
-												<i class="fas fa-donate"></i>
-												Contributions
-										</span>
-								</a>
-								<!-- <a class="action-list list-group-item list-group-item-action border-0" id="v-pills-pledges-tab" data-toggle="pill" href="#v-pills-pledges" role="tab" aria-controls="v-pills-pledges" aria-selected="false" v-on:click="getPledgesTab()">
-										<span class="">
-												<i class="fas fa-bullseye"></i>
-												pledges
-										</span>
-								</a> -->
-								<a class="action-list list-group-item list-group-item-action border-0" id="v-pills-pledgepayment-tab" data-toggle="pill" href="#v-pills-pledgepayment" role="tab" aria-controls="v-pills-pledgepayment" aria-selected="false" v-on:click="getPledgePaymentsTab()">
-										<span class="">
-												<i class="fas fa-bullseye"></i>
-												Pledges
-										</span>
-								</a>
+							<a class="action-list list-group-item list-group-item-action active border-0" id="v-pills-pledgepayment-tab" data-toggle="pill" href="#v-pills-pledgepayment" role="tab" aria-controls="v-pills-pledgepayment" aria-selected="false" v-on:click="getPledgePaymentsTab()">
+									<span class="text-nowrap">
+											<i class="fas fa-bullseye"></i>
+											Pledge Payments
+									</span>
+							</a>
+							<a class="action-list list-group-item list-group-item-action border-0" id="v-pills-contributions-tab" data-toggle="pill" href="#v-pills-contributions" role="tab" aria-controls="v-pills-contributions" aria-selected="true" v-on:click="getContributionsTab()">
+									<span class="">
+											<i class="fas fa-donate"></i>
+											Contributions
+									</span>
+							</a>
+							<a class="action-list list-group-item list-group-item-action border-0" id="v-pills-pledges-tab" data-toggle="pill" href="#v-pills-pledges" role="tab" aria-controls="v-pills-pledges" aria-selected="false" v-on:click="getPledgesTab()">
+									<span class="">
+											<i class="fas fa-bullseye"></i>
+											pledges
+									</span>
+							</a>
 
 						</div>
 				</div>
@@ -161,9 +160,9 @@
 														<span class="sr-only">Toggle Dropdown</span>
 												</button>
 												<div class="dropdown-menu border-success" aria-labelledby="dropdownMenuReference">
-														<a class="dropdown-item" href="#" data-toggle="modal" data-target="#settlePledge"><b>+</b> settle pledge dfer</a>
+														<a class="dropdown-item" href="#" data-toggle="modal" data-target="#settlePledge"><b>+</b> settle pledge</a>
 														<div class="dropdown-divider"></div>
-														<a class="dropdown-item" href="#" data-toggle="modal" data-target="#addContribution"><b>+</b> add contribution dfer</a>
+														<a class="dropdown-item" href="#" data-toggle="modal" data-target="#addContribution"><b>+</b> add contribution</a>
 														<a class="dropdown-item"><router-link style="text-decoration: none" :to="{name: 'ImportPledgesFromCSV'}">Import from CSV</router-link></a>
 												</div>
 										</div>
@@ -390,8 +389,13 @@
 											Export to CSV
 										</span>
 								</button>
+								<button v-if="tab == 'pledge_payments'" type="button" class="d-flex justify-content-about font-weight-bold text-muted list-group-item list-group-item-action border-0"
+										v-on:click="deleteEnvelopes()">
+										<span class="text-danger">
+											<span><i class="fas fa-trash-alt"></i> Delete</span>
+										</span>
+								</button>
 						</div>
-
 				</div>
 				<!-- export to csv modal -->
 				<div class="modal fade" id="exportToCSV" tabindex="-1" role="dialog" aria-hidden="true">
@@ -777,7 +781,7 @@ export default {
 		all_payments:false,
 		payment_ids:[],
 		all_payment_ids:[],
-		payments_text_message:'[name] God bless you mighty for supporting our project with a pledge of Ksh. [pledged_amount]/= and payment of Kshs [payed_amount]/=. your current balance is Ksh [remaining_amount]/=.',
+		payments_text_message:null,
 		sending_message:false,
 		//add contribution
 		adding_to_project: false,
@@ -813,6 +817,7 @@ export default {
 	},
 	created () {
 		this.fetchdata()
+		this.getPledgePaymentsTab()
 	},
 	watch: {
 		'$route': 'fetchdata',
@@ -917,6 +922,7 @@ export default {
 			this.$http.get(this.$BASE_URL +'/api/projects/project-with-id/' + this.$route.params.id + '/')
 				.then(response => {
 				this.context = {"response": response.data }
+				this.payments_text_message = `Dear [name], Thank you for your generous support towards ${this.context.response[0].name} project  with a pledge of  Kshs  [pledged_amount]  . Total amount paid so far is Kshs [payed_amount]. Balance is kshs. [remaining_amount] .`
 				this.$store.dispatch('update_isLoading', false)
 				})
 				.catch((err) => {
@@ -965,6 +971,7 @@ export default {
 			})
 		},
 		getPledgePayments: function(){
+			this.payment_ids = []
 			this.memberSearch = ''
 			this.pledge_payment_selected = true
 			this.$store.dispatch('update_isLoading', true)
@@ -1268,6 +1275,9 @@ export default {
 				}
 				}).then(response => {
 					document.getElementById('closeTextModal').click()
+					console.log("skdfnkknskdnkkk------")
+					localStorage.setItem('pledge_message',this.payments_text_message)
+					console.log(localStorage.getItem('pledge_message'))
 					this.getPledgePayments()
 					this.sending_message = false
 				})
@@ -1275,7 +1285,27 @@ export default {
 					this.sending_message = false
 					alert("an error occured")
 				})
-		}
+		},
+		// delete payments
+		deleteEnvelopes: function (){
+			if (confirm(`Delete ${this.payment_ids.length} Pledge payments. This cannot be reversed`)){
+				this.$store.dispatch('update_isLoading', true)
+				this.$http({
+					method: 'delete',
+					url: this.$BASE_URL + '/api/projects/delete-pledge-payments/',
+					data: {
+						ids: this.payment_ids,
+					}
+					}).then(() => {
+						this.$store.dispatch('update_isLoading', false)
+						this.getPledgePayments()
+					})
+					.catch((err) => {
+						this.$store.dispatch('update_isLoading', false)
+						this.getPledgePayments()
+					})
+				}
+			},
 	}
 
 }
