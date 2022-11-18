@@ -1,6 +1,6 @@
 <template>
     <div>
-        <!-- this compnent requires text message modal -->
+        <!-- this component requires text message modal -->
         <textmessage :memberIds="member_ids" :context="context"/>
         <!-- the modal used to import finace data from csv -->
         <importFromCSV v-on:dataExtracted="csvDataExtracted"/>

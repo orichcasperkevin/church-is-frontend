@@ -183,10 +183,21 @@
 														</div>
 												</div>
 										</div>
-										   <div class="row">
+										   <div class="mt-5 d-flex justify-content-between">
 												<p class="col-6">
 														found <span class="mt-4 badge badge-pill badge-secondary">{{humanize(foundPledges)}}</span>
 												</p>
+												<div class="d-flex justify-content-end">
+													<button class="btn" @click="prevPage"
+														:disabled="pageNumber == 1">
+														<i class="arrow left"></i>
+													</button>
+													<span class="p-3">{{pageNumber}} / {{pageCount}}</span>
+													<button class="btn" @click="nextPage"
+														:disabled="pageNumber == pageCount">
+														<i class="arrow right"></i>
+													</button>
+												</div>
 											</div>
 										<table class="table table-responsive-sm table-borderless">
 												<thead>
@@ -235,6 +246,19 @@
 													</tr>
 												</tbody>
 										</table>
+										<div class="mt-3 d-flex justify-content-end">
+											<div class="d-flex justify-content-end">
+												<button class="btn" @click="prevPage"
+													:disabled="pageNumber == 1">
+													<i class="arrow left"></i>
+												</button>
+												<span class="p-3">{{pageNumber}} / {{pageCount}}</span>
+												<button class="btn" @click="nextPage"
+													:disabled="(pageNumber) == pageCount">
+													<i class="arrow right"></i>
+												</button>
+											</div>
+										</div>
 									</div>
 								</div>
 								<!-- pledge payments tab -->
@@ -321,7 +345,7 @@
 														<td>{{$humanizeDate(data.payment_recorded_on)}}</td>
 														<td><p class="text-muted">{{humanize(data.payment_amount)}}</p></td>
 														<td><p class="text-muted">{{humanize(data.pledge.amount)}}</p></td>
-														<td><p class="text-muted">{{humanize(data.remaining_amount)}}</p></td>														
+														<td><p class="text-muted">{{humanize(data.remaining_amount)}}</p></td>
 
 													</tr>
 												</tbody>
@@ -725,6 +749,7 @@
 								<label for="">Message ({{payment_ids.length}} payments selected)</label>
 								<textarea rows="5" class="form-control" placeholder="Text message" v-model="payments_text_message">
 								</textarea>
+								<p class="mt-2 ml-2 small text-muted"><span class="font-weight-bold">{{parseInt((payments_text_message.length)/160)}}</span> messages | a message is 160 characters long</p> 
 								<small class="mt-2 small text-muted">
 									[name] ---- will be replaced by the member's name.<br/>
 									[pledged_amount] ---- the amount pledged.<br/>
@@ -816,6 +841,9 @@ export default {
 		can_send_message:false,
 		message: " ",
 		sms_status: [],
+		//pagination
+		pageNumber: 1,
+		pageCount:1
 		}
 	},
 	created () {
@@ -877,9 +905,18 @@ export default {
 					this.phone_number_OK.push(" number OK")
 			}
 		},
+		pageNumber: function(){
+			this.getPledges()
+		}
 
 	 },
 	methods: {
+		nextPage(){
+			this.pageNumber++
+		},
+		prevPage(){
+			this.pageNumber--
+		},
 		onMemberSelected (value) {
 			this.selectedMember = value
 			this.pledge_amount = 0
@@ -957,20 +994,22 @@ export default {
 			this.memberSearch = ''
 			this.pledges_selected = true
 			this.$store.dispatch('update_isLoading', true)
-			this.$http.get(this.$BASE_URL +'/api/projects/pledges-for-project/'+ this.$route.params.id + '/')
-				.then(response => {
-					this.pledges = {"response": response.data }
-					var array = this.pledges.response
-					// set up member ids for selection
-					for (var pledge in array){
-							this.all_member_ids.push(array[pledge].member.member.id)
-					}
-					this.foundPledges = array.length
-					this.$store.dispatch('update_isLoading', false)
+			this.$http.get(this.$BASE_URL +'/api/projects/pledges-for-project/'+ this.$route.params.id + '/',
+				{ params: { p: this.pageNumber } }
+				).then(response => {
+						this.pledges = {"response": response.data.data }
+						var array = this.pledges.response
+						// set up member ids for selection
+						for (var pledge in array){
+								this.all_member_ids.push(array[pledge].member.member.id)
+						}
+						this.foundPledges = array.length
+						this.pageCount = response.data.page_count
+						this.$store.dispatch('update_isLoading', false)
+					})
+					.catch((err) => {
+						this.$store.dispatch('update_isLoading', false)
 				})
-				.catch((err) => {
-					this.$store.dispatch('update_isLoading', false)
-			})
 		},
 		getPledgePayments: function(){
 			this.payment_ids = []
