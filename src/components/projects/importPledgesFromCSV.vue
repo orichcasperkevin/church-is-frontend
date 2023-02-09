@@ -180,10 +180,10 @@ methods: {
             }
         })
         .then(response =>{
-            var data = response.data
+            var data = response.data        
             //if data is not array there are no errors
             if (! data.length){
-                this.uploaded_file = data.csv
+                this.uploaded_file = data.id
                 alert("file uploaded")
                 this.previewCSV()
                 this.submitting_file = false
@@ -204,9 +204,8 @@ methods: {
     },
     //preview the csv file
     previewCSV: function(){
-        this.get_data_status = 'setting up preview ...'
-        var file_name = this.uploaded_file.split("/")[1]
-        this.$http.get(this.$BASE_URL + '/api/finance/preview-pledge-payments-csv/'+ file_name + '/')
+        this.get_data_status = 'setting up preview ...'        
+        this.$http.get(this.$BASE_URL + '/api/finance/preview-pledge-payments-csv/'+ this.uploaded_file + '/')
         .then(response => {
             this.csv_data = response.data
             this.get_data_status = ''
@@ -219,15 +218,14 @@ methods: {
     checkCSV: function(){
         this.error_500 = []
         this.test_csv_errors = []
-        this.file_format_okay = false
-        var file_name = this.uploaded_file.split("/")[1]
+        this.file_format_okay = false      
 
         this.checking_csv = true
         this.$http({
             method: 'post',
             url: this.$BASE_URL + '/api/finance/check-pledge-payments-csv/',
             data: {
-                file_name: file_name,
+                file_id: this.uploaded_file,
                 column_config: this.csv_columns
             },
         }).then(response => {
@@ -247,15 +245,13 @@ methods: {
     },
     // extract data from the csv file
     extractData: function(){
-        this.extract_data_button_text = "extracting..."
-        var file_name = this.uploaded_file.split("/")[1]
-
+        this.extract_data_button_text = "extracting..."       
         this.extracting_data = true
         this.$http({
             method: 'post',
             url: this.$BASE_URL + '/api/finance/import-pledge-payments-data-from-csv/',
             data: {
-                file_name: file_name,
+                file_id: this.uploaded_file,
                 column_config: this.csv_columns
             }
         }).then(response => {
