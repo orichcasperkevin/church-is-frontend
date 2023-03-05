@@ -43,7 +43,7 @@ Vue.prototype.$humanizeDate = function(date_time){
 Vue.prototype.$fileDownload = require('js-file-download');
 
 //DOMAINS
-//var current_host = 'https://admin.methodistkenya.org'
+// var current_host = 'https://admin.methodistkenya.org'
 var current_host = window.location.hostname //un comment this in production
 // var current_host = 'admin.anvil.site'//for dev env local use only, comment out in production
 
