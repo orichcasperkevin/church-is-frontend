@@ -409,11 +409,18 @@
 											Export to CSV
 										</span>
 								</button>
+								<button v-if="tab == 'pledges'" type="button" class="d-flex justify-content-about font-weight-bold text-muted list-group-item list-group-item-action border-0"
+										data-toggle="modal"
+										data-target="#deletePledgesModal">
+									<span class="text-danger">
+										<span><i class="fas fa-trash-alt"></i> Delete pledges</span>
+									</span>
+								</button>
 								<button v-if="tab == 'pledge_payments'" type="button" class="d-flex justify-content-about font-weight-bold text-muted list-group-item list-group-item-action border-0"
-										v-on:click="deleteEnvelopes()">
-										<span class="text-danger">
-											<span><i class="fas fa-trash-alt"></i> Delete</span>
-										</span>
+									v-on:click="deleteEnvelopes()">
+									<span class="text-danger">
+										<span><i class="fas fa-trash-alt"></i> Delete</span>
+									</span>
 								</button>
 						</div>
 				</div>
@@ -767,6 +774,34 @@
 						</div>
 						</div>
 				</div>
+
+				<!-- Delete pledges -->
+				<div class="modal fade" id="deletePledgesModal" tabindex="-1" role="dialog" aria-hidden="true">
+						<div class="modal-dialog modal-dialog-centered" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalCenterTitle">Delete pledges</h5>
+							</div>
+							<div class="modal-body">
+								<label for="">{{pledge_ids.length}} pledges will be deleted</label>							
+							</div>
+							<div class="modal-footer">
+							<button type="button" id="closeDeletePledgesModal" class="btn btn-secondary" data-dismiss="modal">Close</button>
+							<button v-if="pledge_ids.length > 0" type="button" class="btn btn-success" v-on:click="deletePledges()">
+								Delete pledges
+								<span v-if="deleting_pledges"
+									class="spinner-border spinner-border-sm" role="status" aria-hidden="true">
+								</span>
+							</button>
+							<button disabled v-if="pledge_ids.length == 0" type="button" class="btn btn-outline-secondary"
+								data-toggle="tooltip" data-placement="top" title="No pledges selected">
+								Nothing selected
+							</button>
+							</div>
+						</div>
+						</div>
+				</div>
+
 			</div>
 		</div>
 	</div>
@@ -787,7 +822,7 @@ export default {
 		pledges_count: 0,
 		logged_in_member_id: null,
 		context: null,
-		tab: 'contributions',
+		tab: 'pledges',
 		contributions: null,
 		pledges: null,
 		pledge_payments:[],
@@ -795,6 +830,7 @@ export default {
 		pledges_selected: false,
 		foundItems: null,
 		fetch_data_error: [],
+		deleting_pledges:false,
 		//search for member
 		// This value is set to the value emitted by the child
 		selectedMember: null,
@@ -826,7 +862,7 @@ export default {
 		//download csv
 		exporting_data:false,
 		//member ids
-		all_pledge_ids_selected: true,
+		all_pledge_ids_selected: false,
 		pledge_ids: [],
 		all_pledge_ids: [],
 		//sending message
@@ -848,8 +884,7 @@ export default {
 			if (this.all_pledge_ids_selected != true){
 				this.pledge_ids = []
 			}
-			else{
-				console.log("here",this.all_pledge_ids.length)
+			else{								
 				this.pledge_ids = this.all_pledge_ids
 			}
 		},
@@ -947,8 +982,7 @@ export default {
 				alert('error while downloading csv')
 			})
 		},
-		fetchdata: function() {
-			this.tab = 'contributions'
+		fetchdata: function() {			
 			this.fetch_data_error = []
 			//get project with id
 			this.$store.dispatch('update_isLoading', true)
@@ -990,23 +1024,21 @@ export default {
 			this.$store.dispatch('update_isLoading', true)
 			this.$http.get(this.$BASE_URL +'/api/projects/pledges-for-project/'+ this.$route.params.id + '/',
 				{ params: { p: this.pageNumber } }
-				).then(response => {
-						console.log("hereh--")
+				).then(response => {						
 						this.pledges = {"response": response.data.data }
 						var array = this.pledges.response
-						console.log(array.length,"skjdksd----------1")
+						this.all_pledge_ids = []
 						// set up member ids for selection
 						for (var pledge in array){														
 							this.all_pledge_ids.push(array[pledge].id)
-						}
-						console.log(array.length,"skjdksd----------")
+						}						
 						this.pledges_count = array.length
 						this.pageCount = response.data.page_count
 						this.$store.dispatch('update_isLoading', false)
 					})
 					.catch((err) => {
 						this.$store.dispatch('update_isLoading', false)
-				})
+			})
 		},
 		getPledgePayments: function(){
 			this.payment_ids = []
@@ -1339,7 +1371,28 @@ export default {
 						this.getPledgePayments()
 					})
 				}
-			},
+		},
+		deletePledges: function(){
+			this.$store.dispatch('update_isLoading', true)
+			this.deleting_pledges = true
+			this.$http({
+				method: 'delete',
+				url: this.$BASE_URL + '/api/projects/delete-pledges/',
+				data: {
+					ids: this.pledge_ids,
+				}
+				}).then(() => {
+					document.getElementById('closeDeletePledgesModal').click()
+					this.deleting_pledges = false
+					this.$store.dispatch('update_isLoading', false)
+					this.pledge_ids = []
+					this.getPledges()					
+				})
+				.catch((err) => {
+					this.deleting_pledges = false
+					this.$store.dispatch('update_isLoading', false)					
+				})
+		}		
 	}
 
 }
