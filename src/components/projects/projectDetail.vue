@@ -1,7 +1,6 @@
 <template>
 	<div v-if="context && contributions">
-		<!-- this compnent requires text message modal -->
-		<textmessage :memberIds="member_ids" :context="sms_context"/>
+		<!-- this compnent requires text message modal -->	
 		<nav aria-label="breadcrumb" class="continer">
 				<ol class="breadcrumb">
 					<li class="breadcrumb-item"><span class="backButton"><router-link style="text-decoration: none" :to="{name: 'Home'}">Home</router-link></span>
@@ -59,9 +58,9 @@
 													<a class="dropdown-item" href="#" data-toggle="modal" data-target="#addPledge"><b>+</b> add pledge</a>
 													<a class="dropdown-item" href="#" data-toggle="modal" data-target="#settlePledge"><b>+</b> settle pledge</a>
 											</div>
-									</div>
+									</div>									
 									<div class=" text-muted" v-if="context" v-for = "data in context.response ">
-											<div class="mt-4 d-flex d-flex-row justify-content-center">
+											<div class="mt-4 d-flex d-flex-row justify-content-center">												
 													<div class="d-none d-lg-block stat-item mr-2 text-muted">
 															Required  <span class="text-secondary font-weight-bold">
 																	Ksh {{humanize(data.required_amount)}}</span>
@@ -86,7 +85,7 @@
 											<tr>
 												<th>
 													<label class="anvil-checkbox">all
-														<input type="checkbox" :value=true v-model="all_members">
+														<input type="checkbox" :value=true v-model="all_pledge_ids_selected">
 														<span class="anvil-checkmark"></span>
 													</label>
 												</th>
@@ -125,7 +124,7 @@
 											<tr v-if="contributions" v-for = "data in contributions.response">
 												<td v-if = "data.member != null">
 												   <label class="anvil-checkbox">
-														<input multiple type="checkbox" :value=data.member.member.id v-model="member_ids">
+														<input multiple type="checkbox" :value=data.member.member.id v-model="pledge_ids">
 														<span class="anvil-checkmark"></span>
 												   </label>
 												</td>
@@ -185,7 +184,7 @@
 										</div>
 										   <div class="mt-5 d-flex justify-content-between">
 												<p class="col-6">
-														found <span class="mt-4 badge badge-pill badge-secondary">{{humanize(foundPledges)}}</span>
+														showing <span class="mt-4 badge badge-pill badge-secondary">{{humanize(pledges_count)}}</span>
 												</p>
 												<div class="d-flex justify-content-end">
 													<button class="btn" @click="prevPage"
@@ -204,7 +203,7 @@
 													<tr>
 														<th>
 														<label class="anvil-checkbox">all
-																<input type="checkbox" :value=true v-model="all_members">
+																<input type="checkbox" :value=true v-model="all_pledge_ids_selected">
 																<span class="anvil-checkmark"></span>
 														</label>
 														</th>
@@ -216,16 +215,10 @@
 													</tr>
 												</thead>
 												<tbody>
-													<tr v-for = "data in pledges.response" v-if="selectedMember == '' || selectedMember == null || memberSearch == ''">
-														<td v-if = "data.member != null">
-																<label class="anvil-checkbox">
-																		<input multiple type="checkbox" :value=data.member.member.id v-model="member_ids">
-																		<span class="anvil-checkmark"></span>
-																</label>
-														</td>
-														<td v-else>
+													<tr v-for = "data in pledges.response" :key=data.id v-if="selectedMember == '' || selectedMember == null || memberSearch == ''">														
+														<td>
 															<label class="anvil-checkbox">
-																	<input multiple type="checkbox">
+																	<input multiple type="checkbox" :value=data.id v-model="pledge_ids">
 																	<span class="anvil-checkmark"></span>
 															</label>
 														</td>
@@ -791,7 +784,7 @@ export default {
 		to_date:null,
 		//get data
 		foundItems: 0,
-		foundPledges: 0,
+		pledges_count: 0,
 		logged_in_member_id: null,
 		context: null,
 		tab: 'contributions',
@@ -805,7 +798,7 @@ export default {
 		//search for member
 		// This value is set to the value emitted by the child
 		selectedMember: null,
-		member_ids: [],
+		pledge_ids: [],
 		all_payments:false,
 		payment_ids:[],
 		all_payment_ids:[],
@@ -833,9 +826,9 @@ export default {
 		//download csv
 		exporting_data:false,
 		//member ids
-		all_members: true,
-		member_ids: [],
-		all_member_ids: [],
+		all_pledge_ids_selected: true,
+		pledge_ids: [],
+		all_pledge_ids: [],
 		//sending message
 		sms_context:'Contribution',
 		can_send_message:false,
@@ -851,12 +844,13 @@ export default {
 	},
 	watch: {
 		'$route': 'fetchdata',
-		all_members: function(){
-			if (this.all_members != true){
-				this.member_ids = []
+		all_pledge_ids_selected: function(){
+			if (this.all_pledge_ids_selected != true){
+				this.pledge_ids = []
 			}
 			else{
-				this.member_ids = this.all_member_ids
+				console.log("here",this.all_pledge_ids.length)
+				this.pledge_ids = this.all_pledge_ids
 			}
 		},
 		all_payments:function(){
@@ -978,7 +972,7 @@ export default {
 				var array = this.contributions.response
 				//set up selected members
 				for (var contribution in array){
-						this.all_member_ids.push(array[contribution].member.member.id)
+						this.all_pledge_ids.push(array[contribution].member.member.id)
 				}
 				this.foundItems = array.length
 				this.$store.dispatch('update_isLoading', false)
@@ -997,13 +991,16 @@ export default {
 			this.$http.get(this.$BASE_URL +'/api/projects/pledges-for-project/'+ this.$route.params.id + '/',
 				{ params: { p: this.pageNumber } }
 				).then(response => {
+						console.log("hereh--")
 						this.pledges = {"response": response.data.data }
 						var array = this.pledges.response
+						console.log(array.length,"skjdksd----------1")
 						// set up member ids for selection
-						for (var pledge in array){
-								this.all_member_ids.push(array[pledge].member.member.id)
+						for (var pledge in array){														
+							this.all_pledge_ids.push(array[pledge].id)
 						}
-						this.foundPledges = array.length
+						console.log(array.length,"skjdksd----------")
+						this.pledges_count = array.length
 						this.pageCount = response.data.page_count
 						this.$store.dispatch('update_isLoading', false)
 					})
@@ -1039,19 +1036,16 @@ export default {
 		},
 		getContributionsTab: function(){
 			this.tab = 'contributions'
-			this.sms_context = "Contribution"
-			this.all_members = false
+			this.sms_context = "Contribution"			
 		},
 		getPledgesTab: function(){
 			this.sms_context = "Pledge"
-			this.tab='pledges'
-			this.all_members = false
+			this.tab='pledges'			
 		},
 		getPledgePaymentsTab: function(){
 			this.getPledgePayments()
 			this.sms_context = "PledgePayments"
-			this.tab='pledge_payments'
-			this.all_members = false
+			this.tab='pledge_payments'			
 		},
 		//add contribution
 		addContribution: function(){
@@ -1315,8 +1309,7 @@ export default {
 					message: this.payments_text_message,
 				}
 				}).then(response => {
-					document.getElementById('closeTextModal').click()
-					console.log("skdfnkknskdnkkk------")
+					document.getElementById('closeTextModal').click()					
 					localStorage.setItem('pledge_message',this.payments_text_message)
 					console.log(localStorage.getItem('pledge_message'))
 					this.getPledgePayments()
