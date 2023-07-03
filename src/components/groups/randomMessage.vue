@@ -75,8 +75,10 @@
                         </p>
 						<div class=""  v-if="file_format_okay">
 							<p class="text-success">file okay, proceed to import</p>
-							<label for="">Message</label>
-							<textarea class="form-control" id="exampleFormControlTextarea1" rows="3" v-model="message"></textarea>
+							<label for="">Your message</label>
+                            <br>
+                            <small v-if="sms_credit_balance">sms credit balance - {{sms_credit_balance}} </small>
+							<textarea class="form-control" id="exampleFormControlTextarea1" rows="5" v-model="message"></textarea>
 						</div>
                         <p v-if="error_500.length">
                             <ul>
@@ -138,10 +140,12 @@ data () {
         error_500: [],
         test_csv_errors: [],
         uploaded_file: '',
+        uploaded_file_id: null,
         csv_data: [],get_data_status: '',
         file_format_okay: false,
         csv_columns: {},
-		message:'Hello people'
+		message:'',
+        sms_credit_balance : null
 
     }
 },
@@ -153,6 +157,12 @@ methods: {
 	goBack(){
 		history.back()
 	},
+    getSMSCreditBalance: function(){
+        this.$http.get(this.$BASE_URL + '/api/sms/sms-credit-balance')
+        .then((response)=>{            
+            this.sms_credit_balance =  response.data.UserData.balance
+        })
+    },
     //Submits the file to the server
     submitFile: function(){
         this.file_format_okay = false
@@ -172,8 +182,9 @@ methods: {
         .then(response =>{
             var data = response.data
             //if data is not array there are no errors
-            if (! data.length){
-                this.uploaded_file = data.csv
+            if (! data.length){                
+                this.uploaded_file = data.csv                
+                this.uploaded_file_id = data.id
                 alert("file uploaded")
                 this.previewCSV()
                 this.submitting_file = false
@@ -194,9 +205,8 @@ methods: {
     },
     //preview the csv file
     previewCSV: function(){
-        this.get_data_status = 'setting up preview ...'
-        var file_name = this.uploaded_file.split("/")[1]
-        this.$http.get(this.$BASE_URL + '/api/groups/preview-csv/'+ file_name + '/')
+        this.get_data_status = 'setting up preview ...'       
+        this.$http.get(this.$BASE_URL + '/api/groups/preview-csv/'+ this.uploaded_file_id + '/')
         .then(response => {
             this.csv_data = response.data
             this.get_data_status = ''
@@ -209,15 +219,14 @@ methods: {
     checkCSV: function(){
         this.error_500 = []
         this.test_csv_errors = []
-        this.file_format_okay = false
-        var file_name = this.uploaded_file.split("/")[1]
+        this.file_format_okay = false       
 
         this.checking_csv = true
         this.$http({
             method: 'post',
             url: this.$BASE_URL + '/api/groups/check-csv/',
             data: {
-                file_name: file_name,
+                file_id: this.uploaded_file_id,
                 column_config: this.csv_columns
             },
         }).then(response => {
@@ -230,6 +239,7 @@ methods: {
                     this.test_csv_errors = data
                 }
                 this.checking_csv = false
+                this.getSMSCreditBalance()
         }).catch((err) => {
             this.error_500.push(err)
             this.checking_csv = false
@@ -238,19 +248,17 @@ methods: {
     // extract data from the csv file
     extractData: function(){
         this.extract_data_button_text = "extracting..."
-        var file_name = this.uploaded_file.split("/")[1]
-
         this.extracting_data = true
         this.$http({
             method: 'post',
             url: this.$BASE_URL + '/api/groups/send-message-to-data-from-csv/',
             data: {
-                file_name: file_name,
+                file_id: this.uploaded_file_id,
                 column_config: this.csv_columns,
 				message:this.message
             }
         }).then(response => {
-            alert("data extracted succesfully")
+            alert("data extracted succesfully, Your messages have been queued.")
 			this.reset()
         }).catch((err) => {
             alert("an error occured, check CSV and try again")
