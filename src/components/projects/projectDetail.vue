@@ -743,10 +743,12 @@
 						<div class="modal-dialog modal-dialog-centered" role="document">
 						<div class="modal-content">
 							<div class="modal-header">
-								<h5 class="modal-title" id="exampleModalCenterTitle">export data to CSV</h5>
+								<h5 class="modal-title" id="exampleModalCenterTitle">send Message</h5>
 							</div>
 							<div class="modal-body">
 								<label for="">Message ({{payment_ids.length}} payments selected)</label>
+								<br>
+								<small v-if="sms_credit_balance">sms credit balance - {{sms_credit_balance}} </small>
 								<textarea rows="5" class="form-control" placeholder="Text message" v-model="payments_text_message">
 								</textarea>
 								<p class="mt-2 ml-2 small text-muted"><span class="font-weight-bold">{{parseInt((payments_text_message.length)/160)}}</span> messages | a message is 160 characters long</p> 
@@ -872,11 +874,13 @@ export default {
 		sms_status: [],
 		//pagination
 		pageNumber: 1,
-		pageCount:1
+		pageCount:1,
+		sms_credit_balance : null
 		}
 	},
 	created () {
 		this.fetchdata()
+		this.getSMSCreditBalance()
 	},
 	watch: {
 		'$route': 'fetchdata',
@@ -953,6 +957,12 @@ export default {
 		  },
 		humanize: function(x) {
 				return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		},
+		getSMSCreditBalance: function(){
+			this.$http.get(this.$BASE_URL + '/api/sms/sms-credit-balance')
+			.then((response)=>{            
+				this.sms_credit_balance =  response.data.UserData.balance
+			})
 		},
 		exportData: function(){
 			const FileDownload = require('js-file-download');
